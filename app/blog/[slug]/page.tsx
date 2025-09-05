@@ -1,8 +1,7 @@
-import { allPosts } from '@/.contentlayer/generated'
+import { allPosts } from 'contentlayer/generated'
 import { notFound } from 'next/navigation'
-import { useMDXComponent } from 'next-contentlayer/hooks'
 import Link from 'next/link'
-import { CTA } from '@/components/CTA'
+import CTA from '@/components/CTA'
 
 export const revalidate = 60
 
