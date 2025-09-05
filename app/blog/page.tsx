@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { allPosts } from '@/.contentlayer/generated'
+import { allPosts } from 'contentlayer/generated';
 import { SITE } from '@/lib/site'
 import { PostCard } from '@/components/PostCard'
 
