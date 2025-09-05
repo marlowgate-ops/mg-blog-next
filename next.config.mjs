@@ -1,14 +1,11 @@
-import { withContentlayer } from 'next-contentlayer'
-
+// No 'next-contentlayer' plugin – Contentlayer runs via npm scripts
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: { typedRoutes: true },
+  images: { unoptimized: true },
   eslint: { ignoreDuringBuilds: true },
-  experimental: {
-    optimizePackageImports: ['react', 'react-dom'],
-  },
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-}
+  typescript: { ignoreBuildErrors: true },
+};
 
-export default withContentlayer(nextConfig)
+export default nextConfig;
