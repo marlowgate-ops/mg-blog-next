@@ -1,11 +1,9 @@
-import type { NextConfig } from 'next'
-import { withContentlayer } from 'contentlayer/source-files/next'
+// next.config.ts
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  experimental: {
-    typedRoutes: false
-  }
-}
+  // 必要なら画像ドメインやexperimentalをここに足す
+};
 
-export default withContentlayer(nextConfig)
+export default nextConfig;
