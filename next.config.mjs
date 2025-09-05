@@ -1,8 +1,14 @@
-// next.config.mjs
-/** @type {import('next').NextConfig} */
+import { withContentlayer } from 'next-contentlayer'
+
 const nextConfig = {
   reactStrictMode: true,
-  // 必要なら images.domains 等をここに
-};
+  eslint: { ignoreDuringBuilds: true },
+  experimental: {
+    optimizePackageImports: ['react', 'react-dom'],
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+}
 
-export default nextConfig;
+export default withContentlayer(nextConfig)
