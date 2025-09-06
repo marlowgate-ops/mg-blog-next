@@ -1,38 +1,40 @@
 // contentlayer.config.ts
 import { defineDocumentType, makeSource } from 'contentlayer/source-files'
-import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import remarkGfm from 'remark-gfm'
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
   contentType: 'mdx',
-  // MDX の置き場所: /content/blog/...
-  filePathPattern: 'blog/**/*.mdx',
+  // ここはあなたの構成に合わせる（src ではなく content/ 配下を使っている前提）
+  filePathPattern: 'content/blog/**/*.mdx',
   fields: {
     title: { type: 'string', required: true },
     description: { type: 'string', required: false },
-    date: { type: 'date', required: false },         // ← 追加（型生成用）
+    // ← これを追加（オプショナルにしておくと投稿に日付が無くても通ります）
+    date: { type: 'date', required: false },
     draft: { type: 'boolean', required: false, default: false },
   },
   computedFields: {
     slug: {
       type: 'string',
-      resolve: (doc) => doc._raw.flattenedPath.replace(/^blog\//, ''),
-    },
-    url: {
-      type: 'string',
       resolve: (doc) =>
-        `https://blog.marlowgate.com/blog/${doc._raw.flattenedPath.replace(/^blog\//, '')}`,
+        doc._raw.flattenedPath
+          .replace(/^content\/blog\//, '')
+          .replace(/\\/g, '/'),
     },
   },
 }))
 
 export default makeSource({
-  contentDirPath: 'content',
+  contentDirPath: '.',
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+    ],
   },
 })
