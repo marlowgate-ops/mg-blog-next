@@ -1,41 +1,31 @@
+// contentlayer.config.ts
 import { defineDocumentType, makeSource } from 'contentlayer/source-files'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import remarkGfm from 'remark-gfm'
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: `blog/**/*.mdx`,
-  contentType: 'mdx',
+  // content/ をルートに読み込む想定。記事は content/blog 配下。
+  filePathPattern: 'blog/**/*.mdx',
   fields: {
-    title: { type: 'string', required: true },
+    title:       { type: 'string', required: true },
     description: { type: 'string', required: false },
-    pubDate: { type: 'date', required: true },
-    updatedDate: { type: 'date', required: false },
-    tags: { type: 'list', of: { type: 'string' }, required: false },
-    draft: { type: 'boolean', default: false }
+    date:        { type: 'date',   required: false },   // ← 追加
+    draft:       { type: 'boolean', required: false, default: false },
+    tags:        { type: 'list', of: { type: 'string' }, required: false, default: [] },
   },
   computedFields: {
     slug: {
       type: 'string',
-      resolve: (doc) => doc._raw.flattenedPath.replace(/^blog\//, ''),
+      // 例: content/blog/hello-world.mdx -> hello-world
+      resolve: doc => doc._raw.flattenedPath.replace(/^blog\//, ''),
     },
     url: {
       type: 'string',
-      resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^blog\//, '')}`,
-    }
-  }
+      resolve: doc => `https://blog.marlowgate.com/blog/${doc._raw.flattenedPath.replace(/^blog\//, '')}`,
+    },
+  },
 }))
 
 export default makeSource({
   contentDirPath: 'content',
   documentTypes: [Post],
-  mdx: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-    ],
-  },
-  disableImportAliasWarning: true
 })
