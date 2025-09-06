@@ -1,11 +1,11 @@
-// No 'next-contentlayer' plugin – Contentlayer runs via npm scripts
+// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  experimental: { typedRoutes: true },
-  images: { unoptimized: true },
-  eslint: { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: true },
-};
+  redirects: async () => [
+    // 旧パス → 新パス（例）
+    { source: '/src/content/blog/:slug*', destination: '/blog/:slug*', permanent: true },
+    { source: '/sitemap-index.xml', destination: '/sitemap.xml', permanent: true },
+  ],
+}
 
-export default nextConfig;
+export default nextConfig
