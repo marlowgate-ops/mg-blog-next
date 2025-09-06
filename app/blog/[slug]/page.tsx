@@ -1,23 +1,76 @@
-import { allPosts } from 'contentlayer/generated'
-import { notFound } from 'next/navigation'
+// app/blog/[slug]/page.tsx
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { allPosts } from 'contentlayer/generated'
+import { useMDXComponent } from 'next-contentlayer/hooks'
 import CTA from '@/components/CTA'
+
+type Params = { params: { slug: string } }
+
+export async function generateStaticParams() {
+  return allPosts.filter(p => !p.draft).map(p => ({ slug: p.slug }))
+}
 
 export const revalidate = 60
 
-type Params = { slug: string }
-
-export default function BlogPost({ params }: { params: Params }) {
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const post = allPosts.find(p => p.slug === params.slug && !p.draft)
-  if (!post) return notFound()
+  if (!post) return { title: 'Not found' }
+
+  const url = `https://blog.marlowgate.com/blog/${post.slug}`
+
+  return {
+    title: post.title,
+    description: post.description ?? undefined,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article',
+      url,
+      title: post.title,
+      description: post.description ?? undefined,
+      images: [`https://blog.marlowgate.com/og/${post.slug}.png`],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description ?? undefined,
+      images: [`https://blog.marlowgate.com/og/${post.slug}.png`],
+    },
+  }
+}
+
+export default function BlogPost({ params }: Params) {
+  const post = allPosts.find(p => p.slug === params.slug && !p.draft)
+  if (!post) return null
+
+  const MDX = useMDXComponent(post.body.code)
+  const url = `https://blog.marlowgate.com/blog/${post.slug}`
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description ?? '',
+    datePublished: post.date,
+    author: { '@type': 'Organization', name: 'Marlow Gate' },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    url,
+  }
 
   return (
-    <article className="prose mx-auto py-8">
+    <article className="prose">
       <h1>{post.title}</h1>
-      {post.description && <p>{post.description}</p>}
-      {/* TODO: MDX body rendering — we will wire this up after migration */}
-      <div className="mt-8"><CTA /></div>
-      <p className="mt-8"><Link href="/blog">← Back to blog</Link></p>
+      <p>{post.description}</p>
+
+      {/* JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <MDX />
+      <CTA />
+      <p><Link href="/blog">← Back to list</Link></p>
     </article>
   )
 }
