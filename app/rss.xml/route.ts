@@ -1,63 +1,38 @@
-// app/rss.xml/route.ts
+import { NextResponse } from 'next/server'
 import { allPosts } from 'contentlayer/generated'
+import { sortedPosts, pickDate } from '@/lib/post'
 
-const SITE = {
-  url: 'https://blog.marlowgate.com',
-  title: 'Marlow Gate — Blog',
-  description: 'Latest articles and updates from Marlow Gate',
+export const revalidate = 60
+
+function esc(s: string) {
+  return s.replace(/[<>&'"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;',"'":'&apos;','"':'&quot;'}[c] as string))
 }
-
-const toTime = (post: any): number => {
-  const d = post?.date ?? post?.pubDate ?? post?.publishedAt ?? post?.published
-  return d ? new Date(String(d)).getTime() : 0
-}
-
-const toRssDate = (post: any): string | undefined => {
-  const d = post?.date ?? post?.pubDate ?? post?.publishedAt ?? post?.published
-  return d ? new Date(String(d)).toUTCString() : undefined
-}
-
-export const revalidate = 300 // 5 minutes
 
 export async function GET() {
-  // 最新順に並べてドラフトは除外、最大 50 件
-  const posts = allPosts
-    .filter((p: any) => !p.draft)
-    .sort((a: any, b: any) => toTime(b) - toTime(a))
-    .slice(0, 50)
+  const items = sortedPosts(allPosts).slice(0, 50).map(p => {
+    const url = `https://blog.marlowgate.com/blog/${p.slug}`
+    const pub = pickDate(p) ?? new Date().toISOString()
+    const desc = p.description ?? ''
+    return `
+      <item>
+        <title>${esc(p.title)}</title>
+        <link>${url}</link>
+        <guid>${url}</guid>
+        <pubDate>${new Date(pub).toUTCString()}</pubDate>
+        <description><![CDATA[${desc}]]></description>
+      </item>
+    `
+  }).join('\n')
 
-  const items = posts
-    .map((p: any) => {
-      const link = `${SITE.url}/blog/${p.slug}`
-      const pub = toRssDate(p)
-      return [
-        '<item>',
-        `<title><![CDATA[${p.title}]]></title>`,
-        `<link>${link}</link>`,
-        `<guid>${link}</guid>`,
-        p.description ? `<description><![CDATA[${p.description}]]></description>` : '',
-        pub ? `<pubDate>${pub}</pubDate>` : '',
-        '</item>',
-      ].join('')
-    })
-    .join('')
+  const xml = `<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Marlow Gate — Blog</title>
+    <link>https://blog.marlowgate.com/</link>
+    <description>Latest articles and updates from Marlow Gate</description>
+    ${items}
+  </channel>
+</rss>`
 
-  const xml = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<rss version="2.0">',
-    '<channel>',
-    `<title><![CDATA[${SITE.title}]]></title>`,
-    `<link>${SITE.url}</link>`,
-    `<description><![CDATA[${SITE.description}]]></description>`,
-    items,
-    '</channel>',
-    '</rss>',
-  ].join('')
-
-  return new Response(xml, {
-    headers: {
-      'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=0, s-maxage=300, stale-while-revalidate=60',
-    },
-  })
+  return new NextResponse(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } })
 }
