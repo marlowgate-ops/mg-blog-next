@@ -1,20 +1,20 @@
-// app/blog/[slug]/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { allPosts } from 'contentlayer/generated'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import CTA from '@/components/CTA'
+import { pickDate } from '@/lib/post'
 
 type Params = { params: { slug: string } }
 
 export async function generateStaticParams() {
-  return allPosts.filter(p => !p.draft).map(p => ({ slug: p.slug }))
+  return allPosts.filter(p => !(p as any).draft).map(p => ({ slug: p.slug }))
 }
 
 export const revalidate = 60
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const post = allPosts.find(p => p.slug === params.slug && !p.draft)
+  const post = allPosts.find(p => p.slug === params.slug && !(p as any).draft)
   if (!post) return { title: 'Not found' }
 
   const url = `https://blog.marlowgate.com/blog/${post.slug}`
@@ -24,30 +24,36 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: post.title,
     description: post.description ?? undefined,
     alternates: { canonical: url },
-    openGraph: { type: 'article', url, title: post.title, description: post.description ?? undefined, images: [og] },
-    twitter:   { card: 'summary_large_image', title: post.title, description: post.description ?? undefined, images: [og] },
+    openGraph: {
+      type: 'article',
+      url,
+      title: post.title,
+      description: post.description ?? undefined,
+      images: [og],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description ?? undefined,
+      images: [og],
+    },
   }
 }
 
 export default function BlogPost({ params }: Params) {
-  const post = allPosts.find(p => p.slug === params.slug && !p.draft)
+  const post = allPosts.find(p => p.slug === params.slug && !(p as any).draft)
   if (!post) return null
 
   const MDX = useMDXComponent(post.body.code)
   const url = `https://blog.marlowgate.com/blog/${post.slug}`
+  const dateStr = pickDate(post)
 
-  // Frontmatterの日付は optional。存在時のみ JSON-LD に含める（型エラー回避）
-  const datePublished =
-    'date' in (post as any) && (post as any).date
-      ? new Date(String((post as any).date)).toISOString()
-      : undefined
-
-  const jsonLd: Record<string, unknown> = {
+  const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description ?? '',
-    ...(datePublished ? { datePublished } : {}),
+    datePublished: dateStr,
     author: { '@type': 'Organization', name: 'Marlow Gate' },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     url,
@@ -58,6 +64,7 @@ export default function BlogPost({ params }: Params) {
       <h1>{post.title}</h1>
       {post.description && <p>{post.description}</p>}
 
+      {/* JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
