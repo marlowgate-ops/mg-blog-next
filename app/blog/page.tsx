@@ -1,31 +1,26 @@
-// app/blog/page.tsx
 import Link from 'next/link'
 import { allPosts } from 'contentlayer/generated'
+import { sortedPosts } from '@/lib/post'
 
+const PAGE_SIZE = 10
 export const revalidate = 60
 
-// 安全に日時を取り出す（frontmatter の名前揺れに耐性）
-const toTime = (p: any): number => {
-  const d = p?.date ?? p?.pubDate ?? p?.publishedAt ?? p?.published
-  return d ? new Date(String(d)).getTime() : 0
-}
-
 export default function BlogIndex() {
-  const posts = allPosts
-    .filter((p: any) => !p.draft)
-    .sort((a: any, b: any) => toTime(b) - toTime(a))
+  const posts = sortedPosts(allPosts)
+  const pagePosts = posts.slice(0, PAGE_SIZE)
 
   return (
-    <section className="prose">
+    <section>
       <h1>Blog</h1>
       <ul>
-        {posts.map((p: any) => (
-          <li key={p.slug}>
+        {pagePosts.map(p => (
+          <li key={p._id}>
             <Link href={`/blog/${p.slug}`}>{p.title}</Link>
-            {p.description ? <p>{p.description}</p> : null}
+            {p.description && <p>{p.description}</p>}
           </li>
         ))}
       </ul>
+      {posts.length > PAGE_SIZE && <p><Link href="/blog/page/2">Older posts →</Link></p>}
     </section>
   )
 }
