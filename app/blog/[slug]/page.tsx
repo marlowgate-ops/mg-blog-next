@@ -18,7 +18,6 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!post) return { title: 'Not found' }
 
   const url = `https://blog.marlowgate.com/blog/${post.slug}`
-  const og = `https://blog.marlowgate.com/og/${post.slug}.png`
 
   return {
     title: post.title,
@@ -29,13 +28,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       url,
       title: post.title,
       description: post.description ?? undefined,
-      images: [og],
+      images: [`https://blog.marlowgate.com/og/${post.slug}.png`],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description ?? undefined,
-      images: [og],
+      images: [`https://blog.marlowgate.com/og/${post.slug}.png`],
     },
   }
 }
@@ -44,22 +43,19 @@ export default function BlogPost({ params }: Params) {
   const post = allPosts.find(p => p.slug === params.slug && !p.draft)
   if (!post) return null
 
-  const MDX = useMDXComponent((post as any).body.code)
+  const MDX = useMDXComponent(post.body.code)
   const url = `https://blog.marlowgate.com/blog/${post.slug}`
 
-  // schema 名の違いに耐性を持たせる（どれも無ければ undefined）
-  const datePublished: string | undefined =
-    (post as any).date ??
-    (post as any).publishedAt ??
-    (post as any).published ??
-    undefined
+  const dateIso =
+    // Contentlayer の date は string なので ISO に整形（無ければ undefined）
+    post.date ? new Date(post.date as unknown as string).toISOString() : undefined
 
-  const jsonLd: Record<string, any> = {
+  const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description ?? '',
-    ...(datePublished ? { datePublished } : {}),
+    datePublished: dateIso, // ← 安全化
     author: { '@type': 'Organization', name: 'Marlow Gate' },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     url,
@@ -68,9 +64,8 @@ export default function BlogPost({ params }: Params) {
   return (
     <article className="prose">
       <h1>{post.title}</h1>
-      {post.description ? <p>{post.description}</p> : null}
+      <p>{post.description}</p>
 
-      {/* JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
