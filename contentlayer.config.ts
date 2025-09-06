@@ -1,3 +1,4 @@
+// contentlayer.config.ts
 import { defineDocumentType, makeSource } from 'contentlayer/source-files'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
@@ -5,12 +6,12 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: 'blog/**/*.mdx',      // content/blog/**/*.mdx を読む
+  filePathPattern: 'blog/**/*.mdx',
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
     description: { type: 'string', required: false },
-    date: { type: 'date', required: false },   // ← 追加（optional）
+    date: { type: 'date', required: false },   // 追加（optional）
     draft: { type: 'boolean', required: false, default: false },
     tags: { type: 'list', of: { type: 'string' }, required: false, default: [] }
   },
@@ -27,7 +28,7 @@ export const Post = defineDocumentType(() => ({
 }))
 
 export default makeSource({
-  contentDirPath: 'content',             // ルートの content/ を基点にする
+  contentDirPath: 'content',
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],
