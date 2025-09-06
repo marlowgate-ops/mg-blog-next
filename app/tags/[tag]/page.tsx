@@ -1,25 +1,32 @@
-import { allPosts } from '@/.contentlayer/generated'
-import { PostCard } from '@/components/PostCard'
+// app/tags/[tag]/page.tsx
+import Link from 'next/link'
+import { allPosts } from 'contentlayer/generated'
+import { toTime } from '@/lib/post'
+
+type Params = { params: { tag: string } }
 
 export const revalidate = 60
 
-export default function TagPage({ params }:{ params:{ tag:string } }){
-  const tag = decodeURIComponent(params.tag)
+export default function TagIndex({ params }: Params) {
+  const tag = decodeURIComponent(params.tag || '').trim()
   const posts = allPosts
-    .filter(p => !p.draft && (p.tags||[]).map(String).includes(tag))
-    .sort((a,b)=> +new Date(b.pubDate) - +new Date(a.pubDate))
+    .filter((p: any) => !p.draft)
+    .filter((p: any) => (p.tags || []).map(String).includes(tag))
+    .sort((a: any, b: any) => toTime(b) - toTime(a))
+
   return (
-    <main>
-      <header style={{ maxWidth:980, margin:'0 auto', padding:'28px 20px' }}>
-        <h1 style={{ margin:'0 0 8px 0' }}>Tag: {tag}</h1>
-      </header>
-      <section style={{ padding:'0 20px 28px' }}>
-        <div style={{ maxWidth:980, margin:'0 auto', display:'grid', gridTemplateColumns:'1fr', gap:16 }}>
-          {posts.map(p => (
-            <PostCard key={p._id} href={`/blog/${p.slug}`} title={p.title} description={p.description} date={p.pubDate} tags={p.tags as string[]|undefined} />
-          ))}
-        </div>
-      </section>
+    <main className="prose">
+      <h1>Tag: {tag}</h1>
+      {posts.length === 0 && <p>No posts yet.</p>}
+      <ul>
+        {posts.map((p: any) => (
+          <li key={p.slug}>
+            <Link href={`/blog/${p.slug}`}>{p.title}</Link>
+            {p.description ? <p>{p.description}</p> : null}
+          </li>
+        ))}
+      </ul>
+      <p><Link href="/blog">← Back to list</Link></p>
     </main>
   )
 }
