@@ -1,40 +1,68 @@
-import { allPosts } from '@/.contentlayer/generated'
-import { SITE } from '@/lib/site'
+// app/sitemap.xml/route.ts
+import { allPosts } from 'contentlayer/generated'
 
-export const revalidate = 60
+const SITE = {
+  url: 'https://blog.marlowgate.com',
+}
 
-export async function GET(){
-  const urls: string[] = []
-  const url = (loc:string, lastmod?:string) => `<url><loc>${loc}</loc>${lastmod?`<lastmod>${lastmod}</lastmod>`:''}<changefreq>daily</changefreq></url>`
-  urls.push(url(`${SITE.url}/`))
-  urls.push(url(`${SITE.url}/blog/`))
-  urls.push(url(`${SITE.url}/about`))
-  urls.push(url(`${SITE.url}/rss.xml`))
+export const revalidate = 300 // 5 minutes
 
+// Frontmatter の日付名ゆれに耐性を持たせる
+const pickDate = (p: any): string | undefined => {
+  const d = p?.date ?? p?.pubDate ?? p?.publishedAt ?? p?.published
+  return d ? String(d) : undefined
+}
+
+const toTime = (p: any): number => {
+  const d = pickDate(p)
+  return d ? new Date(d).getTime() : 0
+}
+
+export async function GET() {
+  const posts = allPosts
+    .filter((p: any) => !p.draft)
+    .sort((a: any, b: any) => toTime(b) - toTime(a))
+
+  // 固定ページ
+  const staticUrls = ['/', '/blog/']
+
+  // ページネーション（/blog/page/2 ...）
   const PER = 12
-  const posts = allPosts.filter(p=>!p.draft).sort((a,b)=> +new Date(b.pubDate) - +new Date(a.pubDate))
   const totalPages = Math.max(1, Math.ceil(posts.length / PER))
-  for(let i=2;i<=totalPages;i++){
-    urls.push(url(`${SITE.url}/blog/page/${i}/`))
-  }
+  const paged = Array.from({ length: totalPages - 1 }, (_, i) => `/blog/page/${i + 2}/`)
 
-  const tagSet = new Set<string>()
-  for(const p of posts){
-    for(const t of (p.tags||[])) tagSet.add(String(t))
-  }
-  for(const t of tagSet){
-    urls.push(url(`${SITE.url}/tags/${encodeURIComponent(t)}/`))
-  }
+  // 記事ページ
+  const postUrls = posts.map((p: any) => ({
+    loc: `/blog/${p.slug}/`,
+    lastmod: pickDate(p),
+  }))
 
-  for(const p of posts){
-    const loc = `${SITE.url}/blog/${p.slug}/`
-    const mod = p.updatedDate ? new Date(p.updatedDate as any).toISOString() : undefined
-    urls.push(url(loc, mod))
-  }
+  const urls = [
+    ...staticUrls.map((path) => ({ loc: path })),
+    ...paged.map((path) => ({ loc: path })),
+    ...postUrls,
+  ]
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.join('\n')}
-</urlset>`
-  return new Response(xml, { headers:{ 'Content-Type':'application/xml; charset=utf-8' } })
+  const xml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls.map((u) => {
+      const loc = `${SITE.url}${u.loc}`
+      const lastmod = u.lastmod ? new Date(u.lastmod).toISOString() : undefined
+      return [
+        '<url>',
+        `<loc>${loc}</loc>`,
+        lastmod ? `<lastmod>${lastmod}</lastmod>` : '',
+        '</url>',
+      ].join('')
+    }),
+    '</urlset>',
+  ].join('')
+
+  return new Response(xml, {
+    headers: {
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'public, max-age=0, s-maxage=300, stale-while-revalidate=60',
+    },
+  })
 }
