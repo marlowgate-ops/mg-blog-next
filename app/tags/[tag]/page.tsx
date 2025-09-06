@@ -1,32 +1,29 @@
-// app/tags/[tag]/page.tsx
 import Link from 'next/link'
 import { allPosts } from 'contentlayer/generated'
 import { toTime } from '@/lib/post'
 
 type Params = { params: { tag: string } }
-
 export const revalidate = 60
 
-export default function TagIndex({ params }: Params) {
-  const tag = decodeURIComponent(params.tag || '').trim()
+export default function TagPage({ params }: Params) {
+  const tag = decodeURIComponent(params.tag)
   const posts = allPosts
-    .filter((p: any) => !p.draft)
-    .filter((p: any) => (p.tags || []).map(String).includes(tag))
-    .sort((a: any, b: any) => toTime(b) - toTime(a))
+    .filter(p => !(p as any).draft)
+    .filter(p => ((p as any).tags ?? []).map(String).includes(tag))
+    .sort((a, b) => toTime(b) - toTime(a))
 
   return (
-    <main className="prose">
+    <section>
       <h1>Tag: {tag}</h1>
-      {posts.length === 0 && <p>No posts yet.</p>}
       <ul>
-        {posts.map((p: any) => (
-          <li key={p.slug}>
+        {posts.map(p => (
+          <li key={p._id}>
             <Link href={`/blog/${p.slug}`}>{p.title}</Link>
-            {p.description ? <p>{p.description}</p> : null}
+            {p.description && <p>{p.description}</p>}
           </li>
         ))}
       </ul>
       <p><Link href="/blog">← Back to list</Link></p>
-    </main>
+    </section>
   )
 }
