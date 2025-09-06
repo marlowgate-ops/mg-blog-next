@@ -13,8 +13,6 @@ export async function generateStaticParams() {
 
 export const revalidate = 60
 
-const toISO = (d?: string | Date) => (d ? new Date(d).toISOString() : undefined)
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const post = allPosts.find(p => p.slug === params.slug && !p.draft)
   if (!post) return { title: 'Not found' }
@@ -46,15 +44,22 @@ export default function BlogPost({ params }: Params) {
   const post = allPosts.find(p => p.slug === params.slug && !p.draft)
   if (!post) return null
 
-  const MDX = useMDXComponent(post.body.code)
+  const MDX = useMDXComponent((post as any).body.code)
   const url = `https://blog.marlowgate.com/blog/${post.slug}`
 
-  const jsonLd = {
+  // schema 名の違いに耐性を持たせる（どれも無ければ undefined）
+  const datePublished: string | undefined =
+    (post as any).date ??
+    (post as any).publishedAt ??
+    (post as any).published ??
+    undefined
+
+  const jsonLd: Record<string, any> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description ?? '',
-    datePublished: toISO((post as any).date), // Contentlayerでdate(任意)にしたので未指定でもOK
+    ...(datePublished ? { datePublished } : {}),
     author: { '@type': 'Organization', name: 'Marlow Gate' },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     url,
@@ -63,8 +68,9 @@ export default function BlogPost({ params }: Params) {
   return (
     <article className="prose">
       <h1>{post.title}</h1>
-      {post.description && <p>{post.description}</p>}
+      {post.description ? <p>{post.description}</p> : null}
 
+      {/* JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
