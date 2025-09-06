@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!post) return { title: 'Not found' }
 
   const url = `https://blog.marlowgate.com/blog/${post.slug}`
+  const og  = `https://blog.marlowgate.com/og/${post.slug}.png`
 
   return {
     title: post.title,
@@ -28,13 +29,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       url,
       title: post.title,
       description: post.description ?? undefined,
-      images: [`https://blog.marlowgate.com/og/${post.slug}.png`],
+      images: [og],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description ?? undefined,
-      images: [`https://blog.marlowgate.com/og/${post.slug}.png`],
+      images: [og],
     },
   }
 }
@@ -46,16 +47,18 @@ export default function BlogPost({ params }: Params) {
   const MDX = useMDXComponent(post.body.code)
   const url = `https://blog.marlowgate.com/blog/${post.slug}`
 
-  const dateIso =
-    // Contentlayer の date は string なので ISO に整形（無ければ undefined）
-    post.date ? new Date(post.date as unknown as string).toISOString() : undefined
+  // date はスキーマ上 optional。存在する時のみ JSON-LD に出す
+  const datePublished =
+    'date' in post && post.date
+      ? new Date(post.date as unknown as string).toISOString()
+      : undefined
 
-  const jsonLd = {
+  const jsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description ?? '',
-    datePublished: dateIso, // ← 安全化
+    ...(datePublished ? { datePublished } : {}),
     author: { '@type': 'Organization', name: 'Marlow Gate' },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     url,
@@ -64,8 +67,9 @@ export default function BlogPost({ params }: Params) {
   return (
     <article className="prose">
       <h1>{post.title}</h1>
-      <p>{post.description}</p>
+      {post.description && <p>{post.description}</p>}
 
+      {/* JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
