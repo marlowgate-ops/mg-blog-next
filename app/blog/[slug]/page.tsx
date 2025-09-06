@@ -2,7 +2,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { allPosts } from 'contentlayer/generated'
-import { useMDXComponent } from 'next-contentlayer/hooks'
 import CTA from '@/components/CTA'
 
 type Params = { params: { slug: string } }
@@ -43,9 +42,7 @@ export default function BlogPost({ params }: Params) {
   const post = allPosts.find(p => p.slug === params.slug && !p.draft)
   if (!post) return null
 
-  const MDX = useMDXComponent(post.body.code)
   const url = `https://blog.marlowgate.com/blog/${post.slug}`
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -60,7 +57,7 @@ export default function BlogPost({ params }: Params) {
   return (
     <article className="prose">
       <h1>{post.title}</h1>
-      <p>{post.description}</p>
+      {post.description ? <p>{post.description}</p> : null}
 
       {/* JSON-LD */}
       <script
@@ -68,7 +65,9 @@ export default function BlogPost({ params }: Params) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <MDX />
+      {/* TODO: MDX 本文レンダ（後で再導入）。いまは安全に本文は非表示 */}
+      <p style={{opacity:.7}}>本文は準備中です。</p>
+
       <CTA />
       <p><Link href="/blog">← Back to list</Link></p>
     </article>
