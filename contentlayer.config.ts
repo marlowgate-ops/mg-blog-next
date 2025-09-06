@@ -1,6 +1,7 @@
 import { defineDocumentType, makeSource } from 'contentlayer/source-files'
-import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import remarkGfm from 'remark-gfm'
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -11,20 +12,17 @@ export const Post = defineDocumentType(() => ({
     description: { type: 'string', required: false },
     pubDate: { type: 'date', required: true },
     updatedDate: { type: 'date', required: false },
-    draft: { type: 'boolean', required: false, default: false },
-    tags: { type: 'list', of: { type: 'string' }, required: false }
+    tags: { type: 'list', of: { type: 'string' }, required: false },
+    draft: { type: 'boolean', default: false }
   },
   computedFields: {
     slug: {
       type: 'string',
-      resolve: (doc) => {
-        const fp = doc._raw.flattenedPath.replace(/^blog\//,'')
-        return fp
-      }
+      resolve: (doc) => doc._raw.flattenedPath.replace(/^blog\//, ''),
     },
     url: {
       type: 'string',
-      resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^blog\//,'')}`
+      resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^blog\//, '')}`,
     }
   }
 }))
@@ -34,6 +32,10 @@ export default makeSource({
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug]
-  }
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+    ],
+  },
+  disableImportAliasWarning: true
 })
