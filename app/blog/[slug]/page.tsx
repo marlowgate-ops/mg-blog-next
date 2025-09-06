@@ -36,9 +36,11 @@ export default function BlogPost({ params }: Params) {
   const MDX = useMDXComponent(post.body.code)
   const url = `https://blog.marlowgate.com/blog/${post.slug}`
 
-  // date は schema 上 optional。存在するときのみ JSON-LD に含める
+  // Frontmatterの日付は optional。存在時のみ JSON-LD に含める（型エラー回避）
   const datePublished =
-    'date' in post && (post as any).date ? new Date(String((post as any).date)).toISOString() : undefined
+    'date' in (post as any) && (post as any).date
+      ? new Date(String((post as any).date)).toISOString()
+      : undefined
 
   const jsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
