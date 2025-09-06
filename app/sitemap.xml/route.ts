@@ -1,13 +1,13 @@
 // app/sitemap.xml/route.ts
 import { allPosts } from 'contentlayer/generated'
 
-const SITE = {
-  url: 'https://blog.marlowgate.com',
-}
+const SITE = { url: 'https://blog.marlowgate.com' }
 
 export const revalidate = 300 // 5 minutes
 
-// Frontmatter の日付名ゆれに耐性を持たせる
+type UrlEntry = { loc: string; lastmod?: string }
+
+// Frontmatter の日付名ゆれに耐性
 const pickDate = (p: any): string | undefined => {
   const d = p?.date ?? p?.pubDate ?? p?.publishedAt ?? p?.published
   return d ? String(d) : undefined
@@ -24,24 +24,22 @@ export async function GET() {
     .sort((a: any, b: any) => toTime(b) - toTime(a))
 
   // 固定ページ
-  const staticUrls = ['/', '/blog/']
+  const staticUrls: UrlEntry[] = [{ loc: '/' }, { loc: '/blog/' }]
 
   // ページネーション（/blog/page/2 ...）
   const PER = 12
   const totalPages = Math.max(1, Math.ceil(posts.length / PER))
-  const paged = Array.from({ length: totalPages - 1 }, (_, i) => `/blog/page/${i + 2}/`)
+  const paged: UrlEntry[] = Array.from({ length: totalPages - 1 }, (_, i) => ({
+    loc: `/blog/page/${i + 2}/`,
+  }))
 
   // 記事ページ
-  const postUrls = posts.map((p: any) => ({
+  const postUrls: UrlEntry[] = posts.map((p: any) => ({
     loc: `/blog/${p.slug}/`,
     lastmod: pickDate(p),
   }))
 
-  const urls = [
-    ...staticUrls.map((path) => ({ loc: path })),
-    ...paged.map((path) => ({ loc: path })),
-    ...postUrls,
-  ]
+  const urls: UrlEntry[] = [...staticUrls, ...paged, ...postUrls]
 
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
