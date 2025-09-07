@@ -31,7 +31,6 @@ export default function BlogIndex() {
 
       {pages > 1 && (
         <nav className="mt-8">
-          {/* 2ページ目以降のルーティング構成に合わせて調整（/blog/page/[n] を想定） */}
           <Link href="/blog/page/2" className="underline">
             Next page →
           </Link>
