@@ -1,49 +1,65 @@
-// app/page.tsx
-import Link from 'next/link'
-import { publishedPosts } from '@/lib/posts'
+import Link from 'next/link';
+import { allPosts } from 'contentlayer/generated';
 
-export const revalidate = 300
+export const revalidate = 60;
+
+// undefined を許容して安全に日付表示するヘルパ
+function safeDateLabel(value?: string): string {
+  if (!value) return '';
+  const t = Date.parse(value);
+  if (isNaN(t)) return '';
+  return new Date(t).toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+// 並び替え用：undefined や不正値でも 0 にフォールバック
+function toTime(value?: string): number {
+  const t = value ? Date.parse(value) : NaN;
+  return isNaN(t) ? 0 : t;
+}
 
 export default function Home() {
-  const latest = publishedPosts.slice(0, 5)
-  return (
-    <main className="mx-auto max-w-3xl px-5 py-10">
-      <header className="mb-10">
-        <h1 className="text-3xl font-semibold">Marlow Gate — Blog</h1>
-        <p className="text-neutral-600">
-          Trading data & automation — insights and releases
-        </p>
-        <nav className="mt-3 flex gap-4 text-sm">
-          <Link href="/blog">All posts</Link>
-          <Link href="/tags">Tags</Link>
-          <Link href="/about">About</Link>
-          <Link href="/rss.xml">RSS</Link>
-          <Link href="/sitemap.xml">Sitemap</Link>
-        </nav>
-      </header>
+  const posts = allPosts
+    .filter((p) => !p.draft)
+    .sort((a, b) => toTime(b.date) - toTime(a.date));
 
-      <section className="space-y-4">
-        {latest.map(p => (
-          <article key={p.slug} className="border rounded-lg p-4">
-            <h2 className="text-lg font-medium">
-              <Link href={`/blog/${p.slug}`}>{p.title}</Link>
+  return (
+    <main className="mx-auto max-w-3xl px-4 py-10">
+      <h1 className="text-2xl font-semibold mb-6">Latest articles</h1>
+
+      <div className="space-y-6">
+        {posts.map((p) => (
+          <article key={p._id} className="border-b pb-6">
+            <h2 className="text-xl font-medium">
+              <Link href={`/blog/${p.slug}`} className="underline">
+                {p.title}
+              </Link>
             </h2>
+
             {p.description && (
-              <p className="text-sm text-neutral-700 mt-1">{p.description}</p>
+              <p className="mt-2 text-neutral-700">{p.description}</p>
             )}
+
             <div className="mt-2 text-xs text-neutral-500">
-              {new Date(p.date).toISOString().slice(0, 10)}
+              {safeDateLabel(p.date)}
               {p.tags?.length ? (
-                <> · {p.tags.map(t => <Link key={t} href={`/tags/${t}`} className="underline mr-1">{t}</Link>)}</>
+                <>
+                  {' '}
+                  ·{' '}
+                  {p.tags.map((t) => (
+                    <Link
+                      key={t}
+                      href={`/tags/${t}`}
+                      className="underline mr-1"
+                    >
+                      {t}
+                    </Link>
+                  ))}
+                </>
               ) : null}
             </div>
           </article>
         ))}
-      </section>
-
-      <div className="mt-6">
-        <Link href="/blog" className="underline">View all posts →</Link>
       </div>
     </main>
-  )
+  );
 }
