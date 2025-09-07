@@ -1,31 +1,55 @@
-// app/tags/[tag]/page.tsx
 import Link from 'next/link'
-import { allTags, byTag } from '@/lib/blog'
+import { allPosts } from 'contentlayer/generated'
 
-export const revalidate = 60
+export const dynamic = 'force-static'
+const PAGE_SIZE = 20
 
-export async function generateStaticParams() {
-  return allTags().map(t => ({ tag: t }))
+export function generateStaticParams() {
+  const set = new Set<string>()
+  allPosts.forEach(p => p.tags?.forEach(t => set.add(t)))
+  return Array.from(set).map(t => ({ tag: t }))
+}
+
+export function generateMetadata({ params }: { params: { tag: string } }) {
+  const tag = decodeURIComponent(params.tag)
+  return {
+    title: `Tag: ${tag}`,
+    description: `Posts tagged with ${tag}`
+  }
 }
 
 export default function TagPage({ params }: { params: { tag: string } }) {
-  const posts = byTag(params.tag)
+  const tag = decodeURIComponent(params.tag)
+  const posts = allPosts
+    .filter(p => !p.draft && (p.tags||[]).includes(tag))
+    .sort((a,b) => +new Date(b.date) - +new Date(a.date))
+
+  const pagePosts = posts.slice(0, PAGE_SIZE)
+
+  const tags = Array.from(new Set(allPosts.flatMap(p => p.tags || []))).sort()
 
   return (
-    <section className="prose">
-      <h1># {decodeURIComponent(params.tag)}</h1>
-      {posts.length === 0 ? <p>No posts yet.</p> : null}
-      <ul>
-        {posts.map(p => (
-          <li key={p._id} style={{ marginBottom: 14 }}>
-            <Link href={`/blog/${p.slug}`}>{p.title}</Link>
-            <small style={{ marginLeft: 8 }}>
-              {new Date(p.date).toLocaleDateString('en-CA')}
-            </small>
+    <section>
+      <header className="mb-8">
+        <h1 className="text-3xl font-bold">Tag: {tag}</h1>
+        <p className="text-neutral-600">{posts.length} posts</p>
+      </header>
+
+      <div className="mb-6 text-sm flex flex-wrap gap-2">
+        {tags.map(t => (
+          <Link key={t} href={`/tags/${encodeURIComponent(t)}`} className="rounded-full border px-3 py-1 hover:bg-neutral-50">{t}</Link>
+        ))}
+      </div>
+
+      <ul className="grid gap-6">
+        {pagePosts.map(p => (
+          <li key={p._id} className="rounded-2xl border p-5 hover:shadow">
+            <h2 className="text-xl font-semibold"><Link href={p.url}>{p.title}</Link></h2>
+            <p className="text-sm text-neutral-600 mt-2 line-clamp-3">{p.description}</p>
+            <div className="text-xs text-neutral-500 mt-3">{new Date(p.date).toISOString().slice(0,10)}</div>
           </li>
         ))}
       </ul>
-      <p><Link href="/blog">← Back to list</Link></p>
     </section>
   )
 }
