@@ -1,41 +1,30 @@
-import { defineDocumentType, makeSource } from "contentlayer/source-files";
-import remarkGfm from "remark-gfm";
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypePrettyCode from "rehype-pretty-code";
+import { defineDocumentType, makeSource } from 'contentlayer/source-files'
 
-// 記事スキーマ
-export const Post = defineDocumentType(() => ({
-  name: "Post",
-  filePathPattern: `blog/**/*.mdx`,
-  contentType: "mdx",
+const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: `content/blog/**/*.mdx`,
+  contentType: 'mdx',
   fields: {
-    title: { type: "string", required: true },
-    description: { type: "string", required: false },
-    date: { type: "date", required: true },
-    slug: { type: "string", required: true },
-    draft: { type: "boolean", default: false },
-    tags: { type: "list", of: { type: "string" } }
+    title: { type: 'string', required: true },
+    description: { type: 'string', required: false },
+    date: { type: 'date', required: true },
+    draft: { type: 'boolean', required: false, default: false },
+    slug: { type: 'string', required: false },   // ← 任意に変更
+    tags: { type: 'list', of: { type: 'string' }, required: false }
   },
   computedFields: {
-    url: { type: "string", resolve: (doc) => `/blog/${doc.slug}` }
+    slug: {
+      type: 'string',
+      resolve: (doc) => (doc.slug ?? doc._raw.flattenedPath.replace(/^content\/blog\//, ''))
+    },
+    url: {
+      type: 'string',
+      resolve: (doc) => `/blog/${(doc.slug ?? doc._raw.flattenedPath.replace(/^content\/blog\//, ''))}`
+    }
   }
-}));
-
-// Shiki を使うハイライト（shiki は package.json に追加済み）
-const prettyCodeOptions = {
-  theme: { light: "github-light", dark: "github-dark" }
-};
+}))
 
 export default makeSource({
-  contentDirPath: "content",
-  documentTypes: [Post],
-  mdx: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: "wrap" }],
-      [rehypePrettyCode, prettyCodeOptions]
-    ]
-  }
-});
+  contentDirPath: '.',
+  documentTypes: [Post]
+})
