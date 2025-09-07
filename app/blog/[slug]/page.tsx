@@ -1,78 +1,83 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
 import { useMDXComponent } from 'next-contentlayer/hooks'
-import CTA from '@/components/CTA'
-import { pickDate } from '@/lib/post'
+import { components } from '@/lib/mdx-components'
+import TOC from '@/components/TOC'
+import Breadcrumbs from '@/components/Breadcrumbs'
+import { site } from '@/lib/site'
 
-type Params = { params: { slug: string } }
+export const dynamicParams = false
 
-export async function generateStaticParams() {
-  return allPosts.filter(p => !(p as any).draft).map(p => ({ slug: p.slug }))
+export function generateStaticParams() {
+  return allPosts.map(p => ({ slug: p.slug }))
 }
 
-export const revalidate = 60
-
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const post = allPosts.find(p => p.slug === params.slug && !(p as any).draft)
-  if (!post) return { title: 'Not found' }
-
-  const url = `https://blog.marlowgate.com/blog/${post.slug}`
-  const og = `https://blog.marlowgate.com/og/${post.slug}.png`
-
+export function generateMetadata({ params }: { params: { slug: string } }) {
+  const post = allPosts.find(p => p.slug === params.slug)
+  if (!post) return {}
+  const url = `${site.url}${post.url}`
+  const lastmod = post.lastmod ?? post.date
   return {
     title: post.title,
-    description: post.description ?? undefined,
+    description: post.description,
     alternates: { canonical: url },
     openGraph: {
-      type: 'article',
-      url,
       title: post.title,
-      description: post.description ?? undefined,
-      images: [og],
+      description: post.description,
+      url,
+      type: 'article',
+      publishedTime: new Date(post.date).toISOString(),
+      modifiedTime: new Date(lastmod).toISOString(),
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.description ?? undefined,
-      images: [og],
-    },
+      description: post.description
+    }
   }
 }
 
-export default function BlogPost({ params }: Params) {
-  const post = allPosts.find(p => p.slug === params.slug && !(p as any).draft)
-  if (!post) return null
-
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = allPosts.find(p => p.slug === params.slug)
+  if (!post || post.draft) notFound()
   const MDX = useMDXComponent(post.body.code)
-  const url = `https://blog.marlowgate.com/blog/${post.slug}`
-  const dateStr = pickDate(post)
+  const lastmod = post.lastmod ?? post.date
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
-    description: post.description ?? '',
-    datePublished: dateStr,
-    author: { '@type': 'Organization', name: 'Marlow Gate' },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    url,
+    description: post.description,
+    datePublished: new Date(post.date).toISOString(),
+    dateModified: new Date(lastmod).toISOString(),
+    author: [{ '@type': 'Person', name: site.author }],
+    publisher: { '@type': 'Organization', name: site.brand?.name },
+    mainEntityOfPage: `${site.url}${post.url}`,
+    url: `${site.url}${post.url}`
   }
 
   return (
-    <article className="prose">
-      <h1>{post.title}</h1>
-      {post.description && <p>{post.description}</p>}
-
-      {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
-      <MDX />
-      <CTA />
-      <p><Link href="/blog">← Back to list</Link></p>
+    <article>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Breadcrumbs items={[{name:'Home', href:'/'}, {name:'Blog', href:'/blog/page/1'}, {name: post.title}]} />
+      <header className="mb-8">
+        <h1 className="text-3xl font-bold">{post.title}</h1>
+        <div className="text-sm text-neutral-600 mt-2 flex gap-3">
+          <span>{new Date(post.date).toISOString().slice(0,10)}</span>
+          <span>・{post.readingTimeMins} min</span>
+        </div>
+      </header>
+      <TOC headings={post.headings as any} />
+      <div className="prose prose-neutral max-w-none">
+        <MDX components={components} />
+      </div>
+      {post.tags?.length ? (
+        <div className="mt-8 text-sm flex flex-wrap gap-2">
+          {post.tags.map(t => (
+            <a key={t} className="rounded-full border px-3 py-1 hover:bg-neutral-50" href={`/tags/${encodeURIComponent(t)}`}>{t}</a>
+          ))}
+        </div>
+      ) : null}
     </article>
   )
 }
