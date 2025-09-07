@@ -6,6 +6,7 @@ import TOC from '@/components/TOC'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import RelatedPosts from '@/components/RelatedPosts'
 import { site } from '@/lib/site'
+import { titleDescSimilarity } from '@/lib/similarity'
 
 export const dynamicParams = false
 
@@ -57,7 +58,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     url: `${site.url}${post.url}`
   }
 
-  // Related posts (tag overlap + recency)
+  // Related posts (tag overlap + recency + n-gram similarity)
   const tagSet = new Set(post.tags || [])
   const candidates = allPosts
     .filter(p => !p.draft && p.slug !== post.slug)
@@ -66,7 +67,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     const overlap = (p.tags || []).filter(t => tagSet.has(t)).length
     const dayDiff = Math.abs((+new Date(p.date)) - (+new Date(post.date))) / (1000*60*60*24)
     const recencyScore = 1 / (1 + dayDiff / 180) // half-life ~6 months
-    const score = overlap * 2 + recencyScore
+    const sim = titleDescSimilarity(post.title + ' ' + post.description, '', p.title + ' ' + p.description, '')
+    const score = overlap * 2 + recencyScore + sim * 3
     return { p, score }
   })
 
