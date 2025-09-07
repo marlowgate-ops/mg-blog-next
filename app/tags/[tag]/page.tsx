@@ -1,29 +1,31 @@
 // app/tags/[tag]/page.tsx
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { publishedPosts } from '@/lib/posts'
+import { allTags, byTag } from '@/lib/blog'
 
-export const revalidate = 300
+export const revalidate = 60
+
+export async function generateStaticParams() {
+  return allTags().map(t => ({ tag: t }))
+}
 
 export default function TagPage({ params }: { params: { tag: string } }) {
-  const tag = decodeURIComponent(params.tag)
-  const items = publishedPosts.filter(p => (p.tags ?? []).includes(tag))
-  if (!items.length) return notFound()
+  const posts = byTag(params.tag)
 
   return (
-    <main className="mx-auto max-w-3xl px-5 py-10">
-      <h1 className="text-2xl font-semibold mb-6">Tag: {tag}</h1>
-      <ul className="space-y-4">
-        {items.map(p => (
-          <li key={p.slug} className="border rounded-lg p-4">
-            <h2 className="text-lg font-medium">
-              <Link href={`/blog/${p.slug}`}>{p.title}</Link>
-            </h2>
-            {p.description && <p className="text-sm mt-1">{p.description}</p>}
+    <section className="prose">
+      <h1># {decodeURIComponent(params.tag)}</h1>
+      {posts.length === 0 ? <p>No posts yet.</p> : null}
+      <ul>
+        {posts.map(p => (
+          <li key={p._id} style={{ marginBottom: 14 }}>
+            <Link href={`/blog/${p.slug}`}>{p.title}</Link>
+            <small style={{ marginLeft: 8 }}>
+              {new Date(p.date).toLocaleDateString('en-CA')}
+            </small>
           </li>
         ))}
       </ul>
-      <div className="mt-6"><Link href="/tags" className="underline">← All tags</Link></div>
-    </main>
+      <p><Link href="/blog">← Back to list</Link></p>
+    </section>
   )
 }
