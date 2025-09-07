@@ -4,6 +4,7 @@ import { useMDXComponent } from 'next-contentlayer/hooks'
 import { components } from '@/lib/mdx-components'
 import TOC from '@/components/TOC'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import RelatedPosts from '@/components/RelatedPosts'
 import { site } from '@/lib/site'
 
 export const dynamicParams = false
@@ -56,6 +57,24 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     url: `${site.url}${post.url}`
   }
 
+  // Related posts (tag overlap + recency)
+  const tagSet = new Set(post.tags || [])
+  const candidates = allPosts
+    .filter(p => !p.draft && p.slug !== post.slug)
+
+  const scored = candidates.map((p) => {
+    const overlap = (p.tags || []).filter(t => tagSet.has(t)).length
+    const dayDiff = Math.abs((+new Date(p.date)) - (+new Date(post.date))) / (1000*60*60*24)
+    const recencyScore = 1 / (1 + dayDiff / 180) // half-life ~6 months
+    const score = overlap * 2 + recencyScore
+    return { p, score }
+  })
+
+  const related = scored
+    .sort((a,b)=> b.score - a.score)
+    .slice(0,3)
+    .map(({p}) => ({ title: p.title, url: p.url, date: p.date, description: p.description }))
+
   return (
     <article>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -78,6 +97,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           ))}
         </div>
       ) : null}
+      <RelatedPosts items={related} />
     </article>
   )
 }
