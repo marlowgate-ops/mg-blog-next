@@ -1,8 +1,7 @@
 {
   "name": "mg-blog-next",
   "private": true,
-  "version": "1.0.5",
-  "type": "module",
+  "version": "1.0.6",
   "engines": { "node": "20.x" },
   "scripts": {
     "dev": "next dev",
@@ -10,19 +9,21 @@
     "start": "next start"
   },
   "dependencies": {
-    "@vercel/og": "0.6.2",
-    "contentlayer": "0.3.4",
+    "@vercel/og": "^0.6.2",
+    "contentlayer": "^0.3.4",
     "next": "14.2.5",
     "next-contentlayer": "0.3.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "remark-gfm": "^4.0.0",
-    "rehype-slug": "^6.0.0",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-pretty-code": "^0.13.1",
-    "shiki": "^1.19.0"
+    "rehype-slug": "^6.0.0"
   },
   "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.5",
     "typescript": "5.4.5"
