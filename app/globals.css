@@ -1,1 +1,29 @@
 /* Add global styles if needed */
+
+/* === PRINT OPTIMIZATION (A) === */
+@media print {
+  /* Base */
+  html, body { background: #fff !important; color: #000 !important; }
+  a { color: inherit !important; text-decoration: none !important; }
+  /* Repeat table header on each page */
+  table { border-collapse: collapse; width: 100%; }
+  thead { display: table-header-group; }
+  tfoot { display: table-row-group; }
+  tr, img, blockquote, pre, code, table, thead, tbody, tfoot, figure {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  /* Prose blocks tend to split; keep them intact when possible */
+  .prose h1, .prose h2, .prose h3, .prose table, .prose pre, .prose figure {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  /* Utilities */
+  .page-break { break-before: page; page-break-before: always; }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+}
