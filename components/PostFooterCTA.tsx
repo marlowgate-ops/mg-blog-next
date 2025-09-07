@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { COPY } from '@/lib/copy'
 
 type Props = {
   title?: string
@@ -9,11 +10,11 @@ type Props = {
 }
 
 export default function PostFooterCTA({ title, desc, label, href, benefits }: Props) {
-  const url = href || process.env.NEXT_PUBLIC_CTA_URL || '/'
-  const btn = label || process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
-  const head = title || '次の一歩へ'
-  const body = desc || process.env.NEXT_PUBLIC_CTA_DESC || '運用を加速するリソース・テンプレート・カレンダーをご用意しています。'
-  const envBenefits = (process.env.NEXT_PUBLIC_CTA_BENEFITS || '実務テンプレの配布|主要指標ICS|検証ノート雛形')
+  const url = href || process.env.NEXT_PUBLIC_CTA_URL || COPY.post.href
+  const btn = label || process.env.NEXT_PUBLIC_CTA_LABEL || COPY.post.label
+  const head = title || process.env.NEXT_PUBLIC_CTA_TITLE || COPY.post.title
+  const body = desc || process.env.NEXT_PUBLIC_CTA_DESC || COPY.post.desc
+  const envBenefits = (process.env.NEXT_PUBLIC_CTA_BENEFITS || COPY.post.benefits.join('|'))
     .split('|')
     .map(s => s.trim())
     .filter(Boolean)
