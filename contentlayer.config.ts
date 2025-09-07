@@ -1,29 +1,23 @@
-// contentlayer.config.ts
 import { defineDocumentType, makeSource } from 'contentlayer/source-files'
-import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeAutolink from 'rehype-autolink-headings'
+import remarkGfm from 'remark-gfm'
+import rehypePrettyCode from 'rehype-pretty-code'
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: 'blog/**/*.mdx',
+  filePathPattern: `blog/**/*.mdx`,
   contentType: 'mdx',
   fields: {
-　  title: { type: 'string', required: true },
- 　 date:  { type: 'date',   required: true }, // ← required: true に
-  　description: { type: 'string', required: false },
-  　draft: { type: 'boolean', default: false },
-    tags: { type: 'list', of: { type: 'string' }, required: false, default: [] }
+    title: { type: 'string', required: true },
+    date:  { type: 'date',   required: true },
+    description: { type: 'string', required: false },
+    tags: { type: 'list', of: { type: 'string' }, required: false },
+    draft: { type: 'boolean', required: false, default: false },
   },
   computedFields: {
-    slug: {
-      type: 'string',
-      resolve: (doc) => doc._raw.flattenedPath.replace(/^blog\//, ''),
-    },
-    url: {
-      type: 'string',
-      resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^blog\//, '')}`,
-    },
+    slug: { type: 'string', resolve: (p) => p._raw.flattenedPath.replace(/^blog\//,'') },
+    url:  { type: 'string', resolve: (p) => `/blog/${p._raw.flattenedPath.replace(/^blog\//,'')}` },
   },
 }))
 
@@ -32,6 +26,10 @@ export default makeSource({
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolink, { behavior: 'wrap' }],
+      [rehypePrettyCode, { theme: 'github-dark' }],
+    ],
   },
 })
