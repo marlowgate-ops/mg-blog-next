@@ -1,6 +1,11 @@
-export const SITE = {
+export const site = {
+  title: 'Marlow Gate Blog',
+  description: 'Insights, playbooks, and updates.',
   url: 'https://blog.marlowgate.com',
-  title: 'Marlow Gate — Blog',
-  description: 'Latest articles and updates from Marlow Gate',
-  perPage: 12
-}
+  author: 'Marlow Gate',
+  brand: {
+    name: 'Marlow Gate',
+    logo: '/og/logo.png'
+  },
+  twitter: '@marlowgate'
+} as const
