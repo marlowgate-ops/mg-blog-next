@@ -22,18 +22,30 @@ export default function BlogPaged({ params }: { params: { page: string } }) {
   return (
     <section>
       <header className="mb-8">
-        <h1 className="text-3xl font-bold">Blog</h1>
-        <p className="text-neutral-600">Latest posts and guides.</p>
+        <h1 className="text-3xl font-bold">All posts</h1>
+        <p className="text-neutral-600">更新順に表示しています。</p>
       </header>
-      <ul className="grid gap-6">
+
+      <ul className="grid gap-6 sm:grid-cols-2">
         {pagePosts.map(p => (
-          <li key={p._id} className="rounded-2xl border p-5 hover:shadow">
-            <h2 className="text-xl font-semibold"><Link href={p.url}>{p.title}</Link></h2>
-            <p className="text-sm text-neutral-600 mt-2 line-clamp-3">{p.description}</p>
-            <div className="text-xs text-neutral-500 mt-3 flex gap-3">
-              <span>{new Date(p.date).toISOString().slice(0,10)}</span>
-              <span>・{p.readingTimeMins} min</span>
-            </div>
+          <li key={p._id} className="rounded-2xl border p-5 hover:shadow transition">
+            <Link href={p.url} className="block">
+              <div className="mb-3 overflow-hidden rounded-xl border bg-neutral-50">
+                <img src={`/og/${p.slug}`} alt="" width={600} height={315} loading="lazy" decoding="async" />
+              </div>
+              <h2 className="text-xl font-semibold">{p.title}</h2>
+              <p className="text-sm text-neutral-600 mt-2 line-clamp-3">{p.description}</p>
+              <div className="text-xs text-neutral-500 mt-3 flex items-center gap-3">
+                <span>{new Date(p.date).toISOString().slice(0,10)}</span>
+                {'·'}
+                <span>{p.readingTimeMins} min</span>
+                <span className="flex flex-wrap gap-2">
+                  {(p.tags || []).slice(0,2).map(t => (
+                    <span key={t} className="rounded-full border px-2 py-0.5">{t}</span>
+                  ))}
+                </span>
+              </div>
+            </Link>
           </li>
         ))}
       </ul>
