@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { COPY } from '@/lib/copy'
+import { getCopy } from '@/lib/copy'
 
 type Props = {
   title?: string
@@ -10,11 +10,12 @@ type Props = {
 }
 
 export default function HeroMiniCTA({ title, desc, benefits, label, href }: Props) {
-  const url = href || process.env.NEXT_PUBLIC_HERO_CTA_URL || COPY.hero.href
-  const head = title || process.env.NEXT_PUBLIC_HERO_CTA_TITLE || COPY.hero.title
-  const body = desc || process.env.NEXT_PUBLIC_HERO_CTA_DESC || COPY.hero.desc
-  const btn  = label || process.env.NEXT_PUBLIC_HERO_CTA_LABEL || COPY.hero.label
-  const envBenefits = (process.env.NEXT_PUBLIC_HERO_CTA_BENEFITS || COPY.hero.benefits.join('|'))
+  const CP = getCopy()
+  const url = href || process.env.NEXT_PUBLIC_HERO_CTA_URL || CP.hero.href
+  const head = title || process.env.NEXT_PUBLIC_HERO_CTA_TITLE || CP.hero.title
+  const body = desc || process.env.NEXT_PUBLIC_HERO_CTA_DESC || CP.hero.desc
+  const btn  = label || process.env.NEXT_PUBLIC_HERO_CTA_LABEL || CP.hero.label
+  const envBenefits = (process.env.NEXT_PUBLIC_HERO_CTA_BENEFITS || CP.hero.benefits.join('|'))
     .split('|')
     .map(s => s.trim())
     .filter(Boolean)
