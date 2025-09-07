@@ -1,27 +1,19 @@
-import { NextResponse } from 'next/server'
 import { allPosts } from 'contentlayer/generated'
-import { sortedPosts } from '@/lib/post'
+import { site } from '@/lib/site'
 
-export const revalidate = 60
-
-export async function GET() {
-  const base = 'https://blog.marlowgate.com'
-  const statics = [
-    `${base}/`,
-    `${base}/blog/`,
-    `${base}/about`,
-    `${base}/rss.xml`,
-  ].map(u => `<url><loc>${u}</loc><changefreq>daily</changefreq></url>`).join('\n')
-
-  const posts = sortedPosts(allPosts)
-    .map(p => `<url><loc>${base}/blog/${p.slug}</loc><changefreq>daily</changefreq></url>`)
-    .join('\n')
-
+export const GET = async () => {
+  const posts = allPosts.filter(p=>!p.draft)
+  const tags = Array.from(new Set(posts.flatMap(p => p.tags || [])))
+  const urls = [
+    { loc: site.url, lastmod: new Date().toISOString() },
+    { loc: `${site.url}/blog/page/1`, lastmod: new Date().toISOString() },
+    ...posts.map(p => ({ loc: `${site.url}${p.url}`, lastmod: new Date((p.lastmod ?? p.date)).toISOString() })),
+    ...tags.map(t => ({ loc: `${site.url}/tags/${encodeURIComponent(t)}`, lastmod: new Date().toISOString() })),
+  ]
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${statics}
-${posts}
-</urlset>`
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    ${urls.map(u => `<url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod></url>`).join('\n')}
+  </urlset>`
 
-  return new NextResponse(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } })
+  return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=UTF-8' } })
 }
