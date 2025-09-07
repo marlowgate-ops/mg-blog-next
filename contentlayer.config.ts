@@ -1,35 +1,41 @@
-import { defineDocumentType, makeSource } from 'contentlayer/source-files'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolink from 'rehype-autolink-headings'
-import remarkGfm from 'remark-gfm'
-import rehypePrettyCode from 'rehype-pretty-code'
+import { defineDocumentType, makeSource } from "contentlayer/source-files";
+import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrettyCode from "rehype-pretty-code";
 
+// 記事スキーマ
 export const Post = defineDocumentType(() => ({
-  name: 'Post',
+  name: "Post",
   filePathPattern: `blog/**/*.mdx`,
-  contentType: 'mdx',
+  contentType: "mdx",
   fields: {
-    title: { type: 'string', required: true },
-    date:  { type: 'date',   required: true },
-    description: { type: 'string', required: false },
-    tags: { type: 'list', of: { type: 'string' }, required: false },
-    draft: { type: 'boolean', required: false, default: false },
+    title: { type: "string", required: true },
+    description: { type: "string", required: false },
+    date: { type: "date", required: true },
+    slug: { type: "string", required: true },
+    draft: { type: "boolean", default: false },
+    tags: { type: "list", of: { type: "string" } }
   },
   computedFields: {
-    slug: { type: 'string', resolve: (p) => p._raw.flattenedPath.replace(/^blog\//,'') },
-    url:  { type: 'string', resolve: (p) => `/blog/${p._raw.flattenedPath.replace(/^blog\//,'')}` },
-  },
-}))
+    url: { type: "string", resolve: (doc) => `/blog/${doc.slug}` }
+  }
+}));
+
+// Shiki を使うハイライト（shiki は package.json に追加済み）
+const prettyCodeOptions = {
+  theme: { light: "github-light", dark: "github-dark" }
+};
 
 export default makeSource({
-  contentDirPath: 'content',
+  contentDirPath: "content",
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       rehypeSlug,
-      [rehypeAutolink, { behavior: 'wrap' }],
-      [rehypePrettyCode, { theme: 'github-dark' }],
-    ],
-  },
-})
+      [rehypeAutolinkHeadings, { behavior: "wrap" }],
+      [rehypePrettyCode, prettyCodeOptions]
+    ]
+  }
+});
