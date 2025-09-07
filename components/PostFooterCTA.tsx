@@ -1,0 +1,31 @@
+import Link from 'next/link'
+
+type Props = {
+  title?: string
+  desc?: string
+  label?: string
+  href?: string
+}
+
+export default function PostFooterCTA({ title, desc, label, href }: Props) {
+  const url = href || process.env.NEXT_PUBLIC_CTA_URL || '/'
+  const btn = label || process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
+  const head = title || '次の一歩へ'
+  const body = desc || process.env.NEXT_PUBLIC_CTA_DESC || '運用を加速するリソース・テンプレート・カレンダーをご用意しています。'
+
+  return (
+    <aside className="no-print mt-12 rounded-3xl border p-6 sm:p-8 hover:shadow transition">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className="flex-1">
+          <div className="text-lg font-semibold">{head}</div>
+          <p className="text-neutral-600 mt-1">{body}</p>
+        </div>
+        <div>
+          <Link href={url} className="inline-block rounded-full border px-4 py-2 text-sm hover:bg-neutral-50">
+            {btn}
+          </Link>
+        </div>
+      </div>
+    </aside>
+  )
+}
