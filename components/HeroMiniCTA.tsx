@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { COPY } from '@/lib/copy'
 
 type Props = {
   title?: string
@@ -9,11 +10,11 @@ type Props = {
 }
 
 export default function HeroMiniCTA({ title, desc, benefits, label, href }: Props) {
-  const url = href || process.env.NEXT_PUBLIC_HERO_CTA_URL || '/'
-  const head = title || process.env.NEXT_PUBLIC_HERO_CTA_TITLE || '今すぐ使えるテンプレ＆カレンダー'
-  const body = desc || process.env.NEXT_PUBLIC_HERO_CTA_DESC || '運用の立ち上げを最短化。無料リソースを配布中。'
-  const btn  = label || process.env.NEXT_PUBLIC_HERO_CTA_LABEL || '無料で受け取る'
-  const envBenefits = (process.env.NEXT_PUBLIC_HERO_CTA_BENEFITS || '週次更新の運用テンプレ|主要指標ICS（時差補正）|検証ノートのひな形')
+  const url = href || process.env.NEXT_PUBLIC_HERO_CTA_URL || COPY.hero.href
+  const head = title || process.env.NEXT_PUBLIC_HERO_CTA_TITLE || COPY.hero.title
+  const body = desc || process.env.NEXT_PUBLIC_HERO_CTA_DESC || COPY.hero.desc
+  const btn  = label || process.env.NEXT_PUBLIC_HERO_CTA_LABEL || COPY.hero.label
+  const envBenefits = (process.env.NEXT_PUBLIC_HERO_CTA_BENEFITS || COPY.hero.benefits.join('|'))
     .split('|')
     .map(s => s.trim())
     .filter(Boolean)
