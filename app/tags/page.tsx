@@ -1,25 +1,23 @@
 // app/tags/page.tsx
 import Link from 'next/link'
-import { allPosts } from 'contentlayer/generated'
+import { tagMap } from '@/lib/posts'
 
-export const metadata = { title: 'Tags' }
+export const revalidate = 300
 
-export default function TagsPage() {
-  const entries = new Map<string, number>()
-  allPosts.forEach(p => (p.tags ?? []).forEach(t => entries.set(t, (entries.get(t) ?? 0) + 1)))
-
-  const tags = Array.from(entries.entries()).sort((a,b) => b[1]-a[1])
-
+export default function Tags() {
+  const m = [...tagMap().entries()].sort((a, b) => b[1] - a[1])
   return (
-    <section>
-      <h1>Tags</h1>
-      <ul>
-        {tags.map(([tag, count]) => (
+    <main className="mx-auto max-w-3xl px-5 py-10">
+      <h1 className="text-2xl font-semibold mb-6">Tags</h1>
+      <ul className="flex flex-wrap gap-3">
+        {m.map(([tag, count]) => (
           <li key={tag}>
-            <Link href={`/tags/${encodeURIComponent(tag)}`}>#{tag}</Link> ({count})
+            <Link href={`/tags/${tag}`} className="rounded border px-3 py-1 text-sm">
+              {tag} <span className="text-neutral-500">({count})</span>
+            </Link>
           </li>
         ))}
       </ul>
-    </section>
+    </main>
   )
 }
