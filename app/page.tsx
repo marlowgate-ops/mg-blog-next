@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import FeaturedList from '@/components/FeaturedList'
+import HeroMiniCTA from '@/components/HeroMiniCTA'
 import { allPosts } from 'contentlayer/generated';
 
 export const revalidate = 60;
