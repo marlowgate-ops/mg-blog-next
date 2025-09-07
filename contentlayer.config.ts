@@ -9,10 +9,10 @@ export const Post = defineDocumentType(() => ({
   filePathPattern: 'blog/**/*.mdx',
   contentType: 'mdx',
   fields: {
-    title: { type: 'string', required: true },
-    description: { type: 'string', required: false },
-    date: { type: 'date', required: false },   // 追加（optional）
-    draft: { type: 'boolean', required: false, default: false },
+　  title: { type: 'string', required: true },
+ 　 date:  { type: 'date',   required: true }, // ← required: true に
+  　description: { type: 'string', required: false },
+  　draft: { type: 'boolean', default: false },
     tags: { type: 'list', of: { type: 'string' }, required: false, default: [] }
   },
   computedFields: {
