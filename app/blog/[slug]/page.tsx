@@ -5,6 +5,7 @@ import { components } from '@/lib/mdx-components'
 import TOC from '@/components/TOC'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import RelatedPosts from '@/components/RelatedPosts'
+import PostFooterCTA from '@/components/PostFooterCTA'
 import { site } from '@/lib/site'
 import { titleDescSimilarity } from '@/lib/similarity'
 
@@ -99,6 +100,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           ))}
         </div>
       ) : null}
+      <PostFooterCTA />
       <RelatedPosts items={related} />
     </article>
   )
