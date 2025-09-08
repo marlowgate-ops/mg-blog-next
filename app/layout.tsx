@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Organization/Website JSON-LD
   const org = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -30,9 +29,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     url: site.url
   }
 
-  // Analytics (opt-in via env): NEXT_PUBLIC_GA_ID / NEXT_PUBLIC_PLAUSIBLE_DOMAIN
-  const gaId = process.env.NEXT_PUBLIC_GA_ID
+  // Analytics（GA4推奨）
+  // 既存の NEXT_PUBLIC_GA_ID / NEXT_PUBLIC_GA4_ID どちらでも拾う
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || process.env.NEXT_PUBLIC_GA4_ID
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN
+  const copyVariant = (process.env.NEXT_PUBLIC_COPY_VARIANT || 'A').toUpperCase()
 
   return (
     <html lang="ja">
@@ -46,7 +47,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
+              // 基本設定
               gtag('config', '${gaId}', { anonymize_ip: true });
+              // ★A/BコピーのバリアントをUser Propertyとして送信（GA4）
+              gtag('set', 'user_properties', { copy_variant: '${copyVariant}' });
+              // 互換目的：page_viewにも同名パラメータを付与
+              gtag('event', 'page_view', { copy_variant: '${copyVariant}' });
             `}} />
           </>
         ) : null}
