@@ -49,6 +49,10 @@ const Post = defineDocumentType(() => ({
     readingTimeMins: {
       type: 'number',
       resolve: (doc) => computeReadingTimeMins((doc as any).body?.raw || '')
+    },
+    headings: {
+      type: 'json',
+      resolve: (doc) => extractHeadings((doc as any).body?.raw || '')
     }
   }
 }))
