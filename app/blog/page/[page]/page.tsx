@@ -5,43 +5,41 @@ export const dynamic = 'force-static'
 const PAGE_SIZE = 10
 
 export function generateStaticParams() {
-  const posts = allPosts.filter((p) => !p.draft).length
+  const posts = allPosts.filter(p => !p.draft).length
   const pages = Math.max(1, Math.ceil(posts / PAGE_SIZE))
-  return Array.from({ length: pages }, (_, i) => ({ page: String(i + 1) }))
+  return Array.from({length: pages}, (_,i) => ({ page: String(i+1) }))
 }
 
-function safeDate(value?: string): string {
-  if (!value) return ''
-  const t = Date.parse(value)
-  if (isNaN(t)) return ''
-  return new Date(t).toISOString().slice(0, 10)
+function safeDateLabel(v?: string) {
+  if (!v) return ''
+  const t = Date.parse(v)
+  return isNaN(t) ? '' : new Date(t).toISOString().slice(0,10)
 }
 
 export default function BlogPaged({ params }: { params: { page: string } }) {
   const page = Math.max(1, parseInt(params.page || '1', 10))
-  const posts = allPosts.filter((p) => !p.draft).sort((a, b) => +new Date(b.date) - +new Date(a.date))
+  const posts = allPosts.filter(p => !p.draft).sort((a,b) => +new Date(b.date) - +new Date(a.date))
   const start = (page - 1) * PAGE_SIZE
   const pagePosts = posts.slice(start, start + PAGE_SIZE)
   const pages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE))
 
   return (
-    <section className="mx-auto max-w-5xl px-5 py-10">
-      <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-6">All articles</h1>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {pagePosts.map((p) => (
+    <section className="container">
+      <h1 className="h1">All articles</h1>
+
+      <ul className="grid" style={{marginTop: '24px'}}>
+        {pagePosts.map(p => (
           <li key={p._id}>
-            <Link href={p.url} className="group block rounded-2xl border border-neutral-200 dark:border-neutral-800 p-5 hover:shadow transition-all bg-white/60 dark:bg-neutral-950/60">
-              <h2 className="text-lg font-semibold leading-snug group-hover:underline">{p.title}</h2>
-              {p.description ? <p className="mt-2 text-sm text-neutral-600 line-clamp-3">{p.description}</p> : null}
-              <div className="mt-4 flex items-center gap-3 text-xs text-neutral-500">
-                <time>{safeDate(p.lastmod || p.date)}</time>
-                {p.readingTimeMins ? <span>・約{p.readingTimeMins}分</span> : null}
+            <Link href={p.url} className="card" style={{display:'block'}}>
+              <h2 className="h2" style={{fontSize:'1.05rem'}}>{p.title}</h2>
+              {p.description ? <p className="muted" style={{marginTop: '8px'}}>{p.description}</p> : null}
+              <div className="small muted" style={{marginTop: '12px', display:'flex', gap:'10px'}}>
+                <time>{safeDateLabel(p.lastmod || p.date)}</time>
+                {p.readingTimeMins ? <span className="nowrap">・約{p.readingTimeMins}分</span> : null}
               </div>
               {Array.isArray(p.tags) && p.tags.length ? (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {p.tags.map((t) => (
-                    <span key={t} className="rounded-full border px-2 py-0.5 text-xs text-neutral-600 dark:text-neutral-300">{t}</span>
-                  ))}
+                <div className="chips">
+                  {p.tags.map(t => <span key={t} className="chip">{t}</span>)}
                 </div>
               ) : null}
             </Link>
@@ -49,10 +47,10 @@ export default function BlogPaged({ params }: { params: { page: string } }) {
         ))}
       </ul>
 
-      <nav className="mt-10 flex items-center justify-between text-sm">
-        <div>{page > 1 && <Link className="inline-block rounded-full border px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800" href={`/blog/page/${page - 1}`}>← Prev</Link>}</div>
-        <div className="text-neutral-600">Page {page} / {pages}</div>
-        <div>{page < pages && <Link className="inline-block rounded-full border px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800" href={`/blog/page/${page + 1}`}>Next →</Link>}</div>
+      <nav className="small muted" style={{display:'flex', justifyContent:'space-between', marginTop:'28px'}}>
+        <div>{page > 1 && <Link className="btn" href={`/blog/page/${page-1}`}>← Prev</Link>}</div>
+        <div>Page {page} / {pages}</div>
+        <div>{page < pages && <Link className="btn" href={`/blog/page/${page+1}`}>Next →</Link>}</div>
       </nav>
     </section>
   )
