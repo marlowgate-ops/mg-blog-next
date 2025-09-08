@@ -24,7 +24,7 @@ function readingTime(text: string): number {
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  // contentDirPath を 'content' に限定し、先頭 '_' のファイルを除外
+  // Monitor only "content/" dir; exclude leading "_" MDX (templates)
   filePathPattern: `blog/**/[!_]*.mdx`,
   contentType: 'mdx',
   fields: {
@@ -57,9 +57,9 @@ export const Post = defineDocumentType(() => ({
 }))
 
 export default makeSource({
-  // ここを 'content' に限定することで README などのルートファイルを監視対象から外す
+  // Limit scope to 'content' so root files (README etc.) are ignored
   contentDirPath: 'content',
   documentTypes: [Post],
-  // 一時回避: GFM の table 機能を無効化（mdast-util-gfm-table の inTable エラー回避）
+  // TEMP: disable only GFM tables to avoid mdast-util-gfm-table 'inTable' issue
   mdx: { remarkPlugins: [[remarkGfm, { table: false }]] },
 })
