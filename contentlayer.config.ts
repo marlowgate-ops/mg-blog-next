@@ -24,7 +24,8 @@ function readingTime(text: string): number {
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: `content/blog/**/[!_]*.mdx`,
+  // contentDirPath を 'content' に限定し、先頭 '_' のファイルを除外
+  filePathPattern: `blog/**/[!_]*.mdx`,
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
@@ -38,7 +39,7 @@ export const Post = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: 'string',
-      resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^content\/blog\//, '').replace(/\.mdx$/, '')}`,
+      resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^blog\//, '').replace(/\.mdx$/, '')}`,
     },
     slug: {
       type: 'string',
@@ -56,7 +57,9 @@ export const Post = defineDocumentType(() => ({
 }))
 
 export default makeSource({
-  contentDirPath: '.',
+  // ここを 'content' に限定することで README などのルートファイルを監視対象から外す
+  contentDirPath: 'content',
   documentTypes: [Post],
+  // 一時回避: GFM の table 機能を無効化（mdast-util-gfm-table の inTable エラー回避）
   mdx: { remarkPlugins: [[remarkGfm, { table: false }]] },
 })
