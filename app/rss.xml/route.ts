@@ -6,17 +6,36 @@ export const dynamic = 'force-static'
 function strip(md: string) {
   if (!md) return ''
   return md
-    .replace(/```[\s\S]*?```/g, '')     // code fences
-    .replace(/`[^`]+`/g, '')             // inline code
+    .replace(/```[\s\S]*?```/g, '')      // code fences
+    .replace(/`[^`]+`/g, '')               // inline code
     .replace(/\!\[[^\]]*\]\([^\)]*\)/g, '') // images
     .replace(/\[[^\]]*\]\([^\)]*\)/g, '$1')  // links -> text
-    .replace(/[#>*_~\-]+/g, ' ')        // md marks
-    .replace(/\s+/g, ' ')
+    .replace(/[#>*_~\-]+/g, ' ')          // md marks
+    .replace(/[ \t\u00A0\u3000]+/g, ' ') // normalize spaces (incl. full-width)
     .trim()
 }
 
+// 日本語の句点を意識した要約（目安: 160〜200字）
+function summarizeJa(text: string, max = 180): string {
+  const t = (text || '').replace(/\s+/g, ' ').trim()
+  if (!t) return ''
+  const parts = t.split(/(?<=[。！？!?])\s*/)
+  let acc = ''
+  for (const s of parts) {
+    if ((acc + s).length > max) break
+    acc += s
+  }
+  if (!acc) acc = t.slice(0, max)
+  // 不自然な末尾を整える
+  acc = acc.replace(/[\(（【「『]*$/, '').replace(/[、,]$/, '')
+  return acc.length < t.length ? acc + '…' : acc
+}
+
 function esc(s: string) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return (s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
 }
 
 export async function GET() {
@@ -27,7 +46,7 @@ export async function GET() {
   const items = posts.map(p => {
     const raw = (p as any).body?.raw || ''
     const summarySrc = p.description || strip(raw)
-    const summary = summarySrc.slice(0, 220) + (summarySrc.length > 220 ? '…' : '')
+    const summary = summarizeJa(summarySrc, 180)
     const url = `${site.url}${p.url}`
     return `
       <item>
