@@ -15,9 +15,8 @@ export default function TOC({ headings }: { headings: Heading[] }) {
 
     if (!elements.length) return
 
-    const obs = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
-        // Pick the heading closest to the top that is intersecting
         const visible = entries
           .filter(e => e.isIntersecting)
           .sort((a, b) => (a.target as HTMLElement).offsetTop - (b.target as HTMLElement).offsetTop)
@@ -25,35 +24,30 @@ export default function TOC({ headings }: { headings: Heading[] }) {
           setActive((visible[0].target as HTMLElement).id)
           return
         }
-        // Fallback: find last heading above viewport
         const scrollY = window.scrollY + 100
         const before = elements.filter(el => el.offsetTop <= scrollY)
         if (before.length) setActive(before[before.length - 1].id)
       },
       { rootMargin: '0px 0px -60% 0px', threshold: [0, 1] }
     )
-
-    elements.forEach(el => obs.observe(el))
-    return () => obs.disconnect()
-  }, [JSON.stringify(headings)])
+    elements.forEach(el => observer.observe(el))
+    return () => observer.disconnect()
+  }, [headings])
 
   if (!headings?.length) return null
 
   return (
-    <nav
-      aria-label="Table of contents"
-      className="mb-8 rounded-xl border p-4 md:sticky md:top-24 md:max-h-[calc(100vh-8rem)] md:overflow-auto bg-white"
-    >
-      <div className="font-semibold mb-2">目次</div>
-      <ul className="space-y-1 text-sm">
+    <nav aria-label="目次" className="card" style={{margin: '20px 0', padding:'16px'}}>
+      <div className="small muted" style={{fontWeight:600, marginBottom:'6px'}}>目次</div>
+      <ul style={{listStyle:'none', padding:0, margin:0}}>
         {headings.map((h, i) => {
           const isActive = active === h.id
           return (
-            <li key={i} style={{ marginLeft: (h.level - 1) * 12 }}>
+            <li key={i} style={{margin: '6px 0', marginLeft: (h.level-1)*8}}>
               <a
-                className={`hover:underline ${isActive ? 'font-medium text-black' : 'text-neutral-700'}`}
                 href={`#${h.id}`}
                 aria-current={isActive ? 'true' : undefined}
+                style={{ textDecoration: isActive ? 'underline' : 'none', fontWeight: isActive ? 600 : 400 }}
               >
                 {h.text}
               </a>
