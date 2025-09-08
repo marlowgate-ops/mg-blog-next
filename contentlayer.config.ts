@@ -16,17 +16,15 @@ export function extractHeadings(markdown: string): Heading[] {
   return out
 }
 
-// 粗い読み時間（200wpm）
-function computeReadingTimeMins(raw: string): number {
-  if (!raw) return 1
-  const words = (raw.replace(/<[^>]+>/g, '').match(/\b\w+\b/g) || []).length
-  const mins = Math.max(1, Math.round(words / 200))
-  return mins
+function readingTime(text: string): number {
+  const charsPerMinJa = 500 // 日本語の目安
+  const n = (text || '').replace(/\s+/g, '').length
+  return Math.max(1, Math.round(n / charsPerMinJa))
 }
 
-const Post = defineDocumentType(() => ({
+export const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: `content/blog/**/*.mdx`,
+  filePathPattern: `content/blog/**/[!_]*.mdx`, // 先頭が _ のMDXはビルド対象外（テンプレ除外）
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
@@ -34,33 +32,31 @@ const Post = defineDocumentType(() => ({
     date: { type: 'date', required: true },
     lastmod: { type: 'date', required: false },
     draft: { type: 'boolean', required: false, default: false },
+    tags: { type: 'list', of: { type: 'string' }, required: false },
     slug: { type: 'string', required: false },
-    tags: { type: 'list', of: { type: 'string' }, required: false }
   },
   computedFields: {
-    slug: {
-      type: 'string',
-      resolve: (doc) => (doc.slug ?? doc._raw.flattenedPath.replace(/^content\/blog\//, ''))
-    },
     url: {
       type: 'string',
-      resolve: (doc) => `/blog/${(doc.slug ?? doc._raw.flattenedPath.replace(/^content\/blog\//, ''))}`
+      resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^content\/blog\//, '').replace(/\.mdx$/, '')}`,
+    },
+    slug: {
+      type: 'string',
+      resolve: (doc) => doc.slug || doc._raw.flattenedPath.split('/').pop()?.replace(/\.mdx$/, '') || '',
     },
     readingTimeMins: {
       type: 'number',
-      resolve: (doc) => computeReadingTimeMins((doc as any).body?.raw || '')
+      resolve: (doc) => readingTime((doc as any).body?.raw || ''),
     },
     headings: {
       type: 'json',
-      resolve: (doc) => extractHeadings((doc as any).body?.raw || '')
-    }
-  }
+      resolve: (doc) => extractHeadings((doc as any).body?.raw || ''),
+    },
+  },
 }))
 
 export default makeSource({
   contentDirPath: '.',
   documentTypes: [Post],
-  mdx: {
-    remarkPlugins: [remarkGfm]
-  }
+  mdx: { remarkPlugins: [remarkGfm] },
 })
