@@ -17,14 +17,14 @@ export function extractHeadings(markdown: string): Heading[] {
 }
 
 function readingTime(text: string): number {
-  const charsPerMinJa = 500 // 日本語の目安
+  const charsPerMinJa = 500
   const n = (text || '').replace(/\s+/g, '').length
   return Math.max(1, Math.round(n / charsPerMinJa))
 }
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: `content/blog/**/[!_]*.mdx`, // 先頭が _ のMDXはビルド対象外（テンプレ除外）
+  filePathPattern: `content/blog/**/[!_]*.mdx`,
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
@@ -58,5 +58,5 @@ export const Post = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: '.',
   documentTypes: [Post],
-  mdx: { remarkPlugins: [remarkGfm] },
+  mdx: { remarkPlugins: [[remarkGfm, { table: false }]] },
 })
