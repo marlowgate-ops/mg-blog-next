@@ -72,7 +72,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     ],
   }
 
-  // Related posts (tags + recency + semantic similarity)
+  // Related posts
   const tagSet = new Set(post.tags || [])
   const candidates = allPosts.filter((p) => !p.draft && p.slug !== post.slug)
   const scored = candidates.map((p) => {
@@ -88,46 +88,38 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     const score = overlap * 2 + recencyScore + sim * 3
     return { p, score }
   })
-  const related = scored
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3)
-    .map(({ p }) => ({ title: p.title, url: p.url, date: p.date, description: p.description }))
+  const related = scored.sort((a,b) => b.score - a.score).slice(0,3).map(({p}) => ({
+    title: p.title, url: p.url, date: p.date, description: p.description
+  }))
 
   return (
-    <article>
+    <article className="container">
       {/* JSON-LD */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Blog', href: '/blog/page/1' }, { name: post.title }]} />
-      <h1 className="text-3xl font-extrabold mt-2 mb-6">{post.title}</h1>
 
-      {post.description ? <p className="text-neutral-600 mb-6">{post.description}</p> : null}
-
-      <div className="text-xs text-neutral-500 mb-8">
-        <span>公開: {new Date(post.date).toLocaleDateString('ja-JP')}</span>
-        {post.lastmod ? (
-          <span className="ml-3">更新: {new Date(post.lastmod).toLocaleDateString('ja-JP')}</span>
-        ) : null}
-        {post.readingTimeMins ? <span className="ml-3">読む時間: 約{post.readingTimeMins}分</span> : null}
-      </div>
+      <header style={{marginBottom:'18px'}}>
+        <h1 className="h1">{post.title}</h1>
+        {post.description ? <p className="muted" style={{marginTop:'6px'}}>{post.description}</p> : null}
+        <div className="small muted" style={{marginTop:'8px', display:'flex', gap:'12px'}}>
+          <span>公開: {new Date(post.date).toISOString().slice(0,10)}</span>
+          {post.lastmod ? (<span>更新: {new Date(lastmod).toISOString().slice(0,10)}</span>) : null}
+          {post.readingTimeMins ? (<span>読む時間: 約{post.readingTimeMins}分</span>) : null}
+        </div>
+      </header>
 
       {post.headings?.length ? <TOC headings={post.headings as any} /> : null}
 
-      <div className="prose prose-neutral dark:prose-invert">
+      <div className="prose">
         <MDX components={components} />
       </div>
 
       {post.tags?.length ? (
-        <div className="mt-8 text-sm flex flex-wrap gap-2">
+        <div style={{marginTop:'20px'}} className="chips">
           {post.tags.map((t) => (
-            <a
-              key={t}
-              className="rounded-full border px-3 py-1 hover:bg-neutral-50 dark:hover:bg-neutral-800"
-              href={`/tags/${encodeURIComponent(t)}`}
-            >
-              {t}
-            </a>
+            <a key={t} className="chip" href={`/tags/${encodeURIComponent(t)}`}>{t}</a>
           ))}
         </div>
       ) : null}
