@@ -1,30 +1,8 @@
 import { defineDocumentType, makeSource } from 'contentlayer/source-files'
-import remarkGfm from 'remark-gfm'
-
-export type Heading = { id: string; text: string; level: number }
-export function extractHeadings(markdown: string): Heading[] {
-  const out: Heading[] = []
-  const lines = (markdown || '').split('\n')
-  for (const line of lines) {
-    const m = /^(#{1,6})\s+(.+)$/.exec(line)
-    if (!m) continue
-    const level = m[1].length
-    const text = m[2].replace(/[#*_`~]/g, '').trim()
-    const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')
-    out.push({ id, text, level })
-  }
-  return out
-}
-
-function readingTime(text: string): number {
-  const charsPerMinJa = 500
-  const n = (text || '').replace(/\s+/g, '').length
-  return Math.max(1, Math.round(n / charsPerMinJa))
-}
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  // Monitor only "content/" dir; exclude leading "_" MDX (templates)
+  // Only scan content/blog and ignore files starting with "_" (templates)
   filePathPattern: `blog/**/[!_]*.mdx`,
   contentType: 'mdx',
   fields: {
@@ -37,29 +15,14 @@ export const Post = defineDocumentType(() => ({
     slug: { type: 'string', required: false },
   },
   computedFields: {
-    url: {
-      type: 'string',
-      resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^blog\//, '').replace(/\.mdx$/, '')}`,
-    },
-    slug: {
-      type: 'string',
-      resolve: (doc) => doc.slug || doc._raw.flattenedPath.split('/').pop()?.replace(/\.mdx$/, '') || '',
-    },
-    readingTimeMins: {
-      type: 'number',
-      resolve: (doc) => readingTime((doc as any).body?.raw || ''),
-    },
-    headings: {
-      type: 'json',
-      resolve: (doc) => extractHeadings((doc as any).body?.raw || ''),
-    },
+    url: { type: 'string', resolve: (doc) => `/blog/${doc._raw.flattenedPath.replace(/^blog\//, '').replace(/\.mdx$/, '')}` },
+    slug: { type: 'string', resolve: (doc) => doc.slug || doc._raw.flattenedPath.split('/').pop()?.replace(/\.mdx$/, '') || '' },
   },
 }))
 
 export default makeSource({
-  // Limit scope to 'content' so root files (README etc.) are ignored
   contentDirPath: 'content',
   documentTypes: [Post],
-  // TEMP: disable only GFM tables to avoid mdast-util-gfm-table 'inTable' issue
-  mdx: { remarkPlugins: [[remarkGfm, { table: false }]] },
+  // TEMP: drop remark-gfm entirely while we stabilize
+  mdx: {},
 })
