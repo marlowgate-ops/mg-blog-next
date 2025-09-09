@@ -29,15 +29,26 @@ export default function Home() {
 
       <section className={styles.container}>
         {posts.length === 0 ? (
-          <div className={styles.empty}>
-            <p className={styles.muted}>公開記事がまだありません。最初の記事を公開すると、ここにカードで表示されます。</p>
-          </div>
+          <ul className={styles.grid}>
+            {Array.from({length: 3}).map((_,i)=>(
+              <li key={i} className={styles.card + ' ' + styles.skeleton}>
+                <div className={styles.skelTitle}></div>
+                <div className={styles.skelLine}></div>
+                <div className={styles.skelLine} style={{width:'75%'}}></div>
+                <div className={styles.skelChips}>
+                  <div className={styles.skelChip}></div>
+                  <div className={styles.skelChip}></div>
+                  <div className={styles.skelChip}></div>
+                </div>
+              </li>
+            ))}
+          </ul>
         ) : (
           <ul className={styles.grid}>
             {posts.map(p => (
               <li key={p._id}>
                 <Link href={p.url} className={styles.card}>
-                  <h2 style={{fontWeight:700, fontSize:'1.05rem'}}>{p.title}</h2>
+                  <h2 style={{fontWeight:800, fontSize:'1.08rem'}}>{p.title}</h2>
                   {p.description ? <p className={styles.muted} style={{marginTop: 8}}>{p.description}</p> : null}
                   <div className={styles.small + ' ' + styles.muted} style={{marginTop: 12, display:'flex', gap: 10}}>
                     <time>{safeDate(p.lastmod || p.date)}</time>
