@@ -1,12 +1,14 @@
-:global(:root) {
+.theme {
   --bg: #ffffff;
   --fg: #0a0a0a;
   --muted: #6b7280;
   --border: #e5e7eb;
   --card: #ffffff;
+  background: var(--bg);
+  color: var(--fg);
 }
 @media (prefers-color-scheme: dark) {
-  :global(:root) {
+  .theme {
     --bg: #0a0a0a;
     --fg: #fafafa;
     --muted: #a3a3a3;
