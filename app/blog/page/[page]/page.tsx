@@ -21,40 +21,48 @@ export default function BlogPaged({ params }: { params: { page: string } }) {
   const pages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE))
 
   return (
-    <section className={styles.theme + ' ' + styles.container}>
-      <h1 className={styles.h1}>All articles</h1>
-
-      {pagePosts.length === 0 ? (
-        <div className={styles.empty} style={{marginTop: 24}}>
-          <p className={styles.muted}>公開記事がまだありません。</p>
+    <main className={styles.theme}>
+      <section className={styles.container + ' ' + styles.hero}>
+        <h1 className={styles.heroTitle}>All articles</h1>
+        <p className={styles.heroSub}>過去のアーカイブから、いま役立つ記事を見つけてください。</p>
+        <div className={styles.ctaRow}>
+          <Link href="/" className={styles.btnGhost}>トップへ戻る</Link>
         </div>
-      ) : (
-        <ul className={styles.grid} style={{marginTop: 24}}>
-          {pagePosts.map(p => (
-            <li key={p._id}>
-              <Link href={p.url} className={styles.card}>
-                <h2 style={{fontWeight:700, fontSize:'1.05rem'}}>{p.title}</h2>
-                {p.description ? <p className={styles.muted} style={{marginTop: 8}}>{p.description}</p> : null}
-                <div className={styles.small + ' ' + styles.muted} style={{marginTop: 12, display:'flex', gap: 10}}>
-                  <time>{safeDate(p.lastmod || p.date)}</time>
-                  {p.readingTimeMins ? <span className={styles.nowrap}>・約{p.readingTimeMins}分</span> : null}
-                </div>
-                {Array.isArray(p.tags) && p.tags.length ? (
-                  <div className={styles.chips}>
-                    {p.tags.map(t => <span key={t} className={styles.chip}>{t}</span>)}
-                  </div>
-                ) : null}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      </section>
 
-      <nav className={styles.small + ' ' + styles.muted} style={{display:'flex', justifyContent:'space-between', marginTop: 28}}>
-        <div>{page > 1 && <Link className={styles.btn} href={`/blog/page/${page-1}`}>← Prev</Link>}</div>
-        <div>Page {page} / {pages}</div>
-        <div>{page < pages && <Link className={styles.btn} href={`/blog/page/${page+1}`}>Next →</Link>}</div>
-      </nav>
-    </section>
+      <section className={styles.container}>
+        {pagePosts.length === 0 ? (
+          <div className={styles.empty}>
+            <p className={styles.muted}>公開記事がまだありません。</p>
+          </div>
+        ) : (
+          <ul className={styles.grid}>
+            {pagePosts.map(p => (
+              <li key={p._id}>
+                <Link href={p.url} className={styles.card}>
+                  <h2 style={{fontWeight:700, fontSize:'1.05rem'}}>{p.title}</h2>
+                  {p.description ? <p className={styles.muted} style={{marginTop: 8}}>{p.description}</p> : null}
+                  <div className={styles.small + ' ' + styles.muted} style={{marginTop: 12, display:'flex', gap: 10}}>
+                    <time>{safeDate(p.lastmod || p.date)}</time>
+                    {p.readingTimeMins ? <span className={styles.nowrap}>・約{p.readingTimeMins}分</span> : null}
+                  </div>
+                  {Array.isArray(p.tags) && p.tags.length ? (
+                    <div className={styles.chips}>
+                      {p.tags.map(t => <span key={t} className={styles.chip}>{t}</span>)}
+                    </div>
+                  ) : null}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <nav className={styles.pager}>
+          <div>{page > 1 && <Link className={styles.btnGhost} href={`/blog/page/${page-1}`}>← Prev</Link>}</div>
+          <div className={styles.badge}>Page {page} / {pages}</div>
+          <div>{page < pages && <Link className={styles.btnGhost} href={`/blog/page/${page+1}`}>Next →</Link>}</div>
+        </nav>
+      </section>
+    </main>
   )
 }
