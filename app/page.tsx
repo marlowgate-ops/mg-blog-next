@@ -4,17 +4,15 @@ import styles from './list.module.css'
 
 export const revalidate = 60
 
-function safeDate(v?: string) {
-  const t = v ? Date.parse(v) : NaN
-  return isNaN(t) ? '' : new Date(t).toISOString().slice(0,10)
-}
+function safeDate(v?: string) { const t = v ? Date.parse(v) : NaN; return isNaN(t) ? '' : new Date(t).toISOString().slice(0,10) }
 function toTime(v?: string){ const t=v?Date.parse(v):NaN; return isNaN(t)?0:t }
 
 export default function Home() {
-  const posts = allPosts
-    .filter(p => !p.draft)
-    .sort((a,b) => toTime(b.lastmod || b.date) - toTime(a.lastmod || a.date))
-    .slice(0,12)
+  const posts = allPosts.filter(p => !p.draft).sort((a,b) => toTime(b.lastmod || b.date) - toTime(a.lastmod || a.date)).slice(0,12)
+
+  const CTA_URL = process.env.NEXT_PUBLIC_CTA_URL || '/'
+  const CTA_LABEL = process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
+  const CTA_BENEFITS = process.env.NEXT_PUBLIC_CTA_BENEFITS || ''
 
   return (
     <main className={styles.theme}>
@@ -64,6 +62,14 @@ export default function Home() {
             ))}
           </ul>
         )}
+
+        <div className={styles.ctaBand}>
+          <div>
+            <div className={styles.ctaTitle}>業務テンプレ｜ICS検証ノート</div>
+            {CTA_BENEFITS ? <div className={styles.ctaBenefits}>{CTA_BENEFITS}</div> : null}
+          </div>
+          <div><Link href={CTA_URL} className={styles.btnPrimary}>{CTA_LABEL}</Link></div>
+        </div>
       </section>
     </main>
   )
