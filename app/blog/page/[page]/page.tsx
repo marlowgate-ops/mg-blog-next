@@ -20,6 +20,10 @@ export default function BlogPaged({ params }: { params: { page: string } }) {
   const pagePosts = posts.slice(start, start+PAGE_SIZE)
   const pages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE))
 
+  const CTA_URL = process.env.NEXT_PUBLIC_CTA_URL || '/'
+  const CTA_LABEL = process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
+  const CTA_BENEFITS = process.env.NEXT_PUBLIC_CTA_BENEFITS || ''
+
   return (
     <main className={styles.theme}>
       <section className={styles.container + ' ' + styles.hero}>
@@ -57,11 +61,19 @@ export default function BlogPaged({ params }: { params: { page: string } }) {
           </ul>
         )}
 
-        <nav className={styles.pager}>
+        <nav style={{display:'flex', justifyContent:'space-between', marginTop: 28}}>
           <div>{page > 1 && <Link className={styles.btnGhost} href={`/blog/page/${page-1}`}>← Prev</Link>}</div>
-          <div className={styles.badge}>Page {page} / {pages}</div>
+          <div className={styles.small + ' ' + styles.muted}>Page {page} / {pages}</div>
           <div>{page < pages && <Link className={styles.btnGhost} href={`/blog/page/${page+1}`}>Next →</Link>}</div>
         </nav>
+
+        <div className={styles.ctaBand}>
+          <div>
+            <div className={styles.ctaTitle}>業務テンプレ｜ICS検証ノート</div>
+            {CTA_BENEFITS ? <div className={styles.ctaBenefits}>{CTA_BENEFITS}</div> : null}
+          </div>
+          <div><Link href={CTA_URL} className={styles.btnPrimary}>{CTA_LABEL}</Link></div>
+        </div>
       </section>
     </main>
   )
