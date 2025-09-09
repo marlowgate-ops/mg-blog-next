@@ -17,7 +17,7 @@ export default function Home() {
     .slice(0,12)
 
   return (
-    <main className={styles.container}>
+    <main className={styles.theme + ' ' + styles.container}>
       <h1 className={styles.h1}>Latest articles</h1>
       <p className={styles.muted}>最新の公開記事をお届けします。</p>
 
