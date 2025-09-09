@@ -1,11 +1,11 @@
-/* Design uplift v2: stronger hero, better buttons, card polish */
+/* Design uplift v3: unify hero on list and paged, refine spacing/contrast */
 .theme {
   --bg: #ffffff;
   --fg: #0a0a0a;
   --muted: #6b7280;
   --border: #e5e7eb;
   --card: #ffffff;
-  --accent: #0f172a; /* slate-900 */
+  --accent: #0f172a;
   background: var(--bg);
   color: var(--fg);
 }
@@ -28,12 +28,12 @@
   margin: 8px 0 28px;
   border: 1px solid var(--border);
   border-radius: 24px;
-  padding: 46px 32px;
+  padding: 48px 34px;
   background:
     radial-gradient(1200px 300px at 10% -10%, rgba(17,24,39,.06), transparent 60%),
     radial-gradient(900px 260px at 90% -20%, rgba(17,24,39,.05), transparent 60%),
-    linear-gradient(180deg, rgba(17,24,39,.04), rgba(17,24,39,.01));
-  box-shadow: 0 1px 1px rgba(0,0,0,.02), 0 12px 40px rgba(0,0,0,.06);
+    linear-gradient(180deg, rgba(17,24,39,.035), rgba(17,24,39,.01));
+  box-shadow: 0 1px 1px rgba(0,0,0,.02), 0 12px 38px rgba(0,0,0,.06);
 }
 .heroTitle {
   font-weight: 900; line-height: 1.12; letter-spacing: -0.02em;
@@ -63,7 +63,7 @@
 .nowrap { white-space: nowrap; }
 
 /* LIST */
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 26px; margin-top: 12px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; margin-top: 12px; }
 .card {
   background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 22px;
   text-decoration: none; color: inherit; display:block;
@@ -79,3 +79,7 @@
   border: 1px dashed var(--border); border-radius: 22px; padding: 34px; text-align: center;
   max-width: 720px; margin: 18px auto 0;
 }
+
+/* PAGINATION */
+.pager { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top: 28px; }
+.badge { border:1px solid var(--border); border-radius:999px; padding:6px 12px; font-size:12px; color:var(--muted); }
