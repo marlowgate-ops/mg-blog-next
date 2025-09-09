@@ -21,7 +21,7 @@ export default function BlogPaged({ params }: { params: { page: string } }) {
   const pages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE))
 
   return (
-    <section className={styles.container}>
+    <section className={styles.theme + ' ' + styles.container}>
       <h1 className={styles.h1}>All articles</h1>
 
       {pagePosts.length === 0 ? (
