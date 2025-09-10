@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
-import { useMDXComponent } from 'next-contentlayer/hooks'
 import listStyles from '../../list.module.css'
 import styles from './article.module.css'
+import MDXRenderer from '../../../components/MDXRenderer'
 
 export function generateStaticParams() {
   return allPosts.map((p) => ({ slug: (p as any).slugAsParams ?? p.slug }))
@@ -23,8 +23,6 @@ function fmtDate(v?: string) {
 export default function PostPage({ params }: { params: { slug: string } }) {
   const post = getPost(params.slug)
   if (!post) return notFound()
-
-  const Component = useMDXComponent(post.body.code)
 
   // prev / next
   const sorted = allPosts.filter(p=>!p.draft).sort((a,b)=> +new Date(a.date) - +new Date(b.date))
@@ -56,7 +54,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
         </div>
 
         <article className={styles.prose}>
-          <Component />
+          <MDXRenderer code={post.body.code} />
         </article>
 
         <nav className={styles.nav}>
