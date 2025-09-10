@@ -1,72 +1,58 @@
 import Link from 'next/link'
 import { allPosts } from 'contentlayer/generated'
 import styles from '../../../list.module.css'
-
 export const dynamic = 'force-static'
 const PAGE_SIZE = 10
-
-export function generateStaticParams() {
-  const posts = allPosts.filter(p=>!p.draft).length
-  const pages = Math.max(1, Math.ceil(posts / PAGE_SIZE))
-  return Array.from({length: pages}, (_, i) => ({ page: String(i+1) }))
-}
-
+export function generateStaticParams() {const posts = allPosts.filter(p=>!p.draft).length; const pages = Math.max(1, Math.ceil(posts / PAGE_SIZE)); return Array.from({length: pages}, (_, i) => ({ page: String(i+1) }))}
 function safeDate(v?: string) { const t = v ? Date.parse(v) : NaN; return isNaN(t) ? '' : new Date(t).toISOString().slice(0,10) }
-
 export default function BlogPaged({ params }: { params: { page: string } }) {
   const page = Math.max(1, parseInt(params.page || '1', 10))
   const posts = allPosts.filter(p=>!p.draft).sort((a,b)=> +new Date(b.date) - +new Date(a.date))
   const start = (page-1)*PAGE_SIZE
   const pagePosts = posts.slice(start, start+PAGE_SIZE)
   const pages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE))
-
   const CTA_URL = process.env.NEXT_PUBLIC_CTA_URL || '/'
   const CTA_LABEL = process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
   const CTA_BENEFITS = process.env.NEXT_PUBLIC_CTA_BENEFITS || ''
-
   return (
     <main className={styles.theme}>
       <section className={styles.container + ' ' + styles.hero}>
         <h1 className={styles.heroTitle}>All articles</h1>
         <p className={styles.heroSub}>過去のアーカイブから、いま役立つ記事を見つけてください。</p>
-        <div className={styles.ctaRow}>
-          <Link href="/" className={styles.btnGhost}>トップへ戻る</Link>
-        </div>
+        <div className={styles.ctaRow}><Link href="/" className={styles.btnGhost}>トップへ戻る</Link></div>
       </section>
-
       <section className={styles.container}>
         {pagePosts.length === 0 ? (
-          <div className={styles.empty}>
-            <p className={styles.muted}>公開記事がまだありません。</p>
-          </div>
+          <div className={styles.empty}><p className={styles.muted}>公開記事がまだありません。</p></div>
         ) : (
           <ul className={styles.grid}>
-            {pagePosts.map(p => (
-              <li key={p._id}>
-                <Link href={p.url} className={styles.card}>
-                  <h2 style={{fontWeight:700, fontSize:'1.05rem'}}>{p.title}</h2>
-                  {p.description ? <p className={styles.muted} style={{marginTop: 8}}>{p.description}</p> : null}
-                  <div className={styles.small + ' ' + styles.muted} style={{marginTop: 12, display:'flex', gap: 10}}>
-                    <time>{safeDate(p.lastmod || p.date)}</time>
-                    {p.readingTimeMins ? <span className={styles.nowrap}>・約{p.readingTimeMins}分</span> : null}
-                  </div>
-                  {Array.isArray(p.tags) && p.tags.length ? (
-                    <div className={styles.chips}>
-                      {p.tags.map(t => <span key={t} className={styles.chip}>{t}</span>)}
+            {pagePosts.map(p => {
+              const img = (p as any).image || (p as any).ogImage
+              return (
+                <li key={p._id}>
+                  <Link href={p.url} className={styles.card}>
+                    {img ? (<div className={styles.thumb}><img src={img as any} alt="" /></div>) : null}
+                    <h2 style={{fontWeight:700, fontSize:'1.05rem'}}>{p.title}</h2>
+                    {p.description ? <p className={styles.muted} style={{marginTop: 8}}>{p.description}</p> : null}
+                    <div className={styles.small + ' ' + styles.muted} style={{marginTop: 12, display:'flex', gap: 10}}>
+                      <time>{safeDate((p as any).lastmod || p.date)}</time>
+                      {(p as any).readingTimeMins ? <span className={styles.nowrap}>・約{(p as any).readingTimeMins}分</span> : null}
                     </div>
-                  ) : null}
-                </Link>
-              </li>
-            ))}
+                    {Array.isArray((p as any).tags) && (p as any).tags.length ? (
+                      <div className={styles.chips}>
+                        {(p as any).tags.map((t: string) => <span key={t} className={styles.chip}>{t}</span>)}
+                      </div>
+                    ) : null}
+                  </Link>
+                </li>
+            )})}
           </ul>
         )}
-
         <nav style={{display:'flex', justifyContent:'space-between', marginTop: 28}}>
           <div>{page > 1 && <Link className={styles.btnGhost} href={`/blog/page/${page-1}`}>← Prev</Link>}</div>
           <div className={styles.small + ' ' + styles.muted}>Page {page} / {pages}</div>
           <div>{page < pages && <Link className={styles.btnGhost} href={`/blog/page/${page+1}`}>Next →</Link>}</div>
         </nav>
-
         <div className={styles.ctaBand}>
           <div>
             <div className={styles.ctaTitle}>業務テンプレ｜ICS検証ノート</div>
