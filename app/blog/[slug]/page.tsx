@@ -1,131 +1,79 @@
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
 import { useMDXComponent } from 'next-contentlayer/hooks'
-import { components } from '@/lib/mdx-components'
-import TOC from '@/components/TOC'
-import Breadcrumbs from '@/components/Breadcrumbs'
-import RelatedPosts from '@/components/RelatedPosts'
-import PostFooterCTA from '@/components/PostFooterCTA'
-import { site } from '@/lib/site'
-import { titleDescSimilarity } from '@/lib/similarity'
-
-export const dynamicParams = false
+import listStyles from '../../list.module.css'
+import styles from './article.module.css'
 
 export function generateStaticParams() {
-  return allPosts.map(p => ({ slug: p.slug }))
+  return allPosts.map((p) => ({ slug: (p as any).slugAsParams ?? p.slug }))
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = allPosts.find(p => p.slug === params.slug)
-  if (!post || post.draft) return {}
-  const url = `${site.url}${post.url}`
-  const lastmod = post.lastmod ?? post.date
-  return {
-    title: post.title,
-    description: post.description,
-    alternates: { canonical: url },
-    openGraph: {
-      title: post.title,
-      description: post.description,
-      url,
-      type: 'article',
-      publishedTime: new Date(post.date).toISOString(),
-      modifiedTime: new Date(lastmod).toISOString(),
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: post.description,
-    },
-  }
+function getPost(slug: string) {
+  const post = allPosts.find((p) => ((p as any).slugAsParams ?? p.slug) === slug)
+  if (!post) return null
+  return post
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = allPosts.find(p => p.slug === params.slug)
-  if (!post || post.draft) notFound()
+function fmtDate(v?: string) {
+  const t = v ? Date.parse(v) : NaN
+  return isNaN(t) ? '' : new Date(t).toISOString().slice(0,10)
+}
 
-  const MDX = useMDXComponent(post.body.code)
-  const lastmod = post.lastmod ?? post.date
+export default function PostPage({ params }: { params: { slug: string } }) {
+  const post = getPost(params.slug)
+  if (!post) return notFound()
 
-  // BlogPosting JSON-LD
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.description,
-    datePublished: new Date(post.date).toISOString(),
-    dateModified: new Date(lastmod).toISOString(),
-    author: site.author ? [{ '@type': 'Person', name: site.author }] : undefined,
-    publisher: site.brand?.name ? { '@type': 'Organization', name: site.brand?.name } : undefined,
-    mainEntityOfPage: `${site.url}${post.url}`,
-    url: `${site.url}${post.url}`,
-  }
+  const Component = useMDXComponent(post.body.code)
 
-  // BreadcrumbList JSON-LD
-  const breadcrumbLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${site.url}/blog/page/1` },
-      { '@type': 'ListItem', position: 3, name: post.title, item: `${site.url}${post.url}` },
-    ],
-  }
+  // prev / next
+  const sorted = allPosts.filter(p=>!p.draft).sort((a,b)=> +new Date(a.date) - +new Date(b.date))
+  const idx = sorted.findIndex(p => p._id === post._id)
+  const prev = idx > 0 ? sorted[idx-1] : null
+  const next = idx >= 0 && idx < sorted.length-1 ? sorted[idx+1] : null
 
-  // Related posts
-  const tagSet = new Set(post.tags || [])
-  const candidates = allPosts.filter((p) => !p.draft && p.slug !== post.slug)
-  const scored = candidates.map((p) => {
-    const overlap = (p.tags || []).filter((t) => tagSet.has(t)).length
-    const dayDiff = Math.abs(+new Date(p.date) - +new Date(post.date)) / (1000 * 60 * 60 * 24)
-    const recencyScore = 1 / (1 + dayDiff / 180)
-    const sim = titleDescSimilarity(
-      `${post.title} ${post.description || ''}`,
-      '',
-      `${p.title} ${p.description || ''}`,
-      ''
-    )
-    const score = overlap * 2 + recencyScore + sim * 3
-    return { p, score }
-  })
-  const related = scored.sort((a,b) => b.score - a.score).slice(0,3).map(({p}) => ({
-    title: p.title, url: p.url, date: p.date, description: p.description
-  }))
+  const CTA_URL = process.env.NEXT_PUBLIC_CTA_URL || '/'
+  const CTA_LABEL = process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
+  const CTA_BENEFITS = process.env.NEXT_PUBLIC_CTA_BENEFITS || ''
 
   return (
-    <article className="container">
-      {/* JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+    <main className={listStyles.theme + ' ' + styles.article}>
+      <section className={listStyles.container + ' ' + styles.wrap}>
+        <nav className={styles.breadcrumbs}>
+          <Link href='/' className={styles.crumb}>Home</Link><span className={styles.sep}>›</span>
+          <Link href='/blog/page/1' className={styles.crumb}>Blog</Link><span className={styles.sep}>›</span>
+          <span className={styles.crumb} style={{borderStyle:'dashed'}}>{post.title}</span>
+        </nav>
 
-      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Blog', href: '/blog/page/1' }, { name: post.title }]} />
-
-      <header style={{marginBottom:'18px'}}>
-        <h1 className="h1">{post.title}</h1>
-        {post.description ? <p className="muted" style={{marginTop:'6px'}}>{post.description}</p> : null}
-        <div className="small muted" style={{marginTop:'8px', display:'flex', gap:'12px'}}>
-          <span>公開: {new Date(post.date).toISOString().slice(0,10)}</span>
-          {post.lastmod ? (<span>更新: {new Date(lastmod).toISOString().slice(0,10)}</span>) : null}
-          {post.readingTimeMins ? (<span>読む時間: 約{post.readingTimeMins}分</span>) : null}
+        <h1 className={styles.title}>{post.title}</h1>
+        <div className={styles.meta}>
+          {post.date ? <time>{fmtDate(post.lastmod || post.date)}</time> : null}
+          {Array.isArray(post.tags) && post.tags.length ? (
+            <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
+              {post.tags.map((t) => <span key={t} className={styles.tag}>{t}</span>)}
+            </div>
+          ) : null}
         </div>
-      </header>
 
-      {post.headings?.length ? <TOC headings={post.headings as any} /> : null}
+        <article className={styles.prose}>
+          <Component />
+        </article>
 
-      <div className="prose">
-        <MDX components={components} />
-      </div>
+        <nav className={styles.nav}>
+          <div>{prev && <Link className={listStyles.btnGhost} href={prev.url}>← {prev.title}</Link>}</div>
+          <div style={{flex:1}} />
+          <div>{next && <Link className={listStyles.btnGhost} href={next.url}>{next.title} →</Link>}</div>
+        </nav>
+        <div className={styles.note}>前後の記事で関連性を高め、回遊性と滞在時間を伸ばします。</div>
 
-      {post.tags?.length ? (
-        <div style={{marginTop:'20px'}} className="chips">
-          {post.tags.map((t) => (
-            <a key={t} className="chip" href={`/tags/${encodeURIComponent(t)}`}>{t}</a>
-          ))}
+        <div className={listStyles.ctaBand} style={{marginTop: 30}}>
+          <div>
+            <div className={listStyles.ctaTitle}>業務テンプレ｜ICS検証ノート</div>
+            {CTA_BENEFITS ? <div className={listStyles.ctaBenefits}>{CTA_BENEFITS}</div> : null}
+          </div>
+          <div><Link href={CTA_URL} className={listStyles.btnPrimary}>{CTA_LABEL}</Link></div>
         </div>
-      ) : null}
-
-      <PostFooterCTA />
-      <RelatedPosts items={related} />
-    </article>
+      </section>
+    </main>
   )
 }
