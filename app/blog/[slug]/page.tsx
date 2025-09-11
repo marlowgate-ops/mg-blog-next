@@ -1,3 +1,6 @@
+// Runtime fallback to avoid ReferenceError if any template/MDX accidentally uses a bare variable
+const readingTimeMins: any = undefined;
+
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
@@ -23,9 +26,9 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const post = getPost(params.slug)
   if (!post) return notFound()
 
-  // 防御：このスコープで readingTimeMins を必ず定義（素の参照があっても ReferenceError にならない）
-  const readingTimeMins = (post as any)?.readingTimeMins as number | undefined
-  const rt = Number.isFinite(readingTimeMins as number) ? (readingTimeMins as number) : undefined
+  // Defensive: normalize reading time from the post object
+  const rtRaw = (post as any)?.readingTimeMins as number | undefined
+  const rt = Number.isFinite(rtRaw as number) ? (rtRaw as number) : undefined
 
   // prev / next
   const sorted = allPosts.filter(p=>!p.draft).sort((a,b)=> +new Date(a.date) - +new Date(b.date))
