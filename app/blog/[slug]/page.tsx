@@ -23,6 +23,10 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const post = getPost(params.slug)
   if (!post) return notFound()
 
+  // 防御：このスコープで readingTimeMins を必ず定義（素の参照があっても ReferenceError にならない）
+  const readingTimeMins = (post as any)?.readingTimeMins as number | undefined
+  const rt = Number.isFinite(readingTimeMins as number) ? (readingTimeMins as number) : undefined
+
   // prev / next
   const sorted = allPosts.filter(p=>!p.draft).sort((a,b)=> +new Date(a.date) - +new Date(b.date))
   const idx = sorted.findIndex(p => p._id === post._id)
@@ -33,10 +37,8 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const CTA_LABEL = process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
   const CTA_BENEFITS = process.env.NEXT_PUBLIC_CTA_BENEFITS || ''
 
-  // Safe meta
   const origin = 'https://blog.marlowgate.com'
   const url = `${origin}${post.url}`
-  const rt = typeof (post as any).readingTimeMins === 'number' ? (post as any).readingTimeMins as number : undefined
 
   const ldPost = blogPostingLD({
     headline: post.title,
