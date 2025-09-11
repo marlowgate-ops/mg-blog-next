@@ -23,7 +23,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const post = getPost(params.slug)
   if (!post) return notFound()
 
-  // Sort by date for prev/next
+  // prev / next
   const sorted = allPosts.filter(p=>!p.draft).sort((a,b)=> +new Date(a.date) - +new Date(b.date))
   const idx = sorted.findIndex(p => p._id === post._id)
   const prev = idx > 0 ? sorted[idx-1] : null
@@ -33,9 +33,11 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const CTA_LABEL = process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
   const CTA_BENEFITS = process.env.NEXT_PUBLIC_CTA_BENEFITS || ''
 
-  // JSON-LD (absolute URLは運用ドメインに合わせる)
+  // safe meta
   const origin = 'https://blog.marlowgate.com'
   const url = `${origin}${post.url}`
+  const rt = (post as any).readingTimeMins as number | undefined
+
   const ldPost = blogPostingLD({
     headline: post.title,
     url,
@@ -62,6 +64,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
         <h1 className={styles.title}>{post.title}</h1>
         <div className={styles.meta}>
           {post.date ? <time>{(fmtISO((post as any).lastmod || post.date) || '').slice(0,10)}</time> : null}
+          {typeof rt === 'number' ? <span className={styles.tag}>約{rt}分</span> : null}
           {Array.isArray((post as any).tags) && (post as any).tags.length ? (
             <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
               {(post as any).tags.map((t: string) => <span key={t} className={styles.tag}>{t}</span>)}
@@ -88,7 +91,6 @@ export default function PostPage({ params }: { params: { slug: string } }) {
           <div><Link href={CTA_URL} className={listStyles.btnPrimary}>{CTA_LABEL}</Link></div>
         </div>
 
-        {/* JSON-LD scripts */}
         <script type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldPost) }} />
         <script type="application/ld+json"
