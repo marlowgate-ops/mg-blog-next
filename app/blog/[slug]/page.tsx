@@ -1,5 +1,5 @@
-// Runtime fallback to avoid ReferenceError if any template/MDX accidentally uses a bare variable
-const readingTimeMins: any = undefined;
+// Hoisted fallback for any accidental bare usage in this module (prevents ReferenceError even if referenced above)
+var readingTimeMins: any = undefined;
 
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -26,7 +26,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const post = getPost(params.slug)
   if (!post) return notFound()
 
-  // Defensive: normalize reading time from the post object
+  // Normalize reading time from post object (safe even if undefined)
   const rtRaw = (post as any)?.readingTimeMins as number | undefined
   const rt = Number.isFinite(rtRaw as number) ? (rtRaw as number) : undefined
 
