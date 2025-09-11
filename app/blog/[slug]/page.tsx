@@ -33,10 +33,10 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const CTA_LABEL = process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
   const CTA_BENEFITS = process.env.NEXT_PUBLIC_CTA_BENEFITS || ''
 
-  // safe meta
+  // Safe meta
   const origin = 'https://blog.marlowgate.com'
   const url = `${origin}${post.url}`
-  const rt = (post as any).readingTimeMins as number | undefined
+  const rt = typeof (post as any).readingTimeMins === 'number' ? (post as any).readingTimeMins as number : undefined
 
   const ldPost = blogPostingLD({
     headline: post.title,
