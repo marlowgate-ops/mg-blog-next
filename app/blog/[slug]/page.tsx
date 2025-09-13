@@ -23,9 +23,12 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const post = getPost(params.slug)
   if (!post) return notFound()
 
-  // Normalize reading time from the post object (no bare identifier usage)
-  const rtRaw = (post as any)['readingTimeMins'] as number | undefined
+  // Normalize reading time
+  const rtRaw = (post as any)?.readingTimeMins as number | undefined
   const rt = Number.isFinite(rtRaw as number) ? (rtRaw as number) : undefined
+
+  // Globally expose readingTimeMins for MDX free-identifier usage during build/runtime
+  ;(globalThis as any).readingTimeMins = rt
 
   // prev / next
   const sorted = allPosts.filter(p=>!p.draft).sort((a,b)=> +new Date(a.date) - +new Date(b.date))
@@ -75,7 +78,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
         </div>
 
         <article className={styles.prose}>
-          <MDXRenderer code={post.body.code} scope={{ readingTimeMins: rt }} />
+          <MDXRenderer code={post.body.code} /* also passes as prop for MDX that reads from props */ scope={{ readingTimeMins: rt }} />
         </article>
 
         <nav className={styles.nav}>
