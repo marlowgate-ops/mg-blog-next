@@ -1,6 +1,3 @@
-// Hoisted fallback for any accidental bare usage in this module (prevents ReferenceError even if referenced above)
-var readingTimeMins: any = undefined;
-
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
@@ -26,8 +23,8 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const post = getPost(params.slug)
   if (!post) return notFound()
 
-  // Normalize reading time from post object (safe even if undefined)
-  const rtRaw = (post as any)?.readingTimeMins as number | undefined
+  // Normalize reading time from the post object (no bare identifier usage)
+  const rtRaw = (post as any)['readingTimeMins'] as number | undefined
   const rt = Number.isFinite(rtRaw as number) ? (rtRaw as number) : undefined
 
   // prev / next
@@ -78,7 +75,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
         </div>
 
         <article className={styles.prose}>
-          <MDXRenderer code={post.body.code} />
+          <MDXRenderer code={post.body.code} scope={{ readingTimeMins: rt }} />
         </article>
 
         <nav className={styles.nav}>
