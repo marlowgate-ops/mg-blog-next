@@ -1,66 +1,92 @@
 import Link from 'next/link'
-import { allPosts } from 'contentlayer/generated'
-import styles from '../../../list.module.css'
-export const dynamic = 'force-static'
-const PAGE_SIZE = 10
-export function generateStaticParams() {const posts = allPosts.filter(p=>!p.draft).length; const pages = Math.max(1, Math.ceil(posts / PAGE_SIZE)); return Array.from({length: pages}, (_, i) => ({ page: String(i+1) }))}
-function safeDate(v?: string) { const t = v ? Date.parse(v) : NaN; return isNaN(t) ? '' : new Date(t).toISOString().slice(0,10) }
-export default function BlogPaged({ params }: { params: { page: string } }) {
-  const page = Math.max(1, parseInt(params.page || '1', 10))
-  const posts = allPosts.filter(p=>!p.draft).sort((a,b)=> +new Date(b.date) - +new Date(a.date))
-  const start = (page-1)*PAGE_SIZE
-  const pagePosts = posts.slice(start, start+PAGE_SIZE)
-  const pages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE))
-  const CTA_URL = process.env.NEXT_PUBLIC_CTA_URL || '/'
-  const CTA_LABEL = process.env.NEXT_PUBLIC_CTA_LABEL || '詳細を見る'
-  const CTA_BENEFITS = process.env.NEXT_PUBLIC_CTA_BENEFITS || ''
+import s from '../../list.module.css'
+
+const PAGE_SIZE = 9
+
+async function getAll() {
+  try {
+    const mod: any = await import('contentlayer/generated')
+    const all: any[] = (mod.allPosts || mod.allArticles || mod.allDocs || [])
+    const sorted = [...all].sort((a,b) => {
+      const da = new Date(a.date || 0).getTime()
+      const db = new Date(b.date || 0).getTime()
+      return db - da
+    })
+    return sorted
+  } catch {
+    return []
+  }
+}
+
+export async function generateStaticParams() {
+  const all = await getAll()
+  const total = Math.max(1, Math.ceil(all.length / PAGE_SIZE))
+  return Array.from({ length: total }, (_, i) => ({ page: String(i + 1) }))
+}
+
+export default async function BlogList({ params }: { params: { page: string } }) {
+  const current = Math.max(1, parseInt(params.page || '1', 10) || 1)
+  const all = await getAll()
+  const totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE))
+  const start = (current - 1) * PAGE_SIZE
+  const slice = all.slice(start, start + PAGE_SIZE)
+
   return (
-    <main className={styles.theme}>
-      <section className={styles.container + ' ' + styles.hero}>
-        <h1 className={styles.heroTitle}>All articles</h1>
-        <p className={styles.heroSub}>過去のアーカイブから、いま役立つ記事を見つけてください。</p>
-        <div className={styles.ctaRow}><Link href="/" className={styles.btnGhost}>トップへ戻る</Link></div>
+    <main className={s.wrap}>
+      <header className={s.head}>
+        <h1 className={s.title}>All articles</h1>
+        <p className={s.lead}>Page {current} / {totalPages}</p>
+      </header>
+
+      <section className={s.grid}>
+        {slice.length === 0
+          ? Array.from({length: 6}).map((_,i) => <div key={i} className={s.skeleton} />)
+          : slice.map((post: any) => <Card key={String(post._id || post.slug)} post={post} />)}
       </section>
-      <section className={styles.container}>
-        {pagePosts.length === 0 ? (
-          <div className={styles.empty}><p className={styles.muted}>公開記事がまだありません。</p></div>
-        ) : (
-          <ul className={styles.grid}>
-            {pagePosts.map(p => {
-              const img = (p as any).image || (p as any).ogImage
-              return (
-                <li key={p._id}>
-                  <Link href={p.url} className={styles.card}>
-                    {img ? (<div className={styles.thumb}><img src={img as any} alt="" /></div>) : null}
-                    <h2 style={{fontWeight:700, fontSize:'1.05rem'}}>{p.title}</h2>
-                    {p.description ? <p className={styles.muted} style={{marginTop: 8}}>{p.description}</p> : null}
-                    <div className={styles.small + ' ' + styles.muted} style={{marginTop: 12, display:'flex', gap: 10}}>
-                      <time>{safeDate((p as any).lastmod || p.date)}</time>
-                      {(p as any).readingTimeMins ? <span className={styles.nowrap}>・約{(p as any).readingTimeMins}分</span> : null}
-                    </div>
-                    {Array.isArray((p as any).tags) && (p as any).tags.length ? (
-                      <div className={styles.chips}>
-                        {(p as any).tags.map((t: string) => <span key={t} className={styles.chip}>{t}</span>)}
-                      </div>
-                    ) : null}
-                  </Link>
-                </li>
-            )})}
-          </ul>
-        )}
-        <nav style={{display:'flex', justifyContent:'space-between', marginTop: 28}}>
-          <div>{page > 1 && <Link className={styles.btnGhost} href={`/blog/page/${page-1}`}>← Prev</Link>}</div>
-          <div className={styles.small + ' ' + styles.muted}>Page {page} / {pages}</div>
-          <div>{page < pages && <Link className={styles.btnGhost} href={`/blog/page/${page+1}`}>Next →</Link>}</div>
-        </nav>
-        <div className={styles.ctaBand}>
-          <div>
-            <div className={styles.ctaTitle}>業務テンプレ｜ICS検証ノート</div>
-            {CTA_BENEFITS ? <div className={styles.ctaBenefits}>{CTA_BENEFITS}</div> : null}
-          </div>
-          <div><Link href={CTA_URL} className={styles.btnPrimary}>{CTA_LABEL}</Link></div>
-        </div>
-      </section>
+
+      <nav className={s.pager} aria-label="Pagination">
+        <Chip href={`/blog/page/${Math.max(1, current - 1)}`} label="Prev" ghost disabled={current===1} />
+        {getPages(current, totalPages).map((p) => (
+          <Chip key={p} href={`/blog/page/${p}`} label={String(p)} active={p===current} />
+        ))}
+        <Chip href={`/blog/page/${Math.min(totalPages, current + 1)}`} label="Next" ghost disabled={current===totalPages} />
+      </nav>
     </main>
   )
+}
+
+function getPages(curr: number, total: number) {
+  const range = 2
+  const pages: number[] = []
+  const start = Math.max(1, curr - range)
+  const end = Math.min(total, curr + range)
+  for (let i = start; i <= end; i++) pages.push(i)
+  if (!pages.includes(1)) pages.unshift(1)
+  if (!pages.includes(total)) pages.push(total)
+  return Array.from(new Set(pages)).sort((a,b)=>a-b)
+}
+
+function Card({ post }: { post: any }) {
+  const slug = String(post.slug || post.slugAsParams || post._raw?.flattenedPath || '')
+  const href = '/blog/' + slug
+  const date = post.date ? new Date(post.date).toLocaleDateString('ja-JP') : ''
+  const tag = (post.tags && post.tags[0]) || post.category || null
+  const desc = (post.description || '').slice(0, 120)
+  return (
+    <Link className={s.card} href={href}>
+      <div>
+        <div className={s.ctitle}>{post.title || slug}</div>
+        <div className={s.desc}>{desc}</div>
+      </div>
+      <div className={s.meta}>
+        {tag ? <span className={s.pill}>{String(tag)}</span> : null}
+        {date ? <span>{date}</span> : null}
+      </div>
+    </Link>
+  )
+}
+
+function Chip({ href, label, active=false, ghost=false, disabled=false }:{ href:string, label:string, active?:boolean, ghost?:boolean, disabled?:boolean }){
+  const cls = [s.chip, active? s.active:'', ghost? s.ghost:''].filter(Boolean).join(' ')
+  return disabled ? <span className={cls} aria-disabled="true">{label}</span> : <Link className={cls} href={href}>{label}</Link>
 }
