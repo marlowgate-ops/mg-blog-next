@@ -1,0 +1,64 @@
+.container {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 60;
+}
+.fab {
+  appearance: none;
+  border: none;
+  background: linear-gradient(180deg,#22c1ff,#0ea5e9);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 10px 14px;
+  box-shadow: 0 10px 25px rgba(14,165,233,.35);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+.fab:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(14,165,233,.45); }
+.panel {
+  position: fixed;
+  right: 18px;
+  bottom: 72px;
+  width: min(420px, calc(100vw - 40px));
+  max-height: min(70vh, 520px);
+  background: rgba(15,23,42,.98);
+  color: #e5f0ff;
+  border: 1px solid rgba(148,163,184,.2);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(2,8,23,.5);
+  overflow: hidden;
+  transform: translateY(8px) scale(.98);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+  backdrop-filter: saturate(140%) blur(6px);
+}
+.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+.panelHeader {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; font-weight: 700; letter-spacing: .02em;
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+}
+.close { background: transparent; border: none; color: #9fb6d1; font-size: 18px; cursor: pointer; }
+.listWrap { overflow: auto; max-height: calc(70vh - 56px); padding: 12px 6px 12px 10px; }
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.li { line-height: 1.45; }
+.l2 { padding-left: 4px; }
+.l3 { padding-left: 18px; opacity: .85; }
+.link {
+  text-decoration: none;
+  color: #dbeafe;
+  display: inline-block;
+  border-radius: 8px;
+  padding: 6px 8px;
+  transition: background .15s ease, color .2s ease;
+}
+.link:hover { background: rgba(148,163,184,.15); color: #fff; }
+.active { background: rgba(56,189,248,.2); color: #fff; }
+
+@media (min-width: 1280px) {
+  .panel { right: 24px; bottom: 80px; }
+  .fab { padding: 12px 16px; }
+}
