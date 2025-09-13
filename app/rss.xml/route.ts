@@ -1,78 +1,106 @@
-import { allPosts } from 'contentlayer/generated'
-import { site } from '@/lib/site'
+// Improved RSS feed with Japanese-friendly summaries
+import type { NextRequest } from 'next/server'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-static' as const
+export const revalidate = 3600 // 1h
 
-function strip(md: string) {
-  if (!md) return ''
-  return md
-    .replace(/```[\s\S]*?```/g, '')      // code fences
-    .replace(/`[^`]+`/g, '')               // inline code
-    .replace(/\!\[[^\]]*\]\([^\)]*\)/g, '') // images
-    .replace(/\[[^\]]*\]\([^\)]*\)/g, '$1')  // links -> text
-    .replace(/[#>*_~\-]+/g, ' ')          // md marks
-    .replace(/[ \t\u00A0\u3000]+/g, ' ') // normalize spaces (incl. full-width)
-    .trim()
-}
-
-// 日本語の句点を意識した要約（目安: 160〜200字）
-function summarizeJa(text: string, max = 180): string {
-  const t = (text || '').replace(/\s+/g, ' ').trim()
-  if (!t) return ''
-  const parts = t.split(/(?<=[。！？!?])\s*/)
-  let acc = ''
-  for (const s of parts) {
-    if ((acc + s).length > max) break
-    acc += s
-  }
-  if (!acc) acc = t.slice(0, max)
-  // 不自然な末尾を整える
-  acc = acc.replace(/[\(（【「『]*$/, '').replace(/[、,]$/, '')
-  return acc.length < t.length ? acc + '…' : acc
-}
-
-function esc(s: string) {
-  return (s || '')
+function escapeXml(s: string) {
+  return s
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
 }
 
-export async function GET() {
-  const posts = allPosts
-    .filter(p => !p.draft)
-    .sort((a, b) => +new Date(b.date) - +new Date(a.date))
+function stripHtml(mdOrHtml: string) {
+  // very small sanitizer: remove code fences, html tags, md links/images
+  let s = mdOrHtml
+    .replace(/```[\s\S]*?```/g, ' ')             // fenced code
+    .replace(/`[^`]*`/g, ' ')                   // inline code
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')      // images
+    .replace(/\[[^\]]*\]\([^)]*\)/g, ' ')       // links
+    .replace(/<[^>]+>/g, ' ')                   // html tags
+    .replace(/[#>*_~\-]{1,}/g, ' ')             // markdown noise
+    .replace(/\r?\n+/g, ' ')                    // newlines
+  s = s.replace(/\s{2,}/g, ' ').trim()
+  return s
+}
 
-  const items = posts.map(p => {
-    const raw = (p as any).body?.raw || ''
-    const summarySrc = p.description || strip(raw)
-    const summary = summarizeJa(summarySrc, 180)
-    const url = `${site.url}${p.url}`
-    return `
-      <item>
-        <title>${esc(p.title)}</title>
-        <link>${esc(url)}</link>
-        <guid isPermaLink="true">${esc(url)}</guid>
-        <pubDate>${new Date(p.date).toUTCString()}</pubDate>
-        <description><![CDATA[${summary}]]></description>
-      </item>
-    `
-  }).join('\n')
+function summarizeJa(raw: string, max = 120) {
+  const text = stripHtml(raw)
+  if (!text) return ''
+  // Prefer sentence end "。" if available within range
+  const firstPeriod = text.indexOf('。')
+  let summary: string
+  if (firstPeriod !== -1 && firstPeriod <= max + 20) {
+    summary = text.slice(0, firstPeriod + 1)
+  } else {
+    // safe unicode slice
+    const arr = Array.from(text)
+    summary = arr.slice(0, Math.min(arr.length, max)).join('')
+    if (arr.length > max) summary += '…'
+  }
+  // avoid ugly endings
+  summary = summary.replace(/[,、。・:;、]+$/u, '')
+  return summary
+}
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-  <rss version="2.0">
-    <channel>
-      <title>${esc(site.title || 'Marlow Gate')}</title>
-      <link>${esc(site.url || '')}</link>
-      <description>${esc(site.description || '')}</description>
-      ${items}
-    </channel>
-  </rss>`
+async function getPosts() {
+  try {
+    const mod: any = await import('contentlayer/generated')
+    const col: any[] = mod.allPosts || mod.allArticles || mod.allDocs || []
+    // sort by date desc if available
+    col.sort((a, b) => {
+      const da = new Date(a.date || a.publishedAt || a._raw?.sourceFileMtime || 0).getTime()
+      const db = new Date(b.date || b.publishedAt || b._raw?.sourceFileMtime || 0).getTime()
+      return db - da
+    })
+    return col
+  } catch {
+    return []
+  }
+}
+
+export async function GET(_req: NextRequest) {
+  const site = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
+  const title = process.env.NEXT_PUBLIC_SITE_NAME || 'Blog'
+  const desc = process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Updates'
+  const posts = await getPosts()
+
+  const itemsXml = posts.map((p) => {
+    const slug = String(p.slug || p.slugAsParams || p._raw?.flattenedPath || '')
+    const url = `${site.replace(/\/+$/,'')}/blog/${slug}`
+    const pub = new Date(p.date || p.publishedAt || Date.now()).toUTCString()
+    const s =
+      p.description ||
+      (p.body && (p.body.raw || p.body.code || p.body.html)) ||
+      ''
+    const summary = summarizeJa(String(s), 120)
+    return [
+      '<item>',
+      `<title>${escapeXml(String(p.title || slug))}</title>`,
+      `<link>${escapeXml(url)}</link>`,
+      `<guid>${escapeXml(url)}</guid>`,
+      `<pubDate>${pub}</pubDate>`,
+      summary ? `<description>${escapeXml(summary)}</description>` : '',
+      '</item>',
+    ].join('')
+  }).join('')
+
+  const xml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<rss version="2.0">',
+    '<channel>',
+    `<title>${escapeXml(title)}</title>`,
+    `<link>${escapeXml(site)}</link>`,
+    `<description>${escapeXml(desc)}</description>`,
+    itemsXml,
+    '</channel>',
+    '</rss>',
+  ].join('')
 
   return new Response(xml, {
-    headers: {
-      'Content-Type': 'application/rss+xml; charset=utf-8',
-      'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=3600'
-    }
+    headers: { 'Content-Type': 'application/xml; charset=utf-8' },
   })
 }
