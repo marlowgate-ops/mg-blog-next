@@ -1,4 +1,4 @@
-/* article.module.css — touchups */
+/* article.module.css — polish v4 */
 .breadcrumbs {
   display: flex;
   align-items: center;
@@ -37,7 +37,7 @@
   background: #ecfeff;
   color: #0f766e;
   border: 1px solid #a5f3fc;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: .2px;
   padding: 3px 8px;
   border-radius: 999px;
@@ -79,6 +79,19 @@
   border-radius: 0 12px 12px 0;
   margin: 14px 0;
   color: #0f172a;
+}
+.figure {
+  margin: 18px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.caption {
+  font-size: 13px;
+  color: #64748b;
+  padding: 8px 12px 10px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
 }
 
 .nav {
