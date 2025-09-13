@@ -1,11 +1,6 @@
 'use client'
 import styles from './footer.module.css'
-
-const storeUrl =
-  process.env.NEXT_PUBLIC_CTA_URL ||
-  process.env.NEXT_PUBLIC_HERO_CTA_URL ||
-  '/'
-
+const storeUrl = process.env.NEXT_PUBLIC_CTA_URL || process.env.NEXT_PUBLIC_HERO_CTA_URL || '/'
 export default function FooterMini() {
   const year = new Date().getFullYear()
   return (
@@ -18,9 +13,7 @@ export default function FooterMini() {
         <nav className={styles.nav} aria-label="Footer links">
           <a href="/rss.xml" className={styles.link}>RSS</a>
           <a href="/sitemap.xml" className={styles.link}>Sitemap</a>
-          <a href={storeUrl} target="_blank" rel="noopener noreferrer" className={styles.cta}>
-            Store
-          </a>
+          <a href={storeUrl} target="_blank" rel="noopener noreferrer" className={styles.cta}>Store</a>
         </nav>
       </div>
     </footer>
