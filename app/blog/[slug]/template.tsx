@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react'
-import ArticleCTA from '../../../components/ArticleCTA'
 import JsonLdArticle from '../../../components/JsonLdArticle'
-import ArticleTocFloating from '../../../components/ArticleTocFloating'
 import ArticleReaderStyles from '../../../components/ArticleReaderStyles'
+import ArticleTocFloating from '../../../components/ArticleTocFloating'
+import ShareBar from '../../../components/ShareBar'
+import ArticleCTA from '../../../components/ArticleCTA'
 
 export default function BlogPostTemplate({ children }: { children: ReactNode }) {
   return (
@@ -11,6 +12,7 @@ export default function BlogPostTemplate({ children }: { children: ReactNode }) 
       <ArticleReaderStyles />
       <ArticleTocFloating />
       {children}
+      <ShareBar />
       <ArticleCTA />
     </>
   )
