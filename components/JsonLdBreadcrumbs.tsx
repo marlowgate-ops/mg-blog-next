@@ -4,26 +4,23 @@ import Script from 'next/script'
 
 export default function JsonLdBreadcrumbs() {
   const pathname = usePathname() || '/'
-  // Build crumbs from path segments
   const segments = pathname.split('/').filter(Boolean)
-  // origin from env or window at runtime
   const site = process.env.NEXT_PUBLIC_SITE_URL
 
-  const json = {
+  const json: any = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    'itemListElement': [
+    itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: '' },
-      *segments.map((seg, idx) => ({
+      ...segments.map((seg, idx) => ({
         '@type': 'ListItem',
         position: idx + 2,
         name: decodeURIComponent(seg),
-        item: segments.slice(0, idx + 1).join('/')
-      }))
-    ]
-  } as any
+        item: segments.slice(0, idx + 1).join('/'),
+      })),
+    ],
+  }
 
-  // stringify at render (URL is resolved in a small inline IIFE below)
   const data = JSON.stringify(json)
 
   return (
@@ -37,7 +34,7 @@ export default function JsonLdBreadcrumbs() {
           return Object.assign({}, li, { item: href });
         });
         document.currentScript && document.currentScript.insertAdjacentText('afterend', JSON.stringify(d));
-        document.currentScript.remove(); // keep DOM clean
+        document.currentScript.remove();
       }catch(e){}})();`}
     </Script>
   )
