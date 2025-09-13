@@ -1,5 +1,8 @@
-/* list.module.css — UI polish v2 */
-/* Theme tokens */
+/* list.module.css — UI polish v4
+   - stronger hero depth
+   - clearer empty-state cards
+   - accessible focus ring + reduced motion
+*/
 .theme {
   --bg: #ffffff;
   --fg: #0f172a;
@@ -9,8 +12,8 @@
   --accent-600: #0284c7;
   --surface: #f8fafc;
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06);
-  --shadow-md: 0 8px 24px rgba(15, 23, 42, .08);
-  --shadow-lg: 0 18px 40px rgba(15, 23, 42, .12);
+  --shadow-md: 0 8px 22px rgba(15, 23, 42, .08);
+  --shadow-lg: 0 18px 44px rgba(15, 23, 42, .13);
 }
 
 .container {
@@ -22,24 +25,28 @@
 /* ===== Hero ===== */
 .hero {
   position: relative;
-  background: linear-gradient(180deg, rgba(2,132,199,.05), rgba(2,132,199,0));
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: 22px;
+  padding: clamp(18px, 3.6vw, 30px);
+  background:
+    radial-gradient(1200px 320px at 0% -10%, rgba(2,132,199,.10), transparent 55%),
+    linear-gradient(180deg, rgba(2,132,199,.05), rgba(2,132,199,0) 55%),
+    #fff;
   box-shadow: var(--shadow-md);
-  padding: clamp(18px, 3.8vw, 28px);
 }
-.hero::after{
-  content:"";
-  position:absolute; inset:0;
-  border-radius:20px;
-  pointer-events:none;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
 }
 .hero h1 {
-  font-size: clamp(28px, 3.2vw, 40px);
-  line-height: 1.12;
-  letter-spacing: .2px;
   margin: 0 0 12px;
+  font-size: clamp(28px, 3.1vw, 40px);
+  line-height: 1.14;
+  letter-spacing: .2px;
 }
 .hero .lead {
   color: var(--muted);
@@ -53,10 +60,9 @@
   gap: .5rem;
   border-radius: 999px;
   padding: 10px 16px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
-  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
-  will-change: transform;
+  transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
 }
 .btnPrimary {
   color: #fff;
@@ -66,7 +72,6 @@
 }
 .btnPrimary:hover { background-color: var(--accent-600); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
 .btnPrimary:active { transform: translateY(0); }
-
 .btnGhost {
   color: var(--fg);
   background: #fff;
@@ -74,16 +79,23 @@
   box-shadow: var(--shadow-sm);
 }
 .btnGhost:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
-.btnGhost:active { transform: translateY(0); }
+
+/* Focus ring */
+.btnPrimary:focus-visible, .btnGhost:focus-visible,
+.card:focus-within, .pagination a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(14,165,233,.28), var(--shadow-md);
+  border-color: rgba(14,165,233,.6);
+}
 
 /* ===== Card grid ===== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: clamp(16px, 2.4vw, 24px);
-  margin: 18px 0 0;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(16px, 2.4vw, 26px);
+  margin: 20px 0 0;
   padding: 0;
-  list-style: none; /* fix: unexpected bullet on some templates */
+  list-style: none;
 }
 .card {
   position: relative;
@@ -93,20 +105,14 @@
   padding: 16px 16px 14px;
   box-shadow: var(--shadow-sm);
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  will-change: transform;
 }
 .card:hover {
   transform: translateY(-4px);
-  border-color: rgba(2,132,199,.35);
+  border-color: rgba(2,132,199,.32);
   box-shadow: var(--shadow-lg);
 }
-.card:focus-within {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(14,165,233,.25), var(--shadow-md);
-  border-color: rgba(14,165,233,.6);
-}
 .cardTitle {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 17px;
   line-height: 1.35;
   margin: 0 0 8px;
@@ -151,10 +157,7 @@
   margin: 22px 0 12px;
   box-shadow: var(--shadow-sm);
 }
-.ctaTitle {
-  font-weight: 800;
-  letter-spacing: .2px;
-}
+.ctaTitle { font-weight: 900; letter-spacing: .2px; }
 
 /* ===== Skeleton ===== */
 .skeleton {
@@ -162,9 +165,9 @@
   --sk-sh: #f8fbff;
   background: linear-gradient(90deg, var(--sk-bg), var(--sk-sh), var(--sk-bg));
   background-size: 200% 100%;
-  animation: shimmer 1.2s infinite linear;
-  border-radius: 12px;
-  height: 112px; /* a bit taller for better rhythm */
+  animation: shimmer 1.25s infinite linear;
+  border-radius: 14px;
+  height: 120px;
   border: 1px solid var(--line);
 }
 @keyframes shimmer {
@@ -172,7 +175,7 @@
   100% { background-position: -200% 0 }
 }
 
-/* ===== Pagination (future-proof; inert if not present) ===== */
+/* ===== Pagination (if exists) ===== */
 .pagination {
   display: flex;
   justify-content: center;
@@ -194,3 +197,8 @@
   border-color: var(--accent);
 }
 .pagination a:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btnPrimary, .btnGhost, .card, .pagination a { transition: none; }
+  .skeleton { animation: none; }
+}
