@@ -1,15 +1,13 @@
-'use client';
-
-import styles from './footer.module.css';
+'use client'
+import styles from './footer.module.css'
 
 const storeUrl =
   process.env.NEXT_PUBLIC_CTA_URL ||
   process.env.NEXT_PUBLIC_HERO_CTA_URL ||
-  '/';
+  '/'
 
 export default function FooterMini() {
-  const year = new Date().getFullYear();
-
+  const year = new Date().getFullYear()
   return (
     <footer className={styles.footer} aria-label="Site footer">
       <div className={styles.inner}>
@@ -26,5 +24,5 @@ export default function FooterMini() {
         </nav>
       </div>
     </footer>
-  );
+  )
 }
