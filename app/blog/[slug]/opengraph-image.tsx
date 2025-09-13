@@ -1,15 +1,24 @@
 import { ImageResponse } from 'next/og'
-import { allPosts } from 'contentlayer/generated'
-
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function Image({ params }: { params: { slug: string } }) {
-  const post: any = (allPosts as any[]).find(
-    (p: any) => p.slug === params.slug || p.slugAsParams === params.slug || p._raw?.flattenedPath?.endsWith(params.slug)
-  )
-  const title = (post?.title as string) || 'Marlow Gate'
-  const desc = (post?.description as string) || 'Readable insights. Practical playbooks.'
+function toTitle(slug: string) {
+  return slug.replace(/[-_]/g,' ').replace(/\b\w/g, c => c.toUpperCase())
+}
+
+export default async function Image({ params }: { params: { slug: string } }) {
+  let title = toTitle(params.slug)
+  let desc = 'Readable insights. Practical playbooks.'
+  try {
+    // contentlayer がある前提だが、型やエクスポート名差異に耐性を持たせる
+    const mod: any = await import('contentlayer/generated')
+    const col = mod.allPosts || mod.allArticles || mod.allDocs || []
+    const post: any = col.find((p: any) => p.slug === params.slug || p.slugAsParams === params.slug || p._raw?.flattenedPath?.endsWith(params.slug))
+    if (post) {
+      title = String(post.title ?? title)
+      if (post.description) desc = String(post.description)
+    }
+  } catch {}
 
   return new ImageResponse(
     (<div style={{
