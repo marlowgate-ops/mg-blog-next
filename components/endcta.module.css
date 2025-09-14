@@ -5,6 +5,12 @@
 .list{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
 .list li{background:#eef6ff;border:1px solid #dbeafe;color:#0369a1;border-radius:999px;padding:6px 10px;font-size:12px}
 .actions{display:flex;gap:10px;align-items:center}
-.btn{background:#0ea5e9;color:#fff;padding:10px 16px;border-radius:999px;font-weight:700;box-shadow:0 6px 18px rgba(14,165,233,.35)}
+.btn{background:#0ea5e9;color:#fff;padding:10px 16px;border-radius:999px;font-weight:700;box-shadow:0 6px 18px rgba(14,165,233,.35);text-decoration:none}
 .btn:hover{filter:brightness(1.05)}
-.ghost{background:#f1f5f9;color:#0f172a;padding:10px 14px;border-radius:999px;font-weight:600;border:1px solid #e2e8f0}
+.ghost{background:#f1f5f9;color:#0f172a;padding:10px 14px;border-radius:999px;font-weight:600;border:1px solid #e2e8f0;text-decoration:none}
+@media (prefers-color-scheme: dark){
+  .wrap{background:linear-gradient(180deg,#0b1324 0%,#0f172a 100%);border-color:rgba(148,163,184,.25);box-shadow:0 12px 34px rgba(0,0,0,.45)}
+  .desc,.list li{color:#e2e8f0}
+  .list li{background:#0f172a;border-color:rgba(148,163,184,.3)}
+  .ghost{background:#0b1324;color:#e2e8f0;border-color:rgba(148,163,184,.3)}
+}
