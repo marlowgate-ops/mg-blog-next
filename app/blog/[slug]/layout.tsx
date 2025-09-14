@@ -1,13 +1,11 @@
-export default function BlogPostLayout({ children }: { children: React.ReactNode }) {
-  // Append a persistent CTA right after the article body.
+import type { ReactNode } from 'react'
+import EndCTA from '../../../components/EndCTA'
+
+export default function BlogPostLayout({ children }: { children: ReactNode }) {
   return (
     <article>
       {children}
-      {/* ↓ fixed position: always exists */}
       <EndCTA />
     </article>
-  );
+  )
 }
-
-// Use a relative import that does not rely on tsconfig paths.
-import EndCTA from '../../components/EndCTA';
