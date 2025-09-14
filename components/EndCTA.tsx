@@ -1,28 +1,56 @@
-import Link from 'next/link'
-import s from './endcta.module.css'
+import Link from "next/link";
+import styles from "./endcta.module.css";
 
-const read = (key: string, fallback = '') => process.env[key] ?? fallback
+type Props = {
+  variant?: string | null;
+  href?: string;
+  label?: string;
+  benefits?: string[];
+};
 
-export default function EndCTA() {
-  const url = read('NEXT_PUBLIC_CTA_URL', '/gumroad')
-  const label = read('NEXT_PUBLIC_CTA_LABEL', '詳細を見る')
-  const benefitsRaw = read('NEXT_PUBLIC_CTA_BENEFITS', '最短で理解|手戻りを抑制|実務ですぐ使える')
-  const benefits = benefitsRaw.split('|').map(t => t.trim()).filter(Boolean)
-  const note = read('NEXT_PUBLIC_COPY_VARIANT', 'A')
+export default function EndCTA(props: Props) {
+  const href =
+    props.href ||
+    process.env.NEXT_PUBLIC_CTA_URL ||
+    "https://marlowgate.com/gumroad";
+  const label = props.label || process.env.NEXT_PUBLIC_CTA_LABEL || "詳細を見る";
+  const benefitsRaw =
+    props.benefits ||
+    (process.env.NEXT_PUBLIC_CTA_BENEFITS || "")
+      .split("|")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+  const variant =
+    props.variant || process.env.NEXT_PUBLIC_COPY_VARIANT || "A";
 
   return (
-    <section className={s.wrap} aria-labelledby="cta-end">
-      <div className={s.cta}>
-        <h2 id="cta-end" className={s.title}>次の一歩を、今日から。</h2>
-        <p className={s.desc}>ブログで学んだ内容をすぐ実務に落とすための資料をご用意しました。</p>
-        <ul className={s.list}>
-          {benefits.map((b, i) => <li key={i} className={s.li}>{b}</li>)}
-        </ul>
-        <div className={s.row}>
-          <Link href={url} className={s.btn} data-variant={note} prefetch={false}>{label}</Link>
-          <Link href="/blog" className={`${s.btn} ${s.ghost}`} prefetch={false}>記事一覧へ</Link>
+    <section className={styles.wrap} data-variant={variant}>
+      <div className={styles.body}>
+        <div className={styles.text}>
+          <h3 className={styles.title}>
+            業務テンプレ｜ICS検証ノート
+          </h3>
+          <p className={styles.desc}>
+            読者限定の実務ノウハウを凝縮。すぐ使える雛形と検証プロセスをセットで提供します。
+          </p>
+          {benefitsRaw.length > 0 && (
+            <ul className={styles.list}>
+              {benefitsRaw.map((b, i) => (
+                <li key={i}>{b}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className={styles.actions}>
+          <Link href={href} className={styles.btn}>
+            {label}
+          </Link>
+          <Link href="/blog" className={styles.ghost}>
+            記事一覧へ
+          </Link>
         </div>
       </div>
     </section>
-  )
+  );
 }
