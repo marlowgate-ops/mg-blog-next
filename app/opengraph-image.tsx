@@ -1,13 +1,15 @@
-/* OG default image for the whole site (safe: adds route only) */
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function OG() {
-  const title = process.env.NEXT_PUBLIC_SITE_NAME || 'Marlow Gate – Blog'
-  const tagline = process.env.NEXT_PUBLIC_SITE_TAGLINE || '読むたびに価値が積み上がる。'
+export default async function OG() {
+  const site = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Marlow Gate – Blog'
+  const tagline = process.env.NEXT_PUBLIC_SITE_TAGLINE ?? '読むたびに価値が積み上がる。'
+  const accent = process.env.NEXT_PUBLIC_BRAND_ACCENT ?? '#0EA5E9'
+  const domain = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://blog.marlowgate.com')
+    .replace(/^https?:\/\//, '').replace(/\/$/, '')
 
   return new ImageResponse(
     (
@@ -19,21 +21,48 @@ export default function OG() {
           flexDirection: 'column',
           justifyContent: 'center',
           padding: 64,
-          background: 'linear-gradient(135deg, #0ea5e9 0%, #0f172a 100%)',
-          color: '#e2e8f0',
+          background: 'linear-gradient(135deg, #f8fafc 0%, #e2f2ff 100%)',
         }}
       >
-        <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.1 }}>
-          {title}
+        <div
+          style={{
+            fontSize: 60,
+            fontWeight: 800,
+            letterSpacing: -1.2,
+            color: '#0f172a',
+            lineHeight: 1.2,
+          }}
+        >
+          {site}
         </div>
-        <div style={{ fontSize: 28, marginTop: 10, opacity: 0.9 }}>
+        <div
+          style={{
+            marginTop: 16,
+            fontSize: 32,
+            color: '#334155',
+            fontWeight: 500,
+          }}
+        >
           {tagline}
         </div>
-        <div style={{ position: 'absolute', left: 64, bottom: 56, fontSize: 20, opacity: 0.75 }}>
-          {process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.marlowgate.com'}
+
+        <div
+          style={{
+            position: 'absolute',
+            right: 64,
+            bottom: 64,
+            padding: '12px 20px',
+            background: accent,
+            color: '#fff',
+            borderRadius: 16,
+            fontSize: 28,
+            fontWeight: 800,
+          }}
+        >
+          {domain}
         </div>
       </div>
     ),
-    { ...size }
+    size
   )
 }
