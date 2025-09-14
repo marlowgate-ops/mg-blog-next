@@ -1,19 +1,14 @@
-import type { ReactNode } from 'react'
-import JsonLdArticle from '../../../components/JsonLdArticle'
-import ArticleReaderStyles from '../../../components/ArticleReaderStyles'
-import ArticleTocFloating from '../../../components/ArticleTocFloating'
-import ShareBar from '../../../components/ShareBar'
-import ArticleCTA from '../../../components/ArticleCTA'
+import React from 'react'
+import ArticleFooterCTA from '@/components/ArticleFooterCTA'
 
-export default function BlogPostTemplate({ children }: { children: ReactNode }) {
+// This template wraps every /blog/[slug] page.
+// It lets us append the CTA after the article without changing page.tsx.
+export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <JsonLdArticle />
-      <ArticleReaderStyles />
-      <ArticleTocFloating />
       {children}
-      <ShareBar />
-      <ArticleCTA />
+      {/* Persistent, non-intrusive CTA under the article */}
+      <ArticleFooterCTA />
     </>
   )
 }
