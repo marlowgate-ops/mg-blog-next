@@ -1,31 +1,29 @@
+'use client'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import s from './breadcrumbs.module.css'
 
-type Crumb = { name: string; href?: string }
+export default function Breadcrumbs() {
+  const pathname = usePathname() || '/'
+  const parts = pathname.split('/').filter(Boolean)
+  const items = [{ href: '/', label: 'トップへ' }]
+  if (parts[0] !== 'blog') items.push({ href: '/blog', label: '記事一覧' })
+  if (parts[0] === 'blog' && parts[1]) items.push({ href: pathname, label: decodeURIComponent(parts[1]) })
 
-export default function Breadcrumbs({ items }: { items: Crumb[] }) {
-  if (!items?.length) return null
   return (
-    <nav aria-label="パンくず" className="breadcrumbs">
-      <ol>
-        {items.map((it, idx) => {
-          const isLast = idx === items.length - 1
-          return (
-            <li key={idx} style={{display:'flex', alignItems:'center'}}>
-              {it.href && !isLast ? (
-                <Link href={it.href} className="crumb-link"><span>{it.name}</span></Link>
-              ) : (
-                <span className="crumb-current" aria-current={isLast ? 'page' : undefined}>{it.name}</span>
-              )}
-              {!isLast && (
-                <span className="sep" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
-                </span>
-              )}
-            </li>
-          )
-        })}
+    <nav aria-label="パンくずリスト" className={s.wrap}>
+      <ol className={s.list}>
+        {items.map((it, i) => (
+          <li key={i} className={s.item}>
+            {i < items.length - 1 ? (
+              <Link href={it.href} className={s.link} prefetch={false}>
+                {it.label}
+              </Link>
+            ) : (
+              <span className={s.current} aria-current="page">{it.label}</span>
+            )}
+          </li>
+        ))}
       </ol>
     </nav>
   )
