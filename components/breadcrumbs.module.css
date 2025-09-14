@@ -1,0 +1,12 @@
+.wrap{margin:8px 0 18px}
+.list{display:flex;flex-wrap:wrap;gap:4px 10px;margin:0;padding:0;list-style:none;align-items:center}
+.item{display:flex;gap:10px;align-items:center;color:#64748b;font-size:12px}
+.item::after{content:'›';opacity:.5}
+.item:last-child::after{content:''}
+.link{color:#0ea5e9;text-decoration:none;border-bottom:1px dashed rgba(14,165,233,.35)}
+.link:hover{filter:brightness(1.1)}
+.current{font-weight:700;color:#0f172a}
+@media (prefers-color-scheme: dark){
+  .item{color:#94a3b8}
+  .current{color:#e2e8f0}
+}
