@@ -1,11 +1,12 @@
-import EndCTA from '@/app/components/EndCTA'
+import type { ReactNode } from "react";
+import EndCTA from "../../components/EndCTA";
 
-export default function BlogSlugLayout({ children }: { children: React.ReactNode }) {
+export default function BlogSlugLayout({ children }: { children: ReactNode }) {
   return (
     <>
       {children}
-      {/* Article-end CTA */}
+      {/* 記事末尾固定CTA */}
       <EndCTA />
     </>
-  )
+  );
 }
