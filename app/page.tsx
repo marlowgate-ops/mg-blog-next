@@ -1,85 +1,63 @@
-import Link from 'next/link'
-import s from './home.module.css'
+// app/page.tsx — 完全置換（ヒーロー＋最新6件カード）
+// 目的：トップの第一ビューで価値訴求とCTA、直近記事をカードで提示。
+import Link from "next/link";
+import type { Metadata } from "next";
+import { allPosts } from "contentlayer/generated";
+import ArticleCard from "@/components/ArticleCard";
 
-async function getLatest(limit = 3) {
-  try {
-    const mod: any = await import('contentlayer/generated')
-    const all: any[] = (mod.allPosts || mod.allArticles || mod.allDocs || [])
-    const sorted = [...all].sort((a,b) => {
-      const da = new Date(a.date || 0).getTime()
-      const db = new Date(b.date || 0).getTime()
-      return db - da
-    })
-    return sorted.slice(0, limit)
-  } catch {
-    return []
-  }
-}
+export const metadata: Metadata = {
+  title: "Marlow Gate Blog",
+  description: "Templates, data, and trading ops — faster, safer, repeatable.",
+  alternates: { types: { "application/rss+xml": "/rss.xml" } },
+  openGraph: { type: "website", url: "https://blog.marlowgate.com/", title: "Marlow Gate Blog" },
+  twitter: { card: "summary_large_image" },
+};
 
-const SITE = {
-  name: process.env.NEXT_PUBLIC_SITE_NAME || 'Marlow Gate',
-  tagline: '最新の公開記事をお届けします。読みやすさと実用性を両立した、ここでしか読めないノウハウを。'
+function getLatest(n:number) {
+  return [...allPosts]
+    .filter(p => !p.draft)
+    .sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, n);
 }
 
 export default async function Page() {
-  const posts = await getLatest(3)
+  const posts = getLatest(6);
   return (
-    <main className={s.container}>
-      <section className={s.hero}>
-        <h1 className={s.heroTitle}>Latest articles</h1>
-        <p className={s.heroLead}>{SITE.tagline}</p>
-        <div className={s.heroActions}>
-          <Link className={s.btn} href="/blog/page/1">すべての記事を見る</Link>
-          <Link className={`${s.btn} ${s.ghost}`} href="/blog">トップへ</Link>
+    <main className="container">
+      <section className="hero">
+        <h1>Marlow Gate</h1>
+        <p className="lead">
+          不動産テンプレ × 取引カレンダー × 自動売買ノウハウ。<br/>
+          工数を1/10に、事故を未然に。
+        </p>
+        <div className="cta">
+          <Link href="https://store.marlowgate.com" className="btn">ストアを見る</Link>
+          <Link href="/rss.xml" className="btn btn-ghost">RSSを購読</Link>
         </div>
       </section>
 
-      <section className={s.grid}>
-        {posts.length === 0 ? (
-          <>
-            <ArticleCardSkeleton />
-            <ArticleCardSkeleton />
-            <ArticleCardSkeleton />
-          </>
-        ) : (
-          posts.map((p) => <ArticleCard key={String(p._id || p.slug)} post={p} />)
-        )}
+      <section className="grid">
+        {posts.map(p => (
+          <ArticleCard
+            key={p._id}
+            href={`/blog/${p.slug}`}
+            title={p.title}
+            date={p.date}
+            description={p.description ?? ""}
+            tags={p.tags ?? []}
+          />
+        ))}
       </section>
 
-      <section className={s.promo}>
-        <div className={s.promoCard}>
-          <div>
-            <div className={s.promoTitle}>業務テンプレ｜ICS検証ノート</div>
-            <div className={s.promoSub}>実務テンプレ｜ICS|検証ノート</div>
-          </div>
-          <Link className={`${s.btn} ${s.small}`} href={process.env.NEXT_PUBLIC_CTA_URL || '/gumroad'}>詳細を見る</Link>
-        </div>
-      </section>
+      <style jsx>{`
+        .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+        .hero { padding: 40px 0 24px; }
+        .lead { font-size: 1.1rem; line-height: 1.8; opacity: .9 }
+        .cta { display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+        .btn { padding: 10px 14px; border-radius: 10px; border:1px solid #333; text-decoration:none }
+        .btn-ghost { background: transparent }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 16px; margin: 20px 0 40px; }
+      `}</style>
     </main>
-  )
-}
-
-function ArticleCard({ post }: { post: any }) {
-  const slug = String(post.slug || post.slugAsParams || post._raw?.flattenedPath || '')
-  const href = '/blog/' + slug
-  const date = post.date ? new Date(post.date).toLocaleDateString('ja-JP') : ''
-  const tag = (post.tags && post.tags[0]) || post.category || null
-  const desc = (post.description || '').slice(0, 110)
-
-  return (
-    <Link className={s.card} href={href}>
-      <div>
-        <div className={s.title}>{post.title || slug}</div>
-        <div className={s.desc}>{desc}</div>
-      </div>
-      <div className={s.meta}>
-        {tag ? <span className={s.pill}>{String(tag)}</span> : null}
-        {date ? <span>{date}</span> : null}
-      </div>
-    </Link>
-  )
-}
-
-function ArticleCardSkeleton() {
-  return <div className={s.skeleton} />
+  );
 }
