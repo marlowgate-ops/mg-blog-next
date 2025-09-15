@@ -1,3 +1,4 @@
+'use client'
 export default function LegalPage({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <main className="container">
