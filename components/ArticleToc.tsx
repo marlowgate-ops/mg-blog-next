@@ -1,9 +1,7 @@
-// components/ArticleToc.tsx — 新規追加（簡易目次：クライアント側でh2/h3を収集）
+// components/ArticleToc.tsx — 簡易目次（h2/h3収集）
 "use client";
 import { useEffect, useState } from "react";
-
 type Item = { id: string; text: string; level: number };
-
 export default function ArticleToc() {
   const [items, setItems] = useState<Item[]>([]);
   useEffect(() => {
