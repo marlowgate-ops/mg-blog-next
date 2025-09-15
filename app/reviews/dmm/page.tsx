@@ -1,3 +1,4 @@
+'use client'
 
 import AffLink from "@/components/AffLink"
 import { AFF } from "@/lib/aff-config"
