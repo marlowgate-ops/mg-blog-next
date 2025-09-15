@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { site } from '@/lib/site'
 import { Inter } from 'next/font/google'
+import Header from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {plausibleDomain ? (
           <script defer data-domain={plausibleDomain} src="https://plausible.io/js/plausible.js"></script>
         ) : null}
+        <Header />
         <main className="mx-auto max-w-3xl px-5 py-10">{children}</main>
       </body>
     </html>
