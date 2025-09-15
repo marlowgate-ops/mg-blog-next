@@ -14,6 +14,10 @@ export default function FooterMini() {
           <strong>Marlow Gate</strong> <span className={styles.sep}>•</span> {year}
         </div>
         <nav className={styles.nav} aria-label="Footer links">
+          <a href="/about" className={styles.link}>About</a>
+          <a href="/privacy" className={styles.link}>Privacy</a>
+          <a href="/disclaimer" className={styles.link}>免責事項</a>
+          <a href="/policy" className={styles.link}>サイトポリシー</a>
           {showRss ? <a href="/rss.xml" className={styles.link}>RSS</a> : null}
           {showSitemap ? <a href="/sitemap.xml" className={styles.link}>Sitemap</a> : null}
           <a href={storeUrl} target="_blank" rel="noopener noreferrer" className={styles.cta}>Store</a>
