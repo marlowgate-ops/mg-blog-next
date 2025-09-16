@@ -1,43 +1,46 @@
 'use client'
 import React from 'react'
 
-type AffLinkProps = {
+type Props = {
   href: string
-  brand: string
-  placement?: 'top'|'middle'|'bottom'|'sidebar'|'inline'
-  variant?: string
-  className?: string
   children: React.ReactNode
+  gaLabel?: string
+  className?: string
+  rel?: string
+  target?: string
 }
 
-/**
- * AffLink — affiliate-safe anchor with GA4 event and rel attributes.
- * - Sends `affiliate_click` with {brand, page_type, placement, variant}.
- * - Adds rel="sponsored noopener nofollow" and target="_blank".
- * - If href is empty, disables the button-like anchor.
- */
-export default function AffLink({ href, brand, placement='inline', variant='A', className='', children }: AffLinkProps) {
-  const onClick = () => {
+export default function AffLink({ href, children, gaLabel, className, rel, target }: Props) {
+  const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     try {
-      // GA4 gtag
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const w = window as any
-      if (w?.gtag) {
-        w.gtag('event', 'affiliate_click', {
-          brand, placement, variant, page_type: 'best',
+      const label = gaLabel || (typeof children === 'string' ? children : 'aff_click')
+      const params = {
+        event: 'affiliate_click',
+        link_url: href,
+        link_domain: (() => { try { return new URL(href).hostname } catch { return '' } })(),
+        ga_label: label,
+      } as any
+
+      if (typeof window !== 'undefined' && (window as any).dataLayer) {
+        ;(window as any).dataLayer.push(params)
+      }
+      if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+        ;(window as any).gtag('event', 'affiliate_click', {
+          event_category: 'engagement',
+          event_label: label,
+          link_url: href,
+          value: 1,
+          debug_mode: typeof window !== 'undefined' && window.location.search.includes('debug=1'),
+          transport_type: 'beacon',
         })
       }
-    } catch { /* noop */ }
+    } catch {}
   }
-  const safeHref = href?.trim()?.length ? href : undefined
-  const common = {
-    rel: 'sponsored noopener nofollow',
-    target: '_blank',
-    onClick,
-    className: className + (safeHref ? '' : ' opacity-60 pointer-events-none'),
-  } as React.AnchorHTMLAttributes<HTMLAnchorElement>
-  if (!safeHref) {
-    return <span aria-disabled="true" {...common as any}>{children}</span>
-  }
-  return <a href={safeHref} {...common}>{children}</a>
+
+  const finalRel = rel || 'sponsored noopener nofollow'
+  return (
+    <a href={href} onClick={onClick} className={className} rel={finalRel} target={target}>
+      {children}
+    </a>
+  )
 }
