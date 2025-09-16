@@ -1,56 +1,37 @@
 'use client'
-import AffLink from '@/components/AffLink'
 import Stars from '@/components/Stars'
-
+import AffLink from '@/components/AffLink'
 export default function ComparisonTable(){
-  const DMM = process.env.NEXT_PUBLIC_AFF_DMM || 'https://securities.dmm.com/'
+  const DMM = process.env.NEXT_PUBLIC_AFF_DMM || ''
+  const FXTF = process.env.NEXT_PUBLIC_AFF_FXTF || ''
   const rows = [
-    { name:'DMM.com証券', score:88, account:'FX / CFD / 株', platform:'Web / アプリ', fee:'—', spread:'編集評価', link: DMM },
-    { name:'松井証券（準備中）', score:0, account:'—', platform:'—', fee:'—', spread:'—', link:'#' },
-    { name:'GMOクリック証券（準備中）', score:0, account:'—', platform:'—', fee:'—', spread:'—', link:'#' },
+    {name:'DMM.com証券', score:88, account:'FX / CFD / 株', platform:'Web / アプリ', cost:'編集評価', note:'—', link:DMM},
+    {name:'ゴールデンウェイ・ジャパン（FXTF）', score:0, account:'FX', platform:'Web / アプリ', cost:'—', note:'—', link:FXTF},
+    {name:'松井証券（準備中）', score:0, account:'—', platform:'—', cost:'—', note:'—', link:'#'},
+    {name:'GMOクリック証券（準備中）', score:0, account:'—', platform:'—', cost:'—', note:'—', link:'#'},
   ]
   return (
-    <div className="wrap">
-      <div className="hdr">
-        <h2>主要スペック比較</h2>
-      </div>
-      <div className="tblwrap">
-        <table className="tbl" role="table">
-          <thead>
-            <tr>
-              <th>業者</th>
-              <th>編集スコア</th>
-              <th>口座/商品</th>
-              <th>プラットフォーム</th>
-              <th>コスト</th>
-              <th>備考</th>
-              <th>口座開設</th>
+    <div style={{overflow:'auto'}}>
+      <table style={{minWidth:900,width:'100%'}} role="table">
+        <thead>
+          <tr>
+            <th>業者</th><th>編集スコア</th><th>口座/商品</th><th>プラットフォーム</th><th>コスト</th><th>備考</th><th>口座開設</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r,i)=>(
+            <tr key={i}>
+              <td>{r.name}</td>
+              <td><Stars score={r.score}/></td>
+              <td>{r.account}</td>
+              <td>{r.platform}</td>
+              <td>{r.cost}</td>
+              <td>{r.note}</td>
+              <td>{r.link ? <AffLink href={r.link} gaLabel={`table-${r.name}`}>公式サイトで口座開設</AffLink> : '-'}</td>
             </tr>
-          </thead>
-          <tbody>
-            {rows.map((r,i)=>(
-              <tr key={i}>
-                <td>{r.name}</td>
-                <td><Stars score={r.score} /></td>
-                <td>{r.account}</td>
-                <td>{r.platform}</td>
-                <td>{r.fee}</td>
-                <td>{r.spread}</td>
-                <td><AffLink href={r.link} gaLabel={`table-${r.name}`}>公式サイトで口座開設</AffLink></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <style jsx>{`
-        .wrap{ margin-top:18px; }
-        .hdr{ display:flex; align-items:center; justify-content:space-between; }
-        .tblwrap{ overflow-x:auto; }
-        .tbl{ width:100%; border-collapse:separate; border-spacing:0; min-width:760px; }
-        th,td{ text-align:left; padding:10px 12px; border-bottom:1px solid #e5e7eb; }
-        thead th{ position:sticky; top:64px; background:#fff; z-index:1; }
-        tbody tr:hover{ background:#fafafa; }
-      `}</style>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }
