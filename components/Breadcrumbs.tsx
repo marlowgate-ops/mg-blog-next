@@ -1,30 +1,21 @@
 'use client'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import s from './breadcrumbs.module.css'
 
-export default function Breadcrumbs() {
-  const pathname = usePathname() || '/'
-  const parts = pathname.split('/').filter(Boolean)
-  const items = [{ href: '/', label: 'トップへ' }]
-  if (parts[0] !== 'blog') items.push({ href: '/blog', label: '記事一覧' })
-  if (parts[0] === 'blog' && parts[1]) items.push({ href: pathname, label: decodeURIComponent(parts[1]) })
-
+export default function Breadcrumbs({items}:{items:{name:string, href?:string}[]}){
   return (
-    <nav aria-label="パンくずリスト" className={s.wrap}>
-      <ol className={s.list}>
-        {items.map((it, i) => (
-          <li key={i} className={s.item}>
-            {i < items.length - 1 ? (
-              <Link href={it.href} className={s.link} prefetch={false}>
-                {it.label}
-              </Link>
-            ) : (
-              <span className={s.current} aria-current="page">{it.label}</span>
-            )}
-          </li>
-        ))}
-      </ol>
+    <nav className="bc" aria-label="パンくずリスト">
+      {items.map((it,idx)=>(
+        <span key={idx} className="item">
+          {it.href ? <Link href={it.href}>{it.name}</Link> : <span aria-current="page">{it.name}</span>}
+          {idx < items.length-1 && <span className="sep">›</span>}
+        </span>
+      ))}
+      <style jsx>{`
+        .bc { font-size:.9rem; color:#6b7280; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+        .item :global(a){ color:#6b7280; }
+        .item :global(a:hover){ color:#111827; text-decoration:underline; }
+        .sep{ margin:0 2px; }
+      `}</style>
     </nav>
   )
 }
