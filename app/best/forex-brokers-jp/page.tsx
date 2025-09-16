@@ -104,7 +104,8 @@ export default function Page(){
     { key:'dmm', name:'DMM.com証券', score:sDMM, status:'live', account:'FX / CFD / 株', platform:'Web / アプリ', cost:'編集評価', note:'—', link:DMM || undefined },
     { key:'matsui', name:'松井証券（準備中）', score:sMatsui, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
     { key:'gmoclick', name:'GMOクリック証券（準備中）', score:sGmo, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
-    { key:'fxtf', name:'ゴールデンウェイ・ジャパン（FXTF）', score:sFXTF, status:'prep', account:'FX', platform:'Web / アプリ', cost:'—', note:'—', link:FXTF || undefined },
+    // FXTF は Live（CTA 表示）に変更
+    { key:'fxtf', name:'ゴールデンウェイ・ジャパン（FXTF）', score:sFXTF, status:'live', account:'FX', platform:'Web / アプリ', cost:'—', note:'—', link:FXTF || undefined },
   ]
 
   const itemListLD = useMemo(()=>{
@@ -112,6 +113,7 @@ export default function Page(){
     return { '@context':'https://schema.org', '@type':'ItemList', itemListElement: list }
   },[rows])
 
+  // Liveの銘柄（DMM, FXTF）に AggregateRating を付与
   const aggLD = useMemo(()=>{
     const live = rows.filter(r=>r.status==='live').map(r=>({
       '@type':'Organization',
@@ -147,7 +149,7 @@ export default function Page(){
           pros={['準備中']} cons={['準備中']} status="prep"/>
         <Card code="fxtf" name="ゴールデンウェイ・ジャパン（FXTF）" score={sFXTF}
           pros={['スワップ・キャンペーンに注目','アプリ改善中']} cons={['ECN非対応','情報量は大手に劣る']}
-          status="prep"/>
+          href={FXTF} status="live"/>
       </section>
 
       <h2 style={{margin:'18px 0 8px 0'}}>主要スペック比較</h2>
