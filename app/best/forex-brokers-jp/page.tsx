@@ -4,7 +4,6 @@ import Stars from '@/components/Stars'
 import AffLink from '@/components/AffLink'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import BrandLogo from '@/components/BrandLogo'
-import { useMemo } from 'react'
 
 type Broker = { key:string; name:string; score:number; status:'live'|'prep'; account:string; platform:string; cost:string; note:string; link?:string }
 
@@ -117,22 +116,22 @@ export default function Page(){
 
   return (
     <main className={styles.container}>
-      {/* PR バッジ＆ポップオーバー */}
-      <div className={styles.prWrap}>
-        <div className={styles.prBadge} tabIndex={0} aria-describedby="pr-tip">
-          PR
-          <div className={styles.prTip} id="pr-tip">
-            このページには広告（アフィリエイトリンク）が含まれます。<br/>
-            掲載順位や推奨は編集基準に基づき、<b>広告の有無のみで決定されません</b>。
-          </div>
-        </div>
-      </div>
-
       <Breadcrumbs items={[
         {name:'ホーム', href:'/'}, {name:'比較', href:'/best'}, {name:'国内向けFX・CFD'}
       ]}/>
 
       <section className={styles.hero}>
+        {/* PR：みんかぶのようにヒーローブロックの右上に「置く」だけ。スクロールで固定しない */}
+        <div className={styles.prLocal}>
+          <div className={styles.prBadge} tabIndex={0} aria-describedby="pr-tip">
+            PR
+            <div className={styles.prTip} id="pr-tip">
+              このページには広告（アフィリエイトリンク）が含まれます。<br/>
+              掲載順位や推奨は編集基準に基づき、<b>広告の有無のみで決定されません</b>。
+            </div>
+          </div>
+        </div>
+
         <h1 className={styles.heroTitle}>【2025年版】 国内向けおすすめFX・CFD業者ランキング</h1>
         <p className={styles.heroLead}>初心者〜中級まで乗換が安定する、<b>国内サービス</b>を中心に選ぶ。評価軸は「スプレッド/手数料・約定・入出金・サポート」。</p>
         <div className={styles.anchorNav}>
