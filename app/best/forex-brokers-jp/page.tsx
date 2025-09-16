@@ -4,12 +4,28 @@ import styles from '../best.module.css'
 import Stars from '@/components/Stars'
 import AffLink from '@/components/AffLink'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import { useMemo } from 'react'
 
-function Card({name,score,pros=[],cons=[],href}:{name:string;score:number;pros?:string[];cons?:string[];href?:string}){
+type Broker = { key:string; name:string; score:number; status:'live'|'prep'; account:string; platform:string; cost:string; note:string; link?:string }
+
+const logos: Record<string,string> = {
+  'dmm':'DMM',
+  'fxtf':'FXTF',
+  'matsui':'松',
+  'gmoclick':'G'
+}
+
+function Logo({code}:{code:string}){
+  const txt = logos[code] || code.slice(0,2).toUpperCase()
+  return <span className={styles.logo} aria-hidden="true">{txt}</span>
+}
+
+function Card({code,name,score,pros=[],cons=[],href,status}:{code:string;name:string;score:number;pros?:string[];cons?:string[];href?:string;status:'live'|'prep'}){
+  const showCTA = status==='live' && !!href
   return (
     <div className={styles.card}>
       <div className={styles.cardHead}>
-        <div className={styles.cardTitle}>{name}</div>
+        <div className={styles.cardTitle}><Logo code={code}/>{name}{status==='prep'?<span className={styles.prep}>準備中</span>:null}</div>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <Stars score={score}/>
           <div style={{fontSize:12,color:'#6b7280'}}>{score}/100</div>
@@ -25,20 +41,12 @@ function Card({name,score,pros=[],cons=[],href}:{name:string;score:number;pros?:
           <ul style={{margin:0,paddingLeft:18}}>{cons.map((p,i)=><li key={i}>{p}</li>)}</ul>
         </div>
       </div>
-      {href ? <div><AffLink className={styles.cta} href={href} gaLabel={`card-${name}`}>公式サイトで口座開設</AffLink></div> : null}
+      {showCTA ? <div><AffLink className={styles.cta} href={href!} gaLabel={`card-${name}`}>公式サイトで口座開設</AffLink></div> : null}
     </div>
   )
 }
 
-function Table(){
-  const DMM = process.env.NEXT_PUBLIC_AFF_DMM || ''
-  const FXTF = process.env.NEXT_PUBLIC_AFF_FXTF || ''
-  const rows = [
-    {name:'DMM.com証券', score:88, account:'FX / CFD / 株', platform:'Web / アプリ', cost:'編集評価', note:'—', link:DMM},
-    {name:'ゴールデンウェイ・ジャパン（FXTF）', score:0, account:'FX', platform:'Web / アプリ', cost:'—', note:'—', link:FXTF},
-    {name:'松井証券（準備中）', score:0, account:'—', platform:'—', cost:'—', note:'—', link:'#'},
-    {name:'GMOクリック証券（準備中）', score:0, account:'—', platform:'—', cost:'—', note:'—', link:'#'},
-  ]
+function Table({rows}:{rows:Broker[]}){
   return (
     <div id="specs" className={styles.tableWrap}>
       <table className={styles.tbl} role="table">
@@ -55,14 +63,14 @@ function Table(){
         </thead>
         <tbody>
           {rows.map((r,i)=>(
-            <tr key={i}>
-              <td>{r.name}</td>
+            <tr key={r.key}>
+              <td><Logo code={r.key}/> {r.name} {r.status==='prep' && <span className={styles.prep}>準備中</span>}</td>
               <td><Stars score={r.score}/></td>
               <td>{r.account}</td>
               <td>{r.platform}</td>
               <td>{r.cost}</td>
               <td>{r.note}</td>
-              <td>{r.link ? <AffLink className={styles.cta} href={r.link} gaLabel={`table-${r.name}`}>公式サイトで口座開設</AffLink> : '-'}</td>
+              <td>{(r.status==='live' && r.link) ? <AffLink className={styles.cta} href={r.link} gaLabel={`table-${r.name}`}>公式サイトで口座開設</AffLink> : '-'}</td>
             </tr>
           ))}
         </tbody>
@@ -85,6 +93,11 @@ function FAQ(){
           <div className={styles.faqA}>{it.a}</div>
         </details>
       ))}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
+        '@context':'https://schema.org',
+        '@type':'FAQPage',
+        mainEntity: items.map(x=>({ '@type':'Question', name:x.q, acceptedAnswer:{ '@type':'Answer', text:x.a }}))
+      })}}/>
     </div>
   )
 }
@@ -92,11 +105,24 @@ function FAQ(){
 export default function Page(){
   const DMM = process.env.NEXT_PUBLIC_AFF_DMM || ''
   const FXTF = process.env.NEXT_PUBLIC_AFF_FXTF || ''
+
+  const rows:Broker[] = [
+    { key:'dmm', name:'DMM.com証券', score:88, status:'live', account:'FX / CFD / 株', platform:'Web / アプリ', cost:'編集評価', note:'—', link:DMM || undefined },
+    { key:'matsui', name:'松井証券（準備中）', score:0, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
+    { key:'gmoclick', name:'GMOクリック証券（準備中）', score:0, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
+    { key:'fxtf', name:'ゴールデンウェイ・ジャパン（FXTF）', score:0, status:'prep', account:'FX', platform:'Web / アプリ', cost:'—', note:'—', link:FXTF || undefined },
+  ]
+
+  const itemListLD = useMemo(()=>{
+    const list = rows.map((r,idx)=>({ '@type':'ListItem', position: idx+1, name: r.name }))
+    return { '@context':'https://schema.org', '@type':'ItemList', itemListElement: list }
+  },[rows])
+
   return (
     <main className={styles.container}>
       <div className={styles.badgePr}>PR</div>
       <Breadcrumbs items={[
-        {name:'ホーム', href:'/'}, {name:'比較'}, {name:'国内向けFX・CFD'}
+        {name:'ホーム', href:'/'}, {name:'比較', href:'/best'}, {name:'国内向けFX・CFD'}
       ]}/>
 
       <section className={styles.hero}>
@@ -110,22 +136,23 @@ export default function Page(){
       </section>
 
       <section id="rank" className={styles.cards}>
-        <Card name="DMM.com証券" score={88}
+        <Card code="dmm" name="DMM.com証券" score={88}
           pros={['国内大手の信頼感','約定スピードに定評','初心者向けUI']}
           cons={['キャンペーン期は条件要確認']}
-          href={DMM}/>
-        <Card name="松井証券（準備中）" score={0}
-          pros={['準備中']} cons={['準備中']}/>
-        <Card name="ゴールデンウェイ・ジャパン（FXTF）" score={0}
-          pros={['承認済（掲載準備）']} cons={['—']} href={FXTF}/>
+          href={DMM} status="live"/>
+        <Card code="matsui" name="松井証券（準備中）" score={0}
+          pros={['準備中']} cons={['準備中']} status="prep"/>
+        <Card code="fxtf" name="ゴールデンウェイ・ジャパン（FXTF）" score={0}
+          pros={['評価準備中']} cons={['—']} status="prep"/>
       </section>
 
       <h2 style={{margin:'18px 0 8px 0'}}>主要スペック比較</h2>
-      <Table/>
+      <Table rows={rows}/>
 
       <h2 style={{margin:'18px 0 8px 0'}}>よくある質問</h2>
       <FAQ/>
 
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(itemListLD)}}/>
       <p className={styles.note}>表示の順序やスコアは編集部判断です。料金や条件は変動します。最新は各公式をご確認ください。</p>
     </main>
   )
