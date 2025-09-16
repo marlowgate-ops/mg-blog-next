@@ -1,5 +1,4 @@
 'use client'
-import Link from 'next/link'
 import styles from '../best.module.css'
 import Stars from '@/components/Stars'
 import AffLink from '@/components/AffLink'
@@ -118,8 +117,16 @@ export default function Page(){
 
   return (
     <main className={styles.container}>
-      {/* PR バッジ（常時表示） */}
-      <div className={styles.badgePr} role="note" aria-label="広告（PR）">PR</div>
+      {/* PR バッジ＆ポップオーバー */}
+      <div className={styles.prWrap}>
+        <div className={styles.prBadge} tabIndex={0} aria-describedby="pr-tip">
+          PR
+          <div className={styles.prTip} id="pr-tip">
+            このページには広告（アフィリエイトリンク）が含まれます。<br/>
+            掲載順位や推奨は編集基準に基づき、<b>広告の有無のみで決定されません</b>。
+          </div>
+        </div>
+      </div>
 
       <Breadcrumbs items={[
         {name:'ホーム', href:'/'}, {name:'比較', href:'/best'}, {name:'国内向けFX・CFD'}
