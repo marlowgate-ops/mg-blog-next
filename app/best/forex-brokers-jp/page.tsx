@@ -4,31 +4,20 @@ import styles from '../best.module.css'
 import Stars from '@/components/Stars'
 import AffLink from '@/components/AffLink'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import BrandLogo from '@/components/BrandLogo'
 import { useMemo } from 'react'
 
 type Broker = { key:string; name:string; score:number; status:'live'|'prep'; account:string; platform:string; cost:string; note:string; link?:string }
-
-const logos: Record<string,string> = {
-  'dmm':'DMM',
-  'fxtf':'FXTF',
-  'matsui':'松',
-  'gmoclick':'G'
-}
-
-function Logo({code}:{code:string}){
-  const txt = logos[code] || code.slice(0,2).toUpperCase()
-  return <span className={styles.logo} aria-hidden="true">{txt}</span>
-}
 
 function Card({code,name,score,pros=[],cons=[],href,status}:{code:string;name:string;score:number;pros?:string[];cons?:string[];href?:string;status:'live'|'prep'}){
   const showCTA = status==='live' && !!href
   return (
     <div className={styles.card}>
       <div className={styles.cardHead}>
-        <div className={styles.cardTitle}><Logo code={code}/>{name}{status==='prep'?<span className={styles.prep}>準備中</span>:null}</div>
+        <div className={styles.cardTitle}><BrandLogo code={code} alt={`${name} ロゴ`} />{name}{status==='prep'?<span className={styles.prep}>準備中</span>:null}</div>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <Stars score={score}/>
-          <div style={{fontSize:12,color:'#6b7280'}}>{score}/100</div>
+          <div style={{fontSize:12,color:'#6b7280'}}>{(score/20).toFixed(1)} / 5</div>
         </div>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
@@ -62,9 +51,9 @@ function Table({rows}:{rows:Broker[]}){
           </tr>
         </thead>
         <tbody>
-          {rows.map((r,i)=>(
+          {rows.map((r)=>(
             <tr key={r.key}>
-              <td><Logo code={r.key}/> {r.name} {r.status==='prep' && <span className={styles.prep}>準備中</span>}</td>
+              <td><BrandLogo code={r.key} alt={`${r.name} ロゴ`} /> {r.name} {r.status==='prep' && <span className={styles.prep}>準備中</span>}</td>
               <td><Stars score={r.score}/></td>
               <td>{r.account}</td>
               <td>{r.platform}</td>
@@ -106,16 +95,30 @@ export default function Page(){
   const DMM = process.env.NEXT_PUBLIC_AFF_DMM || ''
   const FXTF = process.env.NEXT_PUBLIC_AFF_FXTF || ''
 
+  const sDMM = Number(process.env.NEXT_PUBLIC_SCORE_DMM ?? 88)
+  const sFXTF = Number(process.env.NEXT_PUBLIC_SCORE_FXTF ?? 72)
+  const sMatsui = Number(process.env.NEXT_PUBLIC_SCORE_MATSUI ?? 0)
+  const sGmo = Number(process.env.NEXT_PUBLIC_SCORE_GMOCLICK ?? 0)
+
   const rows:Broker[] = [
-    { key:'dmm', name:'DMM.com証券', score:88, status:'live', account:'FX / CFD / 株', platform:'Web / アプリ', cost:'編集評価', note:'—', link:DMM || undefined },
-    { key:'matsui', name:'松井証券（準備中）', score:0, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
-    { key:'gmoclick', name:'GMOクリック証券（準備中）', score:0, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
-    { key:'fxtf', name:'ゴールデンウェイ・ジャパン（FXTF）', score:0, status:'prep', account:'FX', platform:'Web / アプリ', cost:'—', note:'—', link:FXTF || undefined },
+    { key:'dmm', name:'DMM.com証券', score:sDMM, status:'live', account:'FX / CFD / 株', platform:'Web / アプリ', cost:'編集評価', note:'—', link:DMM || undefined },
+    { key:'matsui', name:'松井証券（準備中）', score:sMatsui, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
+    { key:'gmoclick', name:'GMOクリック証券（準備中）', score:sGmo, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
+    { key:'fxtf', name:'ゴールデンウェイ・ジャパン（FXTF）', score:sFXTF, status:'prep', account:'FX', platform:'Web / アプリ', cost:'—', note:'—', link:FXTF || undefined },
   ]
 
   const itemListLD = useMemo(()=>{
     const list = rows.map((r,idx)=>({ '@type':'ListItem', position: idx+1, name: r.name }))
     return { '@context':'https://schema.org', '@type':'ItemList', itemListElement: list }
+  },[rows])
+
+  const aggLD = useMemo(()=>{
+    const live = rows.filter(r=>r.status==='live').map(r=>({
+      '@type':'Organization',
+      name: r.name,
+      aggregateRating: { '@type':'AggregateRating', ratingValue: (r.score/20).toFixed(1), ratingCount: 100 }
+    }))
+    return { '@context':'https://schema.org', '@graph': live }
   },[rows])
 
   return (
@@ -136,14 +139,15 @@ export default function Page(){
       </section>
 
       <section id="rank" className={styles.cards}>
-        <Card code="dmm" name="DMM.com証券" score={88}
+        <Card code="dmm" name="DMM.com証券" score={sDMM}
           pros={['国内大手の信頼感','約定スピードに定評','初心者向けUI']}
           cons={['キャンペーン期は条件要確認']}
           href={DMM} status="live"/>
-        <Card code="matsui" name="松井証券（準備中）" score={0}
+        <Card code="matsui" name="松井証券（準備中）" score={sMatsui}
           pros={['準備中']} cons={['準備中']} status="prep"/>
-        <Card code="fxtf" name="ゴールデンウェイ・ジャパン（FXTF）" score={0}
-          pros={['評価準備中']} cons={['—']} status="prep"/>
+        <Card code="fxtf" name="ゴールデンウェイ・ジャパン（FXTF）" score={sFXTF}
+          pros={['スワップ・キャンペーンに注目','アプリ改善中']} cons={['ECN非対応','情報量は大手に劣る']}
+          status="prep"/>
       </section>
 
       <h2 style={{margin:'18px 0 8px 0'}}>主要スペック比較</h2>
@@ -153,6 +157,8 @@ export default function Page(){
       <FAQ/>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(itemListLD)}}/>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(aggLD)}}/>
+
       <p className={styles.note}>表示の順序やスコアは編集部判断です。料金や条件は変動します。最新は各公式をご確認ください。</p>
     </main>
   )
