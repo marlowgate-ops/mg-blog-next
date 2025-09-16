@@ -1,11 +1,11 @@
 'use client'
 import AffLink from '@/components/AffLink'
 import Stars from '@/components/Stars'
-import { AFF } from '@/lib/aff-config'
 
 export default function ComparisonTable(){
+  const DMM = process.env.NEXT_PUBLIC_AFF_DMM || 'https://securities.dmm.com/'
   const rows = [
-    { name:'DMM.com証券', score:88, account:'FX / CFD / 株', platform:'Web / アプリ', fee:'—', spread:'編集評価', link: AFF.DMM || 'https://securities.dmm.com/' },
+    { name:'DMM.com証券', score:88, account:'FX / CFD / 株', platform:'Web / アプリ', fee:'—', spread:'編集評価', link: DMM },
     { name:'松井証券（準備中）', score:0, account:'—', platform:'—', fee:'—', spread:'—', link:'#' },
     { name:'GMOクリック証券（準備中）', score:0, account:'—', platform:'—', fee:'—', spread:'—', link:'#' },
   ]
