@@ -104,28 +104,23 @@ export default function Page(){
     { key:'dmm', name:'DMM.com証券', score:sDMM, status:'live', account:'FX / CFD / 株', platform:'Web / アプリ', cost:'編集評価', note:'—', link:DMM || undefined },
     { key:'matsui', name:'松井証券（準備中）', score:sMatsui, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
     { key:'gmoclick', name:'GMOクリック証券（準備中）', score:sGmo, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
-    // FXTF は Live（CTA 表示）に変更
     { key:'fxtf', name:'ゴールデンウェイ・ジャパン（FXTF）', score:sFXTF, status:'live', account:'FX', platform:'Web / アプリ', cost:'—', note:'—', link:FXTF || undefined },
   ]
 
-  const itemListLD = useMemo(()=>{
-    const list = rows.map((r,idx)=>({ '@type':'ListItem', position: idx+1, name: r.name }))
-    return { '@context':'https://schema.org', '@type':'ItemList', itemListElement: list }
-  },[rows])
+  const itemListLD = { '@context':'https://schema.org', '@type':'ItemList',
+    itemListElement: rows.map((r,idx)=>({ '@type':'ListItem', position: idx+1, name: r.name })) }
 
-  // Liveの銘柄（DMM, FXTF）に AggregateRating を付与
-  const aggLD = useMemo(()=>{
-    const live = rows.filter(r=>r.status==='live').map(r=>({
-      '@type':'Organization',
-      name: r.name,
-      aggregateRating: { '@type':'AggregateRating', ratingValue: (r.score/20).toFixed(1), ratingCount: 100 }
-    }))
-    return { '@context':'https://schema.org', '@graph': live }
-  },[rows])
+  const aggLD = { '@context':'https://schema.org', '@graph':
+    rows.filter(r=>r.status==='live').map(r=>({
+      '@type':'Organization', name:r.name,
+      aggregateRating:{ '@type':'AggregateRating', ratingValue:(r.score/20).toFixed(1), ratingCount:100 }
+    })) }
 
   return (
     <main className={styles.container}>
-      <div className={styles.badgePr}>PR</div>
+      {/* PR バッジ（常時表示） */}
+      <div className={styles.badgePr} role="note" aria-label="広告（PR）">PR</div>
+
       <Breadcrumbs items={[
         {name:'ホーム', href:'/'}, {name:'比較', href:'/best'}, {name:'国内向けFX・CFD'}
       ]}/>
