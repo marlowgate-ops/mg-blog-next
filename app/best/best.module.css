@@ -1,15 +1,16 @@
-/* PR popover + placement refine */
-/* container remains as before */
+/* --- container & hero --- */
 .container{max-width:1200px;margin:0 auto;padding:16px;}
-/* PR wrapper fixed at top-right but少し内側 */
-.prWrap{position:fixed;right:28px;top:10px;z-index:10000}
-/* badge */
+.hero{position:relative;display:flex;flex-direction:column;gap:8px;margin:8px 0 16px 0;padding:12px 16px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;}
+.heroTitle{font-size:22px;font-weight:700;margin:0}
+.heroLead{color:#374151;font-size:14px;line-height:1.7;margin:0}
+
+/* --- PR (local in hero, not sticky) --- */
+.prLocal{position:absolute;right:12px;top:10px;z-index:1}
 .prBadge{display:inline-flex;align-items:center;justify-content:center;
   min-width:24px;height:20px;padding:0 8px;border-radius:999px;
   background:#fff;border:1px solid #e5e7eb;color:#111827;font-weight:700;
   font-size:12px;line-height:1;box-shadow:0 1px 2px rgba(0,0,0,.04);outline:0}
 .prBadge:focus-visible{box-shadow:0 0 0 3px rgba(59,130,246,.35)}
-/* tooltip */
 .prTip{position:absolute;right:0;top:calc(100% + 8px);width:max-content;max-width:320px;
   background:#111827;color:#f9fafb;border-radius:10px;padding:10px 12px;
   font-size:12px;line-height:1.6;box-shadow:0 6px 24px rgba(0,0,0,.18);
@@ -18,14 +19,11 @@
 .prBadge:hover .prTip,.prBadge:focus-visible .prTip{opacity:1;visibility:visible;transform:translateY(0)}
 .prTip::after{content:"";position:absolute;right:10px;top:-6px;border:6px solid transparent;border-bottom-color:#111827}
 @media (max-width:900px){
-  .prWrap{right:14px;top:8px}
+  .prLocal{right:10px;top:8px}
   .prTip{max-width:88vw;right:-2px}
 }
 
-/* --- existing styles (kept) --- */
-.hero{display:flex;flex-direction:column;gap:8px;margin:8px 0 16px 0;padding:12px 16px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;}
-.heroTitle{font-size:22px;font-weight:700;margin:0}
-.heroLead{color:#374151;font-size:14px;line-height:1.7;margin:0}
+/* --- rest --- */
 .anchorNav{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
 .anchorNav a{font-size:13px;padding:6px 10px;border:1px solid #e5e7eb;border-radius:999px;background:#fff}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px}
