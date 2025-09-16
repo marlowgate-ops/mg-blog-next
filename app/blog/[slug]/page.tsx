@@ -6,14 +6,24 @@ import styles from './article.module.css'
 import MDXRenderer from '../../../components/MDXRenderer'
 import { blogPostingLD, breadcrumbLD } from '../../../lib/jsonld'
 
+// Restrict dynamic paths strictly to generated params
+export const dynamicParams = false
+
 export function generateStaticParams() {
   const list = Array.isArray(allPosts) ? allPosts : []
-  return list.map((p: any) => ({ slug: p.slugAsParams ?? p.slug }))
+  const filtered = list.filter((p: any) => {
+    const name = String(p?._raw?.sourceFileName || '')
+    const startsWithUnderscore = name.startsWith('_')
+    const isDraft = !!p?.draft
+    const slug = String(p?.slug || p?.slugAsParams || '')
+    return !startsWithUnderscore && !isDraft && !!slug && slug !== 'sample-slug'
+  })
+  return filtered.map((p: any) => ({ slug: String(p.slug || p.slugAsParams) }))
 }
 
 function getPost(slug: string) {
   const list = Array.isArray(allPosts) ? allPosts : []
-  return list.find((p: any) => (p.slugAsParams ?? p.slug) === slug) ?? null
+  return list.find((p: any) => String(p.slug || p.slugAsParams || '') === slug) ?? null
 }
 
 type PageProps = { params: { slug: string } }
@@ -22,19 +32,23 @@ export default function Page({ params }: PageProps) {
   const post: any = getPost(params.slug)
   if (!post) return notFound()
 
-  const ldPost = blogPostingLD({
-    title: post.title,
-    description: post.description || '',
-    url: `https://blog.marlowgate.com${post.url || `/blog/${params.slug}`}`,
-    datePublished: post.date,
-    dateModified: post.lastmod || post.date,
-    authorName: 'Marlow Gate'
-  })
-  const ldCrumbs = breadcrumbLD([
-    { name: 'ホーム', item: 'https://blog.marlowgate.com/' },
-    { name: 'ブログ', item: 'https://blog.marlowgate.com/blog/' },
-    { name: post.title }
-  ])
+  let ldPost: any = {}
+  let ldCrumbs: any = {}
+  try {
+    ldPost = blogPostingLD({
+      title: post.title,
+      description: post.description || '',
+      url: `https://blog.marlowgate.com${post.url || `/blog/${params.slug}`}`,
+      datePublished: post.date,
+      dateModified: post.lastmod || post.date,
+      authorName: 'Marlow Gate'
+    })
+    ldCrumbs = breadcrumbLD([
+      { name: 'ホーム', item: 'https://blog.marlowgate.com/' },
+      { name: 'ブログ', item: 'https://blog.marlowgate.com/blog/' },
+      { name: post.title }
+    ])
+  } catch {}
 
   const CTA_URL = process.env.NEXT_PUBLIC_ARTICLE_CTA_URL || ''
   const CTA_LABEL = process.env.NEXT_PUBLIC_ARTICLE_CTA_LABEL || ''
@@ -62,10 +76,14 @@ export default function Page({ params }: PageProps) {
           </div>
         ) : null}
 
-        <script type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldPost) }} />
-        <script type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldCrumbs) }} />
+        {Object.keys(ldPost).length ? (
+          <script type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(ldPost) }} />
+        ) : null}
+        {Object.keys(ldCrumbs).length ? (
+          <script type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(ldCrumbs) }} />
+        ) : null}
       </section>
     </main>
   )
