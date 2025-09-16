@@ -7,7 +7,9 @@ import MDXRenderer from '../../../components/MDXRenderer'
 import { blogPostingLD, breadcrumbLD } from '../../../lib/jsonld'
 
 export function generateStaticParams() {
-  return allPosts.map((p) => ({ slug: (p as any).slugAsParams ?? p.slug }))
+  const list = Array.isArray(allPosts) ? allPosts : []
+  return list.map((p) => ({ slug: (p as any).slugAsParams ?? p.slug }))
+}))
 }
 
 function getPost(slug: string) {
