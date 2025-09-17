@@ -1,5 +1,5 @@
 :root{ --mg-accent:#0c6cd4; --mg-muted:#eef1f5; --mg-text:#1f2937; --mg-sub:#6b7280; }
-.mg-hero{ background:#f1f6fb; border-radius:12px; padding:20px; margin:18px 0 14px; }
+.mg-hero{ position:relative; background:#f1f6fb; border-radius:12px; padding:20px; margin:18px 0 14px; }
 .mg-hero h1{ margin:0 0 6px; font-size:20px; }
 .mg-hero p{ margin:0; color:var(--mg-sub); font-size:14px; }
 .mg-tabs{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
