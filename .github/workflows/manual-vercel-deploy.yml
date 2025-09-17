@@ -1,7 +1,7 @@
 name: Manual Vercel Deploy
 
 on:
-  workflow_dispatch: {}   # 手動のみ
+  workflow_dispatch: {}   # 手動のみ（自動発火なし）
 
 concurrency:
   group: vercel-prod
@@ -12,6 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      # ジョブ全体で参照できるように固定（CLIはこの環境変数でも認証可能）
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
       - name: Checkout
@@ -22,44 +27,46 @@ jobs:
         with:
           node-version: 20
 
-      # 依存のインストール（パッケージマネージャを自動判定）
-      - name: Install dependencies (auto-detect)
+      - name: Enable package manager (auto)
         shell: bash
         run: |
           echo "Lockfiles in repo:"
           ls -1 pnpm-lock.yaml yarn.lock package-lock.json 2>/dev/null || true
 
           if [ -f pnpm-lock.yaml ]; then
-            echo "==> Use pnpm"
+            echo "==> Use pnpm via corepack"
             corepack enable
             corepack prepare pnpm@9 --activate
             pnpm -v
-            pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
             PKG_MGR=pnpm
           elif [ -f yarn.lock ]; then
-            echo "==> Use yarn"
+            echo "==> Use yarn via corepack"
             corepack enable
             corepack prepare yarn@4 --activate || true
             yarn -v || true
-            yarn install --immutable || yarn install
             PKG_MGR=yarn
-          elif [ -f package-lock.json ]; then
-            echo "==> Use npm (lockfile present)"
-            npm ci || npm install
-            PKG_MGR=npm
           else
-            echo "==> No lockfile found, fallback to npm install"
-            npm install
+            echo "==> Use npm"
+            npm -v
             PKG_MGR=npm
           fi
 
           echo "PKG_MGR=$PKG_MGR" >> $GITHUB_ENV
 
-      # ビルド（上と同じマネージャで）
-      - name: Build (auto-detect)
+      - name: Install dependencies
         shell: bash
         run: |
-          echo "Build with $PKG_MGR"
+          if [ "$PKG_MGR" = "pnpm" ]; then
+            pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+          elif [ "$PKG_MGR" = "yarn" ]; then
+            yarn install --immutable || yarn install
+          else
+            if [ -f package-lock.json ]; then npm ci || npm install; else npm install; fi
+          fi
+
+      - name: Build
+        shell: bash
+        run: |
           if [ "$PKG_MGR" = "pnpm" ]; then
             pnpm build
           elif [ "$PKG_MGR" = "yarn" ]; then
@@ -68,28 +75,27 @@ jobs:
             npm run build
           fi
 
-      # 資格情報の確認（安全な指紋のみ出力）
       - name: Verify Vercel credentials (whoami + fingerprints)
         shell: bash
+        continue-on-error: true
         run: |
-          echo "## Vercel whoami"
-          npx vercel whoami --token=${{ secrets.VERCEL_TOKEN }}
+          echo "## env vars present?"
+          env | grep -E '^VERCEL_(TOKEN|ORG_ID|PROJECT_ID)=' | sed 's/=.*/=*** (masked)/'
+
+          echo "## Vercel whoami (with --token)"
+          npx -y vercel@latest whoami --token="$VERCEL_TOKEN" || echo "::warning title=whoami failed::Check token or org/project ids"
 
           echo "## Fingerprints (SHA256)"
-          echo -n "${{ secrets.VERCEL_TOKEN }}"      | sha256sum | awk '{print $1}' > token.sha
-          echo -n "${{ secrets.VERCEL_ORG_ID }}"     | sha256sum | awk '{print $1}' > org.sha
-          echo -n "${{ secrets.VERCEL_PROJECT_ID }}" | sha256sum | awk '{print $1}' > project.sha
+          printf %s "$VERCEL_TOKEN"      | sha256sum | awk '{print $1}' > token.sha
+          printf %s "$VERCEL_ORG_ID"     | sha256sum | awk '{print $1}' > org.sha
+          printf %s "$VERCEL_PROJECT_ID" | sha256sum | awk '{print $1}' > project.sha
 
           echo "::notice title=VERCEL_TOKEN_SHA256::$(cat token.sha)"
           echo "::notice title=VERCEL_ORG_ID_SHA256::$(cat org.sha)"
           echo "::notice title=VERCEL_PROJECT_ID_SHA256::$(cat project.sha)"
 
       - name: Vercel pull (prod)
-        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: npx -y vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
 
       - name: Deploy to Vercel (prebuilt, prod, single)
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: npx vercel deploy --prebuilt --prod --yes
+        run: npx -y vercel@latest deploy --prebuilt --prod --yes --token="$VERCEL_TOKEN"
