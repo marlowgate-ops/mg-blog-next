@@ -1,20 +1,7 @@
 name: Manual Vercel Deploy
 
 on:
-  workflow_dispatch: {}
-  push:
-    branches: [ main ]
-    paths:
-      - 'app/**'
-      - 'components/**'
-      - 'public/**'
-      - 'content/**'
-      - 'scripts/**'
-      - 'next.config.*'
-      - 'vercel.json'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - '.github/workflows/manual-vercel-deploy.yml'
+  workflow_dispatch: {}   # 手動のみ（自動発火なし）
 
 concurrency:
   group: vercel-prod
@@ -34,12 +21,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
+      - name: Enable pnpm via Corepack
+        shell: bash
+        run: |
+          corepack enable
+          corepack prepare pnpm@9 --activate
+          pnpm -v
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -47,15 +35,15 @@ jobs:
       - name: Build (local)
         run: pnpm build
 
-      # == Persistent verification (safe logs) ==
       - name: Verify Vercel credentials (whoami + fingerprints)
+        shell: bash
         run: |
           echo "## Vercel whoami"
           npx vercel whoami --token=${{ secrets.VERCEL_TOKEN }}
 
           echo "## Fingerprints (SHA256)"
-          echo -n "${{ secrets.VERCEL_TOKEN }}"   | sha256sum | awk '{print $1}' > token.sha
-          echo -n "${{ secrets.VERCEL_ORG_ID }}"  | sha256sum | awk '{print $1}' > org.sha
+          echo -n "${{ secrets.VERCEL_TOKEN }}"      | sha256sum | awk '{print $1}' > token.sha
+          echo -n "${{ secrets.VERCEL_ORG_ID }}"     | sha256sum | awk '{print $1}' > org.sha
           echo -n "${{ secrets.VERCEL_PROJECT_ID }}" | sha256sum | awk '{print $1}' > project.sha
 
           echo "::notice title=VERCEL_TOKEN_SHA256::$(cat token.sha)"
