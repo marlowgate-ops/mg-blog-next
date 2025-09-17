@@ -14,3 +14,6 @@
 .mg-faq details + details{ margin-top:8px; }
 .mg-faq summary{ font-weight:700; cursor:pointer; }
 .mg-lead-cta{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px; background:#0070f3; color:#fff; text-decoration:none; font-weight:700; margin-top:12px; }
+
+/* v3 additions: IconNav spacing & TOC */
+.mg-section + .mg-section{ margin-top: 16px; }
