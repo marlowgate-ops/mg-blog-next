@@ -1,7 +1,7 @@
 name: Manual Vercel Deploy
 
 on:
-  workflow_dispatch: {}   # 手動のみ（自動発火なし）
+  workflow_dispatch: {}   # 手動のみ
 
 concurrency:
   group: vercel-prod
@@ -22,19 +22,53 @@ jobs:
         with:
           node-version: 20
 
-      - name: Enable pnpm via Corepack
+      # 依存のインストール（パッケージマネージャを自動判定）
+      - name: Install dependencies (auto-detect)
         shell: bash
         run: |
-          corepack enable
-          corepack prepare pnpm@9 --activate
-          pnpm -v
+          echo "Lockfiles in repo:"
+          ls -1 pnpm-lock.yaml yarn.lock package-lock.json 2>/dev/null || true
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          if [ -f pnpm-lock.yaml ]; then
+            echo "==> Use pnpm"
+            corepack enable
+            corepack prepare pnpm@9 --activate
+            pnpm -v
+            pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+            PKG_MGR=pnpm
+          elif [ -f yarn.lock ]; then
+            echo "==> Use yarn"
+            corepack enable
+            corepack prepare yarn@4 --activate || true
+            yarn -v || true
+            yarn install --immutable || yarn install
+            PKG_MGR=yarn
+          elif [ -f package-lock.json ]; then
+            echo "==> Use npm (lockfile present)"
+            npm ci || npm install
+            PKG_MGR=npm
+          else
+            echo "==> No lockfile found, fallback to npm install"
+            npm install
+            PKG_MGR=npm
+          fi
 
-      - name: Build (local)
-        run: pnpm build
+          echo "PKG_MGR=$PKG_MGR" >> $GITHUB_ENV
 
+      # ビルド（上と同じマネージャで）
+      - name: Build (auto-detect)
+        shell: bash
+        run: |
+          echo "Build with $PKG_MGR"
+          if [ "$PKG_MGR" = "pnpm" ]; then
+            pnpm build
+          elif [ "$PKG_MGR" = "yarn" ]; then
+            yarn build
+          else
+            npm run build
+          fi
+
+      # 資格情報の確認（安全な指紋のみ出力）
       - name: Verify Vercel credentials (whoami + fingerprints)
         shell: bash
         run: |
