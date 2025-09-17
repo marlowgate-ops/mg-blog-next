@@ -1,12 +1,13 @@
 "use client";
 import React from "react";
 import { Tooltip } from "./ui/Tooltip";
+import { PR_BADGE_TOOLTIP } from "@/content/disclosure";
 
 /** Hero内右上に置くPRバッジ（非固定）。ツールチップは左側表示で切れを防止 */
 export default function PrBadge() {
   return (
     <div className="mg-pr-badge">
-      <Tooltip label="当ページにはアフィリエイト広告等のプロモーションを含みます。掲載順位・評価は独自基準に基づくもので、広告掲載の有無とは独立しています。詳細はガイド/運営ポリシーをご確認ください。" side="left">
+      <Tooltip label={PR_BADGE_TOOLTIP} side="left">
         <span aria-label="PR" tabIndex={0}>PR</span>
       </Tooltip>
       <style jsx global>{`
