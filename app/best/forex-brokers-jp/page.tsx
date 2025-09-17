@@ -1,72 +1,79 @@
+"use client";
 import React from "react";
-import HeroTabs from "../../../components/HeroTabs";
-import RankCard from "../../../components/RankCard";
-import SpecTable from "../../../components/SpecTable";
-import Faq from "../../../components/Faq";
-import JsonLd from "../../../components/JsonLd";
-import { brokers } from "../../../data/brokers";
-import { breadcrumbList, itemListJSONLD, faqPage } from "../../../lib/seo/jsonld";
-
-export const metadata = {
-  title: "【2025年版】国内向けおすすめFX・CFD業者ランキング",
-  description:
-    "初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。",
-  alternates: { canonical: "/best/forex-brokers-jp" },
-  openGraph: {
-    title: "【2025年版】国内向けおすすめFX・CFD業者ランキング",
-    description:
-      "初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。",
-  },
-};
+import Container from "@/components/Container";
+import PrRibbon from "@/components/PrRibbon";
+import RankingCard from "@/components/RankingCard";
+import ComparisonTable from "@/components/ComparisonTable";
+import "./styles.css";
 
 export default function Page() {
-  const faqs = [
-    {
-      q: "初心者はどれから？",
-      a: "まずは国内サービス（例: DMM.com証券）で入出金の動作を確認。小額から始め、約定やアプリの使い勝手を確かめるのがおすすめです。",
-    },
-    {
-      q: "ランキングの根拠は？",
-      a: "手数料・約定・取扱商品の客観指標をベースに編集部で総合判断。広告掲載の有無とは独立して評価します。",
-    },
-    {
-      q: "海外業者も使える？",
-      a: "可能ですが、規制・入出金・税務の理解が前提。国内と併用しつつ、自身の運用ルールに合うか慎重に判断してください。",
-    },
-  ];
-
-  const itemsLd = itemListJSONLD(
-    "国内向けおすすめFX・CFD業者ランキング",
-    brokers.map((b, idx) => ({
-      name: b.name,
-      url: b.site,
-      ratingValue: b.score || undefined,
-      position: idx + 1,
-    }))
-  );
-  const bc = breadcrumbList([
-    { name: "トップ", item: "/" },
-    { name: "比較", item: "/best" },
-    { name: "FX・CFD業者ランキング", item: "/best/forex-brokers-jp" },
-  ]);
-  const faqLd = faqPage(faqs);
-
   return (
-    <main style={{ display: "grid", gap: 24 }}>
-      <JsonLd data={bc} />
-      <JsonLd data={itemsLd} />
-      <JsonLd data={faqLd} />
+    <>
+      <PrRibbon />
+      <Container>
+        <div className="mg-hero">
+          <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
+          <p>初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。</p>
+          <div className="mg-tabs" aria-label="用途別タブ">
+            <a className="mg-tab is-active" href="#rank-all">総合</a>
+            <a className="mg-tab" href="#rank-lowspread">低スプレッド</a>
+            <a className="mg-tab" href="#rank-fee">手数料重視</a>
+            <a className="mg-tab" href="#rank-app">アプリ重視</a>
+          </div>
+          <a className="mg-lead-cta" href="#table">口座開設の最新特典を確認</a>
+        </div>
 
-      <HeroTabs />
+        <div className="mg-grid">
+          <main>
+            <section className="mg-section" id="rank-all" aria-labelledby="rank-all-title">
+              <h2 id="rank-all-title">総合ランキング</h2>
+              <RankingCard
+                rank={1}
+                brand="DMM.com証券"
+                score={4.4}
+                highlights={["国内大手で情報量が豊富","約定スピードに定評"]}
+                cautions={["キャンペーン期以外は条件が平凡"]}
+                ctaHref={process.env.NEXT_PUBLIC_AFF_DMM || "#"}
+                ctaLabel="公式サイトで口座開設"
+              />
+              <RankingCard rank={2} brand="松井証券（準備中）" score={0.0} highlights={["準備中"]} state="preparing" />
+              <RankingCard
+                rank={3}
+                brand="ゴールデンウェイ・ジャパン（FXTF）"
+                score={3.6}
+                highlights={["スワップ・キャンペーン","一部に定評"]}
+                cautions={["ECNに近い設計","情報量は大手に劣る"]}
+                ctaHref={process.env.NEXT_PUBLIC_AFF_FXTF || "#"}
+                ctaLabel="公式サイトで口座開設"
+              />
+            </section>
 
-      <section style={{ display: "grid", gap: 12 }}>
-        {brokers.map((b, i) => (
-          <RankCard key={b.id} rank={i + 1} broker={b} />
-        ))}
-      </section>
+            <section className="mg-section" id="table">
+              <h2>主要スペック比較</h2>
+              <ComparisonTable
+                rows={[
+                  { brand: "DMM.com証券", product: "FX", platform: "Web / アプリ", cost: "—", note: "—", ctaHref: process.env.NEXT_PUBLIC_AFF_DMM || "#" },
+                  { brand: "松井証券（準備中）", product: "FX", platform: "Web / アプリ", cost: "—", note: "—", state: "preparing" },
+                  { brand: "ゴールデンウェイ・ジャパン（FXTF）", product: "FX", platform: "Web / アプリ", cost: "—", note: "—", ctaHref: process.env.NEXT_PUBLIC_AFF_FXTF || "#" },
+                ]}
+              />
+            </section>
 
-      <SpecTable rows={brokers} />
-      <Faq items={faqs} />
-    </main>
+            <section className="mg-section mg-faq" id="faq">
+              <h2>よくある質問</h2>
+              <details><summary>初心者はどれから見れば良い？</summary><p>まずは国内サービス（例: DMM.com証券）で入出金・約定の動作を確認してから、用途に応じて他社を検討するのがおすすめです。</p></details>
+              <details><summary>ランキングの序列は？</summary><p>手数料・約定・取扱商品の客観指標をベースに、編集部で総合判断しています。最新の状況は各社の公式をご確認ください。</p></details>
+              <details><summary>海外業者も使えますか？</summary><p>可能ですが、規制・入出金・税務の理解が前提です。国内と併用する形を推奨します。</p></details>
+            </section>
+          </main>
+
+          <aside className="mg-side" aria-label="サイド情報">
+            <div className="mg-box"><strong>取引手数料（中級者向け）</strong><p style={{color:"#6b7280",margin:"8px 0 0"}}>主要銘柄の手数料を比較。詳細は次回のアップデートで公開します。</p></div>
+            <div className="mg-box"><strong>人気ランキング</strong><p style={{color:"#6b7280",margin:"8px 0 0"}}>今月の申し込み傾向からピックアップ。</p></div>
+            <div className="mg-box"><strong>投資情報</strong><p style={{color:"#6b7280",margin:"8px 0 0"}}>最新のキャンペーンや指標カレンダーへ。</p></div>
+          </aside>
+        </div>
+      </Container>
+    </>
   );
 }
