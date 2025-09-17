@@ -1,48 +1,42 @@
-export type BrokerStatus = "active" | "preparing";
 export type Broker = {
   id: string;
   name: string;
-  status: BrokerStatus;
-  score: number; // 0-5
+  score: number;
   pros: string[];
   cons: string[];
-  ctaEnv?: string; // env var name for aff link
-  site?: string; // fallback public url
-  notes?: string;
-  highlights?: string[];
+  subs: { execution: number; app: number; cost: number };
+  site?: string;
+  state?: "active" | "preparing";
 };
-
-// NOTE: CTA URLは環境変数から取得。ASPパラメータ破損を避けるため自動UTM付与はしません。
 export const brokers: Broker[] = [
   {
     id: "dmm",
     name: "DMM.com証券",
-    status: "active",
     score: 4.4,
     pros: ["国内大手で情報量が豊富", "約定スピードに定評"],
     cons: ["キャンペーン期以外は条件が平凡"],
-    ctaEnv: "NEXT_PUBLIC_AFF_DMM",
-    site: "https://securities.dmm.com/",
-    highlights: ["国内サポート", "初心者向けUI"]
+    subs: { execution: 4.5, app: 4.2, cost: 4.0 },
+    site: process.env.NEXT_PUBLIC_AFF_DMM || "#",
+    state: "active",
   },
   {
     id: "matsui",
     name: "松井証券（準備中）",
-    status: "preparing",
     score: 0.0,
     pros: ["準備中"],
-    cons: ["準備中"],
-    site: "https://www.matsui.co.jp/"
+    cons: [],
+    subs: { execution: 0, app: 0, cost: 0 },
+    site: "#",
+    state: "preparing",
   },
   {
     id: "fxtf",
     name: "ゴールデンウェイ・ジャパン（FXTF）",
-    status: "active",
     score: 3.6,
-    pros: ["スワップ・キャンペーン", "ECNに近い設計"],
-    cons: ["アプリ改善中", "情報量は大手に劣る"],
-    ctaEnv: "NEXT_PUBLIC_AFF_FXTF",
-    site: "https://www.gaitamefinest.com/",
-    highlights: ["FXTFならではの高機能ツール"]
-  }
+    pros: ["スワップ・キャンペーン", "一部に定評"],
+    cons: ["ECNに近い設計", "情報量は大手に劣る"],
+    subs: { execution: 3.6, app: 3.2, cost: 3.5 },
+    site: process.env.NEXT_PUBLIC_AFF_FXTF || "#",
+    state: "active",
+  },
 ];
