@@ -6,7 +6,7 @@ import { Tooltip } from "./ui/Tooltip";
 export default function PrBadge() {
   return (
     <div className="mg-pr-badge">
-      <Tooltip label="当ページには広告が含まれます。評価指標は本文をご参照ください。" side="left">
+      <Tooltip label="当ページにはアフィリエイト広告等のプロモーションを含みます。掲載順位・評価は独自基準に基づくもので、広告掲載の有無とは独立しています。詳細はガイド/運営ポリシーをご確認ください。" side="left">
         <span aria-label="PR" tabIndex={0}>PR</span>
       </Tooltip>
       <style jsx global>{`
