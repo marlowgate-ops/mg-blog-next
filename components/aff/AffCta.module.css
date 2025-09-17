@@ -1,0 +1,4 @@
+.btn{ display:inline-flex; align-items:center; justify-content:center; padding:10px 14px; border-radius:8px; background:#059669; color:#fff; font-weight:700; text-decoration:none; }
+.btn:hover{ background:#047857; }
+.sm{ padding:6px 10px; font-size:12px; }
+.disabled{ background:#e5e7eb; color:#9ca3af; pointer-events:none; }

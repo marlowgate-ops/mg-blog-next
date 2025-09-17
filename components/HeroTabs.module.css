@@ -1,0 +1,9 @@
+.wrap{ position:relative; background:#f7fbff; border:1px solid #e6eef7; padding:28px 24px; border-radius:12px; }
+.h1{ margin:0 0 8px; font-size:28px; line-height:1.25; }
+.lead{ margin:0 0 16px; color:#4a5568; }
+.tabs{ display:flex; gap:8px; flex-wrap:wrap; }
+.tab, .tabActive{ padding:8px 12px; border-radius:999px; border:1px solid #cbd5e0; background:#fff; cursor:pointer; font-size:14px; }
+.tabActive{ background:#0ea5e9; border-color:#0ea5e9; color:#fff; }
+.tabDesc{ margin-top:8px; color:#64748b; font-size:13px; }
+/* PR badge: not sticky, placed inside hero top-right */
+.prBadge{ position:absolute; top:12px; right:12px; background:#f59e0b; color:#fff; font-weight:700; padding:4px 8px; border-radius:6px; font-size:12px; }
