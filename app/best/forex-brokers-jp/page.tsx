@@ -10,6 +10,7 @@ import RankingCard from "@/components/RankingCard";
 import ComparisonTable from "@/components/ComparisonTable";
 import JsonLd from "@/components/JsonLd";
 import BackToTop from "@/components/BackToTop";
+import RelatedLinks from "@/components/RelatedLinks";
 import { brokers } from "@/data/brokers";
 import { breadcrumbList, itemListJSONLD, faqPage } from "@/lib/seo/jsonld";
 import "./styles.css";
@@ -42,9 +43,11 @@ export default function Page() {
             <a className="mg-tab" href="#apps">アプリ重視</a>
           </div>
           <IconNav />
-          <DisclosureParagraph />
           <a className="mg-lead-cta" href="#table">口座開設の最新特典を確認</a>
         </div>
+
+        {/* PR段落をヒーローの外側に配置 */}
+        <DisclosureParagraph />
 
         <div className="mg-grid">
           <main>
@@ -63,7 +66,7 @@ export default function Page() {
             <section className="mg-section" id="low-spread" data-section>
               <h2>低スプレッドの選び方</h2>
               <p className="mg-note">スプレッドは相場や時間帯で変動します。最新情報は各社の公式でご確認ください。</p>
-              <ul className="mg-bullets"><li>主要通貨ペアの配信品質（提示頻度/滑り）とセットで評価。</li><li>スキャルや短期取引は板/約定性能との相性が重要。</li></ul>
+              <ul className="mg-bullets"><li>主要通貨ペアの配信品質（提示頻度/滑り）とセットで評価。</li><li>短期取引では板/約定性能との相性が重要。</li></ul>
             </section>
 
             <section className="mg-section" id="apps" data-section>
@@ -76,19 +79,9 @@ export default function Page() {
               <ul className="mg-bullets"><li>スプレッド/手数料/スワップ/入出金コストの総和で比較。</li><li>キャンペーンは一時的。平時コストと品質を基準化。</li></ul>
             </section>
 
-            <section className="mg-section mg-faq" id="faq" data-section>
-              <h2>よくある質問</h2>
-              <TocCard items={[
-                { href: '#rank-all', label: '総合ランキング' },
-                { href: '#table', label: '主要スペック比較' },
-                { href: '#low-spread', label: '低スプレッドの選び方' },
-                { href: '#apps', label: 'アプリの使い勝手' },
-                { href: '#cost', label: 'コスト最適化の考え方' },
-                { href: '#faq', label: 'Q&A' },
-              ]} />
-              <details><summary>初心者はどれから？</summary><p>まずは国内サービス（例: DMM.com証券）で入出金の動作を確認。小額から始め、約定やアプリの使い勝手を確かめるのがおすすめです。</p></details>
-              <details><summary>ランキングの根拠は？</summary><p>手数料・約定・取扱商品の客観指標をベースに編集部で総合判断。広告掲載の有無とは独立して評価します。</p></details>
-              <details><summary>海外業者も使える？</summary><p>可能ですが、規制・入出金・税務の理解が前提。国内と併用しつつ、自身の運用ルールに合うか慎重に判断してください。</p></details>
+            <section className="mg-section" id="related">
+              <h2>関連リンク</h2>
+              <RelatedLinks />
             </section>
           </main>
 
