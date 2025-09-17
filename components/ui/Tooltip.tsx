@@ -19,11 +19,37 @@ export function Tooltip({ label, children, side = "bottom" }: Props) {
         .mg-tooltip-top { bottom:100%; left:50%; transform:translateX(-50%); margin-bottom:8px; }
         .mg-tooltip-left { right:100%; top:50%; transform:translateY(-50%); margin-right:8px; }
         .mg-tooltip-right { left:100%; top:50%; transform:translateY(-50%); margin-left:8px; }
+      
+        /* mg-tooltip v2 */
+        .mg-tooltip{ 
+          padding:12px 14px;
+          line-height:1.6;
+          white-space:normal;
+          border-radius:10px;
+          box-shadow:0 10px 30px rgba(0,0,0,.25);
+          max-width:520px;
+          width: max-content;
+          min-width: 260px;
+          color:#fff;
+          writing-mode: horizontal-tb;
+          text-orientation: mixed;
+          word-break: break-word;
+          z-index: 9999;
+        }
+        .mg-tooltip p{ margin:0; }
+        .mg-tooltip[data-side="left"]{ transform: translateX(-100%) translateY(-10%); }
+        .mg-tooltip[data-side="right"]{ transform: translateX(10%) translateY(-10%); }
+        .mg-tooltip[data-side="top"]{ transform: translateY(-100%) translateX(-10%); }
+        .mg-tooltip[data-side="bottom"]{ transform: translateY(10%) translateX(-10%); }
 
-        /* mg-tooltip-enhanced */
-        .mg-tooltip { padding: 12px 14px; line-height: 1.6; white-space: normal; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
-        .mg-tooltip p { margin: 0; }
-    
+        @media (max-width: 960px){
+          .mg-tooltip{ 
+            max-width: calc(100vw - 32px);
+            left: auto !important;
+            right: 16px !important;
+            transform: none !important;
+          }
+        }
       `}</style>
     </span>
   );
