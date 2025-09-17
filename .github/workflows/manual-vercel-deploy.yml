@@ -1,51 +1,57 @@
 name: Manual Vercel Deploy
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: "Deploy target (production or preview)"
-        required: true
-        default: "production"
-        type: choice
-        options: [production, preview]
+  workflow_dispatch: {}
+  push:
+    branches: [ main ]
+    paths:
+      - 'app/**'
+      - 'components/**'
+      - 'public/**'
+      - 'content/**'
+      - 'scripts/**'
+      - 'next.config.*'
+      - 'vercel.json'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+concurrency:
+  group: vercel-prod
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install Vercel CLI
-        run: npm i -g vercel@latest
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
 
-      - name: Pull Vercel Environment
-        run: vercel pull --yes --environment=${{ inputs.environment }} --token=$VERCEL_TOKEN
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build (local)
+        run: pnpm build
+
+      - name: Vercel pull (prod)
+        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel (prebuilt, prod, single)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Build
-        run: |
-          if [ "${{ inputs.environment }}" = "production" ]; then
-            vercel build --prod --token=$VERCEL_TOKEN
-          else
-            vercel build --token=$VERCEL_TOKEN
-          fi
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Deploy (prebuilt)
-        run: |
-          if [ "${{ inputs.environment }}" = "production" ]; then
-            vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
-          else
-            vercel deploy --prebuilt --token=$VERCEL_TOKEN
-          fi
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: npx vercel deploy --prebuilt --prod --yes
