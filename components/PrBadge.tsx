@@ -1,12 +1,13 @@
 "use client";
 import React from "react";
 import { Tooltip } from "./ui/Tooltip";
-import { PR_BADGE_TOOLTIP } from "@/content/disclosure";
+import { PR_PARAGRAPH } from "@/content/disclosure";
 
+/** Hero内右上に置くPRバッジ（非固定）。ツールチップは左側表示で切れを防止 */
 export default function PrBadge() {
   return (
     <div className="mg-pr-badge">
-      <Tooltip label={PR_BADGE_TOOLTIP} side="left">
+      <Tooltip label={PR_PARAGRAPH} side="left">
         <span aria-label="PR" tabIndex={0}>PR</span>
       </Tooltip>
       <style jsx global>{`
