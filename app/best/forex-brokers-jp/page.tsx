@@ -1,168 +1,72 @@
-'use client'
-import styles from '../best.module.css'
-import Stars from '@/components/Stars'
-import AffLink from '@/components/AffLink'
-import Breadcrumbs from '@/components/Breadcrumbs'
-import BrandLogo from '@/components/BrandLogo'
+import React from "react";
+import HeroTabs from "../../../components/HeroTabs";
+import RankCard from "../../../components/RankCard";
+import SpecTable from "../../../components/SpecTable";
+import Faq from "../../../components/Faq";
+import JsonLd from "../../../components/JsonLd";
+import { brokers } from "../../../data/brokers";
+import { breadcrumbList, itemListJSONLD, faqPage } from "../../../lib/seo/jsonld";
 
-type Broker = { key:string; name:string; score:number; status:'live'|'prep'; account:string; platform:string; cost:string; note:string; link?:string }
+export const metadata = {
+  title: "【2025年版】国内向けおすすめFX・CFD業者ランキング",
+  description:
+    "初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。",
+  alternates: { canonical: "/best/forex-brokers-jp" },
+  openGraph: {
+    title: "【2025年版】国内向けおすすめFX・CFD業者ランキング",
+    description:
+      "初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。",
+  },
+};
 
-function Card({code,name,score,pros=[],cons=[],href,status}:{code:string;name:string;score:number;pros?:string[];cons?:string[];href?:string;status:'live'|'prep'}){
-  const showCTA = status==='live' && !!href
-  return (
-    <div className={styles.card}>
-      <div className={styles.cardHead}>
-        <div className={styles.cardTitle}><BrandLogo code={code} alt={`${name} ロゴ`} />{name}{status==='prep'?<span className={styles.prep}>準備中</span>:null}</div>
-        <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <Stars score={score}/>
-          <div style={{fontSize:12,color:'#6b7280'}}>{(score/20).toFixed(1)} / 5</div>
-        </div>
-      </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
-        <div>
-          <div style={{fontSize:12,color:'#6b7280'}}>良い点</div>
-          <ul style={{margin:0,paddingLeft:18}}>{pros.map((p,i)=><li key={i}>{p}</li>)}</ul>
-        </div>
-        <div>
-          <div style={{fontSize:12,color:'#6b7280'}}>注意点</div>
-          <ul style={{margin:0,paddingLeft:18}}>{cons.map((p,i)=><li key={i}>{p}</li>)}</ul>
-        </div>
-      </div>
-      {showCTA ? <div><AffLink className={styles.cta} href={href!} gaLabel={`card-${name}`}>公式サイトで口座開設</AffLink></div> : null}
-    </div>
-  )
-}
+export default function Page() {
+  const faqs = [
+    {
+      q: "初心者はどれから？",
+      a: "まずは国内サービス（例: DMM.com証券）で入出金の動作を確認。小額から始め、約定やアプリの使い勝手を確かめるのがおすすめです。",
+    },
+    {
+      q: "ランキングの根拠は？",
+      a: "手数料・約定・取扱商品の客観指標をベースに編集部で総合判断。広告掲載の有無とは独立して評価します。",
+    },
+    {
+      q: "海外業者も使える？",
+      a: "可能ですが、規制・入出金・税務の理解が前提。国内と併用しつつ、自身の運用ルールに合うか慎重に判断してください。",
+    },
+  ];
 
-function Table({rows}:{rows:Broker[]}){
-  return (
-    <div id="specs" className={styles.tableWrap}>
-      <table className={styles.tbl} role="table">
-        <thead>
-          <tr>
-            <th>業者</th>
-            <th>編集スコア</th>
-            <th>口座/商品</th>
-            <th>プラットフォーム</th>
-            <th>コスト</th>
-            <th>備考</th>
-            <th>口座開設</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r)=>(
-            <tr key={r.key}>
-              <td><BrandLogo code={r.key} alt={`${r.name} ロゴ`} /> {r.name} {r.status==='prep' && <span className={styles.prep}>準備中</span>}</td>
-              <td><Stars score={r.score}/></td>
-              <td>{r.account}</td>
-              <td>{r.platform}</td>
-              <td>{r.cost}</td>
-              <td>{r.note}</td>
-              <td>{(r.status==='live' && r.link) ? <AffLink className={styles.cta} href={r.link} gaLabel={`table-${r.name}`}>公式サイトで口座開設</AffLink> : '-'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-function FAQ(){
-  const items=[
-    {q:'初心者はどれから見れば良い？', a:'まずは国内サービスの口座（例：DMM.com証券）を1社開設し、少額で出し入れの動作を確認してから比較検討するのが安全です。'},
-    {q:'ランキングの序列は？', a:'表示の順序やスコアは編集部判断です。料金や条件は変動します。最新は各公式をご確認ください。'},
-    {q:'海外業者も扱いますか？', a:'現状は国内中心。要望が多ければ別ページで比較します。'}
-  ]
-  return (
-    <div id="faq" className={styles.faq}>
-      {items.map((it,i)=>(
-        <details key={i} className={styles.faqItem}>
-          <summary className={styles.faqQ}>{it.q}</summary>
-          <div className={styles.faqA}>{it.a}</div>
-        </details>
-      ))}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
-        '@context':'https://schema.org',
-        '@type':'FAQPage',
-        mainEntity: items.map(x=>({ '@type':'Question', name:x.q, acceptedAnswer:{ '@type':'Answer', text:x.a }}))
-      })}}/>
-    </div>
-  )
-}
-
-export default function Page(){
-  const DMM = process.env.NEXT_PUBLIC_AFF_DMM || ''
-  const FXTF = process.env.NEXT_PUBLIC_AFF_FXTF || ''
-
-  const sDMM = Number(process.env.NEXT_PUBLIC_SCORE_DMM ?? 88)
-  const sFXTF = Number(process.env.NEXT_PUBLIC_SCORE_FXTF ?? 72)
-  const sMatsui = Number(process.env.NEXT_PUBLIC_SCORE_MATSUI ?? 0)
-  const sGmo = Number(process.env.NEXT_PUBLIC_SCORE_GMOCLICK ?? 0)
-
-  const rows:Broker[] = [
-    { key:'dmm', name:'DMM.com証券', score:sDMM, status:'live', account:'FX / CFD / 株', platform:'Web / アプリ', cost:'編集評価', note:'—', link:DMM || undefined },
-    { key:'matsui', name:'松井証券（準備中）', score:sMatsui, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
-    { key:'gmoclick', name:'GMOクリック証券（準備中）', score:sGmo, status:'prep', account:'—', platform:'—', cost:'—', note:'—' },
-    { key:'fxtf', name:'ゴールデンウェイ・ジャパン（FXTF）', score:sFXTF, status:'live', account:'FX', platform:'Web / アプリ', cost:'—', note:'—', link:FXTF || undefined },
-  ]
-
-  const itemListLD = { '@context':'https://schema.org', '@type':'ItemList',
-    itemListElement: rows.map((r,idx)=>({ '@type':'ListItem', position: idx+1, name: r.name })) }
-
-  const aggLD = { '@context':'https://schema.org', '@graph':
-    rows.filter(r=>r.status==='live').map(r=>({
-      '@type':'Organization', name:r.name,
-      aggregateRating:{ '@type':'AggregateRating', ratingValue:(r.score/20).toFixed(1), ratingCount:100 }
-    })) }
+  const itemsLd = itemListJSONLD(
+    "国内向けおすすめFX・CFD業者ランキング",
+    brokers.map((b, idx) => ({
+      name: b.name,
+      url: b.site,
+      ratingValue: b.score || undefined,
+      position: idx + 1,
+    }))
+  );
+  const bc = breadcrumbList([
+    { name: "トップ", item: "/" },
+    { name: "比較", item: "/best" },
+    { name: "FX・CFD業者ランキング", item: "/best/forex-brokers-jp" },
+  ]);
+  const faqLd = faqPage(faqs);
 
   return (
-    <main className={styles.container}>
-      <Breadcrumbs items={[
-        {name:'ホーム', href:'/'}, {name:'比較', href:'/best'}, {name:'国内向けFX・CFD'}
-      ]}/>
+    <main style={{ display: "grid", gap: 24 }}>
+      <JsonLd data={bc} />
+      <JsonLd data={itemsLd} />
+      <JsonLd data={faqLd} />
 
-      <section className={styles.hero}>
-        {/* PR：みんかぶのようにヒーローブロックの右上に「置く」だけ。スクロールで固定しない */}
-        <div className={styles.prLocal}>
-          <div className={styles.prBadge} tabIndex={0} aria-describedby="pr-tip">
-            PR
-            <div className={styles.prTip} id="pr-tip">
-              このページには広告（アフィリエイトリンク）が含まれます。<br/>
-              掲載順位や推奨は編集基準に基づき、<b>広告の有無のみで決定されません</b>。
-            </div>
-          </div>
-        </div>
+      <HeroTabs />
 
-        <h1 className={styles.heroTitle}>【2025年版】 国内向けおすすめFX・CFD業者ランキング</h1>
-        <p className={styles.heroLead}>初心者〜中級まで乗換が安定する、<b>国内サービス</b>を中心に選ぶ。評価軸は「スプレッド/手数料・約定・入出金・サポート」。</p>
-        <div className={styles.anchorNav}>
-          <a href="#rank">総合ランキング</a>
-          <a href="#specs">主要スペック比較</a>
-          <a href="#faq">よくある質問</a>
-        </div>
+      <section style={{ display: "grid", gap: 12 }}>
+        {brokers.map((b, i) => (
+          <RankCard key={b.id} rank={i + 1} broker={b} />
+        ))}
       </section>
 
-      <section id="rank" className={styles.cards}>
-        <Card code="dmm" name="DMM.com証券" score={sDMM}
-          pros={['国内大手の信頼感','約定スピードに定評','初心者向けUI']}
-          cons={['キャンペーン期は条件要確認']}
-          href={DMM} status="live"/>
-        <Card code="matsui" name="松井証券（準備中）" score={sMatsui}
-          pros={['準備中']} cons={['準備中']} status="prep"/>
-        <Card code="fxtf" name="ゴールデンウェイ・ジャパン（FXTF）" score={sFXTF}
-          pros={['スワップ・キャンペーンに注目','アプリ改善中']} cons={['ECN非対応','情報量は大手に劣る']}
-          href={FXTF} status="live"/>
-      </section>
-
-      <h2 style={{margin:'18px 0 8px 0'}}>主要スペック比較</h2>
-      <Table rows={rows}/>
-
-      <h2 style={{margin:'18px 0 8px 0'}}>よくある質問</h2>
-      <FAQ/>
-
-      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(itemListLD)}}/>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(aggLD)}}/>
-
-      <p className={styles.note}>表示の順序やスコアは編集部判断です。料金や条件は変動します。最新は各公式をご確認ください。</p>
+      <SpecTable rows={brokers} />
+      <Faq items={faqs} />
     </main>
-  )
+  );
 }
