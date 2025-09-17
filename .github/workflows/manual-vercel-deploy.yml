@@ -1,7 +1,7 @@
 name: Manual Vercel Deploy
 
 on:
-  workflow_dispatch: {}   # 手動のみ（自動発火なし）
+  workflow_dispatch: {}   # 手動のみ
 
 concurrency:
   group: vercel-prod
@@ -13,7 +13,6 @@ jobs:
     permissions:
       contents: read
     env:
-      # ジョブ全体で参照できるように固定（CLIはこの環境変数でも認証可能）
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -64,15 +63,15 @@ jobs:
             if [ -f package-lock.json ]; then npm ci || npm install; else npm install; fi
           fi
 
-      - name: Build
+      - name: Build (app)
         shell: bash
         run: |
           if [ "$PKG_MGR" = "pnpm" ]; then
-            pnpm build
+            pnpm build || echo "::warning title=build script failed::Continuing to vercel build"
           elif [ "$PKG_MGR" = "yarn" ]; then
-            yarn build
+            yarn build || echo "::warning title=build script failed::Continuing to vercel build"
           else
-            npm run build
+            npm run build || echo "::warning title=build script failed::Continuing to vercel build"
           fi
 
       - name: Verify Vercel credentials (whoami + fingerprints)
@@ -81,21 +80,22 @@ jobs:
         run: |
           echo "## env vars present?"
           env | grep -E '^VERCEL_(TOKEN|ORG_ID|PROJECT_ID)=' | sed 's/=.*/=*** (masked)/'
-
           echo "## Vercel whoami (with --token)"
           npx -y vercel@latest whoami --token="$VERCEL_TOKEN" || echo "::warning title=whoami failed::Check token or org/project ids"
-
           echo "## Fingerprints (SHA256)"
           printf %s "$VERCEL_TOKEN"      | sha256sum | awk '{print $1}' > token.sha
           printf %s "$VERCEL_ORG_ID"     | sha256sum | awk '{print $1}' > org.sha
           printf %s "$VERCEL_PROJECT_ID" | sha256sum | awk '{print $1}' > project.sha
-
           echo "::notice title=VERCEL_TOKEN_SHA256::$(cat token.sha)"
           echo "::notice title=VERCEL_ORG_ID_SHA256::$(cat org.sha)"
           echo "::notice title=VERCEL_PROJECT_ID_SHA256::$(cat project.sha)"
 
       - name: Vercel pull (prod)
         run: npx -y vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      # ここが重要：--prebuilt を使う前に .vercel/output を生成する
+      - name: Vercel build (generate .vercel/output)
+        run: npx -y vercel@latest build --prod --token="$VERCEL_TOKEN"
 
       - name: Deploy to Vercel (prebuilt, prod, single)
         run: npx -y vercel@latest deploy --prebuilt --prod --yes --token="$VERCEL_TOKEN"
