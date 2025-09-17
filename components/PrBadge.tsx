@@ -3,7 +3,6 @@ import React from "react";
 import { Tooltip } from "./ui/Tooltip";
 import { PR_BADGE_TOOLTIP } from "@/content/disclosure";
 
-/** Hero内右上に置くPRバッジ（非固定）。ツールチップは左側表示で切れを防止 */
 export default function PrBadge() {
   return (
     <div className="mg-pr-badge">
