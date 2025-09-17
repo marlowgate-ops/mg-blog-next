@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Container from "@/components/Container";
-import PrRibbon from "@/components/PrRibbon";
+import PrBadge from "@/components/PrBadge";
 import RankingCard from "@/components/RankingCard";
 import ComparisonTable from "@/components/ComparisonTable";
 import "./styles.css";
@@ -9,9 +9,9 @@ import "./styles.css";
 export default function Page() {
   return (
     <>
-      <PrRibbon />
       <Container>
         <div className="mg-hero">
+          <PrBadge />
           <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
           <p>初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。</p>
           <div className="mg-tabs" aria-label="用途別タブ">
