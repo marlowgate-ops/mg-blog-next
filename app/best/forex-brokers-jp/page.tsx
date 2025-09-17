@@ -10,7 +10,7 @@ import ComparisonTable from "@/components/ComparisonTable";
 import JsonLd from "@/components/JsonLd";
 import BackToTop from "@/components/BackToTop";
 import { brokers } from "@/data/brokers";
-import { breadcrumbList, itemListJSONLD, faqPage } from "@/lib/seo/jsonld";
+import { breadcrumbList, itemListJSONLD, faqPage, organization } from "@/lib/seo/jsonld";
 import "./styles.css";
 
 export default function Page() {
@@ -28,6 +28,7 @@ export default function Page() {
       <JsonLd data={bc} />
       <JsonLd data={itemsLd} />
       <JsonLd data={faqLd} />
+      <JsonLd data={organization()} />
 
       <Container>
         <div className="mg-hero">
