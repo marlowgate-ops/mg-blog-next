@@ -40,3 +40,17 @@ export function faqPage(faqs: { q: string; a: string }[]) {
     })),
   };
 }
+
+
+export function organization(opts?: { name?: string; url?: string; logo?: string; sameAs?: string[] }) {
+  const name = opts?.name ?? "Marlow Gate";
+  const url = opts?.url ?? "https://blog.marlowgate.com";
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name,
+    url,
+    logo: opts?.logo ?? url + "/logo.svg",
+    sameAs: opts?.sameAs ?? [],
+  };
+}
