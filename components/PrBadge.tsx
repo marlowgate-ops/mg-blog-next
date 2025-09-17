@@ -7,7 +7,7 @@ import { PR_PARAGRAPH } from "@/content/disclosure";
 export default function PrBadge() {
   return (
     <div className="mg-pr-badge">
-      <Tooltip label={PR_PARAGRAPH} side="left">
+      <Tooltip label={<p>{PR_PARAGRAPH}</p>} side="left">
         <span aria-label="PR" tabIndex={0}>PR</span>
       </Tooltip>
       <style jsx global>{`
