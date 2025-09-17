@@ -19,6 +19,11 @@ export function Tooltip({ label, children, side = "bottom" }: Props) {
         .mg-tooltip-top { bottom:100%; left:50%; transform:translateX(-50%); margin-bottom:8px; }
         .mg-tooltip-left { right:100%; top:50%; transform:translateY(-50%); margin-right:8px; }
         .mg-tooltip-right { left:100%; top:50%; transform:translateY(-50%); margin-left:8px; }
+
+        /* mg-tooltip-enhanced */
+        .mg-tooltip { padding: 12px 14px; line-height: 1.6; white-space: normal; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+        .mg-tooltip p { margin: 0; }
+    
       `}</style>
     </span>
   );
