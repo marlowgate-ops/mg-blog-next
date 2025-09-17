@@ -22,14 +22,5 @@
 /* v5 additions */
 .mg-disclosure{max-width:1180px;margin-left:auto;margin-right:auto;}
 
-
-/* mg override: ヘッダー固定を無効化（みんかぶ準拠） */
-.hd { position: static !important; top: auto !important; }
-
-/* mg tweak: PRツールチップの切れ防止（hero内で右端対策） */
-.mg-hero { overflow: visible; }
-
-/* mg polish: コンテンツ左右の余白と視線導線 */
-@media (min-width: 1280px){
-  .mg-container { max-width: 1180px; }
-}
+/* mg tooltip safety v2 */
+.mg-hero{ overflow: visible; }
