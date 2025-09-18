@@ -56,5 +56,24 @@
 .mg-review h3{font-size:16px;margin:0 0 6px;font-weight:800}
 .mg-review-text{margin:0;color:#374151;line-height:1.9;white-space:pre-wrap}
 
-/* optional hero illustration block (unused if未配置) */
+/* optional hero illustration block */
 .mg-hero-illu{border-radius:16px;background:linear-gradient(135deg,#e0f2fe,#e5e7eb);min-height:160px;box-shadow:0 8px 20px rgba(2,6,23,.06)}
+
+/* callouts */
+.mg-callout{border-left:4px solid #93c5fd;background:#f8fbff;padding:12px 14px;border-radius:8px;margin:12px 0}
+.mg-callout.note{border-color:#60a5fa}
+.mg-callout.tip{border-color:#34d399;background:#f0fdf4}
+.mg-callout.warning{border-color:#f59e0b;background:#fff7ed}
+.mg-callout.info{border-color:#38bdf8;background:#f0f9ff}
+.mg-callout strong{font-weight:800}
+
+/* checklists */
+.mg-review-text li[data-check="todo"]{list-style:none}
+.mg-review-text li[data-check="todo"]::before{content:"☐ ";}
+.mg-review-text li[data-check="done"]{list-style:none}
+.mg-review-text li[data-check="done"]::before{content:"☑ ";}
+
+/* tables (basic GFM) */
+.mg-review-text table{border-collapse:collapse;width:100%;margin:10px 0}
+.mg-review-text th,.mg-review-text td{border:1px solid #e5e7eb;padding:6px 8px;text-align:left}
+.mg-review-text thead th{background:#f3f4f6;font-weight:700}
