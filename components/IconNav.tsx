@@ -21,17 +21,19 @@ export default function IconNav() {
         </a>
       ))}
       <style jsx global>{`
-        .mg-iconnav { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; margin-top: 12px; }
+        .mg-iconnav { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; margin-top: 12px; }
         .mg-iconnav-item {
           display: flex; align-items: center; gap: 6px;
-          background: #fff; border: 1px solid #e7e8ea; border-radius: 10px;
-          padding: 8px 10px; text-decoration: none; color: #1f2937; font-size: 13px;
+          background: #fff; border: 1px solid #e7eef7; border-radius: 12px;
+          padding: 10px 12px; box-shadow: 0 3px 10px rgba(2,60,130,.04); text-decoration: none; color: #1f2937; font-size: 13px;
         }
         .mg-iconnav-item:hover { background: #f9fafb; }
-        .mg-iconnav-emoji { font-size: 16px; }
+        .mg-iconnav-emoji { font-size: 16px; width:22px; height:22px; display:grid; place-items:center; background:#edf2fb; border-radius:9999px; }
         @media (max-width: 1100px){ .mg-iconnav { grid-template-columns: repeat(4, 1fr); } }
         @media (max-width: 640px){ .mg-iconnav { grid-template-columns: repeat(2, 1fr); } }
-      `}</style>
+      `  /* mg-iconnav v2 */
+}
+</style>
     </nav>
   );
 }
