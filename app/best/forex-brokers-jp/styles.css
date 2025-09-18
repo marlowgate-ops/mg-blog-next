@@ -24,3 +24,10 @@
 
 /* mg tooltip safety v2 */
 .mg-hero{ overflow: visible; }
+
+
+/* minkabu-like polish v6 */
+.mg-hero{ background: #edf4fb; }
+.mg-grid{ gap: 22px; }
+.mg-section h2{ margin-top:18px; }
+.mg-side .mg-box{ box-shadow: 0 6px 18px rgba(16,24,40,.06); }
