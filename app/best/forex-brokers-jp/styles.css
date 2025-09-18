@@ -31,3 +31,19 @@
 .mg-grid{ gap: 22px; }
 .mg-section h2{ margin-top:18px; }
 .mg-side .mg-box{ box-shadow: 0 6px 18px rgba(16,24,40,.06); }
+
+
+/* minkabu-like content polish v7 */
+.mg-section h2{ position:relative; padding-left:10px; }
+.mg-section h2::before{ content:""; position:absolute; left:0; top:50%; transform:translateY(-50%); width:4px; height:18px; background:#0ea5e9; border-radius:2px; }
+.mg-callout{ border:1px solid #e5f1ff; background:#f6fbff; border-left:4px solid #3b82f6; padding:12px; border-radius:10px; margin-top:10px; font-size:14px; }
+.mg-callout.info{ border-left-color:#0284c7; }
+.mg-callout.tip{ border-left-color:#10b981; }
+.mg-steps{ counter-reset: step; list-style:none; padding-left:0; }
+.mg-steps > li{ counter-increment: step; margin:7px 0; padding-left:28px; position:relative; }
+.mg-steps > li::before{ content: counter(step); position:absolute; left:0; top:0; width:20px; height:20px; border-radius:9999px; background:#0ea5e9; color:#fff; font-size:12px; display:grid; place-items:center; }
+
+/* minkabu-like polish v7 */
+.mg-hero { background: #edf4fb; border:1px solid #e7eaf0; }
+.mg-hero h1 { letter-spacing: .02em; }
+.mg-side .mg-box h3{ font-weight:700; }
