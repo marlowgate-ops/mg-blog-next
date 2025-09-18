@@ -15,9 +15,12 @@ import "./styles.css";
 
 export default function Page() {
   const faqs = [
-    { q: "初心者はどれから見れば良い？", a: "まずは国内サービス（例: DMM.com証券）で入出金・約定の動作を確認してから、用途に応じて他社を検討するのがおすすめです。" },
-    { q: "ランキングの序列は？", a: "手数料・約定・取扱商品の客観指標をベースに、編集部で総合判断しています。最新の状況は各社の公式をご確認ください。" },
-    { q: "海外業者も使えますか？", a: "可能ですが、規制・入出金・税務の理解が前提です。国内と併用する形を推奨します。" },
+    { q: "初心者はどれから始めるべき？", a: "まずは国内大手の総合力が高い口座で、入出金・約定スピード・アプリの感触を確認しましょう。1社目で基本操作に慣れ、用途（低コスト/アプリ/CFD等）ごとに2社目以降を使い分けるのが最短です。" },
+    { q: "スプレッドと約定どちらを優先すべき？", a: "短期売買なら“提示の細さと約定の安定性”が最重要です。名目スプレッドが狭くても配信が粗いと実質コストは上がります。中長期は手数料やスワップ、入出金の手軽さを含めて総合で判断します。" },
+    { q: "ランキングの基準は？", a: "手数料/スプレッド、約定・配信の安定性、取扱商品、アプリ/ツール、サポート/入出金の実用面を編集部で総合評価。広告掲載の有無に依らず独自基準で作成しています。最新状況は各社公式をご確認ください。" },
+    { q: "海外業者はアリ？", a: "可能ですが、国内と比較して入出金・規制・税制・情報の非対称性が大きい点に注意。初心者はまず国内で基礎を固め、必要に応じて併用するのが安全です。" },
+    { q: "複数口座を使い分けるべき？", a: "目的が違えば分けるのが合理的です。例）裁量デイトレ=低遅延/板重視、スイング=手数料総額とスワップ、情報収集=アプリUI/ニュースの充実。" },
+    { q: "キャンペーンの活かし方は？", a: "口座開設〜入金・取引でポイント/現金の還元が受けられる場合があります。条件に該当するなら最初の1社で取りこぼさないのがコスパ良。" },
   ];
   const itemsLd = itemListJSONLD("国内向けおすすめFX・CFD業者ランキング", brokers.map(b=>({ name:b.name, url:b.site, ratingValue:b.score })));
   const bc = breadcrumbList([{ name:"トップ", item:"/" }, { name:"比較", item:"/best" }, { name:"FX・CFD業者ランキング", item:"/best/forex-brokers-jp" }]);
@@ -72,18 +75,36 @@ export default function Page() {
 
             <section className="mg-section" id="low-spread" data-section>
               <h2>低スプレッドの選び方</h2>
-              <p className="mg-note">スプレッドは相場や時間帯で変動します。最新情報は各社の公式でご確認ください。</p>
-              <ul className="mg-bullets"><li>主要通貨ペアの配信品質（提示頻度/滑り）とセットで評価。</li><li>スキャルや短期取引は板/約定性能との相性が重要。</li></ul>
+              <p className="mg-note">名目スプレッドは“入口の目安”。実戦では<strong>配信頻度・約定の安定性</strong>を合わせて見ると失敗しません。</p>
+              <ul className="mg-bullets">
+                <li><strong>主要ペアの提示の細かさ</strong>（ティック密度/更新頻度）…値が飛ばないか。</li>
+                <li><strong>成行・逆指値の約定品質</strong>…混雑時にスリッページが増えないか。</li>
+                <li>取引ツールの<strong>板/気配・ワンクリック</strong>…高速操作のしやすさ。</li>
+                <li>実質コストは<strong>スプレッド±スワップ±手数料</strong>の総額で比較。</li>
+              </ul>
+              <div className="mg-callout info">短期売買がメインなら、名目スプレッドより<strong>配信と約定</strong>の安定度を優先しましょう。</div>
             </section>
 
             <section className="mg-section" id="apps" data-section>
               <h2>アプリの使い勝手</h2>
-              <ul className="mg-bullets"><li>チャート操作（描画/発注までのタップ数）。</li><li>通知（約定/指標/価格アラート）と安定性。</li></ul>
+              <p>日々の意思決定を速くするのは<strong>UIと情報の近さ</strong>です。みんかぶに近い情報導線を重視。</p>
+              <ul className="mg-bullets">
+                <li>チャートのレイアウト保存、注文~決済の手順が短いか。</li>
+                <li>アラート/ウィジェット、ニュースの粒度と更新速度。</li>
+                <li>入出金や明細確認がアプリ内で完結するか。</li>
+              </ul>
+              <div className="mg-callout tip">“毎日触る前提”で、<strong>指が覚えるUI</strong>を選ぶとミスが減ります。</div>
             </section>
 
             <section className="mg-section" id="cost" data-section>
               <h2>コスト最適化の考え方</h2>
-              <ul className="mg-bullets"><li>スプレッド/手数料/スワップ/入出金コストの総和で比較。</li><li>キャンペーンは一時的。平時コストと品質を基準化。</li></ul>
+              <p className="mg-note">“1→2社目の乗り換え”よりも、<strong>用途での使い分け</strong>がコスパ最強。</p>
+              <ol className="mg-steps">
+                <li>メイン口座：総合力が高い1社で入出金・アプリも含めて安定運用。</li>
+                <li>サブ口座：スキャル/自動売買など<strong>戦略特化</strong>に最適な1社を追加。</li>
+                <li>中長期：スワップと諸費用、ニュース/銘柄の<strong>情報優位</strong>で選ぶ。</li>
+              </ol>
+              <p>キャンペーンは最初の1社で取りこぼさないのが鉄則。達成条件と締切だけは必ず確認を。</p>
             </section>
 
             <section className="mg-section mg-faq" id="faq" data-section>
@@ -104,9 +125,9 @@ export default function Page() {
 
           <aside className="mg-side" aria-label="注目コンテンツ">
             <SideCards cards={[
-              { title: '取引手数料（中級者向け）', href: '#cost', desc: '主要銘柄の比較。詳細はアップデート予定。' },
-              { title: '人気ランキング', href: '#rank-all', desc: '今月の申込み傾向からピックアップ。' },
-              { title: '投資情報', href: '#low-spread', desc: '最新のキャンペーンや指標カレンダーへ。' },
+              { title: '取引コスト徹底ガイド', href: '#cost', desc: 'スプレッド/手数料/スワップの実質コストを解説。中級者向けの最適化手順。' },
+              { title: '人気ランキング', href: '#rank-all', desc: '今月の申込み/読了データから編集部がピックアップ。' },
+              { title: '最新キャンペーン/経済指標', href: '#low-spread', desc: '口座開設特典と今週の主要指標をまとめてチェック。' },
             ]} />
           </aside>
         </div>
