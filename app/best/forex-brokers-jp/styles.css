@@ -50,3 +50,11 @@
 
 /* mg chips */
 .mg-updated{ display:inline-block; margin-right:8px; background:#eef6ff; color:#2563eb; border:1px solid #dbeafe; padding:4px 8px; border-radius:9999px; font-size:12px; }
+
+/* review blocks */
+.mg-review{border:1px solid #e6e9ef;border-radius:14px;background:#fff;padding:16px;margin:12px 0;box-shadow:0 6px 18px rgba(17,24,39,.04)}
+.mg-review h3{font-size:16px;margin:0 0 6px;font-weight:800}
+.mg-review-text{margin:0;color:#374151;line-height:1.9;white-space:pre-wrap}
+
+/* optional hero illustration block (unused if未配置) */
+.mg-hero-illu{border-radius:16px;background:linear-gradient(135deg,#e0f2fe,#e5e7eb);min-height:160px;box-shadow:0 8px 20px rgba(2,6,23,.06)}
