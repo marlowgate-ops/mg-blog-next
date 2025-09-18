@@ -42,6 +42,17 @@ export default function Page() {
             <a className="mg-tab" href="#apps">アプリ重視</a>
           </div>
           <IconNav />
+
+          {/* mg-top-toc */}
+          <TocCard items={[
+            { href: '#rank-all', label: '総合ランキング' },
+            { href: '#table', label: '主要スペック比較' },
+            { href: '#low-spread', label: '低スプレッドの選び方' },
+            { href: '#apps', label: 'アプリの使い勝手' },
+            { href: '#cost', label: 'コスト最適化の考え方' },
+            { href: '#faq', label: 'Q&A' },
+          ]} />
+    
                     <a className="mg-lead-cta" href="#table">口座開設の最新特典を確認</a>
         </div>
 
