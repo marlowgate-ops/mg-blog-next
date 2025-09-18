@@ -9,7 +9,7 @@ import RankingCard from "@/components/RankingCard";
 import ComparisonTable from "@/components/ComparisonTable";
 import JsonLd from "@/components/JsonLd";
 import BackToTop from "@/components/BackToTop";
-import { brokers } from "@/data/brokers";
+import { brokers, LONG_REVIEW } from "@/data/brokers";
 import { breadcrumbList, itemListJSONLD, faqPage, organization } from "@/lib/seo/jsonld";
 import "./styles.css";
 
@@ -131,6 +131,23 @@ export default function Page() {
             ]} />
           </aside>
         </div>
+      
+<section className="mg-section" id="detail-reviews" data-section>
+  <h2>詳細レビュー</h2>
+  <div className="mg-review">
+    <h3>DMM.com証券｜総合力で迷ったら</h3>
+    <p className="mg-review-text">{LONG_REVIEW["dmm"]}</p>
+  </div>
+  <div className="mg-review">
+    <h3>松井証券（準備中）｜堅実さ重視のサブ候補</h3>
+    <p className="mg-review-text">{LONG_REVIEW["matsui"]}</p>
+  </div>
+  <div className="mg-review">
+    <h3>ゴールデンウェイ・ジャパン（FXTF）｜ツールで攻めたい中級者へ</h3>
+    <p className="mg-review-text">{LONG_REVIEW["fxtf"]}</p>
+  </div>
+</section>
+
       </Container>
       <BackToTop />
     </>
