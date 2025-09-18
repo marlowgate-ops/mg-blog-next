@@ -47,3 +47,6 @@
 .mg-hero { background: #edf4fb; border:1px solid #e7eaf0; }
 .mg-hero h1 { letter-spacing: .02em; }
 .mg-side .mg-box h3{ font-weight:700; }
+
+/* mg chips */
+.mg-updated{ display:inline-block; margin-right:8px; background:#eef6ff; color:#2563eb; border:1px solid #dbeafe; padding:4px 8px; border-radius:9999px; font-size:12px; }
