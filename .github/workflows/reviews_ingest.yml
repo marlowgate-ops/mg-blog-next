@@ -1,5 +1,5 @@
 
-name: Ingest broker reviews (docx/pdf → markdown)
+name: Ingest broker reviews (docx/pdf/md → markdown)
 
 on:
   workflow_dispatch:
@@ -7,6 +7,10 @@ on:
     paths:
       - 'content_source/reviews/**/*.docx'
       - 'content_source/reviews/**/*.pdf'
+      - 'content_source/reviews/**/*.md'
+
+permissions:
+  contents: write
 
 jobs:
   convert:
@@ -25,11 +29,19 @@ jobs:
         run: |
           mkdir -p content/reviews
           shopt -s globstar nullglob
+          # md -> copy
+          for f in content_source/reviews/**/*.md; do
+            [ -e "$f" ] || continue
+            base=$(basename "$f")
+            cp "$f" "content/reviews/$base"
+          done
+          # docx -> md
           for f in content_source/reviews/**/*.docx; do
             [ -e "$f" ] || continue
             base=$(basename "$f" .docx)
             pandoc "$f" -f docx -t gfm -o "content/reviews/${base}.md"
           done
+          # pdf -> md (best-effort)
           for f in content_source/reviews/**/*.pdf; do
             [ -e "$f" ] || continue
             base=$(basename "$f" .pdf)
@@ -39,5 +51,5 @@ jobs:
       - name: Commit & push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore(content): ingest reviews (docx/pdf → md)"
+          commit_message: "chore(content): ingest reviews (→ md)"
           file_pattern: content/reviews/*.md
