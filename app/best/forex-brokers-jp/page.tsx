@@ -87,7 +87,7 @@ export default function Page() {
 
             <section className="mg-section" id="apps" data-section>
               <h2>アプリの使い勝手</h2>
-              <p>日々の意思決定を速くするのは<strong>UIと情報の近さ</strong>です。みんかぶに近い情報導線を重視。</p>
+              <p>日々の意思決定を速くするのは<strong>UIと情報の近さ</strong>です。“迷わない導線”を重視。</p>
               <ul className="mg-bullets">
                 <li>チャートのレイアウト保存、注文~決済の手順が短いか。</li>
                 <li>アラート/ウィジェット、ニュースの粒度と更新速度。</li>
