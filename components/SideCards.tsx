@@ -12,13 +12,13 @@ export default function SideCards({ cards }: { cards: Card[] }) {
       ))}
       <style jsx global>{`
         .mg-sidecard {
-          display:block; background:#fff; border:1px solid #e7e8ea; border-radius:12px;
-          padding:12px; text-decoration:none; color:#1f2937;
+          display:block; background:#fff; border:1px solid #e7e8ea; border-radius:12px; box-shadow: 0 6px 18px rgba(16,24,40,.06);
+          padding:14px; text-decoration:none; color:#1f2937;
         }
         .mg-sidecard + .mg-sidecard{ margin-top: 10px; }
         .mg-sidecard-title { font-weight:700; }
         .mg-sidecard-desc { color:#6b7280; font-size:13px; margin-top:4px; }
-        .mg-sidecard:hover { background:#f9fafb; }
+        .mg-sidecard:hover { background:#f9fafb; transform: translateY(-1px); }
       `}</style>
     </div>
   );
