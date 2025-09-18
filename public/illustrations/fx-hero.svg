@@ -1,0 +1,11 @@
+<svg width="820" height="240" viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e0f2fe"/><stop offset="1" stop-color="#e5e7eb"/></linearGradient></defs>
+<rect x="0" y="0" width="820" height="240" rx="16" fill="url(#g1)"/>
+<g fill="none" stroke="#0ea5e9" stroke-width="2">
+  <path d="M40,180 Q120,60 220,140 T400,120 T580,150 T780,80" />
+  <circle cx="220" cy="140" r="4" fill="#0ea5e9"/><circle cx="400" cy="120" r="4" fill="#0ea5e9"/>
+  <circle cx="580" cy="150" r="4" fill="#0ea5e9"/><circle cx="780" cy="80" r="4" fill="#0ea5e9"/>
+</g>
+<text x="32" y="42" font-size="18" fill="#0c4a6e">FX / CFD RANKING</text>
+<text x="32" y="68" font-size="14" fill="#164e63">使いやすさ・実用性で選ぶ国内向け口座</text>
+</svg>
