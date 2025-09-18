@@ -1,0 +1,43 @@
+
+name: Ingest broker reviews (docx/pdf → markdown)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'content_source/reviews/**/*.docx'
+      - 'content_source/reviews/**/*.pdf'
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
+      - name: Convert documents to Markdown
+        shell: bash
+        run: |
+          mkdir -p content/reviews
+          shopt -s globstar nullglob
+          for f in content_source/reviews/**/*.docx; do
+            [ -e "$f" ] || continue
+            base=$(basename "$f" .docx)
+            pandoc "$f" -f docx -t gfm -o "content/reviews/${base}.md"
+          done
+          for f in content_source/reviews/**/*.pdf; do
+            [ -e "$f" ] || continue
+            base=$(basename "$f" .pdf)
+            pandoc "$f" -f pdf -t gfm -o "content/reviews/${base}.md" || true
+          done
+
+      - name: Commit & push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(content): ingest reviews (docx/pdf → md)"
+          file_pattern: content/reviews/*.md
