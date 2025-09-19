@@ -146,7 +146,32 @@ export default function Page() {
               </ul>
             </section>
 
-          </main>
+          
+{/* Sprint B: 実質コスト比較 */}
+<section id="costs" className="mg-card mt-4">
+  <h2 className="mg-h2">取引コストの実質比較（1lot想定）</h2>
+  <CostsTable />
+</section>
+
+{/* Sprint B: 口コミ・評判（抜粋） */}
+<section id="reviews" className="mg-card mt-4">
+  <h2 className="mg-h2">口コミ・評判（抜粋）</h2>
+  <Reviews />
+</section>
+
+{/* Sprint B: アンケート */}
+<section id="poll" className="mg-card mt-4">
+  <h2 className="mg-h2">読者アンケート</h2>
+  <PollWidget />
+</section>
+
+{/* Sprint B: 編集部紹介 */}
+<section id="author" className="mg-card mt-4">
+  <h2 className="mg-h2">このページの編集体制</h2>
+  <AuthorBio />
+</section>
+
+</main>
 
           <aside className="mg-side" aria-label="注目コンテンツ">
             <SideCards cards={[
