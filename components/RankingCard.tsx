@@ -70,7 +70,7 @@ export default function RankingCard({ rank, brand, score, highlights, cautions =
       </div>
       <style jsx global>{`
         .mg-rank-card { display:grid; grid-template-columns:220px 1fr 180px; gap:16px; padding:16px; border:1px solid #e7e8ea; border-radius:10px; background:#fff; }
-        .mg-rank-card + .mg-rank-card { margin-top: 12px; }
+        .mg-rank-card + .mg-rank-card { margin-top: 10px; }
         .mg-rank-left { display:flex; gap:12px; align-items:center; }
         .mg-rank-no { width:28px; height:28px; border-radius:9999px; display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:#fff; background:#0066cc; }
         .mg-logo { width:44px; height:44px; border-radius:12px; background:#f1f5f9; color:#0f172a; font-weight:800; display:flex; align-items:center; justify-content:center; }
