@@ -19,13 +19,13 @@ export default function CostsTable(){
             ))}
           </tbody>
         </table>
-      </div>
+      <div className="src">※出典/算出: 編集部集計（公称スプレッド/手数料の公開値＋相場急変時の平均乖離を仮置き）。参考値であり約定を保証しません。</div>
       <style jsx>{`
         .wrap{overflow:auto;border:1px solid #e5e7eb;border-radius:12px;background:#fff}
         table{width:100%;border-collapse:separate;border-spacing:0}
         th,td{padding:10px 12px;border-bottom:1px solid #eef2f7;text-align:left;white-space:nowrap}
         thead th{background:#f8fafc;font-weight:700}
-      `}</style>
+      .src{color:#64748b;font-size:12px;margin-top:8px}`}</style>
     </div>
   )
 }
