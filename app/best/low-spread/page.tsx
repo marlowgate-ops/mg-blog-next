@@ -18,8 +18,8 @@ export default function Page() {
       <div style={{display:'flex',alignItems:'center',gap:8,margin:'6px 0 10px'}}>
         <PrBadge/><AuthorMeta/>
       </div>
-      <h1 style={{fontSize:22,margin:'0 0 8px'}}>{低スプレッドで選ぶ（コスト重視）}</h1>
-      <p style={{color:'#475569',margin:'0 0 12px'}}>{スプレッド/手数料を重視した口座選び。相場急変時の広がりも含めて総コストで比較。}</p>
+      <h1 style={{fontSize:22,margin:'0 0 8px'}}>低スプレッドで選ぶ（コスト重視）</h1>
+      <p style={{color:'#475569',margin:'0 0 12px'}}>スプレッド/手数料を重視した口座選び。相場急変時の広がりも含めて総コストで比較。</p>
       <section aria-labelledby="rank"><h2 id="rank" style={{fontSize:18,margin:'12px 0'}}>低スプレッドで選ぶ</h2><p style={{color:'#334155'}}>スプレッドが狭いだけでなく、<strong>相場急変時の広がり</strong>や約定の安定性も総コストに影響します。短期売買ほど「提示の細さ＋約定の安定」の両立が重要です。</p></section>
       <div style={{marginTop:20}}><Link href="/best/forex-brokers-jp">← 総合ランキングに戻る</Link></div>
     </main>
