@@ -1,0 +1,3 @@
+page.tsx の先頭（import 群の直後）に下記 1 行を追記してください：
+
+export const dynamic = 'force-dynamic'
