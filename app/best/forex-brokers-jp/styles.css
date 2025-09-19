@@ -82,3 +82,5 @@
 /* PR paragraph note under hero */
 .mg-pr-note{ margin:8px 0 0; font-size:12px; color:#6b7280; }
 .mg-author-meta{ margin-top:8px; }
+
+.mg-h2{font-size:18px;font-weight:700;margin-bottom:10px}
