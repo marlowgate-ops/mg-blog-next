@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: { default: site.title, template: `%s — ${site.title}` },
   description: site.description,
   alternates: { types: { 'application/rss+xml': `${site.url}/rss.xml` } },
-  openGraph: { siteName: site.title, images: [{ url: '/og/default.png', width: 1200, height: 630 }] },
+  openGraph: { siteName: site.title },
   twitter: { site: site.twitter || undefined }
 }
 
