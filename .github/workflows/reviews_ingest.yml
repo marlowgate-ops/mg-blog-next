@@ -1,13 +1,10 @@
-
-name: Ingest broker reviews (docx/pdf/md → markdown)
+name: Reviews Ingest (docx/pdf -> md)
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'content_source/reviews/**/*.docx'
-      - 'content_source/reviews/**/*.pdf'
-      - 'content_source/reviews/**/*.md'
+      - 'content_source/reviews/**'
 
 permissions:
   contents: write
@@ -21,35 +18,37 @@ jobs:
 
       - name: Install pandoc
         run: |
-          sudo apt-get update
+          sudo apt-get update -y
           sudo apt-get install -y pandoc
 
-      - name: Convert documents to Markdown
-        shell: bash
+      - name: Ensure output dir
+        run: mkdir -p content/reviews
+
+      - name: Convert DOCX/PDF to Markdown (GFM)
         run: |
-          mkdir -p content/reviews
-          shopt -s globstar nullglob
-          # md -> copy
-          for f in content_source/reviews/**/*.md; do
-            [ -e "$f" ] || continue
+          shopt -s nullglob
+          exit_code=0
+          for f in content_source/reviews/*; do
             base=$(basename "$f")
-            cp "$f" "content/reviews/$base"
+            name="${base%.*}"
+            ext="${base##*.}"
+            if [[ "$ext" == "docx" || "$ext" == "pdf" ]]; then
+              pandoc "$f" -f docx -t gfm --wrap=none -o "content/reviews/${name}.md" || exit_code=1
+            elif [[ "$ext" == "md" ]]; then
+              cp "$f" "content/reviews/${name}.md"
+            fi
           done
-          # docx -> md
-          for f in content_source/reviews/**/*.docx; do
-            [ -e "$f" ] || continue
-            base=$(basename "$f" .docx)
-            pandoc "$f" -f docx -t gfm -o "content/reviews/${base}.md"
-          done
-          # pdf -> md (best-effort)
-          for f in content_source/reviews/**/*.pdf; do
-            [ -e "$f" ] || continue
-            base=$(basename "$f" .pdf)
-            pandoc "$f" -f pdf -t gfm -o "content/reviews/${base}.md" || true
+          exit $exit_code
+
+      - name: Normalize headings (H2/H3)
+        run: |
+          for m in content/reviews/*.md; do
+            # 見出し1を見出し2に揃える（万一H1が混ざった時の保険）
+            sed -i 's/^#\s\+/## /g' "$m"
           done
 
-      - name: Commit & push
+      - name: Commit converted files
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore(content): ingest reviews (→ md)"
+          commit_message: "chore(reviews): convert to markdown via pandoc"
           file_pattern: content/reviews/*.md
