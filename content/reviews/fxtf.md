@@ -1,4 +1,3 @@
-[fxtf.md](https://github.com/user-attachments/files/22416417/fxtf.md)
 ## 総評
 スワップ/キャンペーンでの**短期増量**が狙える一方、**情報機能は控えめ**。2口座目の“戦略特化”枠に。
 
