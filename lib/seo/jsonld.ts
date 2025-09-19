@@ -50,7 +50,7 @@ export function organization(opts?: { name?: string; url?: string; logo?: string
     "@type": "Organization",
     name,
     url,
-    logo: opts?.logo ?? url + "/logo.svg",
+    logo: opts?.logo ?? url + "/og/default.png",
     sameAs: opts?.sameAs ?? [],
   };
 }
