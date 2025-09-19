@@ -10,10 +10,10 @@ export const metadata = {{ title: "低スプレッドで選ぶ（コスト重視
 
 export default function Page() {{
   const bc = breadcrumbList([{ name: '比較', item: '/best' }, { name: '低スプレッド', item: '/best/low-spread' }]);
-  const il = itemListJSONLD("低スプレッドで選ぶ（コスト重視）", [{ name:'DMM.com証券', url:'/best/forex-brokers-jp#rank-1' },{ name:'松井証券（準備中）', url:'/best/forex-brokers-jp#rank-2' },{ name:'ゴールデンウェイ・ジャパン（FXTF）', url:'/best/forex-brokers-jp#rank-3' }]);
+  const il = itemListJSONLD("低スプレッドで選ぶ（コスト重視）", [{ name:'DMM FX', url:'/best/forex-brokers-jp#rank-1' },{ name:'GMOクリック', url:'/best/forex-brokers-jp#rank-2' }]);
   return (
     <main style={{{padding:'16px'}}}>
-      <JsonLd data={{bc}}/><JsonLd data={{il}}/>
+      <JsonLd data={bc}/><JsonLd data={il}/>
       <Breadcrumbs items={[{name:'比較', href:'/best'}, {name:'低スプレッド'}]} />
       <div style={{{display:'flex',alignItems:'center',gap:8,margin:'6px 0 10px'}}}>
         <PrBadge/><AuthorMeta/>
