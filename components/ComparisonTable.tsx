@@ -49,7 +49,7 @@ export default function ComparisonTable({ rows }: { rows: Row[] }) {
         .mg-table-wrap { overflow-x:auto; border:1px solid #eef0f2; border-radius:12px; background:#fff; }
         .mg-compare { width:100%; border-collapse:collapse; min-width:780px; }
         .mg-compare th, .mg-compare td { padding:12px 10px; text-align:left; border-bottom:1px solid #eef1f5; }
-        .mg-compare thead th { position: sticky; top: 0; background:#f9fafb; font-size:13px; color:#374151; z-index:2; }
+        .mg-compare thead th { background:#f9fafb; font-size:13px; color:#374151; }
         .mg-compare tbody tr:nth-child(odd) { background:#fcfcfd; }
         .mg-compare tbody tr:hover td { background:#fafafa; }
         .col-name { position: sticky; left: 0; z-index: 3; background:#fff; font-weight:700; }
