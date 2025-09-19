@@ -1,6 +1,9 @@
 import React from "react";
 import Container from "@/components/Container";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
+import { PR_PARAGRAPH } from "@/content/disclosure";
 import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
 import SideCards from "@/components/SideCards";
@@ -34,10 +37,13 @@ export default function Page() {
       <JsonLd data={organization()} />
 
       <Container>
+        <Breadcrumbs items={[{name:"トップ", href:"/"},{name:"比較", href:"/best"},{name:"FX・CFD業者ランキング"}]} />
         <div className="mg-hero">
           <PrBadge />
           <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
           <p>初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。</p>
+          <AuthorMeta />
+          <p className="mg-pr-note">{PR_PARAGRAPH}</p>
           <div className="mg-tabs" aria-label="用途別タブ">
             <a className="mg-tab is-active" href="#rank-all">総合</a>
             <a className="mg-tab" href="#low-spread">低スプレッド</a>
@@ -121,6 +127,26 @@ export default function Page() {
               <details><summary>ランキングの根拠は？</summary><p>手数料・約定・取扱商品の客観指標をベースに編集部で総合判断。広告掲載の有無とは独立して評価します。</p></details>
               <details><summary>海外業者も使える？</summary><p>可能ですが、規制・入出金・税務の理解が前提。国内と併用しつつ、自身の運用ルールに合うか慎重に判断してください。</p></details>
             </section>
+          
+            <section className="mg-section" id="campaign" data-section>
+              <h2>口座開設キャンペーン</h2>
+              <p className="mg-note">最新の口座開設特典や取引キャンペーンは、公式サイトで条件をご確認ください。</p>
+              <ul className="mg-bullets">
+                <li>新規口座＋入金でポイント/現金の還元</li>
+                <li>取引量に応じたキャッシュバック</li>
+                <li>アプリ利用・学習コンテンツの特典 など</li>
+              </ul>
+            </section>
+
+            <section className="mg-section" id="popular" data-section>
+              <h2>今月の人気</h2>
+              <p>今月よく読まれたレビューと申込が多かった口座のピックアップ。</p>
+              <ul className="mg-bullets">
+                <li>DMM.com証券 — 総合バランスの良さ</li>
+                <li>ゴールデンウェイ・ジャパン（FXTF） — MT4系ツールの柔軟性</li>
+              </ul>
+            </section>
+
           </main>
 
           <aside className="mg-side" aria-label="注目コンテンツ">
