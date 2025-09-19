@@ -3,7 +3,6 @@ import Container from "@/components/Container";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
-import { PR_PARAGRAPH } from "@/content/disclosure";
 import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
 import SideCards from "@/components/SideCards";
@@ -43,7 +42,7 @@ export default function Page() {
           <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
           <p>初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。</p>
           <AuthorMeta />
-          <p className="mg-pr-note">{PR_PARAGRAPH}</p>
+          
           <div className="mg-tabs" aria-label="用途別タブ">
             <a className="mg-tab is-active" href="#rank-all">総合</a>
             <a className="mg-tab" href="#low-spread">低スプレッド</a>
