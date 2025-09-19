@@ -1,4 +1,3 @@
-[matsui.md](https://github.com/user-attachments/files/22416418/matsui.md)
 ## 総評
 現行は「準備中」。再開後は**アプリ刷新**が予定され、コストも競争力ある水準に。
 
