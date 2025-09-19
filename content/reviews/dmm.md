@@ -1,4 +1,3 @@
-[dmm.md](https://github.com/user-attachments/files/22416410/dmm.md)
 ## 総評
 情報量と約定の安定性、アプリの完結度で**総合1位**。初回の口座として“迷ったらここ”の筆頭。
 
