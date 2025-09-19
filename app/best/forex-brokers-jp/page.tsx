@@ -14,6 +14,10 @@ import ReviewContent from "@/components/ReviewContent";
 import { brokers } from "@/data/brokers";
 import { breadcrumbList, itemListJSONLD, faqPage, organization } from "@/lib/seo/jsonld";
 import "./styles.css";
+import CostsTable from "@/components/CostsTable";
+import Reviews from "@/components/Reviews";
+import AuthorBio from "@/components/AuthorBio";
+import PollWidget from "@/components/PollWidget";
 
 export default function Page() {
   const faqs = [
@@ -147,31 +151,32 @@ export default function Page() {
             </section>
 
           
-{/* Sprint B: 実質コスト比較 */}
-<section id="costs" className="mg-card mt-4">
-  <h2 className="mg-h2">取引コストの実質比較（1lot想定）</h2>
+
+{/* Sprint B Hotfix: 実質コスト比較 */}
+<section className="mg-section" id="costs" data-section>
+  <h2>取引コストの実質比較（1 lot想定）</h2>
   <CostsTable />
 </section>
 
-{/* Sprint B: 口コミ・評判（抜粋） */}
-<section id="reviews" className="mg-card mt-4">
-  <h2 className="mg-h2">口コミ・評判（抜粋）</h2>
+{/* Sprint B Hotfix: 口コミ抜粋 */}
+<section className="mg-section" id="reviews" data-section>
+  <h2>口コミ・評判（抜粋）</h2>
   <Reviews />
 </section>
 
-{/* Sprint B: アンケート */}
-<section id="poll" className="mg-card mt-4">
-  <h2 className="mg-h2">読者アンケート</h2>
+{/* Sprint B Hotfix: アンケート */}
+<section className="mg-section" id="poll" data-section>
+  <h2>読者アンケート</h2>
   <PollWidget />
 </section>
 
-{/* Sprint B: 編集部紹介 */}
-<section id="author" className="mg-card mt-4">
-  <h2 className="mg-h2">このページの編集体制</h2>
+{/* Sprint B Hotfix: 編集部紹介 */}
+<section className="mg-section" id="author" data-section>
+  <h2>このページの編集体制</h2>
   <AuthorBio />
 </section>
 
-</main>
+          </main>
 
           <aside className="mg-side" aria-label="注目コンテンツ">
             <SideCards cards={[
