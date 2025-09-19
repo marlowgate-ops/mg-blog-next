@@ -5,7 +5,7 @@ export const site = {
   author: 'Marlow Gate',
   brand: {
     name: 'Marlow Gate',
-    logo: '/og/default.png'
+    logo: '/og/logo_gate_monogram_dark.png'
   },
   twitter: '@marlowgate'
 } as const
