@@ -82,8 +82,8 @@ img { max-width: 100%; height: auto; border-radius: 12px; }
   .no-print { display: none !important; }
   .print-only { display: block !important; }
 }
-/* ---- Layout primitives (moved from styled-jsx to global to avoid FOUC) ---- */
-.mg-container { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
-@media (min-width: 1600px) { .mg-container { max-width: 1280px; } }
-/* Reserve header height to minimize layout shift on mount */
-header.hd { min-height: 66px; }
+/* ----- Header micro-fix (stabilize first paint) ----- */
+header.hd { min-height: 68px; }
+header.hd .topbar { min-height: 32px; }
+header.hd .menubar { min-height: 36px; }
+header.hd .brand img { display:block; width:28px; height:28px; }
