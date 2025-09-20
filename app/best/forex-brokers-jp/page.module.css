@@ -1,24 +1,35 @@
-/* 安定レンダリング用の最小スタイル（CSS Modules） */
-.hero{padding:16px 0 12px;border-bottom:1px solid #eef2f7}
-.hero h1{font-size:26px;margin:8px 0 6px}
+/* Token aligned with app/globals.css */
+:root{
+  --bg: var(--bg);
+  --fg: var(--fg);
+  --muted: var(--muted);
+  --border: var(--border);
+  --hover: var(--hover);
+}
+
+/* Hero */
+.hero{padding:20px 0 12px;border-bottom:1px solid var(--border);background:var(--bg)}
+.hero h1{font-size:24px;margin:8px 0 6px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-.tab{display:inline-block;border:1px solid #e5e7eb;border-radius:9999px;padding:6px 10px;text-decoration:none;color:#0f172a;background:#fff}
+.tab{display:inline-block;border:1px solid var(--border);border-radius:9999px;padding:6px 10px;text-decoration:none;color:var(--fg);background:#fff}
 .on{background:#06b6d4;color:#fff;border-color:#06b6d4}
 .leadCta{display:inline-block;margin:8px 0 0;padding:8px 12px;border-radius:10px;background:#06b6d4;color:#fff;text-decoration:none;font-weight:700}
 
+/* Grid & Cards */
 .grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:12px}
 @media(min-width:1024px){ .grid{grid-template-columns:minmax(0,1fr) 320px;} }
 .side{display:flex;flex-direction:column;gap:12px}
 
-.section{margin:14px 0}
+/* Sections */
+.section{margin:14px 0;background:transparent}
 .section>h2{font-size:18px;margin:0 0 10px}
-.bullets{padding-left:18px;color:#374151}
+.bullets{padding-left:18px;color:var(--fg)}
 .bullets li{margin:6px 0}
-.note{color:#475569}
+.note{color:var(--muted)}
 .steps{padding-left:18px}
 .steps li{margin:6px 0}
-.callout{border:1px dashed #cbd5e1;background:#f8fafc;border-radius:12px;padding:10px;margin:10px 0;color:#334155}
-.review{border:1px solid #e5e7eb;border-radius:12px;background:#fff;padding:12px;margin:12px 0}
+.callout{border:1px dashed var(--border);background:var(--hover);border-radius:12px;padding:10px;margin:10px 0;color:#334155}
+.review{border:1px solid var(--border);border-radius:12px;background:#fff;padding:12px;margin:12px 0}
 
-/* FOUC対策（初期高さ確保） */
+/* FOUC guard */
 .hero, .grid, .section { min-height:24px }
