@@ -60,174 +60,177 @@ export default function Page() {
       <JsonLd data={faqLd} />
       <JsonLd data={organization()} />
 
-      <Container>
-        <Breadcrumbs items={[{name:"トップ", href:"/"},{name:"比較", href:"/best"},{name:"FX・CFD業者ランキング"}]} />
-        <div className={s.hero}>
-          <PrBadge />
-          <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
-          <p>初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。</p>
-          <AuthorMeta />
-          <div className={s.tabs} aria-label="用途別タブ">
-            <a className={`${s.tab} ${s.on}`} href="#rank-all">総合</a>
-            <a className={s.tab} href="#low-spread">低スプレッド</a>
-            <a className={s.tab} href="#cost">手数料重視</a>
-            <a className={s.tab} href="#apps">アプリ重視</a>
+      <div className={s.page}>
+        <Container>
+          <Breadcrumbs items={[{name:"トップ", href:"/"},{name:"比較", href:"/best"},{name:"FX・CFD業者ランキング"}]} />
+          <div className={s.hero}>
+            <PrBadge />
+            <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
+            <p>初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。</p>
+            <AuthorMeta />
+            <div className={s.tabs} aria-label="用途別タブ">
+              <a className={`${s.tab} ${s.on}`} href="#rank-all">総合</a>
+              <a className={s.tab} href="#low-spread">低スプレッド</a>
+              <a className={s.tab} href="#cost">手数料重視</a>
+              <a className={s.tab} href="#apps">アプリ重視</a>
+            </div>
+            <IconNav />
+            <TocCard items={[
+              { href: '#rank-all', label: '総合ランキング' },
+              { href: '#eval', label: '評価基準' },
+              { href: '#table', label: '主要スペック比較' },
+              { href: '#low-spread', label: '低スプレッドの選び方' },
+              { href: '#apps', label: 'アプリの使い勝手' },
+              { href: '#cost', label: 'コスト最適化の考え方' },
+              { href: '#faq', label: 'Q&A' },
+            ]}/>
+            <a className={s.leadCta} href="#table">口座開設の最新特典を確認</a>
           </div>
-          <IconNav />
-          <TocCard items={[
-            { href: '#rank-all', label: '総合ランキング' },
-            { href: '#eval', label: '評価基準' },
-            { href: '#table', label: '主要スペック比較' },
-            { href: '#low-spread', label: '低スプレッドの選び方' },
-            { href: '#apps', label: 'アプリの使い勝手' },
-            { href: '#cost', label: 'コスト最適化の考え方' },
-            { href: '#faq', label: 'Q&A' },
-          ]}/>
-          <a className={s.leadCta} href="#table">口座開設の最新特典を確認</a>
-        </div>
 
-        <div className={s.grid}>
-          <main>
-            <section className={s.section} id="rank-all" aria-labelledby="rank-all-title" data-section>
-              <h2 id="rank-all-title">総合ランキング</h2>
-              {brokers.map((b, i)=>(
-                <RankingCard key={b.id} rank={i+1} brand={b.name} score={b.score} highlights={b.pros} cautions={b.cons} ctaHref={b.site} state={b.state} subs={b.subs}/>
-              ))}
-            </section>
+          <div className={s.grid}>
+            <main>
+              <section className={s.section} id="rank-all" aria-labelledby="rank-all-title" data-section>
+                <h2 id="rank-all-title">総合ランキング</h2>
+                {brokers.map((b, i)=>(
+                  <RankingCard key={b.id} rank={i+1} brand={b.name} score={b.score} highlights={b.pros} cautions={b.cons} ctaHref={b.site} state={b.state} subs={b.subs}/>
+                ))}
+              </section>
 
-            <section className={s.section} id="eval" data-section>
-              <h2>評価基準</h2>
-              <p>{EVAL.note}</p>
-              <ul className={s.bullets}>
-                <li><strong>コスト</strong>…スプレッド/手数料/スワップの総額。</li>
-                <li><strong>約定・配信</strong>…ティック密度/約定の安定（混雑時含む）。</li>
-                <li><strong>アプリ</strong>…視認性/操作導線/反応速度。</li>
-              </ul>
-              <div className={s.callout}>総合スコア = 0.35×コスト + 0.35×約定 + 0.30×アプリ（各0–5）</div>
-            </section>
+              <section className={s.section} id="eval" data-section>
+                <h2>評価基準</h2>
+                <p>{EVAL.note}</p>
+                <ul className={s.bullets}>
+                  <li><strong>コスト</strong>…スプレッド/手数料/スワップの総額。</li>
+                  <li><strong>約定・配信</strong>…ティック密度/約定の安定（混雑時含む）。</li>
+                  <li><strong>アプリ</strong>…視認性/操作導線/反応速度。</li>
+                </ul>
+                <div className={s.callout}>総合スコア = 0.35×コスト + 0.35×約定 + 0.30×アプリ（各0–5）</div>
+              </section>
 
-            <section className={s.section} id="table" data-section>
-              <h2>主要スペック比較</h2>
-              <ComparisonTable rows={rows} />
-            </section>
+              <section className={s.section} id="table" data-section>
+                <h2>主要スペック比較</h2>
+                <ComparisonTable rows={rows} />
+              </section>
 
-            <section className={s.section} id="low-spread" data-section>
-              <h2>低スプレッドの選び方</h2>
-              <p className={s.note}>名目スプレッドは“入口の目安”。実戦では<strong>配信頻度・約定の安定性</strong>を合わせて見ると失敗しません。</p>
-              <ul className={s.bullets}>
-                <li><strong>主要ペアの提示の細かさ</strong>（ティック密度/更新頻度）…値が飛ばないか。</li>
-                <li><strong>成行・逆指値の約定品質</strong>…混雑時にスリッページが増えないか。</li>
-                <li>取引ツールの<strong>板/気配・ワンクリック</strong>…高速操作のしやすさ。</li>
-                <li>実質コストは<strong>スプレッド±スワップ±手数料</strong>の総額で比較。</li>
-              </ul>
-              <div className={s.callout}>短期売買がメインなら、名目スプレッドより<strong>配信と約定</strong>の安定度を優先しましょう。</div>
-            </section>
+              <section className={s.section} id="low-spread" data-section>
+                <h2>低スプレッドの選び方</h2>
+                <p className={s.note}>名目スプレッドは“入口の目安”。実戦では<strong>配信頻度・約定の安定性</strong>を合わせて見ると失敗しません。</p>
+                <ul className={s.bullets}>
+                  <li><strong>主要ペアの提示の細かさ</strong>（ティック密度/更新頻度）…値が飛ばないか。</li>
+                  <li><strong>成行・逆指値の約定品質</strong>…混雑時にスリッページが増えないか。</li>
+                  <li>取引ツールの<strong>板/気配・ワンクリック</strong>…高速操作のしやすさ。</li>
+                  <li>実質コストは<strong>スプレッド±スワップ±手数料</strong>の総額で比較。</li>
+                </ul>
+                <div className={s.callout}>短期売買がメインなら、名目スプレッドより<strong>配信と約定</strong>の安定度を優先しましょう。</div>
+              </section>
 
-            <section className={s.section} id="apps" data-section>
-              <h2>アプリの使い勝手</h2>
-              <p>日々の意思決定を速くするのは<strong>UIと情報の近さ</strong>です。“迷わない導線”を重視。</p>
-              <ul className={s.bullets}>
-                <li>チャートのレイアウト保存、注文~決済の手順が短いか。</li>
-                <li>アラート/ウィジェット、ニュースの粒度と更新速度。</li>
-                <li>入出金や明細確認がアプリ内で完結するか。</li>
-              </ul>
-              <div className={s.callout}>“毎日触る前提”で、<strong>指が覚えるUI</strong>を選ぶとミスが減ります。</div>
-            </section>
+              <section className={s.section} id="apps" data-section>
+                <h2>アプリの使い勝手</h2>
+                <p>日々の意思決定を速くするのは<strong>UIと情報の近さ</strong>です。“迷わない導線”を重視。</p>
+                <ul className={s.bullets}>
+                  <li>チャートのレイアウト保存、注文~決済の手順が短いか。</li>
+                  <li>アラート/ウィジェット、ニュースの粒度と更新速度。</li>
+                  <li>入出金や明細確認がアプリ内で完結するか。</li>
+                </ul>
+                <div className={s.callout}>“毎日触る前提”で、<strong>指が覚えるUI</strong>を選ぶとミスが減ります。</div>
+              </section>
 
-            <section className={s.section} id="cost" data-section>
-              <h2>コスト最適化の考え方</h2>
-              <p className={s.note}>“1→2社目の乗り換え”よりも、<strong>用途での使い分け</strong>がコスパ最強。</p>
-              <ol className={s.steps}>
-                <li>メイン口座：総合力が高い1社で入出金・アプリも含めて安定運用。</li>
-                <li>サブ口座：スキャル/自動売買など<strong>戦略特化</strong>に最適な1社を追加。</li>
-                <li>中長期：スワップと諸費用、ニュース/銘柄の<strong>情報優位</strong>で選ぶ。</li>
-              </ol>
-              <p>キャンペーンは最初の1社で取りこぼさないのが鉄則。達成条件と締切だけは必ず確認を。</p>
-            </section>
+              <section className={s.section} id="cost" data-section>
+                <h2>コスト最適化の考え方</h2>
+                <p className={s.note}>“1→2社目の乗り換え”よりも、<strong>用途での使い分け</strong>がコスパ最強。</p>
+                <ol className={s.steps}>
+                  <li>メイン口座：総合力が高い1社で入出金・アプリも含めて安定運用。</li>
+                  <li>サブ口座：スキャル/自動売買など<strong>戦略特化</strong>に最適な1社を追加。</li>
+                  <li>中長期：スワップと諸費用、ニュース/銘柄の<strong>情報優位</strong>で選ぶ。</li>
+                </ol>
+                <p>キャンペーンは最初の1社で取りこぼさないのが鉄則。達成条件と締切だけは必ず確認を。</p>
+              </section>
 
-            <section className={`${s.section} ${s.faq}`} id="faq" data-section>
-              <h2>よくある質問</h2>
-              <TocCard items={[
-                { href: '#rank-all', label: '総合ランキング' },
-                { href: '#eval', label: '評価基準' },
-                { href: '#table', label: '主要スペック比較' },
-                { href: '#low-spread', label: '低スプレッドの選び方' },
-                { href: '#apps', label: 'アプリの使い勝手' },
-                { href: '#cost', label: 'コスト最適化の考え方' },
-                { href: '#faq', label: 'Q&A' },
-              ]} />
-              <details><summary>初心者はどれから？</summary><p>まずは国内サービス（例: DMM.com証券）で入出金の動作を確認。小額から始め、約定やアプリの使い勝手を確かめるのがおすすめです。</p></details>
-              <details><summary>ランキングの根拠は？</summary><p>手数料・約定・取扱商品の客観指標をベースに編集部で総合判断。広告掲載の有無とは独立して評価します。</p></details>
-              <details><summary>海外業者も使える？</summary><p>可能ですが、規制・入出金・税務の理解が前提。国内と併用しつつ、自身の運用ルールに合うか慎重に判断してください。</p></details>
-            </section>
+              <section className={`${s.section} ${s.faq}`} id="faq" data-section>
+                <h2>よくある質問</h2>
+                <TocCard items={[
+                  { href: '#rank-all', label: '総合ランキング' },
+                  { href: '#eval', label: '評価基準' },
+                  { href: '#table', label: '主要スペック比較' },
+                  { href: '#low-spread', label: '低スプレッドの選び方' },
+                  { href: '#apps', label: 'アプリの使い勝手' },
+                  { href: '#cost', label: 'コスト最適化の考え方' },
+                  { href: '#faq', label: 'Q&A' },
+                ]} />
+                <details><summary>初心者はどれから？</summary><p>まずは国内サービス（例: DMM.com証券）で入出金の動作を確認。小額から始め、約定やアプリの使い勝手を確かめるのがおすすめです。</p></details>
+                <details><summary>ランキングの根拠は？</summary><p>手数料・約定・取扱商品の客観指標をベースに編集部で総合判断。広告掲載の有無とは独立して評価します。</p></details>
+                <details><summary>海外業者も使える？</summary><p>可能ですが、規制・入出金・税務の理解が前提。国内と併用しつつ、自身の運用ルールに合うか慎重に判断してください。</p></details>
+              </section>
 
-            <section className={s.section} id="campaign" data-section>
-              <h2>口座開設キャンペーン</h2>
-              <p className={s.note}>最新の口座開設特典や取引キャンペーンは、公式サイトで条件をご確認ください。</p>
-              <ul className={s.bullets}>
-                <li>新規口座＋入金でポイント/現金の還元</li>
-                <li>取引量に応じたキャッシュバック</li>
-                <li>アプリ利用・学習コンテンツの特典 など</li>
-              </ul>
-            </section>
+              <section className={s.section} id="campaign" data-section>
+                <h2>口座開設キャンペーン</h2>
+                <p className={s.note}>最新の口座開設特典や取引キャンペーンは、公式サイトで条件をご確認ください。</p>
+                <ul className={s.bullets}>
+                  <li>新規口座＋入金でポイント/現金の還元</li>
+                  <li>取引量に応じたキャッシュバック</li>
+                  <li>アプリ利用・学習コンテンツの特典 など</li>
+                </ul>
+              </section>
 
-            <section className={s.section} id="popular" data-section>
-              <h2>今月の人気</h2>
-              <p>今月よく読まれたレビューと申込が多かった口座のピックアップ。</p>
-              <ul className={s.bullets}>
-                <li>DMM.com証券 — 総合バランスの良さ</li>
-                <li>ゴールデンウェイ・ジャパン（FXTF） — MT4系ツールの柔軟性</li>
-              </ul>
-            </section>
+              <section className={s.section} id="popular" data-section>
+                <h2>今月の人気</h2>
+                <p>今月よく読まれたレビューと申込が多かった口座のピックアップ。</p>
+                <ul className={s.bullets}>
+                  <li>DMM.com証券 — 総合バランスの良さ</li>
+                  <li>ゴールデンウェイ・ジャパン（FXTF） — MT4系ツールの柔軟性</li>
+                </ul>
+              </section>
 
-            <section className={s.section} id="costs" data-section>
-              <h2>取引コストの実質比較（1 lot想定）</h2>
-              <CostsTable />
-            </section>
+              <section className={s.section} id="costs" data-section>
+                <h2>取引コストの実質比較（1 lot想定）</h2>
+                <CostsTable />
+              </section>
 
-            <section className={s.section} id="reviews" data-section>
-              <h2>口コミ・評判（抜粋）</h2>
-              <Reviews />
-            </section>
+              <section className={s.section} id="reviews" data-section>
+                <h2>口コミ・評判（抜粋）</h2>
+                <Reviews />
+              </section>
 
-            <section className={s.section} id="poll" data-section>
-              <h2>読者アンケート</h2>
-              <PollWidget />
-            </section>
+              <section className={s.section} id="poll" data-section>
+                <h2>読者アンケート</h2>
+                <PollWidget />
+              </section>
 
-            <section className={s.section} id="author" data-section>
-              <h2>このページの編集体制</h2>
-              <AuthorBio />
-            </section>
+              <section className={s.section} id="author" data-section>
+                <h2>このページの編集体制</h2>
+                <AuthorBio />
+              </section>
+            </main>
 
-          </main>
-
-          <aside className={s.side} aria-label="注目コンテンツ">
-            <SideCards cards={[
-              { title: '取引コスト徹底ガイド', href: '#cost', desc: 'スプレッド/手数料/スワップの実質コストを解説。中級者向けの最適化手順。' },
-              { title: '人気ランキング', href: '#rank-all', desc: '今月の申込み/読了データから編集部がピックアップ。' },
-              { title: '最新キャンペーン/経済指標', href: '#low-spread', desc: '口座開設特典と今週の主要指標をまとめてチェック。' },
-            ]} />
-          </aside>
-        </div>
-
-        <section className={s.section} id="detail-reviews" data-section>
-          <h2>詳細レビュー</h2>
-          <div className={s.review}>
-            <h3>DMM.com証券｜総合力で迷ったら</h3>
-            <ReviewContent id="dmm" />
+            <aside className={s.side} aria-label="注目コンテンツ">
+              <div className="card">
+                <SideCards cards={[
+                  { title: '取引コスト徹底ガイド', href: '#cost', desc: 'スプレッド/手数料/スワップの実質コストを解説。中級者向けの最適化手順。' },
+                  { title: '人気ランキング', href: '#rank-all', desc: '今月の申込み/読了データから編集部がピックアップ。' },
+                  { title: '最新キャンペーン/経済指標', href: '#low-spread', desc: '口座開設特典と今週の主要指標をまとめてチェック。' },
+                ]} />
+              </div>
+            </aside>
           </div>
-          <div className={s.review}>
-            <h3>松井証券（準備中）｜堅実さ重視のサブ候補</h3>
-            <ReviewContent id="matsui" />
-          </div>
-          <div className={s.review}>
-            <h3>ゴールデンウェイ・ジャパン（FXTF）｜ツールで攻めたい中級者へ</h3>
-            <ReviewContent id="fxtf" />
-          </div>
-        </section>
 
-      </Container>
+          <section className={s.section} id="detail-reviews" data-section>
+            <h2>詳細レビュー</h2>
+            <div className={s.review}>
+              <h3>DMM.com証券｜総合力で迷ったら</h3>
+              <ReviewContent id="dmm" />
+            </div>
+            <div className={s.review}>
+              <h3>松井証券（準備中）｜堅実さ重視のサブ候補</h3>
+              <ReviewContent id="matsui" />
+            </div>
+            <div className={s.review}>
+              <h3>ゴールデンウェイ・ジャパン（FXTF）｜ツールで攻めたい中級者へ</h3>
+              <ReviewContent id="fxtf" />
+            </div>
+          </section>
+
+        </Container>
+      </div>
       <BackToTop />
     </>
   );
