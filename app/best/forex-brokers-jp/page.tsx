@@ -20,6 +20,12 @@ import Reviews from "@/components/Reviews";
 import AuthorBio from "@/components/AuthorBio";
 import PollWidget from "@/components/PollWidget";
 
+// 評価基準（編集部ポリシーの明示）
+const EVAL = {
+  weights: { total: { cost: 0.35, execution: 0.35, app: 0.30 } },
+  note: "各下位指標は0-5。総合は加重平均で算出。主要ペアの提示・約定・UI・導線の実用性を重視。"
+};
+
 export default function Page() {
   const faqs = [
     { q: "初心者はどれから始めるべき？", a: "まずは国内大手の総合力が高い口座で、入出金・約定スピード・アプリの感触を確認しましょう。1社目で基本操作に慣れ、用途（低コスト/アプリ/CFD等）ごとに2社目以降を使い分けるのが最短です。" },
@@ -29,9 +35,34 @@ export default function Page() {
     { q: "複数口座を使い分けるべき？", a: "目的が違えば分けるのが合理的です。例）裁量デイトレ=低遅延/板重視、スイング=手数料総額とスワップ、情報収集=アプリUI/ニュースの充実。" },
     { q: "キャンペーンの活かし方は？", a: "口座開設〜入金・取引でポイント/現金の還元が受けられる場合があります。条件に該当するなら最初の1社で取りこぼさないのがコスパ良。" },
   ];
-  const itemsLd = itemListJSONLD("国内向けおすすめFX・CFD業者ランキング", brokers.map(b=>({ name:b.name, url:b.site, ratingValue:b.score })));
-  const bc = breadcrumbList([{ name:"トップ", item:"/" }, { name:"比較", item:"/best" }, { name:"FX・CFD業者ランキング", item:"/best/forex-brokers-jp" }]);
+  const itemsLd = itemListJSONLD(
+    "国内向けおすすめFX・CFD業者ランキング",
+    brokers.map(b => ({ name: b.name, url: b.site, ratingValue: b.score }))
+  );
+  const bc = breadcrumbList([
+    { name: "トップ", item: "/" },
+    { name: "比較", item: "/best" },
+    { name: "FX・CFD業者ランキング", item: "/best/forex-brokers-jp" },
+  ]);
   const faqLd = faqPage(faqs);
+
+  // 比較表の行データ（拡張カラムを自動で拾う）
+  const rows = brokers.map(b => ({
+    brand: b.name,
+    product: b.product,
+    platform: b.platform,
+    cost: b.costNote,
+    minUnit: b.minUnit,
+    accountFee: b.accountFee,
+    depositWithdraw: b.depositWithdraw,
+    api: b.api,
+    tools: b.tools,
+    appScore: b.appScoreText,
+    support: b.support,
+    note: b.note,
+    state: b.state,
+    ctaHref: b.site,
+  }));
 
   return (
     <>
@@ -57,16 +88,19 @@ export default function Page() {
           <IconNav />
 
           {/* mg-top-toc */}
-          <TocCard items={[
-            { href: '#rank-all', label: '総合ランキング' },
-            { href: '#table', label: '主要スペック比較' },
-            { href: '#low-spread', label: '低スプレッドの選び方' },
-            { href: '#apps', label: 'アプリの使い勝手' },
-            { href: '#cost', label: 'コスト最適化の考え方' },
-            { href: '#faq', label: 'Q&A' },
-          ]} />
+          <TocCard
+            items={[
+              { href: '#rank-all', label: '総合ランキング' },
+              { href: '#eval', label: '評価基準' },
+              { href: '#table', label: '主要スペック比較' },
+              { href: '#low-spread', label: '低スプレッドの選び方' },
+              { href: '#apps', label: 'アプリの使い勝手' },
+              { href: '#cost', label: 'コスト最適化の考え方' },
+              { href: '#faq', label: 'Q&A' },
+            ]}
+          />
     
-                    <a className="mg-lead-cta" href="#table">口座開設の最新特典を確認</a>
+          <a className="mg-lead-cta" href="#table">口座開設の最新特典を確認</a>
         </div>
 
         <div className="mg-grid">
@@ -74,13 +108,37 @@ export default function Page() {
             <section className="mg-section" id="rank-all" aria-labelledby="rank-all-title" data-section>
               <h2 id="rank-all-title">総合ランキング</h2>
               {brokers.map((b, i)=>(
-                <RankingCard key={b.id} rank={i+1} brand={b.name} score={b.score} highlights={b.pros} cautions={b.cons} ctaHref={b.site} state={b.state} subs={b.subs}/>
+                <RankingCard
+                  key={b.id}
+                  rank={i+1}
+                  brand={b.name}
+                  score={b.score}
+                  highlights={b.pros}
+                  cautions={b.cons}
+                  ctaHref={b.site}
+                  state={b.state}
+                  subs={b.subs}
+                />
               ))}
+            </section>
+
+            {/* 評価基準セクション */}
+            <section className="mg-section" id="eval" data-section>
+              <h2>評価基準</h2>
+              <p>{EVAL.note}</p>
+              <ul className="mg-bullets">
+                <li><strong>コスト</strong>…スプレッド/手数料/スワップの総額。</li>
+                <li><strong>約定・配信</strong>…ティック密度/約定の安定（混雑時含む）。</li>
+                <li><strong>アプリ</strong>…視認性/操作導線/反応速度。</li>
+              </ul>
+              <div className="mg-callout info">
+                総合スコア = 0.35×コスト + 0.35×約定 + 0.30×アプリ（各0–5）
+              </div>
             </section>
 
             <section className="mg-section" id="table" data-section>
               <h2>主要スペック比較</h2>
-              <ComparisonTable rows={brokers.map(b=>({ brand:b.name, product:"FX", platform:"Web / アプリ", cost:"—", note:"—", state:b.state, ctaHref:b.site }))} />
+              <ComparisonTable rows={rows} />
             </section>
 
             <section className="mg-section" id="low-spread" data-section>
@@ -121,6 +179,7 @@ export default function Page() {
               <h2>よくある質問</h2>
               <TocCard items={[
                 { href: '#rank-all', label: '総合ランキング' },
+                { href: '#eval', label: '評価基準' },
                 { href: '#table', label: '主要スペック比較' },
                 { href: '#low-spread', label: '低スプレッドの選び方' },
                 { href: '#apps', label: 'アプリの使い勝手' },
@@ -151,31 +210,29 @@ export default function Page() {
               </ul>
             </section>
 
-          
+            {/* Sprint B Hotfix: 実質コスト比較 */}
+            <section className="mg-section" id="costs" data-section>
+              <h2>取引コストの実質比較（1 lot想定）</h2>
+              <CostsTable />
+            </section>
 
-{/* Sprint B Hotfix: 実質コスト比較 */}
-<section className="mg-section" id="costs" data-section>
-  <h2>取引コストの実質比較（1 lot想定）</h2>
-  <CostsTable />
-</section>
+            {/* Sprint B Hotfix: 口コミ抜粋 */}
+            <section className="mg-section" id="reviews" data-section>
+              <h2>口コミ・評判（抜粋）</h2>
+              <Reviews />
+            </section>
 
-{/* Sprint B Hotfix: 口コミ抜粋 */}
-<section className="mg-section" id="reviews" data-section>
-  <h2>口コミ・評判（抜粋）</h2>
-  <Reviews />
-</section>
+            {/* Sprint B Hotfix: アンケート */}
+            <section className="mg-section" id="poll" data-section>
+              <h2>読者アンケート</h2>
+              <PollWidget />
+            </section>
 
-{/* Sprint B Hotfix: アンケート */}
-<section className="mg-section" id="poll" data-section>
-  <h2>読者アンケート</h2>
-  <PollWidget />
-</section>
-
-{/* Sprint B Hotfix: 編集部紹介 */}
-<section className="mg-section" id="author" data-section>
-  <h2>このページの編集体制</h2>
-  <AuthorBio />
-</section>
+            {/* Sprint B Hotfix: 編集部紹介 */}
+            <section className="mg-section" id="author" data-section>
+              <h2>このページの編集体制</h2>
+              <AuthorBio />
+            </section>
 
           </main>
 
@@ -188,21 +245,21 @@ export default function Page() {
           </aside>
         </div>
       
-<section className="mg-section" id="detail-reviews" data-section>
-  <h2>詳細レビュー</h2>
-  <div className="mg-review">
-    <h3>DMM.com証券｜総合力で迷ったら</h3>
-    <ReviewContent id="dmm" />
-  </div>
-  <div className="mg-review">
-    <h3>松井証券（準備中）｜堅実さ重視のサブ候補</h3>
-    <ReviewContent id="matsui" />
-  </div>
-  <div className="mg-review">
-    <h3>ゴールデンウェイ・ジャパン（FXTF）｜ツールで攻めたい中級者へ</h3>
-    <ReviewContent id="fxtf" />
-  </div>
-</section>
+        <section className="mg-section" id="detail-reviews" data-section>
+          <h2>詳細レビュー</h2>
+          <div className="mg-review">
+            <h3>DMM.com証券｜総合力で迷ったら</h3>
+            <ReviewContent id="dmm" />
+          </div>
+          <div className="mg-review">
+            <h3>松井証券（準備中）｜堅実さ重視のサブ候補</h3>
+            <ReviewContent id="matsui" />
+          </div>
+          <div className="mg-review">
+            <h3>ゴールデンウェイ・ジャパン（FXTF）｜ツールで攻めたい中級者へ</h3>
+            <ReviewContent id="fxtf" />
+          </div>
+        </section>
 
       </Container>
       <BackToTop />
