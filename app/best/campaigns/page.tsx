@@ -3,6 +3,7 @@ import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
 import JsonLd from "@/components/JsonLd";
 import RankingList from "@/components/RankingList";
+import CampaignsTable from "@/components/CampaignsTable";
 import { breadcrumbList, itemListJSONLD } from "@/lib/seo/jsonld";
 import Link from "next/link";
 
@@ -26,17 +27,21 @@ export default function Page() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '6px 0 10px' }}>
         <PrBadge /><AuthorMeta />
       </div>
+
       <h1 style={{ fontSize: 22, margin: '0 0 8px' }}>口座開設キャンペーン一覧</h1>
       <p style={{ color: '#475569', margin: '0 0 12px' }}>最大額/締切/条件で横断比較。</p>
 
       <section aria-labelledby="rank">
-        <h2 id="rank" style={{fontSize:18,margin:'12px 0'}}>ランキング</h2>
+        <h2 id="rank" style={{fontSize:18,margin:'12px 0'}}>関連ランキング</h2>
         <RankingList mode="total" limit={10} />
       </section>
 
-      <div style={{ marginTop: 20 }}>
-        <Link href="/best/forex-brokers-jp">← 総合ランキングに戻る</Link>
-      </div>
+      <section aria-labelledby="cmp" style={{marginTop:24}}>
+        <h2 id="cmp" style={{fontSize:18,margin:'12px 0'}}>キャンペーン一覧</h2>
+        <CampaignsTable />
+      </section>
+
+      <div style={{ marginTop: 20 }}><Link href="/best/forex-brokers-jp">← 総合ランキングに戻る</Link></div>
     </main>
   );
 }
