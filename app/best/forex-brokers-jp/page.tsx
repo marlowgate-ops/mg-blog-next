@@ -14,11 +14,15 @@ import BackToTop from "@/components/BackToTop";
 import ReviewContent from "@/components/ReviewContent";
 import { brokers } from "@/data/brokers";
 import { breadcrumbList, itemListJSONLD, faqPage, organization } from "@/lib/seo/jsonld";
-import "./styles.css";
 import CostsTable from "@/components/CostsTable";
 import Reviews from "@/components/Reviews";
 import AuthorBio from "@/components/AuthorBio";
 import PollWidget from "@/components/PollWidget";
+
+export const metadata = {
+  title: "国内向けおすすめFX・CFD業者ランキング",
+  description: "使いやすさ/実用性を重視。スプレッド・手数料・約定・アプリ・サポートを総合評価。",
+};
 
 // 評価基準（編集部ポリシーの明示）
 const EVAL = {
@@ -210,25 +214,25 @@ export default function Page() {
               </ul>
             </section>
 
-            {/* Sprint B Hotfix: 実質コスト比較 */}
+            {/* 実質コスト比較 */}
             <section className="mg-section" id="costs" data-section>
               <h2>取引コストの実質比較（1 lot想定）</h2>
               <CostsTable />
             </section>
 
-            {/* Sprint B Hotfix: 口コミ抜粋 */}
+            {/* 口コミ抜粋 */}
             <section className="mg-section" id="reviews" data-section>
               <h2>口コミ・評判（抜粋）</h2>
               <Reviews />
             </section>
 
-            {/* Sprint B Hotfix: アンケート */}
+            {/* 読者アンケート */}
             <section className="mg-section" id="poll" data-section>
               <h2>読者アンケート</h2>
               <PollWidget />
             </section>
 
-            {/* Sprint B Hotfix: 編集部紹介 */}
+            {/* 編集部紹介 */}
             <section className="mg-section" id="author" data-section>
               <h2>このページの編集体制</h2>
               <AuthorBio />
@@ -263,6 +267,36 @@ export default function Page() {
 
       </Container>
       <BackToTop />
+
+      {/* ページ内完結の最低限スタイル（外部styles.cssに依存しない） */}
+      <style jsx>{`
+        .mg-hero{padding:16px 0 12px;border-bottom:1px solid #eef2f7}
+        .mg-hero h1{font-size:26px;margin:8px 0 6px}
+        .mg-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+        .mg-tab{display:inline-block;border:1px solid #e5e7eb;border-radius:9999px;padding:6px 10px;text-decoration:none;color:#0f172a;background:#fff}
+        .mg-tab.is-active{background:#06b6d4;color:#fff;border-color:#06b6d4}
+        .mg-lead-cta{display:inline-block;margin:8px 0 0;padding:8px 12px;border-radius:10px;background:#06b6d4;color:#fff;text-decoration:none;font-weight:700}
+
+        .mg-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:12px}
+        @media(min-width:1024px){ .mg-grid{grid-template-columns:minmax(0,1fr) 320px;} }
+        main{min-width:0}
+        .mg-side{display:flex;flex-direction:column;gap:12px}
+        .mg-section{margin:14px 0}
+        .mg-section>h2{font-size:18px;margin:0 0 10px}
+        .mg-bullets{padding-left:18px;color:#374151}
+        .mg-bullets li{margin:6px 0}
+        .mg-note{color:#475569}
+        .mg-steps{padding-left:18px}
+        .mg-steps li{margin:6px 0}
+        .mg-callout{border:1px dashed #cbd5e1;background:#f8fafc;border-radius:12px;padding:10px;margin:10px 0;color:#334155}
+        .mg-review{border:1px solid #e5e7eb;border-radius:12px;background:#fff;padding:12px;margin:12px 0}
+
+        .mg-side .card{border:1px solid #e5e7eb;border-radius:12px;background:#fff;padding:12px}
+        .mg-side .btn{display:inline-block;margin-top:6px;background:#06b6d4;color:#fff;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:700}
+
+        /* 初期ペイント安定用 */
+        .mg-hero, .mg-grid, .mg-section { min-height:24px }
+      `}</style>
     </>
   );
 }
