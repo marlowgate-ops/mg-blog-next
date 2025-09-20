@@ -3,6 +3,7 @@ import Container from "@/components/Container";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
+import FAQ from "@/components/FAQ";
 import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
 import SideCards from "@/components/SideCards";
