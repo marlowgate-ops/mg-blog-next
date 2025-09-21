@@ -19,24 +19,26 @@ export default function Page() {
   ]);
 
   return (
-    <main style={{ padding: '16px' }}>
+    <main>
       <JsonLd data={bc} />
       <JsonLd data={il} />
-      <Breadcrumbs items={[{name:'比較', href:'/best'}, {name:'取引ツール'}]} />
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '6px 0 10px' }}>
-        <PrBadge /><AuthorMeta />
-      </div>
-      <h1 style={{ fontSize: 22, margin: '0 0 8px' }}>取引ツール・機能で選ぶ</h1>
-      <p style={{ color: '#475569', margin: '0 0 12px' }}>PCツールの拡張性やAPI対応など、機能面で選ぶ。</p>
+      <section data-section>
+        <Breadcrumbs items={[{name:'比較', href:'/best'}, {name:'取引ツール'}]} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '6px 0 10px' }}>
+          <PrBadge /><AuthorMeta />
+        </div>
+        <h1 style={{ fontSize: 22, margin: '0 0 8px' }}>取引ツール・機能で選ぶ</h1>
+        <p style={{ color: '#475569', margin: '0 0 12px' }}>PCツールの拡張性やAPI対応など、機能面で選ぶ。</p>
 
-      <section aria-labelledby="rank">
-        <h2 id="rank" style={{fontSize:18,margin:'12px 0'}}>ランキング</h2>
-        <RankingList mode="execution" limit={10} />
+        <div className="section-card">
+          <h2 id="rank" style={{fontSize:18,margin:'12px 0'}}>ランキング</h2>
+          <RankingList mode="execution" limit={10} />
+        </div>
+
+        <div style={{ marginTop: 20 }}>
+          <Link href="/best/forex-brokers-jp">← 総合ランキングに戻る</Link>
+        </div>
       </section>
-
-      <div style={{ marginTop: 20 }}>
-        <Link href="/best/forex-brokers-jp">← 総合ランキングに戻る</Link>
-      </div>
     </main>
   );
 }
