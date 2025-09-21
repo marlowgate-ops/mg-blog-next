@@ -1,10 +1,8 @@
-.page{
+/* app/best/layout.module.css */
+.page {
+  /* サイト共通で背景と外側余白を与えるため、ここには持たせない */
+  background: transparent;
   min-height: 100%;
-  padding: 24px 0 56px;
+  /* ページ内の上下だけ軽く（中のセクションで面を作る） */
+  padding: clamp(12px, 2vw, 20px) 0;
 }
-@media (min-width:1024px){ .page{ padding: 28px 0 64px; } }
-.page :global(.container), .page :global(.mg-container){
-  background: transparent !important;
-  padding-left: 12px; padding-right: 12px;
-}
-.page :global(main){ margin-top: 12px; }
