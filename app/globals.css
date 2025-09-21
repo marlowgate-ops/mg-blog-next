@@ -87,3 +87,42 @@ header.hd { min-height: 68px; }
 header.hd .topbar { min-height: 32px; }
 header.hd .menubar { min-height: 36px; }
 header.hd .brand img { display:block; width:28px; height:28px; }
+
+/* ======================================================
+   Site‑wide layout unification (cards + spacing + bg)
+   Applies to all pages. Safe defaults; dark mode preserved.
+   ====================================================== */
+body { background: #f5f7fb; }
+@media (prefers-color-scheme: dark) {
+  body { background: #0a0a0a; }
+}
+/* Vertical rhythm */
+main { padding-top: 8px; }
+@media (min-width:1024px){ main { padding-top: 12px; } }
+/* Carded sections — use either [data-section] or .section-card */
+main > section[data-section],
+main > section.section-card,
+main > .section-card {
+  margin: 24px 0;
+  padding: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(15,23,42,.06);
+}
+@media (min-width:1024px){
+  main > section[data-section],
+  main > section.section-card,
+  main > .section-card {
+    margin: 28px 0;
+    padding: 22px;
+  }
+}
+/* Side column generic cards */
+aside .card, .sidebar .card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(15,23,42,.06);
+}
