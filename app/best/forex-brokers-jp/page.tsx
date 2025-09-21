@@ -14,10 +14,12 @@ import BackToTop from "@/components/BackToTop";
 import ReviewContent from "@/components/ReviewContent";
 import { brokers } from "@/data/brokers";
 import { breadcrumbList, itemListJSONLD, faqPage, organization } from "@/lib/seo/jsonld";
+import { getEvaluationWeights, formatWeight, getEvaluationNotes } from "@/lib/evaluation";
 import CostsTable from "@/components/CostsTable";
 import Reviews from "@/components/Reviews";
 import AuthorBio from "@/components/AuthorBio";
 import PollWidget from "@/components/PollWidget";
+import StickyCTA from "@/components/StickyCTA";
 import s from "./page.module.css";
 
 export const metadata = {
@@ -25,12 +27,12 @@ export const metadata = {
   description: "使いやすさ/実用性を重視。スプレッド・手数料・約定・アプリ・サポートを総合評価。",
 };
 
-const EVAL = {
-  weights: { total: { cost: 0.35, execution: 0.35, app: 0.30 } },
-  note: "各下位指標は0-5。総合は加重平均で算出。主要ペアの提示・約定・UI・導線の実用性を重視。"
-};
+// Evaluation data is now loaded from JSON
 
 export default function Page() {
+  const weights = getEvaluationWeights();
+  const evalNotes = getEvaluationNotes();
+  
   const faqs = [
     { q: "初心者はどれから始めるべき？", a: "まずは国内大手の総合力が高い口座で、入出金・約定スピード・アプリの感触を確認しましょう。1社目で基本操作に慣れ、用途（低コスト/アプリ/CFD等）ごとに2社目以降を使い分けるのが最短です。" },
     { q: "スプレッドと約定どちらを優先すべき？", a: "短期売買なら“提示の細さと約定の安定性”が最重要です。名目スプレッドが狭くても配信が粗いと実質コストは上がります。中長期は手数料やスワップ、入出金の手軽さを含めて総合で判断します。" },
@@ -87,6 +89,8 @@ export default function Page() {
             <a className={s.leadCta} href="#table">口座開設の最新特典を確認</a>
           </div>
 
+          <StickyCTA href="#table" deadline="2025-12-31" />
+
           <div className={s.grid}>
             <main>
               <section className={s.section} id="rank-all" aria-labelledby="rank-all-title" data-section>
@@ -98,13 +102,40 @@ export default function Page() {
 
               <section className={s.section} id="eval" data-section>
                 <h2>評価基準</h2>
-                <p>{EVAL.note}</p>
+                <p>{evalNotes}</p>
                 <ul className={s.bullets}>
                   <li><strong>コスト</strong>…スプレッド/手数料/スワップの総額。</li>
                   <li><strong>約定・配信</strong>…ティック密度/約定の安定（混雑時含む）。</li>
                   <li><strong>アプリ</strong>…視認性/操作導線/反応速度。</li>
                 </ul>
-                <div className={s.callout}>総合スコア = 0.35×コスト + 0.35×約定 + 0.30×アプリ（各0–5）</div>
+                
+                <div className="section-card" style={{ marginTop: '20px' }}>
+                  <h3>重み付け表</h3>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '12px' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                        <th style={{ padding: '8px', textAlign: 'left' }}>項目</th>
+                        <th style={{ padding: '8px', textAlign: 'right' }}>重み</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style={{ padding: '8px' }}>約定・配信</td>
+                        <td style={{ padding: '8px', textAlign: 'right', fontWeight: '600' }}>{formatWeight(weights.約定)}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ padding: '8px' }}>コスト</td>
+                        <td style={{ padding: '8px', textAlign: 'right', fontWeight: '600' }}>{formatWeight(weights.コスト)}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ padding: '8px' }}>アプリ</td>
+                        <td style={{ padding: '8px', textAlign: 'right', fontWeight: '600' }}>{formatWeight(weights.アプリ)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div className={s.callout}>総合スコア = {formatWeight(weights.コスト)}×コスト + {formatWeight(weights.約定)}×約定 + {formatWeight(weights.アプリ)}×アプリ（各0–5）</div>
               </section>
 
               <section className={s.section} id="table" data-section>
