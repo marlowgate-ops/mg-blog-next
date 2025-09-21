@@ -93,16 +93,15 @@ body { background: #f5f7fb; }
 @media (prefers-color-scheme: dark) { body { background: #0a0a0a; } }
 main { padding-top: 12px; }
 @media (min-width:1024px){ main { padding-top: 16px; } }
-main > section[data-section],
-main > section.section-card,
-main > .section-card {
+:where(main, .content, body) :where(section[data-section], .section-card){
   margin: 28px 0;
   padding: 22px;
-  background: var(--card-bg, #fff);
+  background: #fff;
   border: 1px solid var(--border);
   border-radius: 14px;
   box-shadow: 0 2px 6px rgba(15,23,42,.06);
 }
+[data-container-root]{ background:transparent !important; }
 aside .card, .sidebar .card {
   border: 1px solid var(--border);
   border-radius: 12px;
