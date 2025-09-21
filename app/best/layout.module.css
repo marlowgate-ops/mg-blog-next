@@ -1,0 +1,11 @@
+.page{
+  background: #f5f7fb !important;
+  min-height: 100%;
+  padding: 24px 0 56px;
+}
+@media (min-width:1024px){ .page{ padding: 28px 0 64px; } }
+.page :global(.container), .page :global(.mg-container){
+  background: transparent !important;
+  padding-left: 12px; padding-right: 12px;
+}
+.page :global(main){ margin-top: 12px; }
