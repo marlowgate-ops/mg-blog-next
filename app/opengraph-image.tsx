@@ -1,68 +1,74 @@
+export const runtime = 'edge'
 import { ImageResponse } from 'next/og'
 
-export const runtime = 'edge'
-export const size = { width: 1200, height: 630 }
+export const alt = 'Marlow Gate Blog'
+export const size = {
+  width: 1200,
+  height: 630,
+}
 export const contentType = 'image/png'
 
-export default async function OG() {
-  const site = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Marlow Gate – Blog'
-  const tagline = process.env.NEXT_PUBLIC_SITE_TAGLINE ?? '読むたびに価値が積み上がる。'
-  const accent = process.env.NEXT_PUBLIC_BRAND_ACCENT ?? '#0EA5E9'
-  const domain = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://blog.marlowgate.com')
-    .replace(/^https?:\/\//, '').replace(/\/$/, '')
-
+export default async function Image() {
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
+      <div style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#f5f7fb',
+        backgroundImage: 'linear-gradient(45deg, #f5f7fb 0%, #e2e8f0 100%)',
+      }}>
+        <div style={{
           display: 'flex',
           flexDirection: 'column',
+          alignItems: 'center',
           justifyContent: 'center',
-          padding: 64,
-          background: 'linear-gradient(135deg, #f8fafc 0%, #e2f2ff 100%)',
-        }}
-      >
-        <div
-          style={{
-            fontSize: 60,
-            fontWeight: 800,
-            letterSpacing: -1.2,
+          backgroundColor: '#ffffff',
+          borderRadius: '24px',
+          padding: '60px 80px',
+          boxShadow: '0 20px 40px rgba(15, 23, 42, 0.1)',
+          border: '1px solid rgba(15, 23, 42, 0.08)',
+        }}>
+          <div style={{
+            fontSize: '72px',
+            fontWeight: '800',
             color: '#0f172a',
-            lineHeight: 1.2,
-          }}
-        >
-          {site}
-        </div>
-        <div
-          style={{
-            marginTop: 16,
-            fontSize: 32,
-            color: '#334155',
-            fontWeight: 500,
-          }}
-        >
-          {tagline}
-        </div>
-
-        <div
-          style={{
-            position: 'absolute',
-            right: 64,
-            bottom: 64,
-            padding: '12px 20px',
-            background: accent,
-            color: '#fff',
-            borderRadius: 16,
-            fontSize: 28,
-            fontWeight: 800,
-          }}
-        >
-          {domain}
+            marginBottom: '24px',
+            letterSpacing: '-0.02em',
+          }}>
+            Marlow Gate
+          </div>
+          <div style={{
+            fontSize: '32px',
+            color: '#475569',
+            textAlign: 'center',
+            lineHeight: '1.4',
+            maxWidth: '800px',
+          }}>
+            FX・投資情報ブログ
+          </div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginTop: '32px',
+            fontSize: '20px',
+            color: '#64748b',
+          }}>
+            <div style={{
+              width: '8px',
+              height: '8px',
+              backgroundColor: '#06b6d4',
+              borderRadius: '50%',
+              marginRight: '12px',
+            }} />
+            信頼できる投資情報を提供
+          </div>
         </div>
       </div>
     ),
-    size
+    { width: 1200, height: 630 }
   )
 }
