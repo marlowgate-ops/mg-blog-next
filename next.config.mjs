@@ -1,5 +1,5 @@
 // Enable Contentlayer integration in Next.js and bypass TS build errors temporarily
-import { withContentlayer } from 'next-contentlayer'
+import { withContentlayer } from "next-contentlayer";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

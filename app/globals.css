@@ -7,6 +7,22 @@
   --card-bg: #ffffff;
   --hover: #f3f4f6;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 6px 20px rgba(0, 0, 0, 0.06);
+
+  /* Spacing tokens */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Surface and card tokens */
+  --radius-card: 12px;
+  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.06);
+  --surface-card: #fff;
+  --surface-bg: #f7f9fb;
+  --border: #eaecef;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -17,15 +33,18 @@
     --card-bg: #0f0f0f;
     --hover: #161616;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.35);
+    --surface-card: #0f0f0f;
+    --surface-bg: #0a0a0a;
+    --border: #2a2a2a;
   }
 }
 html,
 body {
-  background: var(--bg);
+  background: var(--surface-bg);
   color: var(--fg);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
     Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -42,18 +61,27 @@ img {
 .container {
   max-width: 1040px;
   margin: 0 auto;
-  padding: 48px 20px;
+  padding: var(--space-12) var(--space-5);
 }
 .h1 {
   font-size: 2rem;
   font-weight: 800;
   letter-spacing: -0.01em;
+  line-height: 1.6;
 }
 .h2 {
   font-size: 1.375rem;
   font-weight: 800;
   letter-spacing: -0.01em;
-  margin: 0 0 0.5rem;
+  margin: 0 0 var(--space-2);
+  line-height: 1.6;
+}
+.h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-2);
+  line-height: 1.7;
 }
 .muted {
   color: var(--muted);
@@ -61,15 +89,16 @@ img {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 /* Cards & UI atoms */
 .card {
-  background: var(--card-bg);
+  background: var(--surface-card);
   border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: var(--space-5);
+  box-shadow: 0 2px 24px rgba(0,0,0,.06);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .card:hover {
@@ -79,7 +108,7 @@ img {
 .btn {
   display: inline-block;
   border: 1px solid var(--border);
-  padding: 8px 14px;
+  padding: var(--space-2) var(--space-3);
   border-radius: 999px;
   text-decoration: none;
 }
@@ -89,13 +118,13 @@ img {
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 .chip {
   display: inline-block;
   border: 1px solid var(--border);
-  padding: 2px 8px;
+  padding: 2px var(--space-2);
   border-radius: 9999px;
   font-size: 12px;
   color: var(--muted);
@@ -109,14 +138,14 @@ img {
 
 /* Breadcrumbs */
 .breadcrumbs {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
   overflow-x: auto;
   white-space: nowrap;
 }
 .breadcrumbs ol {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1);
   list-style: none;
   padding: 0;
   margin: 0;
@@ -124,7 +153,7 @@ img {
 .crumb-link {
   display: inline-flex;
   align-items: center;
-  padding: 6px 10px;
+  padding: var(--space-1) var(--space-2);
   border-radius: 9999px;
   text-decoration: none;
 }
@@ -133,23 +162,25 @@ img {
 }
 .crumb-current {
   background: var(--hover);
-  padding: 6px 10px;
+  padding: var(--space-1) var(--space-2);
   border-radius: 9999px;
 }
 .sep {
   color: var(--muted);
   display: inline-flex;
   align-items: center;
-  padding: 0 4px;
+  padding: 0 var(--space-1);
 }
 
 /* Prose spacing for article */
 .prose p {
   margin: 0.8em 0;
+  line-height: 1.7;
 }
 .prose h2,
 .prose h3 {
   margin: 2em 0 0.6em;
+  line-height: 1.6;
 }
 .prose pre,
 .prose code {
@@ -158,7 +189,7 @@ img {
   border-radius: 8px;
 }
 .prose pre {
-  padding: 12px;
+  padding: var(--space-3);
   overflow: auto;
 }
 .prose table {
@@ -168,7 +199,7 @@ img {
 .prose th,
 .prose td {
   border: 1px solid var(--border);
-  padding: 8px 10px;
+  padding: var(--space-2) var(--space-2);
   text-align: left;
 }
 
@@ -226,6 +257,7 @@ img {
     display: block !important;
   }
 }
+
 /* ----- Header micro-fix (stabilize first paint) ----- */
 header.hd {
   min-height: 68px;
@@ -242,26 +274,111 @@ header.hd .brand img {
   height: 28px;
 }
 
-/* === Sitewide spacing system (unify like minkabu) === */
-:root{
-  --page-bg: #f5f7fb;
-  --card-bg: #fff;
-  --border-color: rgba(15,23,42,.08);
-  --shadow: 0 2px 6px rgba(15,23,42,.06);
-  --radius: 12px;
-  --section-margin-y: clamp(16px, 2.2vw, 28px);
-  --section-padding: clamp(14px, 2.0vw, 22px);
-  --container-x: clamp(14px, 2.4vw, 24px);
-  --container-max: 1100px;
+/* === Sitewide spacing system === */
+html,
+body {
+  background: var(--surface-bg);
 }
 
-html, body{ background: var(--page-bg); }
+/* Prevent CLS by reserving space for sticky CTA */
+@media (min-width: 769px) {
+  body {
+    padding-top: 60px; /* Reserve space for sticky CTA */
+  }
+}
 
-[data-container-root]{
-  max-width: var(--container-max);
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 80px; /* Reserve space for fixed CTA on mobile */
+  }
+}
+
+[data-container-root] {
+  max-width: 1100px;
   margin-inline: auto;
-  padding-inline: var(--container-x);
+  padding-inline: var(--space-6);
   background: transparent !important;
+}
+
+/* Main section styling */
+main[data-section="content"], .section-card {
+  padding-block: var(--space-5);
+}
+
+main > section[data-section] {
+  margin-inline: auto;
+  max-width: 1100px;
+  padding: var(--space-10) var(--space-6);
+}
+
+main > section[data-section] .section-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+}
+
+/* 面（カード）を全ページで統一 */
+:where(main, .content, body) :where(section[data-section], .section-card) {
+  margin-block: var(--space-8);
+  padding: var(--space-6);
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* 右カラムのボックス類も同一ルールで吸収 */
+.sidebar :where(.box, .widget, .section-card) {
+  margin-block: var(--space-8);
+  padding: var(--space-6);
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Heading hierarchy and line-height */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-4);
+}
+
+h2 {
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: var(--space-8) 0 var(--space-4);
+  line-height: 1.7;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: var(--space-6) 0 var(--space-3);
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  :where(main, .content, body) :where(section[data-section], .section-card) {
+    padding: var(--space-4);
+  }
+
+  main > section[data-section] {
+    padding: var(--space-6) var(--space-4);
+  }
 }
 
 /* 面（カード）を全ページで統一 */
