@@ -380,3 +380,29 @@ h3 {
     padding: var(--space-6) var(--space-4);
   }
 }
+
+/* 面（カード）を全ページで統一 */
+:where(main, .content, body) :where(section[data-section], .section-card){
+  margin-block: var(--section-margin-y);
+  padding: var(--section-padding);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* 右カラムのボックス類も同一ルールで吸収（class名は実情に合わせて） */
+.sidebar :where(.box, .widget, .section-card){
+  margin-block: var(--section-margin-y);
+  padding: var(--section-padding);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 768px){
+  :where(main, .content, body) :where(section[data-section], .section-card){
+    padding: clamp(12px, 3.2vw, 18px);
+  }
+}
