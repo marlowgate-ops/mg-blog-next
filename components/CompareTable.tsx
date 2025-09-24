@@ -18,6 +18,7 @@ type Row = {
   note?: string;
   state?: 'active' | 'preparing';
   ctaHref?: string;
+  tags?: string[];
 };
 
 type SortConfig = {
@@ -43,17 +44,35 @@ const LABELS: Record<string,string> = {
 // Columns that can be sorted (excluding brand and CTA column)
 const SORTABLE_COLUMNS = ['product', 'cost', 'minUnit', 'accountFee', 'appScore'];
 
+const FILTER_CHIPS = [
+  { id: 'beginner', label: '初心者向け', tag: '初心者向け' },
+  { id: 'low-spread', label: '低スプレッド', tag: '低スプレッド' },
+  { id: 'mt4', label: 'MT4対応', tag: 'MT4対応' },
+];
+
 export default function CompareTable({ rows }: { rows: Row[] }) {
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
   
   const allKeys = Array.from(new Set(rows.flatMap(r => Object.keys(r))));
   const core = ['brand'];
-  const optional = allKeys.filter(k => !core.includes(k) && k !== 'state' && k !== 'ctaHref');
+  const EXCLUDED_KEYS = ['state', 'ctaHref', 'tags'];
+  const optional = allKeys.filter(k => !core.includes(k) && !EXCLUDED_KEYS.includes(k));
 
-  const sortedRows = useMemo(() => {
-    if (!sortConfig) return rows;
+  const filteredAndSortedRows = useMemo(() => {
+    // First filter by active chips
+    let filteredRows = rows;
+    if (activeFilters.length > 0) {
+      const filterTags = FILTER_CHIPS.filter(chip => activeFilters.includes(chip.id)).map(chip => chip.tag);
+      filteredRows = rows.filter(row => 
+        filterTags.every(tag => row.tags?.includes(tag))
+      );
+    }
 
-    return [...rows].sort((a, b) => {
+    // Then sort
+    if (!sortConfig) return filteredRows;
+
+    return [...filteredRows].sort((a, b) => {
       const aVal = (a as any)[sortConfig.key] || '';
       const bVal = (b as any)[sortConfig.key] || '';
       
@@ -62,7 +81,7 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
       if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
       return 0;
     });
-  }, [rows, sortConfig]);
+  }, [rows, sortConfig, activeFilters]);
 
   const handleSort = (key: string) => {
     if (!SORTABLE_COLUMNS.includes(key)) return;
@@ -85,6 +104,14 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
     }
   };
 
+  const handleFilterToggle = (filterId: string) => {
+    setActiveFilters(current => 
+      current.includes(filterId)
+        ? current.filter(id => id !== filterId)
+        : [...current, filterId]
+    );
+  };
+
   const getSortState = (key: string) => {
     if (!sortConfig || sortConfig.key !== key) return null;
     return sortConfig.direction;
@@ -92,6 +119,27 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
 
   return (
     <div className={s.tableWrap}>
+      <div className={s.filterChips}>
+        {FILTER_CHIPS.map((chip) => (
+          <button
+            key={chip.id}
+            className={`${s.filterChip} ${activeFilters.includes(chip.id) ? s.active : ''}`}
+            onClick={() => handleFilterToggle(chip.id)}
+            aria-pressed={activeFilters.includes(chip.id)}
+          >
+            {chip.label}
+          </button>
+        ))}
+        {activeFilters.length > 0 && (
+          <button
+            className={s.clearFilters}
+            onClick={() => setActiveFilters([])}
+            aria-label="フィルターをクリア"
+          >
+            クリア
+          </button>
+        )}
+      </div>
       <div className={s.scrollHint}>横スクロールできます</div>
       <table className={s.compareTable}>
         <thead>
@@ -122,7 +170,7 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
           </tr>
         </thead>
         <tbody>
-          {sortedRows.map((r, i) => (
+          {filteredAndSortedRows.map((r, i) => (
             <tr key={i} className={r.state === 'preparing' ? s.isPreparing : ''}>
               <td className={s.stickyColStart}>
                 <span className={s.brandTag}>{r.brand}</span>

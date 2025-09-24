@@ -10,6 +10,12 @@ interface RankingCardProps {
   caveats?: string[];
   ctaHref: string;
   badge?: string;
+  score?: number;
+  subscores?: {
+    cost: number;
+    reliability: number;
+    app: number;
+  };
 }
 
 export default function RankingCard({
@@ -19,6 +25,8 @@ export default function RankingCard({
   caveats = [],
   ctaHref,
   badge,
+  score,
+  subscores,
 }: RankingCardProps) {
   return (
     <article className="rankingCard">
@@ -27,6 +35,33 @@ export default function RankingCard({
         <div className="rankingCard-nameWrapper">
           <h3 className="rankingCard-name">{name}</h3>
           {badge && <span className="badge">{badge}</span>}
+          {score && (
+            <div className="overallScore">
+              総合: <strong>{score.toFixed(1)}/5</strong>
+            </div>
+          )}
+          {subscores && (
+            <div className="scoreRows">
+              <div className="scoreRow">
+                <span className="scoreLabel">コスト</span>
+                <div className="scoreBar">
+                  <span style={{ '--w': `${(subscores.cost / 5) * 100}%` } as React.CSSProperties}></span>
+                </div>
+              </div>
+              <div className="scoreRow">
+                <span className="scoreLabel">信頼性</span>
+                <div className="scoreBar">
+                  <span style={{ '--w': `${(subscores.reliability / 5) * 100}%` } as React.CSSProperties}></span>
+                </div>
+              </div>
+              <div className="scoreRow">
+                <span className="scoreLabel">アプリ</span>
+                <div className="scoreBar">
+                  <span style={{ '--w': `${(subscores.app / 5) * 100}%` } as React.CSSProperties}></span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -101,6 +136,47 @@ export default function RankingCard({
           background: var(--surface-strong);
           color: var(--text-on-strong);
           font-weight: 500;
+        }
+
+        .overallScore {
+          font-size: 0.85rem;
+          color: var(--text-muted);
+          margin-top: 2px;
+        }
+
+        .scoreRows {
+          margin-top: 6px;
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+        }
+
+        .scoreRow {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+
+        .scoreLabel {
+          font-size: 0.75rem;
+          color: var(--text-muted);
+          min-width: 40px;
+          text-align: right;
+        }
+
+        .scoreBar {
+          height: 6px;
+          border-radius: 4px;
+          background: var(--surface-weak);
+          overflow: hidden;
+          min-width: 120px;
+        }
+
+        .scoreBar > span {
+          display: block;
+          height: 100%;
+          background: var(--brand);
+          width: var(--w, 0%);
         }
 
         .rankingCard-center {
