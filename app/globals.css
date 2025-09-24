@@ -94,6 +94,32 @@ li {
   color: var(--muted);
 }
 
+/* Accessibility and focus styles */
+:focus-visible {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 2px;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 2px;
+  text-decoration: underline;
+}
+
+/* Improved table focus for sortable headers */
+th[role="button"]:focus-visible {
+  background-color: var(--surface-accent);
+  outline: 2px solid var(--primary-600);
+  outline-offset: -2px;
+}
+
 /* Layout helpers */
 .container {
   max-width: 1040px;
