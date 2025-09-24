@@ -32,7 +32,6 @@
 .longformToc a{text-decoration:none;color:var(--ink)}
 .longformToc a:hover{text-decoration:underline}
 .longformContent{line-height:1.6}
-
 /* HeaderMeta */
 .headerMeta {
   display: flex;
