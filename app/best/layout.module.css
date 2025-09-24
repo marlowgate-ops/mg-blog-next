@@ -106,3 +106,21 @@ thead th.stickyHeader {
 .breadcrumb a:hover {
   text-decoration: underline;
 }
+
+/* Ranking Grid */
+.rankingGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.rankingCard {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(320px, 2fr) 220px;
+  align-items: center;
+}
+
+@media (max-width: 920px) {
+  .rankingCard {
+    grid-template-columns: 1fr;
+  }
+}
