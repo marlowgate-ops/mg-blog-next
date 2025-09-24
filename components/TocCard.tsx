@@ -16,11 +16,10 @@ export default function TocCard() {
     <section className={s.tocCard} aria-label="目次">
       <h3>目次</h3>
       <ol className={s.tocList}>
-        {items.map((item, index) => (
-          <li key={item.href} className={s.tocItem}>
-            <a href={item.href} className={s.tocLink} aria-label={item.label}>
-              <span className={s.tocNumber}>{index + 1}</span>
-              <span className={s.tocLabel}>{item.label}</span>
+        {items.map((item) => (
+          <li key={item.href}>
+            <a href={item.href} aria-label={item.label}>
+              {item.label}
             </a>
           </li>
         ))}
