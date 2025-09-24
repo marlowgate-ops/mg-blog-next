@@ -406,3 +406,41 @@ h3 {
     padding: clamp(12px, 3.2vw, 18px);
   }
 }
+
+/* === Primary CTA Component === */
+.mg-primary-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: #ff6b35;
+  color: #ffffff;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-card);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+.mg-primary-cta:hover {
+  background: #e85a2e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.4);
+}
+
+.mg-primary-cta:active {
+  transform: translateY(0);
+}
+
+.mg-primary-cta--compact {
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+}
+
+.mg-primary-cta::after {
+  content: "→";
+  font-weight: 500;
+}

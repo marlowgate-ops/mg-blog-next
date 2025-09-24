@@ -6,3 +6,61 @@
   /* ページ内の上下だけ軽く（中のセクションで面を作る） */
   padding: clamp(12px, 2vw, 20px) 0;
 }
+
+/* TOC Card Styles */
+.tocCard {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.tocTitle {
+  margin: 0 0 var(--space-4) 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.tocList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.tocItem {
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.tocItem::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.tocLink {
+  color: var(--fg);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.tocLink:hover {
+  color: #0c6cd4;
+  text-decoration: underline;
+}
+
+@media (min-width: 640px) {
+  .tocList {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3) var(--space-5);
+  }
+}
