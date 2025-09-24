@@ -15,6 +15,7 @@ import BackToTop from "@/components/BackToTop";
 import ReviewContent from "@/components/ReviewContent";
 import HeaderMeta from "@/components/HeaderMeta";
 import SectionBand from "@/components/SectionBand";
+import LongForm from "@/components/LongForm";
 import { brokers } from "@/data/brokers";
 import {
   breadcrumbList,
@@ -209,6 +210,100 @@ export default function Page() {
                 <section className={s.section} data-section>
                   <h2 className={s.sectionTitle}><span className={s.bar} />主要スペック比較</h2>
                   <CompareTable rows={rows} />
+                </section>
+              </SectionBand>
+
+              <SectionBand variant="weak" id="deep-dive">
+                <section className={s.section} data-section>
+                  <h2>徹底解説</h2>
+                  <LongForm sections={[
+                    {
+                      id: "selection-criteria",
+                      title: "業者選択の詳細基準",
+                      prose: (
+                        <>
+                          <p>
+                            国内FX業者選択では、スプレッドの名目値だけでは判断できません。
+                            実際の取引では配信頻度と約定の安定性が重要になります。
+                          </p>
+                          <ul>
+                            <li><strong>ティック密度と更新頻度</strong>：主要ペアで値が飛ばないか、細かく提示されるかを確認</li>
+                            <li><strong>約定品質の検証</strong>：成行・逆指値で混雑時にスリッページが増えないかをチェック</li>
+                            <li><strong>操作効率</strong>：板/気配表示とワンクリック注文の高速性を評価</li>
+                            <li><strong>総コスト計算</strong>：スプレッド・スワップ・手数料を総合して比較</li>
+                          </ul>
+                          <p>
+                            短期売買がメインの場合は、名目スプレッドより配信と約定の安定度を優先することが失敗を避けるポイントです。
+                          </p>
+                        </>
+                      )
+                    },
+                    {
+                      id: "app-usability",
+                      title: "アプリの実用性評価",
+                      prose: (
+                        <>
+                          <p>
+                            日々の意思決定を速くするには、UIと情報の近さが決定的です。
+                            迷わない導線設計が取引効率を大きく左右します。
+                          </p>
+                          <ul>
+                            <li><strong>レイアウトの記憶機能</strong>：チャート設定と注文〜決済の手順が短縮できるか</li>
+                            <li><strong>情報更新の質</strong>：アラート、ウィジェット、ニュースの粒度と更新速度</li>
+                            <li><strong>完結性</strong>：入出金や取引明細の確認がアプリ内で完結するか</li>
+                          </ul>
+                          <p>
+                            毎日触る前提で、指が覚えるUIを選ぶとミスが減ります。
+                            初期の学習コストよりも、長期的な操作効率を重視しましょう。
+                          </p>
+                        </>
+                      )
+                    },
+                    {
+                      id: "cost-optimization",
+                      title: "コスト最適化戦略",
+                      prose: (
+                        <>
+                          <p>
+                            1社目から2社目への単純乗り換えよりも、用途での使い分けがコストパフォーマンス最強のアプローチです。
+                          </p>
+                          <ol>
+                            <li><strong>メイン口座</strong>：総合力が高い1社で入出金・アプリも含めた安定運用を重視</li>
+                            <li><strong>サブ口座</strong>：スキャルピングや自動売買など戦略特化に最適な1社を追加</li>
+                            <li><strong>中長期口座</strong>：スワップと諸費用、ニュース・銘柄の情報優位性で選択</li>
+                          </ol>
+                          <p>
+                            キャンペーンは最初の1社で取りこぼさないのが鉄則。
+                            達成条件と締切は必ず事前確認しましょう。
+                          </p>
+                        </>
+                      )
+                    },
+                    {
+                      id: "broker-highlights",
+                      title: "主要業者の特徴まとめ",
+                      prose: (
+                        <>
+                          <p>
+                            各業者の強みと注意点を、実際の取引シーンに合わせて整理しました。
+                          </p>
+                          <div>
+                            <h4>DMM.com証券</h4>
+                            <p>約定と配信の安定性、直感的なアプリ、高速な入出金が強み。日中の一部時間帯でスプレッド拡大があることは把握しておきましょう。</p>
+                            
+                            <h4>GMOクリック証券</h4>
+                            <p>板とワンクリック操作に優れ、PC向け高機能ツールを提供。一部通貨で広がりがあることに注意。</p>
+                            
+                            <h4>FXTF</h4>
+                            <p>MT4対応で裁量取引の拡張性に優れる。時間帯によるスプレッド拡大を考慮した運用が必要。</p>
+                            
+                            <h4>松井証券</h4>
+                            <p>証券基盤の堅牢性が魅力。UIはシンプル志向で、複雑な機能よりも安定性を重視する利用者向け。</p>
+                          </div>
+                        </>
+                      )
+                    }
+                  ]} />
                 </section>
               </SectionBand>
 

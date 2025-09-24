@@ -23,6 +23,15 @@
 .sectionTitle{display:flex;align-items:center;gap:10px;margin:0 0 var(--space-md)}
 .sectionTitle .bar{width:6px;height:22px;border-radius:4px;background:var(--brand-600)}
 
+/* Long-form scaffolding */
+.longform{display:grid;gap:var(--space-lg)}
+.longform h3{margin:var(--space-md) 0 var(--space-sm)}
+.longform p{margin:0 0 var(--space-sm)}
+.longformToc{list-style:decimal;padding-left:1.5em;margin:0 0 var(--space-lg)}
+.longformToc li{margin:0.25em 0}
+.longformToc a{text-decoration:none;color:var(--ink)}
+.longformToc a:hover{text-decoration:underline}
+.longformContent{line-height:1.6}
 /* HeaderMeta */
 .headerMeta {
   display: flex;
