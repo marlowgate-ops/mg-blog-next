@@ -6,6 +6,7 @@
 .on{background:#06b6d4;color:#fff;border-color:#06b6d4}
 .grid{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;margin-top:8px}
 @media(min-width:1024px){ .grid{grid-template-columns:minmax(0,1fr) 320px;} }
+@media(min-width:1200px){ .grid{grid-template-columns:minmax(0,1fr) 160px 320px;} }
 .side{display:flex;flex-direction:column;gap:22px}
 .section{margin:32px 0;padding:24px;border:1px solid var(--border);border-radius:16px;background:#fff;box-shadow:0 3px 10px rgba(15,23,42,.08)}
 .section>h2{font-size:18px;margin:0 0 14px}
