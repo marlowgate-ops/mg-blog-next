@@ -8,7 +8,7 @@ import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
 import SideCards from "@/components/SideCards";
 import RankingCard from "@/components/RankingCard";
-import ComparisonTable from "@/components/ComparisonTable";
+import CompareTable from "@/components/CompareTable";
 import JsonLd from "@/components/JsonLd";
 import BackToTop from "@/components/BackToTop";
 import ReviewContent from "@/components/ReviewContent";
@@ -110,6 +110,7 @@ export default function Page() {
           <div className={s.hero}>
             <PrBadge />
             <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
+            <TocCard />
             <p>
               初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。
             </p>
@@ -129,17 +130,6 @@ export default function Page() {
               </a>
             </div>
             <IconNav />
-            <TocCard
-              items={[
-                { href: "#rank-all", label: "総合ランキング" },
-                { href: "#eval", label: "評価基準" },
-                { href: "#table", label: "主要スペック比較" },
-                { href: "#low-spread", label: "低スプレッドの選び方" },
-                { href: "#apps", label: "アプリの使い勝手" },
-                { href: "#cost", label: "コスト最適化の考え方" },
-                { href: "#faq", label: "Q&A" },
-              ]}
-            />
             <a className={s.leadCta} href="#table">
               口座開設の最新特典を確認
             </a>
@@ -151,11 +141,11 @@ export default function Page() {
             <main>
               <section
                 className={s.section}
-                id="rank-all"
-                aria-labelledby="rank-all-title"
+                id="ranking"
+                aria-labelledby="ranking-title"
                 data-section
               >
-                <h2 id="rank-all-title">総合ランキング</h2>
+                <h2 id="ranking-title">総合ランキング</h2>
                 {brokers.map((b, i) => (
                   <RankingCard
                     key={b.id}
@@ -173,12 +163,12 @@ export default function Page() {
 
               <EvaluationCriteria />
 
-              <section className={s.section} id="table" data-section>
+              <section className={s.section} id="compare" data-section>
                 <h2>主要スペック比較</h2>
-                <ComparisonTable rows={rows} />
+                <CompareTable rows={rows} />
               </section>
 
-              <section className={s.section} id="low-spread" data-section>
+              <section className={s.section} id="how-to-choose" data-section>
                 <h2>低スプレッドの選び方</h2>
                 <p className={s.note}>
                   名目スプレッドは“入口の目安”。実戦では
@@ -209,7 +199,7 @@ export default function Page() {
                 </div>
               </section>
 
-              <section className={s.section} id="apps" data-section>
+              <section className={s.section} id="app-ux" data-section>
                 <h2>アプリの使い勝手</h2>
                 <p>
                   日々の意思決定を速くするのは<strong>UIと情報の近さ</strong>
@@ -226,7 +216,7 @@ export default function Page() {
                 </div>
               </section>
 
-              <section className={s.section} id="cost" data-section>
+              <section className={s.section} id="cost-opt" data-section>
                 <h2>コスト最適化の考え方</h2>
                 <p className={s.note}>
                   “1→2社目の乗り換え”よりも、<strong>用途での使い分け</strong>
@@ -256,17 +246,6 @@ export default function Page() {
                 data-section
               >
                 <h2>よくある質問</h2>
-                <TocCard
-                  items={[
-                    { href: "#rank-all", label: "総合ランキング" },
-                    { href: "#eval", label: "評価基準" },
-                    { href: "#table", label: "主要スペック比較" },
-                    { href: "#low-spread", label: "低スプレッドの選び方" },
-                    { href: "#apps", label: "アプリの使い勝手" },
-                    { href: "#cost", label: "コスト最適化の考え方" },
-                    { href: "#faq", label: "Q&A" },
-                  ]}
-                />
                 <details>
                   <summary>初心者はどれから？</summary>
                   <p>

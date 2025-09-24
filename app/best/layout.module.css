@@ -64,3 +64,38 @@
     gap: var(--space-3) var(--space-5);
   }
 }
+
+/* Table Wrapper and Sticky Column Styles */
+.tableWrap {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+}
+
+.stickyColStart,
+.stickyColEnd {
+  position: sticky;
+  background: var(--surface-card);
+  z-index: 2;
+}
+
+.stickyColStart {
+  left: 0;
+}
+
+.stickyColEnd {
+  right: 0;
+}
+
+/* Section Spacing */
+.section {
+  margin-block: var(--space-section, var(--space-8));
+}
+
+@media (max-width: 768px) {
+  .section {
+    margin-block: var(--space-6);
+  }
+}

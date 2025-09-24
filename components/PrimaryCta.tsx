@@ -17,7 +17,7 @@ export default function PrimaryCta({
     <a
       href={href}
       target="_blank"
-      rel="noopener nofollow"
+      rel="noopener nofollow sponsored"
       className={`mg-primary-cta mg-primary-cta--${variant} ${className}`.trim()}
       data-company={company}
     >
