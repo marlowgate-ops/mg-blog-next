@@ -8,7 +8,7 @@ import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
 import PrimaryCta from "@/components/PrimaryCta";
 import SideCards from "@/components/SideCards";
-import RankingCard from "@/components/RankingCard";
+import RankingCardNew from "@/components/RankingCardNew";
 import CompareTable from "@/components/CompareTable";
 import JsonLd from "@/components/JsonLd";
 import BackToTop from "@/components/BackToTop";
@@ -35,6 +35,19 @@ export const metadata = {
 };
 
 // Evaluation data is now loaded from JSON
+
+// Simple logo component for brokers
+function BrokerLogo({ name }: { name: string }) {
+  const initials = name
+    .replace(/[（(].*?[)）]/g, '')
+    .split(/[・\s]/)
+    .map(x => x[0])
+    .join('')
+    .slice(0, 3)
+    .toUpperCase();
+  
+  return <span style={{ fontSize: '14px', fontWeight: 700 }}>{initials}</span>;
+}
 
 export default function Page() {
 
@@ -147,19 +160,19 @@ export default function Page() {
                 data-section
               >
                 <h2 id="ranking-title">総合ランキング</h2>
-                {brokers.map((b, i) => (
-                  <RankingCard
-                    key={b.id}
-                    rank={i + 1}
-                    brand={b.name}
-                    score={b.score}
-                    highlights={b.pros}
-                    cautions={b.cons}
-                    ctaHref={b.site}
-                    state={b.state}
-                    subs={b.subs}
-                  />
-                ))}
+                <div className={s.rankingGrid}>
+                  {brokers.map((broker, index) => (
+                    <RankingCardNew
+                      key={broker.id}
+                      logo={<BrokerLogo name={broker.name} />}
+                      name={broker.name}
+                      highlights={broker.pros}
+                      caveats={broker.cons}
+                      ctaHref={broker.site || '#'}
+                      badge={`${index + 1}位`}
+                    />
+                  ))}
+                </div>
               </section>
 
               <EvaluationCriteria />

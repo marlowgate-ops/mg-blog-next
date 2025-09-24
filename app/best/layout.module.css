@@ -106,3 +106,50 @@ thead th.stickyHeader {
 .breadcrumb a:hover {
   text-decoration: underline;
 }
+
+/* Ranking Grid */
+.rankingGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.rankingCard {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(320px, 2fr) 220px;
+  align-items: center;
+}
+
+@media (max-width: 920px) {
+  .rankingCard {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hero Section */
+.hero {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.subhead {
+  font-size: 1.1rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  font-size: .9rem;
+  opacity: .8;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.breadcrumb a {
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
