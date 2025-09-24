@@ -19,15 +19,7 @@ import {
   faqPage,
   organization,
 } from "@/lib/seo/jsonld";
-<<<<<<< HEAD
 import EvaluationCriteria from "@/components/EvaluationCriteria";
-=======
-import {
-  getEvaluationWeights,
-  formatWeight,
-  getEvaluationNotes,
-} from "@/lib/evaluation";
->>>>>>> origin/main
 import CostsTable from "@/components/CostsTable";
 import Reviews from "@/components/Reviews";
 import AuthorBio from "@/components/AuthorBio";
@@ -44,11 +36,6 @@ export const metadata = {
 // Evaluation data is now loaded from JSON
 
 export default function Page() {
-<<<<<<< HEAD
-=======
-  const weights = getEvaluationWeights();
-  const evalNotes = getEvaluationNotes();
->>>>>>> origin/main
 
   const faqs = [
     {
@@ -184,92 +171,7 @@ export default function Page() {
                 ))}
               </section>
 
-<<<<<<< HEAD
               <EvaluationCriteria />
-=======
-              <section className={s.section} id="eval" data-section>
-                <h2>評価基準</h2>
-                <p>{evalNotes}</p>
-                <ul className={s.bullets}>
-                  <li>
-                    <strong>コスト</strong>…スプレッド/手数料/スワップの総額。
-                  </li>
-                  <li>
-                    <strong>約定・配信</strong>
-                    …ティック密度/約定の安定（混雑時含む）。
-                  </li>
-                  <li>
-                    <strong>アプリ</strong>…視認性/操作導線/反応速度。
-                  </li>
-                </ul>
-
-                <div className="section-card" style={{ marginTop: "20px" }}>
-                  <h3>重み付け表</h3>
-                  <table
-                    style={{
-                      width: "100%",
-                      borderCollapse: "collapse",
-                      marginTop: "12px",
-                    }}
-                  >
-                    <thead>
-                      <tr style={{ borderBottom: "1px solid var(--border)" }}>
-                        <th style={{ padding: "8px", textAlign: "left" }}>
-                          項目
-                        </th>
-                        <th style={{ padding: "8px", textAlign: "right" }}>
-                          重み
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td style={{ padding: "8px" }}>約定・配信</td>
-                        <td
-                          style={{
-                            padding: "8px",
-                            textAlign: "right",
-                            fontWeight: "600",
-                          }}
-                        >
-                          {formatWeight(weights.約定)}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={{ padding: "8px" }}>コスト</td>
-                        <td
-                          style={{
-                            padding: "8px",
-                            textAlign: "right",
-                            fontWeight: "600",
-                          }}
-                        >
-                          {formatWeight(weights.コスト)}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={{ padding: "8px" }}>アプリ</td>
-                        <td
-                          style={{
-                            padding: "8px",
-                            textAlign: "right",
-                            fontWeight: "600",
-                          }}
-                        >
-                          {formatWeight(weights.アプリ)}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className={s.callout}>
-                  総合スコア = {formatWeight(weights.コスト)}×コスト +{" "}
-                  {formatWeight(weights.約定)}×約定 +{" "}
-                  {formatWeight(weights.アプリ)}×アプリ（各0–5）
-                </div>
-              </section>
->>>>>>> origin/main
 
               <section className={s.section} id="table" data-section>
                 <h2>主要スペック比較</h2>
