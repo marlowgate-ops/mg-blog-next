@@ -13,6 +13,7 @@ import CompareTable from "@/components/CompareTable";
 import JsonLd from "@/components/JsonLd";
 import BackToTop from "@/components/BackToTop";
 import ReviewContent from "@/components/ReviewContent";
+import HeaderMeta from "@/components/HeaderMeta";
 import { brokers } from "@/data/brokers";
 import {
   breadcrumbList,
@@ -26,6 +27,7 @@ import Reviews from "@/components/Reviews";
 import AuthorBio from "@/components/AuthorBio";
 import PollWidget from "@/components/PollWidget";
 import StickyCTA from "@/components/StickyCTA";
+import styles from "../layout.module.css";
 import s from "./page.module.css";
 
 export const metadata = {
@@ -114,15 +116,10 @@ export default function Page() {
 
       <div className={s.page}>
         <Container>
-          <Breadcrumb
-            items={[
-              { href: "/", label: "Home" },
-              { href: "/best", label: "ベスト" },
-              { label: "FX会社比較" },
-            ]}
-          />
-          <div className={s.hero}>
+          <HeaderMeta>
             <PrBadge />
+          </HeaderMeta>
+          <div className={s.hero}>
             <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
             <TocCard />
             <p>
