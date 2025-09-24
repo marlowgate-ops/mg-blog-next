@@ -7,95 +7,120 @@
   padding: clamp(12px, 2vw, 20px) 0;
 }
 
+/* Container and layout */
+.container {
+  max-width: var(--container-max);
+  margin: auto;
+  padding-inline: var(--gutter);
+}
+.hero {
+  display: grid;
+  gap: 12px;
+  margin-bottom: var(--space-sm);
+}
+.section {
+  margin-block: var(--space-section);
+}
+@media (max-width: 768px) {
+  .section {
+    margin-block: var(--space-section-sm);
+  }
+}
+
+/* HeaderMeta */
+.headerMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 var(--space-sm);
+}
+@media (max-width: 768px) {
+  .headerMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/* Utilities for cards/lists */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg);
+}
+.bullets {
+  display: grid;
+  gap: 8px;
+  list-style: disc;
+  padding-left: 16px;
+}
+
 /* TOC Card Styles */
 .tocCard { 
-  padding:24px; 
-  border-radius:12px; 
+  padding: 24px; 
+  border-radius: 12px; 
   box-shadow: var(--shadow-card); 
   background: var(--surface); 
 }
 .tocCard h3 { 
-  margin:0 0 12px; 
+  margin: 0 0 12px; 
 }
 .tocCard ul { 
-  margin:0; 
-  padding-left:16px; 
-  display:grid; 
-  gap:6px; 
-  list-style:disc; 
+  margin: 0; 
+  padding-left: 16px; 
+  display: grid; 
+  gap: 6px; 
+  list-style: disc; 
 }
 
 /* Table Wrapper and Sticky Column Styles */
 .tableWrap { 
-  overflow-x:auto; 
-  position:relative; 
-  scroll-behavior:smooth; 
+  overflow-x: auto; 
+  position: relative; 
+  scroll-behavior: smooth; 
 }
 .tableWrap::before, .tableWrap::after { 
-  content:""; 
-  position:absolute; 
-  top:0; 
-  bottom:0; 
-  width:24px; 
-  pointer-events:none; 
+  content: ""; 
+  position: absolute; 
+  top: 0; 
+  bottom: 0; 
+  width: 24px; 
+  pointer-events: none; 
 }
 .tableWrap::before { 
-  left:0; 
-  background:linear-gradient(to right, var(--surface), transparent); 
+  left: 0; 
+  background: linear-gradient(to right, var(--surface), transparent); 
 }
 .tableWrap::after  { 
-  right:0; 
-  background:linear-gradient(to left, var(--surface), transparent); 
+  right: 0; 
+  background: linear-gradient(to left, var(--surface), transparent); 
 }
 
 .stickyColStart, .stickyColEnd { 
-  position:sticky; 
+  position: sticky; 
   background: var(--surface); 
-  z-index:2; 
+  z-index: 2; 
 }
 .stickyColStart { 
-  left:0; 
+  left: 0; 
 }
 .stickyColEnd { 
-  right:0; 
+  right: 0; 
 }
 
 thead th.stickyHeader { 
-  position:sticky; 
-  top:0; 
-  z-index:3; 
+  position: sticky; 
+  top: 0; 
+  z-index: 3; 
   background: var(--surface); 
-}
-
-/* Section Spacing */
-.section {
-  margin-block: var(--space-section, var(--space-8));
-}
-
-@media (max-width: 768px) {
-  .section {
-    margin-block: var(--space-6);
-  }
-}
-
-/* Hero Section */
-.hero {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.subhead {
-  font-size: 1.1rem;
-  color: var(--muted);
-  font-weight: 500;
-  margin: 0;
 }
 
 /* Breadcrumb */
 .breadcrumb {
-  font-size: .9rem;
-  opacity: .8;
+  font-size: 0.9rem;
+  opacity: 0.8;
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -125,35 +150,6 @@ thead th.stickyHeader {
   }
 }
 
-/* Hero Section */
-.hero {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.subhead {
-  font-size: 1.1rem;
-  color: var(--muted);
-  font-weight: 500;
-  margin: 0;
-}
-
-/* Breadcrumb */
-.breadcrumb {
-  font-size: .9rem;
-  opacity: .8;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.breadcrumb a {
-  text-decoration: none;
-}
-.breadcrumb a:hover {
-  text-decoration: underline;
-}
-
 /* Sortable Table Headers */
 .sortable {
   cursor: pointer;
@@ -162,10 +158,10 @@ thead th.stickyHeader {
 .sortable[data-sort="asc"]::after {
   content: "▲";
   margin-left: 6px;
-  opacity: .7;
+  opacity: 0.7;
 }
 .sortable[data-sort="desc"]::after {
   content: "▼";
   margin-left: 6px;
-  opacity: .7;
+  opacity: 0.7;
 }
