@@ -153,3 +153,19 @@ thead th.stickyHeader {
 .breadcrumb a:hover {
   text-decoration: underline;
 }
+
+/* Sortable Table Headers */
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.sortable[data-sort="asc"]::after {
+  content: "▲";
+  margin-left: 6px;
+  opacity: .7;
+}
+.sortable[data-sort="desc"]::after {
+  content: "▼";
+  margin-left: 6px;
+  opacity: .7;
+}
