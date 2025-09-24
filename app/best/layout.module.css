@@ -7,25 +7,22 @@
   padding: clamp(12px, 2vw, 20px) 0;
 }
 
-/* Container and layout */
-.container {
-  max-width: var(--container-max);
-  margin: auto;
-  padding-inline: var(--gutter);
-}
+/* Container & base typography */
+.container{max-width:var(--container-max);margin:auto;padding-inline:var(--gutter)}
 .hero {
   display: grid;
   gap: 12px;
   margin-bottom: var(--space-sm);
 }
-.section {
-  margin-block: var(--space-section);
-}
-@media (max-width: 768px) {
-  .section {
-    margin-block: var(--space-section-sm);
-  }
-}
+.section{margin-block:var(--space-section)}
+@media (max-width:768px){ .section{margin-block:var(--space-section-sm)} }
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:var(--space-lg)}
+
+/* Section bands (MKB-like alternating background) */
+.sectionBand{padding-block:var(--space-section)}
+.sectionBand.weak{background:var(--band-weak);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.sectionBand.strong{background:var(--band-strong);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 
 /* HeaderMeta */
 .headerMeta {

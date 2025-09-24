@@ -14,6 +14,7 @@ import JsonLd from "@/components/JsonLd";
 import BackToTop from "@/components/BackToTop";
 import ReviewContent from "@/components/ReviewContent";
 import HeaderMeta from "@/components/HeaderMeta";
+import SectionBand from "@/components/SectionBand";
 import { brokers } from "@/data/brokers";
 import {
   breadcrumbList,
