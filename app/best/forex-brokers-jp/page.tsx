@@ -6,6 +6,7 @@ import PrBadge from "@/components/PrBadge";
 import FAQ from "@/components/FAQ";
 import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
+import PrimaryCta from "@/components/PrimaryCta";
 import SideCards from "@/components/SideCards";
 import RankingCard from "@/components/RankingCard";
 import CompareTable from "@/components/CompareTable";

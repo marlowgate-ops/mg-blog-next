@@ -1,27 +1,20 @@
 import React from "react";
 
-interface PrimaryCtaProps {
+type Props = {
   href: string;
-  company: string;
-  variant?: "default" | "compact";
+  label?: string;
   className?: string;
-}
-
-export default function PrimaryCta({ 
-  href, 
-  company, 
-  variant = "default", 
-  className = "" 
-}: PrimaryCtaProps) {
+};
+export default function PrimaryCta({ href, label = "公式サイトで口座開設", className }: Props) {
   return (
     <a
       href={href}
       target="_blank"
-      rel="noopener nofollow sponsored"
-      className={`mg-primary-cta mg-primary-cta--${variant} ${className}`.trim()}
-      data-company={company}
+      rel="nofollow sponsored"
+      aria-label={label}
+      className={className ?? "btn-primary-cta"}
     >
-      公式サイトで口座開設
+      {label}
     </a>
   );
 }
