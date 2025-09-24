@@ -57,64 +57,46 @@
   padding-left: 16px;
 }
 
-/* TOC Card Styles */
-.tocCard { 
-  padding: 24px; 
-  border-radius: 12px; 
-  box-shadow: var(--shadow-card); 
-  background: var(--surface); 
-}
-.tocCard h3 { 
-  margin: 0 0 12px; 
-}
-.tocCard ul { 
-  margin: 0; 
-  padding-left: 16px; 
-  display: grid; 
-  gap: 6px; 
-  list-style: disc; 
-}
-
 /* Table Wrapper and Sticky Column Styles */
-.tableWrap { 
-  overflow-x: auto; 
-  position: relative; 
-  scroll-behavior: smooth; 
+.tableWrap {
+  overflow-x: auto;
+  position: relative;
+  scroll-behavior: smooth;
 }
-.tableWrap::before, .tableWrap::after { 
-  content: ""; 
-  position: absolute; 
-  top: 0; 
-  bottom: 0; 
-  width: 24px; 
-  pointer-events: none; 
+.tableWrap::before, .tableWrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  pointer-events: none;
 }
-.tableWrap::before { 
-  left: 0; 
-  background: linear-gradient(to right, var(--surface), transparent); 
+.tableWrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--surface), transparent);
 }
-.tableWrap::after  { 
-  right: 0; 
-  background: linear-gradient(to left, var(--surface), transparent); 
-}
-
-.stickyColStart, .stickyColEnd { 
-  position: sticky; 
-  background: var(--surface); 
-  z-index: 2; 
-}
-.stickyColStart { 
-  left: 0; 
-}
-.stickyColEnd { 
-  right: 0; 
+.tableWrap::after  {
+  right: 0;
+  background: linear-gradient(to left, var(--surface), transparent);
 }
 
-thead th.stickyHeader { 
-  position: sticky; 
-  top: 0; 
-  z-index: 3; 
-  background: var(--surface); 
+.stickyColStart, .stickyColEnd {
+  position: sticky;
+  background: var(--surface);
+  z-index: 2;
+}
+.stickyColStart {
+  left: 0;
+}
+.stickyColEnd {
+  right: 0;
+}
+
+thead th.stickyHeader {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--surface);
 }
 
 /* Breadcrumb */
@@ -376,4 +358,91 @@ thead th.stickyHeader {
   .localNav {
     display: none;
   }
+}
+
+/* Score Bar Styles */
+.scoreRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.scoreBar {
+  height: 6px;
+  border-radius: 4px;
+  background: var(--surface-weak);
+  overflow: hidden;
+  min-width: 120px;
+}
+
+.scoreBar > span {
+  display: block;
+  height: 100%;
+  background: var(--brand);
+  width: var(--w, 0%);
+}
+
+/* Filter Chips */
+.filterChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.filterChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterChip:hover {
+  background: var(--surface-accent);
+  color: var(--text);
+}
+
+.filterChip.active {
+  background: var(--primary-100);
+  border-color: var(--primary-300);
+  color: var(--primary-700);
+  font-weight: 500;
+}
+
+.clearFilters {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clearFilters:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+/* Bottom TOC */
+.bottomToc {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.bottomToc h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: var(--text-muted);
 }
