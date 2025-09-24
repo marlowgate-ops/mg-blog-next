@@ -56,7 +56,8 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
   
   const allKeys = Array.from(new Set(rows.flatMap(r => Object.keys(r))));
   const core = ['brand'];
-  const optional = allKeys.filter(k => !core.includes(k) && k !== 'state' && k !== 'ctaHref' && k !== 'tags');
+  const EXCLUDED_KEYS = ['state', 'ctaHref', 'tags'];
+  const optional = allKeys.filter(k => !core.includes(k) && !EXCLUDED_KEYS.includes(k));
 
   const filteredAndSortedRows = useMemo(() => {
     // First filter by active chips
