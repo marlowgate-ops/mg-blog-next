@@ -54,38 +54,38 @@
 }
 
 /* Table Wrapper and Sticky Column Styles */
-.tableWrap { 
-  overflow-x: auto; 
-  position: relative; 
-  scroll-behavior: smooth; 
+.tableWrap {
+  overflow-x: auto;
+  position: relative;
+  scroll-behavior: smooth;
 }
-.tableWrap::before, .tableWrap::after { 
-  content: ""; 
-  position: absolute; 
-  top: 0; 
-  bottom: 0; 
-  width: 24px; 
-  pointer-events: none; 
+.tableWrap::before, .tableWrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  pointer-events: none;
 }
-.tableWrap::before { 
-  left: 0; 
-  background: linear-gradient(to right, var(--surface), transparent); 
+.tableWrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--surface), transparent);
 }
-.tableWrap::after  { 
-  right: 0; 
-  background: linear-gradient(to left, var(--surface), transparent); 
+.tableWrap::after  {
+  right: 0;
+  background: linear-gradient(to left, var(--surface), transparent);
 }
 
-.stickyColStart, .stickyColEnd { 
-  position: sticky; 
-  background: var(--surface); 
-  z-index: 2; 
+.stickyColStart, .stickyColEnd {
+  position: sticky;
+  background: var(--surface);
+  z-index: 2;
 }
-.stickyColStart { 
-  left: 0; 
+.stickyColStart {
+  left: 0;
 }
-.stickyColEnd { 
-  right: 0; 
+.stickyColEnd {
+  right: 0;
 }
 
 thead th.stickyHeader{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:3}
