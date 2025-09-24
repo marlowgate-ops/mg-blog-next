@@ -94,7 +94,7 @@ export default function Page() {
 
   const rows = brokers.map((b, index) => {
     // Add sample tags based on broker characteristics
-    const tags = []
+    const tags: string[] = []
     if (index < 3) tags.push('初心者向け')
     if (b.name.includes('スプレッド') || b.costNote?.includes('0.') || index % 2 === 0) {
       tags.push('低スプレッド')
