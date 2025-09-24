@@ -1,27 +1,26 @@
 import React from "react";
-import s from "@/app/best/layout.module.css";
+
+const items = [
+  { href: "#ranking", label: "用途別おすすめ / 総合" },
+  { href: "#compare", label: "主要スペック比較" },
+  { href: "#eval", label: "評価基準" },
+  { href: "#how-to-choose", label: "選び方" },
+  { href: "#app-ux", label: "アプリの使い勝手" },
+  { href: "#cost-opt", label: "コスト最適化" },
+  { href: "#faq", label: "よくある質問" },
+];
 
 export default function TocCard() {
-  const tocItems = [
-    { href: "#ranking", label: "用途別おすすめ" },
-    { href: "#compare", label: "比較表" },
-    { href: "#eval", label: "評価基準" },
-    { href: "#how-to-choose", label: "選び方" },
-    { href: "#faq", label: "よくある質問" },
-  ];
-
   return (
-    <div className={s.tocCard}>
-      <h3 className={s.tocTitle}>このページでわかること</h3>
-      <ul className={s.tocList}>
-        {tocItems.map((item) => (
-          <li key={item.href} className={s.tocItem}>
-            <a href={item.href} className={s.tocLink}>
-              {item.label}
-            </a>
+    <section className="tocCard" aria-label="このページでわかること">
+      <h3>このページでわかること</h3>
+      <ul>
+        {items.map((i) => (
+          <li key={i.href}>
+            <a href={i.href} aria-label={i.label}>{i.label}</a>
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 }
