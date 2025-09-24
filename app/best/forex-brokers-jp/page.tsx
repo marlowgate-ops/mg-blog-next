@@ -1,6 +1,6 @@
 import React from "react";
 import Container from "@/components/Container";
-import Breadcrumbs from "@/components/Breadcrumbs";
+import Breadcrumb from "@/components/Breadcrumb";
 import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
 import FAQ from "@/components/FAQ";
@@ -101,11 +101,11 @@ export default function Page() {
 
       <div className={s.page}>
         <Container>
-          <Breadcrumbs
+          <Breadcrumb
             items={[
-              { name: "トップ", href: "/" },
-              { name: "比較", href: "/best" },
-              { name: "FX・CFD業者ランキング" },
+              { href: "/", label: "Home" },
+              { href: "/best", label: "ベスト" },
+              { label: "FX会社比較" },
             ]}
           />
           <div className={s.hero}>
