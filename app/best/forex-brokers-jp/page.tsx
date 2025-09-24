@@ -177,7 +177,7 @@ export default function Page() {
                 aria-labelledby="ranking-title"
                 data-section
               >
-                <h2 id="ranking-title">総合ランキング</h2>
+                <h2 id="ranking-title" className={s.sectionTitle}><span className={s.bar} />総合ランキング</h2>
                 <div className={s.rankingGrid}>
                   {brokers.map((broker, index) => (
                     <RankingCardNew
@@ -207,7 +207,7 @@ export default function Page() {
 
               <SectionBand variant="weak" id="compare">
                 <section className={s.section} data-section>
-                  <h2>主要スペック比較</h2>
+                  <h2 className={s.sectionTitle}><span className={s.bar} />主要スペック比較</h2>
                   <CompareTable rows={rows} />
                 </section>
               </SectionBand>
