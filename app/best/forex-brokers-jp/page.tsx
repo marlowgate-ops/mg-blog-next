@@ -102,7 +102,7 @@ export default function Page() {
     if (b.platform?.includes('MT4') || b.name.includes('FXTF') || index % 3 === 0) {
       tags.push('MT4対応')
     }
-    if (b.score && parseInt(b.score.toString()) > 85) tags.push('高評価')
+    if (b.score && Number(b.score) > 85) tags.push('高評価')
     if (b.name.includes('SBI') || b.name.includes('楽天')) {
       tags.push('大手証券系')
     }
