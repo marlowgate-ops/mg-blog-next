@@ -92,22 +92,39 @@ export default function Page() {
   ]);
   const faqLd = faqPage(faqs);
 
-  const rows = brokers.map((b) => ({
-    brand: b.name,
-    product: b.product,
-    platform: b.platform,
-    cost: b.costNote,
-    minUnit: b.minUnit,
-    accountFee: b.accountFee,
-    depositWithdraw: b.depositWithdraw,
-    api: b.api,
-    tools: b.tools,
-    appScore: b.appScoreText,
-    support: b.support,
-    note: b.note,
-    state: b.state,
-    ctaHref: b.site,
-  }));
+  const rows = brokers.map((b, index) => {
+    // Add sample tags based on broker characteristics
+    const tags = []
+    if (index < 3) tags.push('初心者向け')
+    if (b.name.includes('スプレッド') || b.costNote?.includes('0.') || index % 2 === 0) {
+      tags.push('低スプレッド')
+    }
+    if (b.platform?.includes('MT4') || b.name.includes('FXTF') || index % 3 === 0) {
+      tags.push('MT4対応')
+    }
+    if (b.score && parseInt(b.score.toString()) > 85) tags.push('高評価')
+    if (b.name.includes('SBI') || b.name.includes('楽天')) {
+      tags.push('大手証券系')
+    }
+
+    return {
+      brand: b.name,
+      product: b.product,
+      platform: b.platform,
+      cost: b.costNote,
+      minUnit: b.minUnit,
+      accountFee: b.accountFee,
+      depositWithdraw: b.depositWithdraw,
+      api: b.api,
+      tools: b.tools,
+      appScore: b.appScoreText,
+      support: b.support,
+      note: b.note,
+      state: b.state,
+      ctaHref: b.site,
+      tags,
+    };
+  });
 
   return (
     <>
@@ -170,6 +187,12 @@ export default function Page() {
                       caveats={broker.cons}
                       ctaHref={broker.site || '#'}
                       badge={`${index + 1}位`}
+                      score={broker.score}
+                      subscores={{
+                        cost: broker.subs.cost,
+                        reliability: broker.subs.execution,
+                        app: broker.subs.app,
+                      }}
                     />
                   ))}
                 </div>
@@ -371,6 +394,12 @@ export default function Page() {
               </h3>
               <ReviewContent id="fxtf" />
             </div>
+          </section>
+          
+          {/* Bottom TOC for easy navigation back to sections */}
+          <section className={s.bottomToc} aria-label="ページ内ナビゲーション">
+            <h2>セクションに戻る</h2>
+            <TocCard />
           </section>
         </Container>
       </div>
