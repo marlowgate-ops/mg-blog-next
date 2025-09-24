@@ -23,6 +23,25 @@
   --surface-card: #fff;
   --surface-bg: #f7f9fb;
   --border: #eaecef;
+
+  /* Design foundation tokens */
+  --container-max: 1120px;
+  --gutter: 20px;
+  --surface: #fff;
+  --surface-weak: #f7f8f9;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --brand: #0ea5e9;
+  --radius-lg: 16px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-section: 56px;
+  --space-section-sm: 40px;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -55,6 +74,50 @@ img {
   max-width: 100%;
   height: auto;
   border-radius: 12px;
+}
+
+/* Typography rules */
+h1 {
+  font-size: clamp(24px, 3.6vw, 32px);
+  line-height: 1.25;
+  margin: 0 0 var(--space-sm);
+}
+h2 {
+  font-size: clamp(20px, 2.6vw, 24px);
+  margin: 0 0 var(--space-sm);
+}
+p,
+li {
+  color: var(--ink);
+}
+.muted {
+  color: var(--muted);
+}
+
+/* Accessibility and focus styles */
+:focus-visible {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 2px;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 2px;
+  text-decoration: underline;
+}
+
+/* Improved table focus for sortable headers */
+th[role="button"]:focus-visible {
+  background-color: var(--surface-accent);
+  outline: 2px solid var(--primary-600);
+  outline-offset: -2px;
 }
 
 /* Layout helpers */
@@ -405,4 +468,119 @@ h3 {
   :where(main, .content, body) :where(section[data-section], .section-card){
     padding: clamp(12px, 3.2vw, 18px);
   }
+}
+
+/* === Primary CTA Component === */
+.mg-primary-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: #ff6b35;
+  color: #ffffff;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-card);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+.mg-primary-cta:hover {
+  background: #e85a2e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.4);
+}
+
+.mg-primary-cta:active {
+  transform: translateY(0);
+}
+
+.mg-primary-cta--compact {
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+}
+
+.mg-primary-cta::after {
+  content: "→";
+  font-weight: 500;
+}
+
+/* === Additional Responsive Spacing === */
+@media (max-width: 480px) {
+  :root {
+    --space-6: 20px; /* Reduce space-6 on very small screens */
+  }
+  
+  .mg-primary-cta {
+    padding: var(--space-3) var(--space-4);
+    font-size: 14px;
+  }
+}
+
+/* === Section Spacing Improvements === */
+[data-section="hero"] {
+  margin-bottom: var(--space-8);
+}
+
+[data-section="ranking"] {
+  margin-bottom: var(--space-6);
+}
+
+[data-section="compare"] {
+  margin-bottom: var(--space-6);
+}
+
+[data-section="eval"] {
+  margin-bottom: var(--space-6);
+}
+
+[data-section="how-to-choose"] {
+  margin-bottom: var(--space-6);
+}
+
+[data-section="faq"] {
+  margin-bottom: var(--space-8);
+}
+
+/* === Improved List Spacing === */
+.content ul, .content ol {
+  margin: var(--space-4) 0;
+  padding-left: var(--space-5);
+}
+
+.content li {
+  margin-bottom: var(--space-2);
+  line-height: 1.7;
+}
+
+/* === Better Form Spacing === */
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--space-2);
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #0c6cd4;
+  box-shadow: 0 0 0 3px rgba(12, 108, 212, 0.1);
 }
