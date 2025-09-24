@@ -1,23 +1,32 @@
-"use client";
-import React from "react";
-import styles from "./Faq.module.css";
+import { faqs } from "@/data/faqs";
+import JsonLd from "@/components/JsonLd";
 
-type QA = { q: string; a: string };
-export default function Faq({ items }: { items: QA[] }) {
-  const [open, setOpen] = React.useState<number | null>(0);
+function faqJSONLD() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(x => ({
+      "@type": "Question",
+      "name": x.q,
+      "acceptedAnswer": { "@type": "Answer", "text": x.a }
+    }))
+  };
+}
+
+export default function FAQ() {
+  const data = faqJSONLD();
   return (
-    <section className={styles.wrap} aria-label="よくある質問">
-      <h2 className={styles.h2}>よくある質問</h2>
-      <ul className={styles.list}>
-        {items.map((x, i) => (
-          <li key={i} className={styles.item}>
-            <button className={styles.q} onClick={()=> setOpen(open===i?null:i)} aria-expanded={open===i}>
-              {x.q}
-            </button>
-            {open===i && <div className={styles.a}>{x.a}</div>}
-          </li>
+    <section aria-labelledby="faq" style={{marginTop:24}}>
+      <JsonLd data={data} />
+      <h2 id="faq" style={{fontSize:18,margin:"12px 0"}}>よくある質問</h2>
+      <div style={{display:"grid",gap:10}}>
+        {faqs.map((x,i)=>(
+          <details key={i} style={{padding:"10px 12px",border:"1px solid #e5e7eb",borderRadius:12,background:"#fff"}}>
+            <summary style={{cursor:"pointer",fontWeight:600}}>{x.q}</summary>
+            <div style={{color:"#334155",marginTop:6}}>{x.a}</div>
+          </details>
         ))}
-      </ul>
+      </div>
     </section>
   );
 }

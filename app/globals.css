@@ -444,3 +444,80 @@ h3 {
   content: "→";
   font-weight: 500;
 }
+
+/* === Additional Responsive Spacing === */
+@media (max-width: 480px) {
+  :root {
+    --space-6: 20px; /* Reduce space-6 on very small screens */
+  }
+  
+  .mg-primary-cta {
+    padding: var(--space-3) var(--space-4);
+    font-size: 14px;
+  }
+}
+
+/* === Section Spacing Improvements === */
+[data-section="hero"] {
+  margin-bottom: var(--space-8);
+}
+
+[data-section="ranking"] {
+  margin-bottom: var(--space-6);
+}
+
+[data-section="compare"] {
+  margin-bottom: var(--space-6);
+}
+
+[data-section="eval"] {
+  margin-bottom: var(--space-6);
+}
+
+[data-section="how-to-choose"] {
+  margin-bottom: var(--space-6);
+}
+
+[data-section="faq"] {
+  margin-bottom: var(--space-8);
+}
+
+/* === Improved List Spacing === */
+.content ul, .content ol {
+  margin: var(--space-4) 0;
+  padding-left: var(--space-5);
+}
+
+.content li {
+  margin-bottom: var(--space-2);
+  line-height: 1.7;
+}
+
+/* === Better Form Spacing === */
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--space-2);
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #0c6cd4;
+  box-shadow: 0 0 0 3px rgba(12, 108, 212, 0.1);
+}
