@@ -26,3 +26,5 @@ export const brokers: Broker[] = [
   { id:'matsui', name:'松井証券', score:3.9, pros:['証券基盤が堅牢'], cons:['UIはシンプル'], subs:{execution:3.8,app:3.7,cost:3.8}, site:process.env.NEXT_PUBLIC_AFF_MATSUI || '#', state:'active', product:'店頭FX', platform:'Web/アプリ', costNote:'手数料無料', minUnit:'1,000通貨', accountFee:'無料', depositWithdraw:'即時入金', api:'—', tools:'ネットストック', appScoreText:'3.8/5', support:'電話/メール' },
   { id:'fxtf', name:'FXTF', score:4.0, pros:['MT4が使える','裁量の拡張性'], cons:['時間帯により拡大あり'], subs:{execution:4.1,app:3.8,cost:3.9}, site:process.env.NEXT_PUBLIC_AFF_FXTF || '#', state:'active', product:'店頭FX/CFD', platform:'MT4/アプリ', costNote:'手数料無料', minUnit:'1,000通貨', accountFee:'無料', depositWithdraw:'即時入金', api:'○（MT4）', tools:'MT4/EA', appScoreText:'3.9/5', support:'メール' },
 ];
+
+export const LONG_REVIEW: Record<string, string> = {};
