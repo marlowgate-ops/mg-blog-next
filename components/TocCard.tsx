@@ -1,4 +1,5 @@
 import React from "react";
+import s from '../app/best/layout.module.css';
 
 const items = [
   { href: "#ranking", label: "用途別おすすめ / 総合" },
@@ -12,15 +13,18 @@ const items = [
 
 export default function TocCard() {
   return (
-    <section className="tocCard" aria-label="このページでわかること">
-      <h3>このページでわかること</h3>
-      <ul>
-        {items.map((i) => (
-          <li key={i.href}>
-            <a href={i.href} aria-label={i.label}>{i.label}</a>
+    <section className={s.tocCard} aria-label="目次">
+      <h3>目次</h3>
+      <ol className={s.tocList}>
+        {items.map((item, index) => (
+          <li key={item.href} className={s.tocItem}>
+            <a href={item.href} className={s.tocLink} aria-label={item.label}>
+              <span className={s.tocNumber}>{index + 1}</span>
+              <span className={s.tocLabel}>{item.label}</span>
+            </a>
           </li>
         ))}
-      </ul>
+      </ol>
     </section>
   );
 }

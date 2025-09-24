@@ -27,6 +27,8 @@ import Reviews from "@/components/Reviews";
 import AuthorBio from "@/components/AuthorBio";
 import PollWidget from "@/components/PollWidget";
 import StickyCTA from "@/components/StickyCTA";
+import CategoryTiles from "@/components/CategoryTiles";
+import LocalNavRail from "@/components/LocalNavRail";
 import styles from "../layout.module.css";
 import s from "./page.module.css";
 
@@ -121,6 +123,7 @@ export default function Page() {
           </HeaderMeta>
           <div className={s.hero}>
             <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
+            <CategoryTiles />
             <TocCard />
             <p>
               初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。
@@ -172,7 +175,9 @@ export default function Page() {
                 </div>
               </section>
 
-              <EvaluationCriteria />
+              <section className={s.section} id="eval" data-section>
+                <EvaluationCriteria />
+              </section>
 
               <section className={s.section} id="compare" data-section>
                 <h2>主要スペック比較</h2>
@@ -323,6 +328,7 @@ export default function Page() {
                 <AuthorBio />
               </section>
             </main>
+            <LocalNavRail />
 
             <aside className={s.side} aria-label="注目コンテンツ">
               <div className="card">
