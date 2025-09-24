@@ -154,7 +154,19 @@ thead th.stickyHeader {
 .sortable {
   cursor: pointer;
   user-select: none;
+  transition: background-color 0.2s ease;
 }
+
+.sortable:hover {
+  background-color: var(--surface-accent);
+}
+
+.sortable:focus-visible {
+  background-color: var(--surface-accent);
+  outline: 2px solid var(--primary-600);
+  outline-offset: -2px;
+}
+
 .sortable[data-sort="asc"]::after {
   content: "▲";
   margin-left: 6px;
@@ -166,18 +178,47 @@ thead th.stickyHeader {
   opacity: 0.7;
 }
 
-/* Sortable Table Headers */
-.sortable {
-  cursor: pointer;
-  user-select: none;
+/* Table Styling */
+.scrollHint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 8px 0;
 }
-.sortable[data-sort="asc"]::after {
-  content: "▲";
-  margin-left: 6px;
-  opacity: .7;
+
+.compareTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 720px;
 }
-.sortable[data-sort="desc"]::after {
-  content: "▼";
-  margin-left: 6px;
-  opacity: .7;
+
+.compareTable th,
+.compareTable td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.compareTable tbody tr:nth-child(odd) {
+  background: var(--surface);
+}
+
+.compareTable tbody tr:nth-child(even) {
+  background: var(--bg-muted);
+}
+
+.brandTag {
+  display: inline-block;
+  background: var(--accent-bg);
+  color: var(--accent-text);
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.isPreparing {
+  opacity: 0.7;
 }
