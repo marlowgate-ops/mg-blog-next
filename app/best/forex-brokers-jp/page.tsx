@@ -199,20 +199,20 @@ export default function Page() {
                 </div>
               </section>
 
-              <SectionBand variant="weak" id="compare">
+              <SectionBand variant="accent" id="compare">
                 <section className={s.section} data-section>
                   <h2 className={s.sectionTitle}><span className={s.bar} />主要スペック比較</h2>
                   <CompareTable rows={rows} />
                 </section>
               </SectionBand>
 
-              <SectionBand variant="strong" id="eval">
+              <SectionBand variant="weak" id="eval">
                 <section className={s.section} data-section>
                   <EvaluationCriteria />
                 </section>
               </SectionBand>
 
-              <SectionBand variant="weak" id="deep-dive">
+              <SectionBand variant="strong" id="deep-dive">
                 <section className={s.section} data-section>
                   <h2>徹底解説</h2>
                   <LongForm sections={[

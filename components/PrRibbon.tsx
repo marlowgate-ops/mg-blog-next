@@ -1,20 +1,17 @@
-
-'use client'
-
-export default function PRRibbon() {
+"use client";
+import React from "react";
+import { Tooltip } from "./ui/Tooltip";
+export default function PrRibbon() {
   return (
-    <div className="pr" aria-label="PR disclosure">
-      PR
-      <span className="tip">当ページには広告（アフィリエイト）が含まれます。掲載順位や推奨は編集基準に基づき、広告の有無のみで決定されません。</span>
-      <style jsx>{`
-        .pr { position:fixed; top:54px; right:12px; z-index:50;
-              font-size:12px; line-height:1; padding:5px 7px; border-radius:9999px;
-              background:#fef3c7; color:#92400e; border:1px solid #f59e0b; cursor:help; }
-        .tip { visibility:hidden; opacity:0; transition:opacity .15s; position:absolute; right:0; top:140%;
-               background:#111827; color:#fff; padding:8px 10px; border-radius:8px; width:280px; }
-        .pr:hover .tip { visibility:visible; opacity:1; }
-        @media (max-width:640px){ .pr{ top:50px; right:8px; } .tip{ width:240px; } }
+    <div className="mg-pr-ribbon" aria-live="polite">
+      <Tooltip label="当ページには広告が含まれます。推奨・評価の指標は本文をご参照ください。">
+        <span aria-label="PR" tabIndex={0}>PR</span>
+      </Tooltip>
+      <style jsx global>{`
+        .mg-pr-ribbon { position: fixed; top: 12px; right: 12px; z-index: 50; }
+        .mg-pr-ribbon > span, .mg-pr-ribbon .mg-tooltip-trigger { display:inline-flex; align-items:center; justify-content:center; width:36px; height:24px; font-weight:700; font-size:12px; color:#fff; background:#ff8a00; border-radius:9999px; box-shadow:0 2px 6px rgba(0,0,0,.15); cursor: default; }
+        @media (max-width: 640px) { .mg-pr-ribbon { top: 8px; right: 8px; } }
       `}</style>
     </div>
-  )
+  );
 }
