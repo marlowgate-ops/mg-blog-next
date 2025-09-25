@@ -55,10 +55,25 @@ export default function RankingCard({ rank, brand, score, highlights, cautions =
           <Bar value={score} /><span className={s.scoreText}>{score.toFixed(1)} / 5</span>
         </div>
         {subs && (
-          <div className={s.submeters}>
-            <div><span>約定</span><Bar value={subs.execution}/></div>
-            <div><span>アプリ</span><Bar value={subs.app}/></div>
-            <div><span>コスト</span><Bar value={subs.cost}/></div>
+          <div className={s.scoreRows}>
+            <div className={s.scoreRow}>
+              <span>コスト</span>
+              <div className={s.scoreBar}>
+                <span style={{ '--w': `${(subs.cost / 5) * 100}%` } as React.CSSProperties}></span>
+              </div>
+            </div>
+            <div className={s.scoreRow}>
+              <span>信頼性</span>
+              <div className={s.scoreBar}>
+                <span style={{ '--w': `${(subs.execution / 5) * 100}%` } as React.CSSProperties}></span>
+              </div>
+            </div>
+            <div className={s.scoreRow}>
+              <span>アプリ</span>
+              <div className={s.scoreBar}>
+                <span style={{ '--w': `${(subs.app / 5) * 100}%` } as React.CSSProperties}></span>
+              </div>
+            </div>
           </div>
         )}
         <ul className={s.pros}>{highlights.map((h, i) => <li key={i}>・{h}</li>)}</ul>
