@@ -31,8 +31,7 @@ import PollWidget from "@/components/PollWidget";
 import StickyCTA from "@/components/StickyCTA";
 import CategoryTiles from "@/components/CategoryTiles";
 import LocalNavRail from "@/components/LocalNavRail";
-import styles from "../layout.module.css";
-import s from "./page.module.css";
+import s from "@/app/best/layout.module.css";
 
 export const metadata = {
   title: "国内向けおすすめFX・CFD業者ランキング",
