@@ -199,16 +199,16 @@ export default function Page() {
                 </div>
               </section>
 
-              <SectionBand variant="strong" id="eval">
-                <section className={s.section} data-section>
-                  <EvaluationCriteria />
-                </section>
-              </SectionBand>
-
               <SectionBand variant="weak" id="compare">
                 <section className={s.section} data-section>
                   <h2 className={s.sectionTitle}><span className={s.bar} />主要スペック比較</h2>
                   <CompareTable rows={rows} />
+                </section>
+              </SectionBand>
+
+              <SectionBand variant="strong" id="eval">
+                <section className={s.section} data-section>
+                  <EvaluationCriteria />
                 </section>
               </SectionBand>
 
