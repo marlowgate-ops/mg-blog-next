@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useMemo } from 'react';
 import PrimaryCta from './PrimaryCta';
-import s from '../app/best/layout.module.css';
+import s from '@/app/best/layout.module.css';
 
 type Row = {
   brand: string;

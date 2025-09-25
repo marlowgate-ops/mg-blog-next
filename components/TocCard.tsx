@@ -1,5 +1,5 @@
 import React from "react";
-import s from '../app/best/layout.module.css';
+import s from "@/app/best/layout.module.css";
 
 const items = [
   { href: "#ranking", label: "用途別おすすめ / 総合" },

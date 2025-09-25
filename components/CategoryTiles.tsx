@@ -1,5 +1,5 @@
 import React from 'react';
-import s from '../app/best/layout.module.css';
+import s from '@/app/best/layout.module.css';
 
 const tiles = [
   { href: "#ranking", label: "総合ランキング", icon: "🏆" },

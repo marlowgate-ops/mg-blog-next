@@ -368,3 +368,42 @@ thead th.stickyHeader{background:var(--surface);border-bottom:1px solid var(--bo
   margin-bottom: 16px;
   color: var(--text-muted);
 }
+
+/* Additional CSS Module classes for components */
+
+/* SectionBand styles */
+.sectionBand{display:block;width:100%}
+.sectionBand.weak{background:var(--surface-weak)}
+.sectionBand.strong{background:var(--surface-strong)}
+
+/* RankingCard styles (RankingCard.tsx) */
+.stars{display:inline-flex;gap:2px}
+.scoreBar_inner{height:100%;background:linear-gradient(90deg,#4caf50,#8bc34a)}
+.scoreText{font-size:12px;color:#666}
+.submeters{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:center;margin-top:6px}
+.submeters span{display:inline-block;width:40px;font-size:12px;color:#6b7280}
+.pros,.cons{margin:8px 0 0;padding-left:0;list-style:none;font-size:14px;color:#333}
+.cons{color:#666}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;background:#0070f3;color:#fff;border-radius:8px;font-weight:700;text-decoration:none}
+.btn_disabled{background:#cfcfcf;pointer-events:none}
+.rankingCard_left{display:flex;gap:12px;align-items:center}
+.rankingCard_main{flex:1}
+.rankingCard_cta{display:flex;align-items:center;justify-content:flex-end}
+.rankingCard_no{width:28px;height:28px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#fff;background:#0066cc}
+.rankingCard_logo{width:44px;height:44px;border-radius:12px;background:#f1f5f9;color:#0f172a;font-weight:800;display:flex;align-items:center;justify-content:center}
+.rankingCard_brand strong{font-size:16px}
+.rankingCard_score{display:flex;align-items:center;gap:10px}
+
+/* RankingCardNew styles (RankingCardNew.tsx) */  
+.rankingCard_nameWrapper{display:flex;flex-direction:column;gap:4px}
+.rankingCard_name{margin:0;font-size:16px;font-weight:600;color:var(--text)}
+.badge{font-size:0.8rem;padding:2px 8px;border-radius:9999px;background:var(--surface-strong);color:var(--text-on-strong);font-weight:500}
+.overallScore{font-size:0.85rem;color:var(--text-muted);margin-top:2px}
+.scoreRows{margin-top:6px;display:flex;flex-direction:column;gap:3px}
+.scoreLabel{font-size:0.75rem;color:var(--text-muted);min-width:40px;text-align:right}
+.rankingCard_center{display:flex;flex-direction:column;gap:8px}
+.rankingCard_highlights,.rankingCard_caveats{margin:0;padding:0;list-style:none;font-size:14px}
+.rankingCard_highlights{color:var(--text)}
+.rankingCard_caveats{color:var(--text-muted)}
+.rankingCard_highlights li,.rankingCard_caveats li{margin:2px 0}
+.rankingCard_right{display:flex;justify-content:flex-end;align-items:center}
