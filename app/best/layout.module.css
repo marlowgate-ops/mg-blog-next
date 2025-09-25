@@ -168,6 +168,32 @@ thead th.stickyHeader{background:var(--surface);border-bottom:1px solid var(--bo
   padding: 8px 0;
 }
 
+/* Enhanced table with visual gradients for minkabu-style design */
+.gradientEdges {
+  position: relative;
+}
+
+.gradientEdges::before,
+.gradientEdges::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gradientEdges::before {
+  left: 0;
+  background: linear-gradient(to right, var(--surface), transparent);
+}
+
+.gradientEdges::after {
+  right: 0;
+  background: linear-gradient(to left, var(--surface), transparent);
+}
+
 .compareTable {
   width: 100%;
   border-collapse: separate;
