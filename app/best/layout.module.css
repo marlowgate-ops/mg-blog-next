@@ -409,9 +409,11 @@ thead th.stickyHeader{background:var(--surface);border-bottom:1px solid var(--bo
 /* Additional CSS Module classes for components */
 
 /* SectionBand styles */
-.sectionBand{display:block;width:100%}
-.sectionBand.weak{background:var(--surface-weak)}
-.sectionBand.strong{background:var(--surface-strong)}
+.sectionBand{display:block;width:100%;margin:0;padding:var(--space-lg) 0}
+.sectionBand.weak{background:transparent}
+.sectionBand.strong{background:var(--surface-muted);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.sectionBand.accent{background:var(--surface-accent);border-top:1px solid var(--primary-200);border-bottom:1px solid var(--primary-200)}
+.sectionBand .container{max-width:var(--container-max);margin:0 auto;padding-inline:var(--gutter)}
 
 /* RankingCard styles (RankingCard.tsx) */
 .stars{display:inline-flex;gap:2px}
