@@ -7,7 +7,7 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   // TEMP: allow production build to complete even if TS errors exist
   typescript: { ignoreBuildErrors: true },
-  output: 'standalone',
-}
+  output: "standalone",
+};
 
-export default withContentlayer(nextConfig)
+export default withContentlayer(nextConfig);

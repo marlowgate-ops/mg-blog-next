@@ -1,5 +1,5 @@
-import React from 'react';
-import s from '@/app/best/layout.module.css';
+import React from "react";
+import s from "@/app/best/layout.module.css";
 
 const tiles = [
   { href: "#ranking", label: "総合ランキング", icon: "🏆" },
@@ -16,7 +16,9 @@ export default function CategoryTiles() {
     <section className={s.categoryTiles} aria-label="カテゴリー">
       {tiles.map((tile) => (
         <a key={tile.href} href={tile.href} className={s.categoryTile}>
-          <span className={s.tileIcon} aria-hidden="true">{tile.icon}</span>
+          <span className={s.tileIcon} aria-hidden="true">
+            {tile.icon}
+          </span>
           <span className={s.tileLabel}>{tile.label}</span>
         </a>
       ))}

@@ -1,6 +1,6 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import s from '@/app/best/layout.module.css';
+"use client";
+import React, { useEffect, useState } from "react";
+import s from "@/app/best/layout.module.css";
 
 const navItems = [
   { href: "#ranking", label: "総合" },
@@ -13,7 +13,7 @@ const navItems = [
 ];
 
 export default function LocalNavRail() {
-  const [activeSection, setActiveSection] = useState('');
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -25,7 +25,7 @@ export default function LocalNavRail() {
         });
       },
       {
-        rootMargin: '-80px 0px -80% 0px',
+        rootMargin: "-80px 0px -80% 0px",
         threshold: 0.1,
       }
     );
@@ -46,9 +46,11 @@ export default function LocalNavRail() {
       <ul className={s.localNavList}>
         {navItems.map((item) => (
           <li key={item.href} className={s.localNavItem}>
-            <a 
-              href={item.href} 
-              className={`${s.localNavLink} ${activeSection === item.href.slice(1) ? s.active : ''}`}
+            <a
+              href={item.href}
+              className={`${s.localNavLink} ${
+                activeSection === item.href.slice(1) ? s.active : ""
+              }`}
               aria-label={item.label}
             >
               {item.label}
