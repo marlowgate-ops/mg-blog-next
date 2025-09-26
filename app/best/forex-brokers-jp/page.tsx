@@ -307,7 +307,10 @@ export default function Page() {
               </SectionBand>
 
               <section className={s.section} id="how-to-choose" data-section>
-                <h2>低スプレッドの選び方</h2>
+                  <h2 className={s.sectionTitle}>
+                    <span className={s.bar} />
+                    低スプレッドの選び方
+                  </h2>
                 <p className={s.note}>
                   名目スプレッドは“入口の目安”。実戦では
                   <strong>配信頻度・約定の安定性</strong>
@@ -338,7 +341,10 @@ export default function Page() {
               </section>
 
               <section className={s.section} id="app-ux" data-section>
-                <h2>アプリの使い勝手</h2>
+                  <h2 className={s.sectionTitle}>
+                    <span className={s.bar} />
+                    アプリの使い勝手
+                  </h2>
                 <p>
                   日々の意思決定を速くするのは<strong>UIと情報の近さ</strong>
                   です。“迷わない導線”を重視。
@@ -355,7 +361,10 @@ export default function Page() {
               </section>
 
               <section className={s.section} id="cost-opt" data-section>
-                <h2>コスト最適化の考え方</h2>
+                  <h2 className={s.sectionTitle}>
+                    <span className={s.bar} />
+                    コスト最適化の考え方
+                  </h2>
                 <p className={s.note}>
                   “1→2社目の乗り換え”よりも、<strong>用途での使い分け</strong>
                   がコスパ最強。
@@ -383,7 +392,10 @@ export default function Page() {
                 id="faq"
                 data-section
               >
-                <h2>よくある質問</h2>
+                <h2 className={s.sectionTitle}>
+                  <span className={s.bar} />
+                  よくある質問
+                </h2>
                 <details>
                   <summary>初心者はどれから？</summary>
                   <p>
