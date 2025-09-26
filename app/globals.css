@@ -633,3 +633,48 @@ h3 {
   border-color: #0c6cd4;
   box-shadow: 0 0 0 3px rgba(12, 108, 212, 0.1);
 }
+
+/* CSS-only band mapping for remaining sections */
+/* Apply band styling to sections by ID (no DOM changes required) */
+
+#app-ux {
+  background: var(--band-strong);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+#cost-opt {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+#faq {
+  background: var(--band-weak);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+/* Ensure inner content has proper spacing */
+#app-ux .container,
+#cost-opt .container,
+#faq .container {
+  max-width: var(--container-max);
+  margin: auto;
+  padding-inline: var(--gutter);
+}
+
+@media (max-width: 768px) {
+  #app-ux,
+  #cost-opt,
+  #faq {
+    padding-block: var(--space-section-sm);
+    margin-block: var(--space-section-sm);
+  }
+}
