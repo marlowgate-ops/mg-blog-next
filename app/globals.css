@@ -24,14 +24,16 @@
   --primary-700: #0284c7;
 
   /* Section bands (Minkabu-style alternating) */
-  --band-strong: #f1f4f7;
-  --band-weak: #fafbfc;
+  --band-strong: #f8f9fa;
+  --band-weak: #fdfdfe;
   --band-accent: #f0f9ff;
+  --band-subtle: #fcfcfd;
 
   /* Enhanced borders and shadows */
-  --border: #e2e8f0;
-  --border-accent: rgba(0, 122, 255, 0.2);
-  --border-strong: #d0d7de;
+  --border: #e6eaef;
+  --border-accent: rgba(0, 122, 255, 0.15);
+  --border-strong: #d4d9e0;
+  --hairline: 1px solid var(--border);
   --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.12);
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -40,15 +42,15 @@
   --radius-lg: 12px;
 
   /* Rhythm */
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
-  --space-3xl: 64px;
-  --space-section: 56px;
-  --space-section-sm: 40px;
+  --space-xs: 6px;
+  --space-sm: 10px;
+  --space-md: 14px;
+  --space-lg: 20px;
+  --space-xl: 28px;
+  --space-2xl: 40px;
+  --space-3xl: 56px;
+  --space-section: 48px;
+  --space-section-sm: 32px;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -96,13 +98,13 @@ li {
 }
 .sectionBand.weak {
   background: var(--band-weak);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
 }
 .sectionBand.strong {
   background: var(--band-strong);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
 }
 .sectionBand.accent {
   background: var(--band-accent);
@@ -110,9 +112,9 @@ li {
   border-bottom: 1px solid var(--border-accent);
 }
 .sectionBand.subtle {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  background: var(--band-subtle);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
 }
 a {
   color: inherit;
@@ -639,24 +641,24 @@ h3 {
 
 #app-ux {
   background: var(--band-strong);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
   padding-block: var(--space-section);
   margin-block: var(--space-section);
 }
 
 #cost-opt {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  background: var(--band-subtle);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
   padding-block: var(--space-section);
   margin-block: var(--space-section);
 }
 
 #faq {
   background: var(--band-weak);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
   padding-block: var(--space-section);
   margin-block: var(--space-section);
 }
