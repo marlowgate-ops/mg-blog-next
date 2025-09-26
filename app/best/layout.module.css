@@ -379,6 +379,16 @@ thead th.stickyHeader {
   font-size: 12px;
   color: var(--text-muted);
   padding: 8px 0;
+  background: var(--band-weak);
+  border-radius: var(--radius-lg);
+  margin-bottom: 8px;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .scrollHint {
+    display: block;
+  }
 }
 
 /* Enhanced table with visual gradients for minkabu-style design */
