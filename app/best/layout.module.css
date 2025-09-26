@@ -667,7 +667,7 @@ thead th.stickyHeader {
   outline-offset: 2px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1080px) {
   .localNav {
     display: none;
   }
