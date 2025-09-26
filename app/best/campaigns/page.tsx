@@ -6,6 +6,7 @@ import RankingList from "@/components/RankingList";
 import CampaignsTable from "@/components/CampaignsTable";
 import LocalNavRail from "@/components/LocalNavRail";
 import Container from "@/components/Container";
+import BottomRecirculation from "@/components/BottomRecirculation";
 import { breadcrumbList, itemListJSONLD } from "@/lib/seo/jsonld";
 import Link from "next/link";
 import s from "@/app/best/layout.module.css";
@@ -75,6 +76,17 @@ export default function Page() {
                 <div style={{ marginTop: 20 }}>
                   <Link href="/best/forex-brokers-jp">← 総合ランキングに戻る</Link>
                 </div>
+
+                <BottomRecirculation
+                  title="関連ページ"
+                  links={[
+                    { href: "/best/forex-brokers-jp", label: "総合ランキング", description: "使いやすさ重視の総合評価" },
+                    { href: "/best/low-spread", label: "低スプレッド", description: "コスト重視で選ぶ" },
+                    { href: "/best/app", label: "アプリ重視", description: "操作性・反応速度で選ぶ" },
+                    { href: "/best/tools", label: "取引ツール", description: "PCツール・機能面で選ぶ" },
+                  ]}
+                  variant="compact"
+                />
               </section>
             </main>
             <LocalNavRail />

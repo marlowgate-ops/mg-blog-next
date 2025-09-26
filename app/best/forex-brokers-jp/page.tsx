@@ -5,7 +5,7 @@ import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
 import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
-import BottomToc from "@/components/BottomToc";
+import BottomRecirculation from "@/components/BottomRecirculation";
 import PrimaryCta from "@/components/PrimaryCta";
 import SideCards from "@/components/SideCards";
 import RankingCardNew from "@/components/RankingCardNew";
@@ -605,7 +605,19 @@ export default function Page() {
           </section>
           
           {/* Bottom navigation for easy access to all sections */}
-          <BottomToc />
+          <BottomRecirculation
+            title="このページの他のセクション"
+            links={[
+              { href: "#ranking", label: "総合ランキング", description: "使いやすさ重視の総合評価" },
+              { href: "#compare", label: "スペック比較", description: "手数料・機能の詳細比較" },
+              { href: "#eval", label: "評価基準", description: "ランキングの根拠と方針" },
+              { href: "#how-to-choose", label: "選び方", description: "低スプレッド業者の選定ポイント" },
+              { href: "#app-ux", label: "アプリUX", description: "取引アプリの操作性" },
+              { href: "#cost-opt", label: "コスト最適化", description: "複数口座活用の戦略" },
+              { href: "#faq", label: "よくある質問", description: "初心者向けQ&A" },
+            ]}
+            variant="compact"
+          />
         </Container>
       </div>
       <BackToTop />
