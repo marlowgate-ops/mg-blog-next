@@ -407,11 +407,7 @@ export default function Page() {
                 </section>
               </SectionBand>
 
-              <section className={s.section} id="how-to-choose" data-section>
-                  <h2 className={s.sectionTitle}>
-                    <span className={s.bar} />
-                    低スプレッドの選び方
-                  </h2>
+              <BandSection variant="subtle" id="how-to-choose" title="低スプレッドの選び方">
                 <p className={s.note}>
                   名目スプレッドは“入口の目安”。実戦では
                   <strong>配信頻度・約定の安定性</strong>
@@ -439,7 +435,7 @@ export default function Page() {
                   短期売買がメインなら、名目スプレッドより
                   <strong>配信と約定</strong>の安定度を優先しましょう。
                 </div>
-              </section>
+              </BandSection>
 
               <section className={s.section} id="app-ux" data-section>
                   <h2 className={s.sectionTitle}>
