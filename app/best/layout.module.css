@@ -610,7 +610,7 @@ thead th.stickyHeader {
 /* Local Nav Rail (Desktop Only) */
 .localNav {
   position: sticky;
-  top: 80px;
+  top: 90px; /* Below global header + PR ribbon */
   align-self: start;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -618,7 +618,7 @@ thead th.stickyHeader {
   box-shadow: var(--shadow-card);
   padding: 18px;
   min-width: 200px;
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 140px); /* Account for header + ribbon */
   overflow-y: auto;
   z-index: 10;
 }
@@ -655,16 +655,18 @@ thead th.stickyHeader {
 }
 
 .localNavLink.active {
-  background-color: var(--primary-100, rgba(0, 122, 255, 0.1));
-  color: var(--primary-700, #007AFF);
+  background-color: var(--primary-100, rgba(0, 122, 255, 0.12));
+  color: var(--primary-700, #0284c7);
   font-weight: 600;
-  border-left: 3px solid var(--primary-500, #007AFF);
+  border-left: 3px solid var(--primary-600, #0ea5e9);
   padding-left: 11px;
+  box-shadow: inset 3px 0 0 var(--primary-600);
 }
 
-.localNavLink:focus {
-  outline: 2px solid var(--accent, #007AFF);
+.localNavLink:focus-visible {
+  outline: 2px solid var(--primary-600, #0ea5e9);
   outline-offset: 2px;
+  background-color: var(--surface-accent);
 }
 
 @media (max-width: 1080px) {
