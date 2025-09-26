@@ -41,6 +41,15 @@
   /* Radius refinements */
   --radius-lg: 12px;
 
+  /* Additional specific tokens for consolidation */
+  --text-gray-500: #6b7280;
+  --text-gray-600: #4b5563;
+  --text-gray-700: #374151;
+  --gradient-success: linear-gradient(90deg, #4caf50, #8bc34a);
+  --surface-weak: #fafbfc;
+  --surface-muted: #f1f3f4;
+  --border-strong: #d0d7de;
+
   /* Rhythm */
   --space-xs: 6px;
   --space-sm: 10px;
