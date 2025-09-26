@@ -49,7 +49,7 @@ export default function Page() {
         </p>
 
         <div className="section-card">
-          <h2 id="rank" style={{ fontSize: 18, margin: "12px 0" }}>
+          <h2 id="ranking" style={{ fontSize: 18, margin: "12px 0" }}>
             ランキング
           </h2>
           <RankingList mode="cost" limit={10} />

@@ -50,14 +50,14 @@ export default function Page() {
         </p>
 
         <div className="section-card">
-          <h2 id="rank" style={{ fontSize: 18, margin: "12px 0" }}>
+          <h2 id="ranking" style={{ fontSize: 18, margin: "12px 0" }}>
             関連ランキング
           </h2>
           <RankingList mode="total" limit={10} />
         </div>
 
         <div className="section-card" style={{ marginTop: 24 }}>
-          <h2 id="cmp" style={{ fontSize: 18, margin: "12px 0" }}>
+          <h2 id="compare" style={{ fontSize: 18, margin: "12px 0" }}>
             キャンペーン一覧
           </h2>
           <CampaignsTable />

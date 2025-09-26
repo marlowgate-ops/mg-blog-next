@@ -638,24 +638,24 @@ h3 {
 
 /* CSS-only band mapping for remaining sections */
 /* Apply band styling to sections by ID (no DOM changes required) */
+/* Core rhythm: ranking → compare → eval → how-to-choose → app-ux → cost-opt → faq */
 
-#app-ux {
-  background: var(--band-strong);
+#ranking {
+  background: var(--bg);
+  border-top: var(--hairline);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+#compare {
+  background: var(--band-accent);
   border-top: var(--hairline);
   border-bottom: var(--hairline);
   padding-block: var(--space-section);
   margin-block: var(--space-section);
 }
 
-#cost-opt {
-  background: var(--band-subtle);
-  border-top: var(--hairline);
-  border-bottom: var(--hairline);
-  padding-block: var(--space-section);
-  margin-block: var(--space-section);
-}
-
-#faq {
+#eval {
   background: var(--band-weak);
   border-top: var(--hairline);
   border-bottom: var(--hairline);
@@ -663,19 +663,78 @@ h3 {
   margin-block: var(--space-section);
 }
 
-/* Ensure inner content has proper spacing */
+#how-to-choose {
+  background: var(--band-strong);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+#app-ux {
+  background: var(--band-subtle);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+#cost-opt {
+  background: var(--band-weak);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+#faq {
+  background: var(--band-strong);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+/* Additional common sections */
+#rank {
+  background: var(--bg);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+#cmp {
+  background: var(--band-accent);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
+  padding-block: var(--space-section);
+  margin-block: var(--space-section);
+}
+
+/* Ensure inner content has proper spacing for all banded sections */
+#ranking .container,
+#compare .container,
+#eval .container,
+#how-to-choose .container,
 #app-ux .container,
 #cost-opt .container,
-#faq .container {
+#faq .container,
+#rank .container,
+#cmp .container {
   max-width: var(--container-max);
   margin: auto;
   padding-inline: var(--gutter);
 }
 
 @media (max-width: 768px) {
+  #ranking,
+  #compare,
+  #eval,
+  #how-to-choose,
   #app-ux,
   #cost-opt,
-  #faq {
+  #faq,
+  #rank,
+  #cmp {
     padding-block: var(--space-section-sm);
     margin-block: var(--space-section-sm);
   }
