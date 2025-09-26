@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mg-blog-next.vercel.app/schemas/criteria.json",
+  "title": "Evaluation Criteria Schema",
+  "description": "Schema for broker evaluation criteria and weights",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of the criteria format"
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when criteria were last updated"
+    },
+    "weights": {
+      "type": "object",
+      "description": "Evaluation weights for different criteria",
+      "properties": {
+        "cost": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Weight for cost-related factors (fees, spreads)"
+        },
+        "reliability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Weight for execution reliability and speed"
+        },
+        "app": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Weight for mobile app usability"
+        },
+        "spread": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Weight for spread tightness"
+        }
+      },
+      "required": ["cost", "reliability", "app", "spread"],
+      "additionalProperties": false
+    },
+    "badges": {
+      "type": "object",
+      "description": "Badge definitions with criteria",
+      "patternProperties": {
+        "^[a-z][a-z0-9_]*$": {
+          "type": "object",
+          "properties": {
+            "minScore": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 5,
+              "description": "Minimum score required for this badge"
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Display label for the badge"
+            },
+            "description": {
+              "type": "string",
+              "description": "Explanation of what this badge represents"
+            }
+          },
+          "required": ["minScore", "label"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "categories": {
+      "type": "object",
+      "description": "Category definitions with metadata",
+      "patternProperties": {
+        "^[a-z][a-z0-9_]*$": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Display label for the category"
+            },
+            "description": {
+              "type": "string",
+              "description": "Explanation of what this category evaluates"
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Weight for this category (should match weights object)"
+            }
+          },
+          "required": ["label", "weight"],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "required": ["version", "weights"],
+  "additionalProperties": false
+}

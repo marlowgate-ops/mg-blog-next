@@ -1,0 +1,50 @@
+{
+  "$schema": "./criteria.schema.json",
+  "version": "1.0.0",
+  "lastUpdated": "2025-09-27",
+  "weights": {
+    "cost": 0.35,
+    "reliability": 0.25,
+    "app": 0.20,
+    "spread": 0.20
+  },
+  "badges": {
+    "low_spread": {
+      "minScore": 4.5,
+      "label": "低スプレッド",
+      "description": "スプレッドが狭く、短期取引に適している"
+    },
+    "for_beginners": {
+      "minScore": 4.0,
+      "label": "初心者向け",
+      "description": "操作が簡単で、サポートが充実している"
+    },
+    "pro_tools": {
+      "minScore": 4.2,
+      "label": "ツール充実",
+      "description": "高機能な取引ツールを提供"
+    }
+  },
+  "categories": {
+    "cost": {
+      "label": "コスト",
+      "description": "手数料・スプレッドの総合評価",
+      "weight": 0.35
+    },
+    "reliability": {
+      "label": "約定力",
+      "description": "約定速度・安定性・スリッページ",
+      "weight": 0.25
+    },
+    "app": {
+      "label": "アプリ",
+      "description": "モバイルアプリの使いやすさ",
+      "weight": 0.20
+    },
+    "spread": {
+      "label": "スプレッド",
+      "description": "主要通貨ペアのスプレッド水準",
+      "weight": 0.20
+    }
+  }
+}
