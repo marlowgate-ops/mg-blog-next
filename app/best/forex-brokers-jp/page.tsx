@@ -15,6 +15,7 @@ import BackToTop from "@/components/BackToTop";
 import ReviewContent from "@/components/ReviewContent";
 import HeaderMeta from "@/components/HeaderMeta";
 import SectionBand from "@/components/SectionBand";
+import BandSection from "@/components/BandSection";
 import LongForm from "@/components/LongForm";
 import { brokers } from "@/data/brokers";
 import {
@@ -53,6 +54,106 @@ function BrokerLogo({ name }: { name: string }) {
   
   return <span style={{ fontSize: '14px', fontWeight: 700 }}>{initials}</span>;
 }
+
+// Section subcomponents for safer restructuring
+const SectionHowToChoose = () => (
+  <section className={s.section} data-section>
+    <p className={s.note}>
+      名目スプレッドは"入口の目安"。実戦では
+      <strong>配信頻度・約定の安定性</strong>
+      を合わせて見ると失敗しません。
+    </p>
+    <ul className={s.bullets}>
+      <li>
+        <strong>主要ペアの提示の細かさ</strong>
+        （ティック密度/更新頻度）…値が飛ばないか。
+      </li>
+      <li>
+        <strong>成行・逆指値の約定品質</strong>
+        …混雑時にスリッページが増えないか。
+      </li>
+      <li>
+        取引ツールの<strong>板/気配・ワンクリック</strong>
+        …高速操作のしやすさ。
+      </li>
+      <li>
+        実質コストは<strong>スプレッド±スワップ±手数料</strong>
+        の総額で比較。
+      </li>
+    </ul>
+    <div className={s.callout}>
+      短期売買がメインなら、名目スプレッドより
+      <strong>配信と約定</strong>の安定度を優先しましょう。
+    </div>
+  </section>
+);
+
+const SectionAppUx = () => (
+  <section className={s.section} data-section>
+    <p>
+      日々の意思決定を速くするのは<strong>UIと情報の近さ</strong>
+      です。"迷わない導線"を重視。
+    </p>
+    <ul className={s.bullets}>
+      <li>チャートのレイアウト保存、注文~決済の手順が短いか。</li>
+      <li>アラート/ウィジェット、ニュースの粒度と更新速度。</li>
+      <li>入出金や明細確認がアプリ内で完結するか。</li>
+    </ul>
+    <div className={s.callout}>
+      "毎日触る前提"で、<strong>指が覚えるUI</strong>
+      を選ぶとミスが減ります。
+    </div>
+  </section>
+);
+
+const SectionCostOpt = () => (
+  <section className={s.section} data-section>
+    <p className={s.note}>
+      "1→2社目の乗り換え"よりも、<strong>用途での使い分け</strong>
+      がコスパ最強。
+    </p>
+    <ol className={s.steps}>
+      <li>
+        メイン口座：総合力が高い1社で入出金・アプリも含めて安定運用。
+      </li>
+      <li>
+        サブ口座：スキャル/自動売買など<strong>戦略特化</strong>
+        に最適な1社を追加。
+      </li>
+      <li>
+        中長期：スワップと諸費用、ニュース/銘柄の
+        <strong>情報優位</strong>で選ぶ。
+      </li>
+    </ol>
+    <p>
+      キャンペーンは最初の1社で取りこぼさないのが鉄則。達成条件と締切だけは必ず確認を。
+    </p>
+  </section>
+);
+
+const SectionFaq = () => (
+  <section className={`${s.section} ${s.faq}`} data-section>
+    <details>
+      <summary>初心者はどれから？</summary>
+      <p>
+        まずは国内サービス（例:
+        DMM.com証券）で入出金の動作を確認。小額から始め、約定やアプリの使い勝手を確かめるのがおすすめです。
+      </p>
+    </details>
+    <details>
+      <summary>ランキングの根拠は？</summary>
+      <p>
+        手数料・約定・取扱商品の客観指標をベースに編集部で総合判断。広告掲載の有無とは独立して評価します。
+      </p>
+    </details>
+    <details>
+      <summary>海外業者も使える？</summary>
+      <p>
+        可能ですが、規制・入出金・税務の理解が前提。国内と併用しつつ、自身の運用ルールに合うか慎重に判断してください。
+      </p>
+    </details>
+  </section>
+);
 
 export default function Page() {
 
