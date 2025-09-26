@@ -24,13 +24,20 @@
   --primary-700: #0284c7;
 
   /* Section bands (Minkabu-style alternating) */
-  --band-strong: #eef2f6;
+  --band-strong: #f1f4f7;
   --band-weak: #fafbfc;
+  --band-accent: #f0f9ff;
 
-  /* Borders / shadows / radius */
-  --border: #e5e7eb;
-  --radius-lg: 16px;
-  --shadow-card: 0 6px 24px rgba(0, 0, 0, 0.06);
+  /* Enhanced borders and shadows */
+  --border: #e2e8f0;
+  --border-accent: rgba(0, 122, 255, 0.2);
+  --border-strong: #d0d7de;
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
+  
+  /* Radius refinements */
+  --radius-lg: 12px;
 
   /* Rhythm */
   --space-xs: 8px;
@@ -94,6 +101,16 @@ li {
 }
 .sectionBand.strong {
   background: var(--band-strong);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.sectionBand.accent {
+  background: var(--band-accent);
+  border-top: 1px solid var(--border-accent);
+  border-bottom: 1px solid var(--border-accent);
+}
+.sectionBand.subtle {
+  background: var(--surface);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
