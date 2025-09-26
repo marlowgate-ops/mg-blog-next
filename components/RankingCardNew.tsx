@@ -46,19 +46,37 @@ export default function RankingCard({
               <div className={s.scoreRow}>
                 <span className={s.scoreLabel}>コスト</span>
                 <div className={s.scoreBar}>
-                  <span style={{ '--w': `${(subscores.cost / 5) * 100}%` } as React.CSSProperties}></span>
+                  <span
+                    style={
+                      {
+                        "--w": `${(subscores.cost / 5) * 100}%`,
+                      } as React.CSSProperties
+                    }
+                  ></span>
                 </div>
               </div>
               <div className={s.scoreRow}>
                 <span className={s.scoreLabel}>信頼性</span>
                 <div className={s.scoreBar}>
-                  <span style={{ '--w': `${(subscores.reliability / 5) * 100}%` } as React.CSSProperties}></span>
+                  <span
+                    style={
+                      {
+                        "--w": `${(subscores.reliability / 5) * 100}%`,
+                      } as React.CSSProperties
+                    }
+                  ></span>
                 </div>
               </div>
               <div className={s.scoreRow}>
                 <span className={s.scoreLabel}>アプリ</span>
                 <div className={s.scoreBar}>
-                  <span style={{ '--w': `${(subscores.app / 5) * 100}%` } as React.CSSProperties}></span>
+                  <span
+                    style={
+                      {
+                        "--w": `${(subscores.app / 5) * 100}%`,
+                      } as React.CSSProperties
+                    }
+                  ></span>
                 </div>
               </div>
             </div>
