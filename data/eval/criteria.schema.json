@@ -16,8 +16,8 @@
     },
     "lastUpdated": {
       "type": "string",
-      "format": "date",
-      "description": "Date when criteria were last updated"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Date when criteria were last updated (YYYY-MM-DD)"
     },
     "weights": {
       "type": "object",
