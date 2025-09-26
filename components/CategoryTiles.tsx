@@ -8,7 +8,12 @@ const tiles = [
   { href: "#how-to-choose", label: "選び方", icon: "💡" },
   { href: "#app-ux", label: "アプリUX", icon: "📱" },
   { href: "#cost-opt", label: "コスト最適化", icon: "💰" },
+  { href: "#costs", label: "手数料詳細", icon: "💹" },
+  { href: "#campaign", label: "キャンペーン", icon: "🎁" },
+  { href: "#reviews", label: "口コミ・評価", icon: "⭐" },
+  { href: "#detail-reviews", label: "詳細レビュー", icon: "📝" },
   { href: "#faq", label: "よくある質問", icon: "❓" },
+  { href: "#poll", label: "投票", icon: "📊" },
 ];
 
 export default function CategoryTiles() {
