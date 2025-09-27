@@ -22,6 +22,10 @@
   --primary-300: #7dd3fc;
   --primary-600: #0ea5e9;
   --primary-700: #0284c7;
+  
+  /* Accent colors */
+  --accent: #f59e0b;
+  --accent-light: #fbbf24;
 
   /* Section bands (Minkabu-style alternating) */
   --band-strong: #f8f9fa;

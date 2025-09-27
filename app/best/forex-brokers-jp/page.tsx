@@ -31,6 +31,7 @@ import AuthorBio from "@/components/AuthorBio";
 import PollWidget from "@/components/PollWidget";
 import StickyCTA from "@/components/StickyCTA";
 import CategoryTiles from "@/components/CategoryTiles";
+import CategoryTilesLarge from "@/components/CategoryTilesLarge";
 import LocalNavRail from "@/components/LocalNavRail";
 import s from "@/app/best/layout.module.css";
 
@@ -243,6 +244,7 @@ export default function Page() {
           <div className={s.hero}>
             <h1>【2025年版】国内向けおすすめFX・CFD業者ランキング</h1>
             <CategoryTiles />
+            <CategoryTilesLarge />
             <TocCard />
             <p>
               初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。
