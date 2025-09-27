@@ -8,12 +8,7 @@ const items = [
   { href: "#how-to-choose", label: "選び方" },
   { href: "#app-ux", label: "アプリUX" },
   { href: "#cost-opt", label: "コスト最適化" },
-  { href: "#costs", label: "手数料詳細" },
-  { href: "#campaign", label: "キャンペーン" },
-  { href: "#reviews", label: "口コミ・評価" },
-  { href: "#detail-reviews", label: "詳細レビュー" },
   { href: "#faq", label: "よくある質問" },
-  { href: "#poll", label: "投票" },
 ];
 
 export default function TocCard() {

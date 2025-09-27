@@ -9,12 +9,7 @@ const navItems = [
   { href: "#how-to-choose", label: "選び方" },
   { href: "#app-ux", label: "アプリ" },
   { href: "#cost-opt", label: "コスト" },
-  { href: "#costs", label: "手数料" },
-  { href: "#campaign", label: "キャンペーン" },
-  { href: "#reviews", label: "口コミ" },
-  { href: "#detail-reviews", label: "詳細レビュー" },
   { href: "#faq", label: "FAQ" },
-  { href: "#poll", label: "投票" },
 ];
 
 export default function LocalNavRail() {
