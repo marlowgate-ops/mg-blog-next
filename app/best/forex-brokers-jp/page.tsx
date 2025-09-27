@@ -5,6 +5,7 @@ import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
 import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
+import ScoringDisclosure from "@/components/ScoringDisclosure";
 import BottomRecirculation from "@/components/BottomRecirculation";
 import BottomGridNav from "@/components/BottomGridNav";
 import PrimaryCta from "@/components/PrimaryCta";
@@ -247,6 +248,7 @@ export default function Page() {
             <CategoryTiles />
             <CategoryTilesLarge />
             <TocCard />
+            <ScoringDisclosure pageSlug="forex-brokers-jp" />
             <p>
               初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。
             </p>
