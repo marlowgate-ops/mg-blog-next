@@ -4,11 +4,10 @@
 - Make `/best/forex-brokers-jp` visually match the reference site (layout, section bands, colors, spacing, table UX, right-rail nav). Keep our copy/links/PR ribbon. Do not copy external text.
 
 ## Modes
-- **Phase A (UI-Only / default)**: Edit only
-  - `app/best/forex-brokers-jp/page.tsx`
-  - `app/best/layout.module.css`
-  - `components/{RankingCardNew.tsx, CompareTable.tsx, SectionBand.tsx, TocCard.tsx, PrimaryCta.tsx}`
-  - `styles/globals.css` (design tokens only)
+- **Phase C (UI+Structure Expanded / default)**: Edit freely
+  - `app/best/**/*` (all best section pages and layouts)
+  - `components/**/*` (all components for full structural parity)
+  - `app/globals.css` (design tokens + safe global rules)
 - **Phase B (Infra-Allowed / when explicitly asked)**: You may also touch
   - `package.json` (dev-only tools), `package-lock.json`
   - `.github/workflows/*` (build/test only), `playwright/*`
