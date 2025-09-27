@@ -95,7 +95,6 @@ export default function Page() {
                   <EvaluationRules />
                 </section>
               </SectionBand>
-
               <SectionBand variant="strong" id="how-to-choose">
                 <section className={s.section} data-section>
                   <h2>キャンペーン活用ガイド</h2>
