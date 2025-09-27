@@ -15,16 +15,18 @@ import SectionBand from "@/components/SectionBand";
 import LongForm from "@/components/LongForm";
 import StickyCTA from "@/components/StickyCTA";
 import { breadcrumbList, itemListJSONLD, faqPage } from "@/lib/seo/jsonld";
+import { generateSEOMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 import s from "@/app/best/layout.module.css";
 import longformContent from "@/content_source/reviews/low-spread/longform.json";
 import faqData from "@/content_source/reviews/low-spread/faq.json";
 
-export const metadata = {
+export const metadata = generateSEOMetadata({
   title: "低スプレッドで選ぶ（コスト重視）",
   description:
     "スプレッド/手数料を重視した口座選び。相場急変時の広がりも含めて総コストで比較。",
-};
+  path: "/best/low-spread",
+});
 
 export default function Page() {
   const bc = breadcrumbList([

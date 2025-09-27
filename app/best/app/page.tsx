@@ -15,15 +15,17 @@ import SectionBand from "@/components/SectionBand";
 import LongForm from "@/components/LongForm";
 import StickyCTA from "@/components/StickyCTA";
 import { breadcrumbList, itemListJSONLD, faqPage } from "@/lib/seo/jsonld";
+import { generateSEOMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 import s from "@/app/best/layout.module.css";
 import longformContent from "@/content_source/reviews/app/longform.json";
 import faqData from "@/content_source/reviews/app/faq.json";
 
-export const metadata = {
+export const metadata = generateSEOMetadata({
   title: "アプリの使いやすさで選ぶ",
-  description: "操作性・視認性・反応速度を重視したアプリ体験で選ぶ。",
-};
+  description: "操作性・視認性・反応速度を重視したアプリ体験で選ぶ。スマホ取引の最適解。",
+  path: "/best/app",
+});
 
 export default function Page() {
   const bc = breadcrumbList([

@@ -16,15 +16,17 @@ import SectionBand from "@/components/SectionBand";
 import LongForm from "@/components/LongForm";
 import StickyCTA from "@/components/StickyCTA";
 import { breadcrumbList, itemListJSONLD, faqPage } from "@/lib/seo/jsonld";
+import { generateSEOMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 import s from "@/app/best/layout.module.css";
 import longformContent from "@/content_source/reviews/campaigns/longform.json";
 import faqData from "@/content_source/reviews/campaigns/faq.json";
 
-export const metadata = {
+export const metadata = generateSEOMetadata({
   title: "口座開設キャンペーン一覧",
-  description: "最大額/締切/条件で横断比較。",
-};
+  description: "最大額/締切/条件で横断比較。やるべきコト、遅れをとらない選択記法。",
+  path: "/best/campaigns",
+});
 
 export default function Page() {
   const bc = breadcrumbList([
