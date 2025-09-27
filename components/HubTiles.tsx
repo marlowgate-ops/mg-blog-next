@@ -12,46 +12,67 @@ interface HubTile {
 
 const hubTiles: HubTile[] = [
   {
+    icon: "🏆",
+    title: "総合ランキング",
+    description: "使いやすさ重視の完全評価版",
+    href: "/best/forex-brokers-jp",
+    category: "compare"
+  },
+  {
     icon: "📊",
-    title: "業者レビュー",
-    description: "実際の利用体験と詳細分析",
+    title: "DMM証券レビュー",
+    description: "国内最大手の実際の使用感",
     href: "/reviews/dmm",
     category: "reviews"
   },
   {
-    icon: "⚖️", 
-    title: "詳細比較",
-    description: "スプレッド・手数料の徹底比較",
+    icon: "💰", 
+    title: "低スプレッド比較",
+    description: "取引コストを最小化する選択",
     href: "/best/low-spread",
     category: "compare"
   },
   {
-    icon: "🛠️",
-    title: "取引ツール",
-    description: "MT4/MT5対応業者一覧",
-    href: "/best/tools", 
-    category: "tools"
-  },
-  {
-    icon: "📱",
+    icon: "�",
     title: "アプリ比較",
-    description: "操作性・機能性で選ぶ",
+    description: "モバイル取引の操作性重視",
     href: "/best/app",
     category: "tools"
   },
   {
-    icon: "💰",
-    title: "キャンペーン",
-    description: "口座開設特典・キャッシュバック",
+    icon: "�️",
+    title: "取引ツール",
+    description: "チャート分析・自動売買対応",
+    href: "/best/tools", 
+    category: "tools"
+  },
+  {
+    icon: "🎁",
+    title: "キャンペーン一覧",
+    description: "口座開設特典・最新情報",
     href: "/best/campaigns",
     category: "guides"
   },
   {
+    icon: "⚖️",
+    title: "比較カテゴリ",
+    description: "目的別の業者選択ナビ",
+    href: "/compare",
+    category: "compare"
+  },
+  {
     icon: "📚",
-    title: "選び方ガイド",
-    description: "初心者向け業者選定のコツ",
-    href: "#how-to-choose",
+    title: "利用規約",
+    description: "サイト利用時の注意事項",
+    href: "/disclaimer",
     category: "guides"
+  },
+  {
+    icon: "🔍",
+    title: "検索機能",
+    description: "キーワードでコンテンツ検索",
+    href: "/search",
+    category: "tools"
   }
 ];
 

@@ -27,8 +27,20 @@ export default function BadgeOverflow({
   const remainingCount = badges.length - maxVisible;
   const hasOverflow = remainingCount > 0;
 
+  // Create descriptive aria-label for the badge group
+  const topMetrics = badges.slice(0, Math.min(3, badges.length))
+    .map(badge => badge.label)
+    .join('、');
+  const groupAriaLabel = badges.length > 3 
+    ? `評価項目: ${topMetrics}、他${badges.length - 3}項目`
+    : `評価項目: ${topMetrics}`;
+
   return (
-    <div className={s.badgeOverflow}>
+    <div 
+      className={s.badgeOverflow}
+      role="group"
+      aria-label={groupAriaLabel}
+    >
       {visibleBadges.map((badge) => (
         <Badge
           key={badge.key}

@@ -17,34 +17,46 @@ const recirculationCards: RecirculationCard[] = [
     category: "review"
   },
   {
-    title: "GMOクリック証券レビュー", 
-    description: "低コスト重視ユーザーの実体験",
-    href: "/reviews/gmo",
-    category: "review"
-  },
-  {
-    title: "OANDA vs XM比較",
-    description: "海外業者2社の詳細比較分析",
-    href: "/compare/oanda-vs-xm",
+    title: "総合ランキング",
+    description: "使いやすさ重視の完全評価版",
+    href: "/best/forex-brokers-jp",
     category: "compare"
   },
   {
-    title: "口座開設完全ガイド",
-    description: "必要書類から取引開始まで",
-    href: "/how-to/open/guide",
-    category: "guide"
+    title: "低スプレッド業者比較",
+    description: "コスト重視で選ぶ最適解",
+    href: "/best/low-spread",
+    category: "compare"
   },
   {
-    title: "ポジションサイズ計算ツール",
-    description: "リスク管理に必須の計算機",
-    href: "/tools/position-size",
+    title: "アプリ重視比較",
+    description: "モバイル取引の操作性で選ぶ",
+    href: "/best/app",
+    category: "compare"
+  },
+  {
+    title: "取引ツール比較",
+    description: "チャート分析・自動売買対応",
+    href: "/best/tools", 
     category: "tool"
   },
   {
-    title: "スプレッド比較表",
-    description: "主要通貨ペアの最新データ",
-    href: "/best/low-spread",
-    category: "compare"
+    title: "キャンペーン一覧",
+    description: "口座開設特典の最新情報",
+    href: "/best/campaigns",
+    category: "guide"
+  },
+  {
+    title: "比較カテゴリ一覧",
+    description: "目的別の業者選択ナビ",
+    href: "/compare",
+    category: "guide"
+  },
+  {
+    title: "利用規約・免責事項",
+    description: "サイト利用時の注意事項",
+    href: "/disclaimer",
+    category: "guide"
   }
 ];
 
