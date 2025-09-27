@@ -45,6 +45,8 @@ import CategoryTilesLarge from "@/components/CategoryTilesLarge";
 import LocalNavRail from "@/components/LocalNavRail";
 import { generateSEOMetadata } from "@/lib/seo/metadata";
 import s from "@/app/best/layout.module.css";
+import longformContent from "@/content_source/reviews/forex-brokers-jp/longform.json";
+import faqData from "@/content_source/reviews/forex-brokers-jp/faq.json";
 
 export const metadata = generateSEOMetadata({
   title: "国内向けおすすめFX・CFD業者ランキング",
@@ -336,6 +338,49 @@ export default function Page() {
 
               <RecirculationBand />
 
+              <SectionBand variant="accent" id="comprehensive-guide">
+                <section className={s.section} data-section>
+                  <h2>FX業者選びの完全ガイド</h2>
+                  <LongForm sections={[
+                    {
+                      id: "guide-intro",
+                      title: "業者選択の基本方針",
+                      prose: (
+                        <p>{longformContent.intro}</p>
+                      )
+                    },
+                    {
+                      id: "evaluation-criteria",
+                      title: "評価基準の詳細解説",
+                      prose: (
+                        <p>{longformContent.criteria}</p>
+                      )
+                    },
+                    {
+                      id: "use-case-strategies",
+                      title: "用途別戦略の考え方",
+                      prose: (
+                        <p>{longformContent["use-cases"]}</p>
+                      )
+                    },
+                    {
+                      id: "common-mistakes",
+                      title: "よくある誤解と対策",
+                      prose: (
+                        <p>{longformContent.mistakes}</p>
+                      )
+                    },
+                    {
+                      id: "action-guide",
+                      title: "次のステップ",
+                      prose: (
+                        <p>{longformContent.cta}</p>
+                      )
+                    }
+                  ]} />
+                </section>
+              </SectionBand>
+
               <SectionBand variant="strong" id="deep-dive">
                 <section className={s.section} data-section>
                   <h2>徹底解説</h2>
@@ -509,35 +554,7 @@ export default function Page() {
 
               <CampaignNotice />
 
-              <section
-                className={`${s.section} ${s.faq}`}
-                id="faq"
-                data-section
-              >
-                <h2 className={s.sectionTitle}>
-                  <span className={s.bar} />
-                  よくある質問
-                </h2>
-                <details>
-                  <summary>初心者はどれから？</summary>
-                  <p>
-                    まずは国内サービス（例:
-                    DMM.com証券）で入出金の動作を確認。小額から始め、約定やアプリの使い勝手を確かめるのがおすすめです。
-                  </p>
-                </details>
-                <details>
-                  <summary>ランキングの根拠は？</summary>
-                  <p>
-                    手数料・約定・取扱商品の客観指標をベースに編集部で総合判断。広告掲載の有無とは独立して評価します。
-                  </p>
-                </details>
-                <details>
-                  <summary>海外業者も使える？</summary>
-                  <p>
-                    可能ですが、規制・入出金・税務の理解が前提。国内と併用しつつ、自身の運用ルールに合うか慎重に判断してください。
-                  </p>
-                </details>
-              </section>
+              <FAQ items={faqData.map(item => ({ q: item.question, a: item.answer }))} />
 
               <DisclaimerBox />
 
