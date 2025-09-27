@@ -25,6 +25,7 @@ import {
   itemListJSONLD,
   faqPage,
   organization,
+  brokerRankingSchema,
 } from "@/lib/seo/jsonld";
 import EvaluationCriteria from "@/components/EvaluationCriteria";
 import CostsTable from "@/components/CostsTable";
@@ -187,9 +188,14 @@ export default function Page() {
       a: "口座開設〜入金・取引でポイント/現金の還元が受けられる場合があります。条件に該当するなら最初の1社で取りこぼさないのがコスパ良。",
     },
   ];
-  const itemsLd = itemListJSONLD(
-    "国内向けおすすめFX・CFD業者ランキング",
-    brokers.map((b) => ({ name: b.name, url: b.site, ratingValue: b.score }))
+  const itemsLd = brokerRankingSchema(
+    brokers.map((b, index) => ({ 
+      name: b.name, 
+      position: index + 1,
+      score: b.score,
+      url: b.site 
+    })),
+    "国内向けおすすめFX・CFD業者ランキング"
   );
   const bc = breadcrumbList([
     { name: "トップ", item: "/" },
