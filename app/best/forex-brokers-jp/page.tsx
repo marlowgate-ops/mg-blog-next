@@ -35,13 +35,14 @@ import StickyCTA from "@/components/StickyCTA";
 import CategoryTiles from "@/components/CategoryTiles";
 import CategoryTilesLarge from "@/components/CategoryTilesLarge";
 import LocalNavRail from "@/components/LocalNavRail";
+import { generateSEOMetadata } from "@/lib/seo/metadata";
 import s from "@/app/best/layout.module.css";
 
-export const metadata = {
+export const metadata = generateSEOMetadata({
   title: "国内向けおすすめFX・CFD業者ランキング",
-  description:
-    "使いやすさ/実用性を重視。スプレッド・手数料・約定・アプリ・サポートを総合評価。",
-};
+  description: "使いやすさ/実用性を重視。スプレッド・手数料・約定・アプリ・サポートを総合評価。",
+  path: "/best/forex-brokers-jp",
+});
 
 // Evaluation data is now loaded from JSON
 
