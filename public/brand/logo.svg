@@ -1,0 +1,10 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="28" height="28" rx="6" fill="#f1f5f9"/>
+  <rect x="2" y="2" width="24" height="24" rx="4" fill="#475569"/>
+  <g transform="translate(6, 6)">
+    <!-- House "M" shape -->
+    <path d="M8 3L4 7L4 13L6 13L6 8L8 6L10 8L10 13L12 13L12 7L8 3Z" fill="white"/>
+    <!-- Aqua "G" accent -->
+    <circle cx="12" cy="4" r="1.5" fill="#06b6d4"/>
+  </g>
+</svg>
