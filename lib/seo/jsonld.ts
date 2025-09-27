@@ -54,3 +54,51 @@ export function organization(opts?: { name?: string; url?: string; logo?: string
     sameAs: opts?.sameAs ?? [],
   };
 }
+
+// Enhanced ranking schema for broker lists
+export function brokerRankingSchema(
+  brokers: Array<{ 
+    name: string; 
+    position: number; 
+    score?: number;
+    url?: string;
+  }>,
+  listName: string = "FX業者ランキング"
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": listName,
+    "description": "総合評価による国内FX業者ランキング",
+    "numberOfItems": brokers.length,
+    "itemListElement": brokers.map(broker => ({
+      "@type": "ListItem",
+      "position": broker.position,
+      "name": broker.name,
+      "url": broker.url || undefined,
+      "item": {
+        "@type": "FinancialProduct",
+        "name": broker.name,
+        "aggregateRating": broker.score ? {
+          "@type": "AggregateRating",
+          "ratingValue": broker.score,
+          "bestRating": 5,
+          "worstRating": 1,
+          "ratingCount": 1
+        } : undefined
+      }
+    }))
+  };
+}
+
+// Validation helper
+export function validateJSONLD(schema: any): boolean {
+  try {
+    if (typeof schema !== 'object' || schema === null) return false;
+    if (!schema['@type']) return false;
+    JSON.stringify(schema); // Test serialization
+    return true;
+  } catch {
+    return false;
+  }
+}

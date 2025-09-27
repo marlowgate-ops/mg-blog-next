@@ -9,9 +9,47 @@ export type BrokerRow = {
   spread?: number; // 0..5
 };
 
-// Load and validate criteria from JSON
-function loadCriteria(): EvaluationCriteria {
-  const criteria = criteriaData as EvaluationCriteria;
+// Deep merge helper for partial overrides
+function deepMerge<T extends Record<string, any>>(base: T, override: Partial<T>): T {
+  const result = { ...base };
+  
+  for (const key in override) {
+    const overrideValue = override[key];
+    if (overrideValue !== undefined) {
+      if (
+        typeof overrideValue === 'object' &&
+        overrideValue !== null &&
+        !Array.isArray(overrideValue) &&
+        typeof base[key] === 'object' &&
+        base[key] !== null &&
+        !Array.isArray(base[key])
+      ) {
+        (result as any)[key] = deepMerge(base[key], overrideValue);
+      } else {
+        (result as any)[key] = overrideValue;
+      }
+    }
+  }
+  
+  return result;
+}
+
+// Load criteria with optional per-page overrides
+function loadCriteria(pageSlug?: string): EvaluationCriteria {
+  let criteria = criteriaData as EvaluationCriteria;
+  
+  // Apply page-specific overrides if available
+  if (pageSlug) {
+    try {
+      const overrideData = require(`@/data/eval/overrides/${pageSlug}.json`);
+      criteria = deepMerge(criteria, overrideData);
+    } catch (error) {
+      // Override file doesn't exist or has errors, use base criteria
+      if (process.env.NODE_ENV === "development") {
+        console.log(`No overrides found for page: ${pageSlug}`);
+      }
+    }
+  }
   
   // Validate weights sum approximately to 1.0
   const weightSum = Object.values(criteria.weights).reduce((sum, weight) => sum + weight, 0);
@@ -37,8 +75,9 @@ const FALLBACK_WEIGHTS: EvaluationWeights = {
   spread: 0.20,
 };
 
-export function scoreBroker(row: BrokerRow): number {
-  const weights = WEIGHTS || FALLBACK_WEIGHTS;
+export function scoreBroker(row: BrokerRow, pageSlug?: string): number {
+  const criteria = pageSlug ? loadCriteria(pageSlug) : CRITERIA;
+  const weights = criteria.weights || FALLBACK_WEIGHTS;
   
   const cost = row.cost ?? 0;
   const reliability = row.reliability ?? 0;
@@ -65,11 +104,12 @@ export const EVALUATION_CRITERIA = [
 export type CriterionKey = (typeof EVALUATION_CRITERIA)[number]["key"];
 
 /** Get badges for a broker based on score */
-export function getBrokerBadges(score: number): string[] {
+export function getBrokerBadges(score: number, pageSlug?: string): string[] {
+  const criteria = pageSlug ? loadCriteria(pageSlug) : CRITERIA;
   const badges: string[] = [];
   
-  if (CRITERIA.badges) {
-    for (const [badgeKey, badge] of Object.entries(CRITERIA.badges)) {
+  if (criteria.badges) {
+    for (const [badgeKey, badge] of Object.entries(criteria.badges)) {
       if (score >= badge.minScore) {
         badges.push(badgeKey);
       }
@@ -80,12 +120,13 @@ export function getBrokerBadges(score: number): string[] {
 }
 
 /** Get evaluation criteria metadata */
-export function getEvaluationMeta() {
+export function getEvaluationMeta(pageSlug?: string) {
+  const criteria = pageSlug ? loadCriteria(pageSlug) : CRITERIA;
   return {
-    version: CRITERIA.version,
-    lastUpdated: CRITERIA.lastUpdated,
-    weights: CRITERIA.weights,
-    categories: CRITERIA.categories,
-    badges: CRITERIA.badges,
+    version: criteria.version,
+    lastUpdated: criteria.lastUpdated,
+    weights: criteria.weights,
+    categories: criteria.categories,
+    badges: criteria.badges,
   };
 }

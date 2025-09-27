@@ -5,6 +5,7 @@ import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
 import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
+import ScoringDisclosure from "@/components/ScoringDisclosure";
 import BottomRecirculation from "@/components/BottomRecirculation";
 import BottomGridNav from "@/components/BottomGridNav";
 import PrimaryCta from "@/components/PrimaryCta";
@@ -24,6 +25,7 @@ import {
   itemListJSONLD,
   faqPage,
   organization,
+  brokerRankingSchema,
 } from "@/lib/seo/jsonld";
 import EvaluationCriteria from "@/components/EvaluationCriteria";
 import CostsTable from "@/components/CostsTable";
@@ -34,13 +36,14 @@ import StickyCTA from "@/components/StickyCTA";
 import CategoryTiles from "@/components/CategoryTiles";
 import CategoryTilesLarge from "@/components/CategoryTilesLarge";
 import LocalNavRail from "@/components/LocalNavRail";
+import { generateSEOMetadata } from "@/lib/seo/metadata";
 import s from "@/app/best/layout.module.css";
 
-export const metadata = {
+export const metadata = generateSEOMetadata({
   title: "国内向けおすすめFX・CFD業者ランキング",
-  description:
-    "使いやすさ/実用性を重視。スプレッド・手数料・約定・アプリ・サポートを総合評価。",
-};
+  description: "使いやすさ/実用性を重視。スプレッド・手数料・約定・アプリ・サポートを総合評価。",
+  path: "/best/forex-brokers-jp",
+});
 
 // Evaluation data is now loaded from JSON
 
@@ -185,9 +188,14 @@ export default function Page() {
       a: "口座開設〜入金・取引でポイント/現金の還元が受けられる場合があります。条件に該当するなら最初の1社で取りこぼさないのがコスパ良。",
     },
   ];
-  const itemsLd = itemListJSONLD(
-    "国内向けおすすめFX・CFD業者ランキング",
-    brokers.map((b) => ({ name: b.name, url: b.site, ratingValue: b.score }))
+  const itemsLd = brokerRankingSchema(
+    brokers.map((b, index) => ({ 
+      name: b.name, 
+      position: index + 1,
+      score: b.score,
+      url: b.site 
+    })),
+    "国内向けおすすめFX・CFD業者ランキング"
   );
   const bc = breadcrumbList([
     { name: "トップ", item: "/" },
@@ -247,6 +255,7 @@ export default function Page() {
             <CategoryTiles />
             <CategoryTilesLarge />
             <TocCard />
+            <ScoringDisclosure pageSlug="forex-brokers-jp" />
             <p>
               初心者〜中級まで“使いやすさ”と“実用性”を重視。国内サービス中心に、スプレッド/手数料、約定、入出金、サポートを総合評価。
             </p>
@@ -391,16 +400,16 @@ export default function Page() {
                             各業者の強みと注意点を、実際の取引シーンに合わせて整理しました。
                           </p>
                           <div>
-                            <h4>DMM.com証券</h4>
+                            <h3>DMM.com証券</h3>
                             <p>約定と配信の安定性、直感的なアプリ、高速な入出金が強み。日中の一部時間帯でスプレッド拡大があることは把握しておきましょう。</p>
                             
-                            <h4>GMOクリック証券</h4>
+                            <h3>GMOクリック証券</h3>
                             <p>板とワンクリック操作に優れ、PC向け高機能ツールを提供。一部通貨で広がりがあることに注意。</p>
                             
-                            <h4>FXTF</h4>
+                            <h3>FXTF</h3>
                             <p>MT4対応で裁量取引の拡張性に優れる。時間帯によるスプレッド拡大を考慮した運用が必要。</p>
                             
-                            <h4>松井証券</h4>
+                            <h3>松井証券</h3>
                             <p>証券基盤の堅牢性が魅力。UIはシンプル志向で、複雑な機能よりも安定性を重視する利用者向け。</p>
                           </div>
                         </>

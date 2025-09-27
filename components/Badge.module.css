@@ -1,0 +1,47 @@
+/* Badge Component Styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: help;
+  transition: all 0.15s ease;
+}
+
+.badge:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-subtle);
+}
+
+.badge:focus {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+.badge:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+/* Badge variants using design tokens */
+.primary {
+  background: var(--primary-100);
+  color: var(--primary-700);
+  border: 1px solid var(--primary-300);
+}
+
+.secondary {
+  background: var(--surface-weak);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.accent {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}

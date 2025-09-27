@@ -1,6 +1,11 @@
 import Link from "next/link";
+import { generateSEOMetadata } from "@/lib/seo/metadata";
 
-export const metadata = { title: "比較：FX・CFD" };
+export const metadata = generateSEOMetadata({
+  title: "比較：FX・CFD業者ランキング",
+  description: "国内FX・CFD業者の総合比較。スプレッド、手数料、アプリ、ツールで選ぶランキング一覧。",
+  path: "/best",
+});
 
 export default function Page() {
   return (
