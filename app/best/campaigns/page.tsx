@@ -88,8 +88,6 @@ export default function Page() {
                 </section>
               </SectionBand>
 
-              <RecirculationBand />
-
               <SectionBand variant="weak" id="eval">
                 <section className={s.section} data-section>
                   <EvaluationRules />
@@ -139,7 +137,13 @@ export default function Page() {
                 </section>
               </SectionBand>
 
-              <FAQ items={faqData.map(item => ({ q: item.question, a: item.answer }))} />
+              <SectionBand variant="subtle" id="faq">
+                <section className={s.section} data-section>
+                  <FAQ items={faqData.map(item => ({ q: item.question, a: item.answer }))} />
+                </section>
+              </SectionBand>
+
+              <RecirculationBand />
 
               <DisclaimerBox />
 
