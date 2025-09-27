@@ -1,0 +1,13 @@
+{
+  "name": "mg-blog-next-scripts",
+  "version": "1.0.0",
+  "description": "Validation and testing scripts for mg-blog-next",
+  "scripts": {
+    "validate:criteria": "node validate-criteria.js",
+    "test:smoke": "playwright test smoke-test.js --project=chromium",
+    "test:smoke:ui": "playwright test smoke-test.js --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  }
+}

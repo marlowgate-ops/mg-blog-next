@@ -19,6 +19,8 @@ export default function Badge({
       className={`${s.badge} ${s[variant]}`}
       aria-label={`${label}: ${description}`}
       title={description}
+      tabIndex={0}
+      role="button"
     >
       {label}
     </span>
