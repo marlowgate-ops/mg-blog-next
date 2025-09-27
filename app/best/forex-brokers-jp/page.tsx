@@ -22,6 +22,7 @@ import LongForm from "@/components/LongForm";
 import HubTiles from "@/components/HubTiles";
 import RecirculationBand from "@/components/RecirculationBand";
 import EvaluationRules from "@/components/EvaluationRules";
+import EditorialBlock from "@/components/EditorialBlock";
 import FAQ from "@/components/Faq";
 import CampaignNotice from "@/components/CampaignNotice";
 import DisclaimerBox from "@/components/DisclaimerBox";
@@ -335,6 +336,8 @@ export default function Page() {
                   <EvaluationRules />
                 </section>
               </SectionBand>
+
+              <EditorialBlock />
 
               <RecirculationBand />
 
