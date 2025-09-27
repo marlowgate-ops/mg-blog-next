@@ -1,0 +1,122 @@
+/* Bottom Recirculation Component */
+.recirculation {
+  margin-top: var(--space-3xl);
+  margin-bottom: var(--space-xl);
+  padding: var(--space-xl) 0;
+  border-top: var(--hairline);
+  background: var(--band-subtle);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 var(--space-md);
+  text-align: center;
+}
+
+.nav {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+/* Compact variant: horizontal list */
+.compact .item {
+  flex: 0 0 auto;
+}
+
+.compact .link {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: all 0.15s ease;
+  line-height: 1.3;
+}
+
+.compact .link:hover {
+  background: var(--surface-accent);
+  border-color: var(--border-accent);
+  color: var(--text);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-subtle);
+}
+
+.compact .description {
+  display: none;
+}
+
+/* Cards variant: expanded with descriptions */
+.cards {
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  gap: var(--space-xs);
+}
+
+.cards .item {
+  flex: 1;
+}
+
+.cards .link {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  gap: var(--space-xs);
+}
+
+.cards .link:hover {
+  background: var(--surface-accent);
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.cards .label {
+  font-weight: 500;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.cards .description {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .recirculation {
+    padding: var(--space-lg) var(--space-md);
+    margin-top: var(--space-2xl);
+  }
+  
+  .compact .list {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .compact .link {
+    min-width: 200px;
+    text-align: center;
+  }
+}

@@ -19,10 +19,13 @@ jobs:
           node-version: 20
           cache: 'npm'
           
-      - name: Install & Build
+      - name: Install & Validate
         run: |
           if [ -f package-lock.json ]; then npm ci || npm install; else npm install; fi
-          npm run -s build
+          npm run validate
+          
+      - name: Build
+        run: npm run -s build
         
       - name: Vercel pull (prod)
         run: npx -y vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
