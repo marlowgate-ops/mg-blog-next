@@ -6,6 +6,7 @@ import PrBadge from "@/components/PrBadge";
 import IconNav from "@/components/IconNav";
 import TocCard from "@/components/TocCard";
 import BottomRecirculation from "@/components/BottomRecirculation";
+import BottomGridNav from "@/components/BottomGridNav";
 import PrimaryCta from "@/components/PrimaryCta";
 import SideCards from "@/components/SideCards";
 import RankingCardNew from "@/components/RankingCardNew";
@@ -605,6 +606,9 @@ export default function Page() {
               <ReviewContent id="fxtf" />
             </div>
           </section>
+          
+          {/* Bottom grid navigation for related content */}
+          <BottomGridNav />
           
           {/* Bottom navigation for easy access to all sections */}
           <BottomRecirculation
