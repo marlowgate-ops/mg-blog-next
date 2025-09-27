@@ -229,6 +229,7 @@ thead th.stickyHeader {
 .rankingCard_logo {
   width: 56px;
   height: 56px;
+  aspect-ratio: 1;
   background: var(--surface-weak);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -241,10 +242,11 @@ thead th.stickyHeader {
 }
 
 .rankingCard_logo img {
-  width: 100%;
-  height: 100%;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
   object-position: center;
+  display: block;
 }
 
 .rankingCard_nameWrapper {

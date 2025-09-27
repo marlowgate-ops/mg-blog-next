@@ -16,29 +16,36 @@ export default function LocalNavRail() {
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        rootMargin: "-80px 0px -80% 0px",
-        threshold: 0.1,
-      }
-    );
+    // Defer IntersectionObserver initialization to avoid blocking initial render
+    const timer = setTimeout(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveSection(entry.target.id);
+            }
+          });
+        },
+        {
+          rootMargin: "-80px 0px -80% 0px",
+          threshold: 0.1,
+        }
+      );
 
-    // Observe all sections
-    navItems.forEach(({ href }) => {
-      const element = document.querySelector(href);
-      if (element) {
-        observer.observe(element);
-      }
-    });
+      // Observe all sections
+      navItems.forEach(({ href }) => {
+        const element = document.querySelector(href);
+        if (element) {
+          observer.observe(element);
+        }
+      });
 
-    return () => observer.disconnect();
+      return () => observer.disconnect();
+    }, 100); // Small delay to prioritize LCP
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
