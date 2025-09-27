@@ -2,6 +2,8 @@
 
 import React, { ReactNode } from "react";
 import PrimaryCta from "./PrimaryCta";
+import Badge from "./Badge";
+import { getBrokerBadges, getEvaluationMeta } from "@/lib/evaluation";
 import s from "@/app/best/layout.module.css";
 
 interface RankingCardProps {
@@ -103,6 +105,25 @@ export default function RankingCard({
 
       <div className={s.rankingCard_right}>
         <PrimaryCta href={ctaHref} />
+        {score && (
+          <div className={s.badgeList}>
+            {getBrokerBadges(score).map((badgeKey) => {
+              const meta = getEvaluationMeta();
+              const badgeInfo = meta.badges?.[badgeKey];
+              if (!badgeInfo || !badgeInfo.label || !badgeInfo.description) return null;
+              
+              return (
+                <Badge
+                  key={badgeKey}
+                  badge={badgeKey}
+                  label={badgeInfo.label}
+                  description={badgeInfo.description}
+                  variant="primary"
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </article>
   );

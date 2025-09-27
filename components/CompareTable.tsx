@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import PrimaryCta from "./PrimaryCta";
+import Badge from "./Badge";
+import { getBrokerBadges, getEvaluationMeta } from "@/lib/evaluation";
 import s from "@/app/best/layout.module.css";
 
 type Row = {
@@ -19,6 +21,7 @@ type Row = {
   state?: "active" | "preparing";
   ctaHref?: string;
   tags?: string[];
+  score?: number; // Overall evaluation score for badges
 };
 
 type SortConfig = {
@@ -64,7 +67,7 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
 
   const allKeys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))));
   const core = ["brand"];
-  const EXCLUDED_KEYS = ["state", "ctaHref", "tags"];
+  const EXCLUDED_KEYS = ["state", "ctaHref", "tags", "score"];
   const optional = allKeys.filter(
     (k) => !core.includes(k) && !EXCLUDED_KEYS.includes(k)
   );
@@ -200,7 +203,28 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
               className={r.state === "preparing" ? s.isPreparing : ""}
             >
               <td className={s.stickyColStart}>
-                <span className={s.brandTag}>{r.brand}</span>
+                <div className={s.brandCell}>
+                  <span className={s.brandTag}>{r.brand}</span>
+                  {r.score && (
+                    <div className={s.tableBadges}>
+                      {getBrokerBadges(r.score).map((badgeKey) => {
+                        const meta = getEvaluationMeta();
+                        const badgeInfo = meta.badges?.[badgeKey];
+                        if (!badgeInfo || !badgeInfo.label || !badgeInfo.description) return null;
+                        
+                        return (
+                          <Badge
+                            key={badgeKey}
+                            badge={badgeKey}
+                            label={badgeInfo.label}
+                            description={badgeInfo.description}
+                            variant="secondary"
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               </td>
               {optional.map((key) => (
                 <td key={key}>{(r as any)[key] ?? "-"}</td>
