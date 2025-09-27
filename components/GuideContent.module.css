@@ -1,0 +1,163 @@
+/* GuideContent Component Styles */
+.guideSection {
+  margin: var(--space-3xl) 0;
+  padding: var(--space-3xl) 0;
+  background: var(--surface);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 var(--space-2xl);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.titleIcon {
+  font-size: 26px;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.introduction {
+  margin-bottom: var(--space-2xl);
+  text-align: center;
+  padding: var(--space-xl);
+  background: var(--band-accent);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.leadText {
+  margin: 0;
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+.section {
+  margin-bottom: var(--space-2xl);
+  padding: var(--space-xl);
+  background: var(--surface-weak);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.subsectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--primary-600);
+}
+
+.bodyText {
+  margin: 0 0 var(--space-md);
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.bodyText:last-child {
+  margin-bottom: 0;
+}
+
+.callToAction {
+  padding: var(--space-2xl);
+  background: linear-gradient(135deg, var(--primary-100), var(--band-accent));
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--primary-300);
+  text-align: center;
+  margin-top: var(--space-2xl);
+}
+
+.ctaTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-700);
+  margin: 0 0 var(--space-md);
+}
+
+.ctaText {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .guideSection {
+    margin: var(--space-2xl) 0;
+    padding: var(--space-2xl) 0;
+  }
+  
+  .sectionTitle {
+    font-size: 22px;
+    margin-bottom: var(--space-xl);
+  }
+  
+  .titleIcon {
+    font-size: 24px;
+  }
+  
+  .introduction,
+  .section {
+    padding: var(--space-lg);
+  }
+  
+  .leadText {
+    font-size: 15px;
+  }
+  
+  .subsectionTitle {
+    font-size: 17px;
+  }
+  
+  .bodyText {
+    font-size: 14px;
+  }
+  
+  .callToAction {
+    padding: var(--space-xl);
+  }
+  
+  .ctaTitle {
+    font-size: 18px;
+  }
+  
+  .ctaText {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionTitle {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  
+  .introduction,
+  .section,
+  .callToAction {
+    padding: var(--space-md);
+  }
+}

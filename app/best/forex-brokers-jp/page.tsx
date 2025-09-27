@@ -19,6 +19,13 @@ import HeaderMeta from "@/components/HeaderMeta";
 import SectionBand from "@/components/SectionBand";
 import BandSection from "@/components/BandSection";
 import LongForm from "@/components/LongForm";
+import HubTiles from "@/components/HubTiles";
+import RecirculationBand from "@/components/RecirculationBand";
+import EvaluationRules from "@/components/EvaluationRules";
+import FAQ from "@/components/Faq";
+import CampaignNotice from "@/components/CampaignNotice";
+import DisclaimerBox from "@/components/DisclaimerBox";
+import GuideContent from "@/components/GuideContent";
 import { brokers } from "@/data/brokers";
 import {
   breadcrumbList,
@@ -282,6 +289,8 @@ export default function Page() {
 
           <StickyCTA href="#table" deadline="2025-12-31" />
 
+          <HubTiles />
+
           <div className={s.grid}>
             <main>
               <section
@@ -321,9 +330,11 @@ export default function Page() {
 
               <SectionBand variant="weak" id="eval">
                 <section className={s.section} data-section>
-                  <EvaluationCriteria />
+                  <EvaluationRules />
                 </section>
               </SectionBand>
+
+              <RecirculationBand />
 
               <SectionBand variant="strong" id="deep-dive">
                 <section className={s.section} data-section>
@@ -496,6 +507,8 @@ export default function Page() {
                 </p>
               </section>
 
+              <CampaignNotice />
+
               <section
                 className={`${s.section} ${s.faq}`}
                 id="faq"
@@ -525,6 +538,8 @@ export default function Page() {
                   </p>
                 </details>
               </section>
+
+              <DisclaimerBox />
 
               <section className={s.section} id="campaign" data-section>
                 <h2>口座開設キャンペーン</h2>
@@ -597,6 +612,8 @@ export default function Page() {
               </div>
             </aside>
           </div>
+
+          <GuideContent />
 
           <section className={s.section} id="detail-reviews" data-section>
             <h2>詳細レビュー</h2>
