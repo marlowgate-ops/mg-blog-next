@@ -3,6 +3,7 @@
 import React, { ReactNode } from "react";
 import PrimaryCta from "./PrimaryCta";
 import Badge from "./Badge";
+import MicroCopyMessage from "./MicroCopyMessage";
 import { getBrokerBadges, getEvaluationMeta } from "@/lib/evaluation";
 import s from "@/app/best/layout.module.css";
 
@@ -105,6 +106,7 @@ export default function RankingCard({
 
       <div className={s.rankingCard_right}>
         <PrimaryCta href={ctaHref} />
+        <MicroCopyMessage category="social_proof" subtle />
         {score && (
           <div className={s.badgeList}>
             {getBrokerBadges(score).map((badgeKey) => {

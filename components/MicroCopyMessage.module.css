@@ -1,0 +1,34 @@
+.microCopyMessage {
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--text-muted);
+  padding: var(--space-xs) 0;
+  border-left: 2px solid var(--border-accent);
+  padding-left: var(--space-sm);
+  margin: var(--space-xs) 0;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-sm);
+}
+
+.microCopyMessage.subtle {
+  background: transparent;
+  border-left: 1px solid var(--border);
+  padding: var(--space-xs);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.messageText {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .microCopyMessage {
+    font-size: var(--text-xs);
+    padding: var(--space-xs);
+  }
+  
+  .microCopyMessage.subtle {
+    display: none; /* Hide on mobile to avoid clutter */
+  }
+}
