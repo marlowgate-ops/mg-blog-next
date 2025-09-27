@@ -11,6 +11,7 @@ import HubTiles from "@/components/HubTiles";
 import RecirculationBand from "@/components/RecirculationBand";
 import EvaluationRules from "@/components/EvaluationRules";
 import EditorialBlock from "@/components/EditorialBlock";
+import DetailedReviewEntry from "@/components/DetailedReviewEntry";
 import FAQ from "@/components/Faq";
 import DisclaimerBox from "@/components/DisclaimerBox";
 import SectionBand from "@/components/SectionBand";

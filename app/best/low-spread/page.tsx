@@ -10,6 +10,7 @@ import HubTiles from "@/components/HubTiles";
 import RecirculationBand from "@/components/RecirculationBand";
 import EvaluationRules from "@/components/EvaluationRules";
 import EditorialBlock from "@/components/EditorialBlock";
+import DetailedReviewEntry from "@/components/DetailedReviewEntry";
 import FAQ from "@/components/Faq";
 import DisclaimerBox from "@/components/DisclaimerBox";
 import SectionBand from "@/components/SectionBand";
@@ -89,6 +90,8 @@ export default function Page() {
                   <p>主要通貨ペアでのスプレッド比較と総コスト評価</p>
                 </section>
               </SectionBand>
+
+              <DetailedReviewEntry />
 
               <SectionBand variant="weak" id="eval">
                 <section className={s.section} data-section>

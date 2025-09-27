@@ -23,6 +23,7 @@ import HubTiles from "@/components/HubTiles";
 import RecirculationBand from "@/components/RecirculationBand";
 import EvaluationRules from "@/components/EvaluationRules";
 import EditorialBlock from "@/components/EditorialBlock";
+import DetailedReviewEntry from "@/components/DetailedReviewEntry";
 import FAQ from "@/components/Faq";
 import CampaignNotice from "@/components/CampaignNotice";
 import DisclaimerBox from "@/components/DisclaimerBox";
@@ -330,6 +331,8 @@ export default function Page() {
                   <CompareTable rows={rows} />
                 </section>
               </SectionBand>
+
+              <DetailedReviewEntry />
 
               <SectionBand variant="weak" id="eval">
                 <section className={s.section} data-section>
