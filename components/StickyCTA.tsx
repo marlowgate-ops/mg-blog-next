@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import PrimaryCta from "./PrimaryCta";
+import MicroCopyMessage from "./MicroCopyMessage";
 
 interface StickyCTAProps {
   href?: string;
@@ -51,11 +52,44 @@ export default function StickyCTA({
   if (!isVisible) return null;
 
   return (
-    <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000 }}>
-      <div style={{ background: "rgba(255,255,255,0.95)", padding: "12px" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "center" }}>
-          <PrimaryCta href={href} company={company} variant="compact" />
+    <div 
+      style={{ 
+        position: "fixed", 
+        top: 0, 
+        left: 0, 
+        right: 0, 
+        zIndex: 1000,
+        background: "rgba(255,255,255,0.95)",
+        backdropFilter: "blur(8px)",
+        borderBottom: "1px solid var(--border)",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.08)"
+      }}
+    >
+      <div style={{ 
+        maxWidth: "1100px", 
+        margin: "0 auto", 
+        padding: "var(--space-sm) var(--space-md)",
+        display: "flex", 
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "var(--space-sm)"
+      }}>
+        <div style={{ flex: 1, maxWidth: "240px" }}>
+          <MicroCopyMessage category="commitment" subtle />
         </div>
+        <div>
+          <PrimaryCta href={href} label={campaignText} />
+        </div>
+        {showDeadline && (
+          <div style={{ 
+            fontSize: "var(--text-xs)", 
+            color: "var(--text-muted)",
+            minWidth: "80px",
+            textAlign: "right"
+          }}>
+            残り{daysRemaining}日
+          </div>
+        )}
       </div>
     </div>
   );

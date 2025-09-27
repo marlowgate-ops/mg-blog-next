@@ -15,15 +15,17 @@ import SectionBand from "@/components/SectionBand";
 import LongForm from "@/components/LongForm";
 import StickyCTA from "@/components/StickyCTA";
 import { breadcrumbList, itemListJSONLD, faqPage } from "@/lib/seo/jsonld";
+import { generateSEOMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 import s from "@/app/best/layout.module.css";
 import longformContent from "@/content_source/reviews/tools/longform.json";
 import faqData from "@/content_source/reviews/tools/faq.json";
 
-export const metadata = {
+export const metadata = generateSEOMetadata({
   title: "取引ツール・機能で選ぶ",
-  description: "PCツールの拡張性やAPI対応など、機能面で選ぶ。",
-};
+  description: "PCツールの拡張性やAPI対応など、機能面で選ぶ。MT4/MT5対応と高度なチャート分析。",
+  path: "/best/tools",
+});
 
 export default function Page() {
   const bc = breadcrumbList([
@@ -86,8 +88,6 @@ export default function Page() {
                 </section>
               </SectionBand>
 
-              <RecirculationBand />
-
               <SectionBand variant="weak" id="eval">
                 <section className={s.section} data-section>
                   <EvaluationRules />
@@ -137,7 +137,13 @@ export default function Page() {
                 </section>
               </SectionBand>
 
-              <FAQ items={faqData.map(item => ({ q: item.question, a: item.answer }))} />
+              <SectionBand variant="subtle" id="faq">
+                <section className={s.section} data-section>
+                  <FAQ items={faqData.map(item => ({ q: item.question, a: item.answer }))} />
+                </section>
+              </SectionBand>
+
+              <RecirculationBand />
 
               <DisclaimerBox />
 

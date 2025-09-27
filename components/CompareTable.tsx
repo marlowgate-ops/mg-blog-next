@@ -3,6 +3,7 @@ import React, { useState, useMemo } from "react";
 import PrimaryCta from "./PrimaryCta";
 import Badge from "./Badge";
 import BadgeOverflow from "./BadgeOverflow";
+import MicroCopyMessage from "./MicroCopyMessage";
 import { getBrokerBadges, getEvaluationMeta } from "@/lib/evaluation";
 import s from "@/app/best/layout.module.css";
 
@@ -157,6 +158,9 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
             クリア
           </button>
         )}
+        <div style={{ marginLeft: 'auto', flex: 1, maxWidth: '280px' }}>
+          <MicroCopyMessage category="clarity" subtle />
+        </div>
       </div>
       <div className={s.scrollHint}>横スクロールできます</div>
       <table className={`${s.compareTable} ${s.gradientEdges}`}>
