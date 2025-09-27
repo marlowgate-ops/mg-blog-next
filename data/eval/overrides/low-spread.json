@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-09-27",
+  "weights": {
+    "cost": 0.30,
+    "spread": 0.35,
+    "reliability": 0.25,
+    "app": 0.10
+  },
+  "badges": {
+    "ultra_low_spread": {
+      "minScore": 4.8,
+      "label": "極狭スプレッド",
+      "description": "業界最狭水準のスプレッドを提供"
+    }
+  }
+}
