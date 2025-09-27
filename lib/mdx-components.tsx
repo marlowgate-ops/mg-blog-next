@@ -18,7 +18,7 @@ const CODE = (props: React.HTMLAttributes<HTMLElement>) => (
 )
 
 const IMG = (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
-  <img loading="lazy" decoding="async" {...props} />
+  <img loading="lazy" decoding="async" width={props.width || 800} height={props.height || 400} {...props} />
 )
 
 export const components = {

@@ -1,11 +1,20 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 
 export default function AuthorMeta() {
   const updated = "2025-09-19";
   return (
     <div className="mg-author-meta" aria-label="記事情報">
-      <img className="mg-author-avatar" src="/authors/marlow-gate.png" width="28" height="28" alt="Marlow Gate 編集部" />
+      <Image 
+        className="mg-author-avatar" 
+        src="/authors/marlow-gate.png" 
+        width={28} 
+        height={28} 
+        alt="Marlow Gate 編集部"
+        loading="eager"
+        priority
+      />
       <div className="mg-author-text">
         <div className="mg-author-name">Marlow Gate 編集部</div>
         <div className="mg-author-updated"><time dateTime={updated}>2025-09-19 更新</time></div>

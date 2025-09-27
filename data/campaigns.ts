@@ -10,10 +10,10 @@ export type Campaign = {
 };
 
 export const campaigns: Campaign[] = [
-  { id: "dmmfx-autumn", brand: "DMM FX", maxAmountYen: 300000, deadline: null, condition: "新規+取引数量条件", notes: "達成で最大30万円。詳細は公式条件を確認。", url: "https://px.a8.net/...", active: true },
-  { id: "gmo-click", brand: "GMOクリック証券", maxAmountYen: 200000, deadline: null, condition: "新規+取引数量条件", notes: "", url: "https://px.a8.net/...", active: true },
+  { id: "dmmfx-autumn", brand: "DMM FX", maxAmountYen: 300000, deadline: "2025-12-31T23:59:00+09:00", condition: "新規+取引数量条件", notes: "達成で最大30万円。詳細は公式条件を確認。", url: "https://px.a8.net/...", active: true },
+  { id: "gmo-click", brand: "GMOクリック証券", maxAmountYen: 200000, deadline: "2026-01-15T23:59:00+09:00", condition: "新規+取引数量条件", notes: "", url: "https://px.a8.net/...", active: true },
   { id: "smbc", brand: "SMBC日興", maxAmountYen: 100000, deadline: null, condition: "新規+資金条件", notes: "", url: "https://px.a8.net/...", active: true },
-  { id: "rakuten", brand: "楽天証券", maxAmountYen: 100000, deadline: null, condition: "新規+取引数量条件", notes: "", url: "https://px.a8.net/...", active: true },
+  { id: "rakuten", brand: "楽天証券", maxAmountYen: 100000, deadline: "2025-11-30T23:59:00+09:00", condition: "新規+取引数量条件", notes: "", url: "https://px.a8.net/...", active: true },
   { id: "au-kabu", brand: "auカブコム", maxAmountYen: 80000, deadline: null, condition: "新規+取引数量条件", notes: "", url: "https://px.a8.net/...", active: true },
   { id: "other", brand: "その他", maxAmountYen: 30000, deadline: null, condition: "新規", notes: "", url: "#", active: false },
 ];

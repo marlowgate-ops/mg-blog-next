@@ -7,9 +7,19 @@ import CampaignsTable from "@/components/CampaignsTable";
 import LocalNavRail from "@/components/LocalNavRail";
 import Container from "@/components/Container";
 import BottomRecirculation from "@/components/BottomRecirculation";
-import { breadcrumbList, itemListJSONLD } from "@/lib/seo/jsonld";
+import HubTiles from "@/components/HubTiles";
+import RecirculationBand from "@/components/RecirculationBand";
+import EvaluationRules from "@/components/EvaluationRules";
+import FAQ from "@/components/Faq";
+import DisclaimerBox from "@/components/DisclaimerBox";
+import SectionBand from "@/components/SectionBand";
+import LongForm from "@/components/LongForm";
+import StickyCTA from "@/components/StickyCTA";
+import { breadcrumbList, itemListJSONLD, faqPage } from "@/lib/seo/jsonld";
 import Link from "next/link";
 import s from "@/app/best/layout.module.css";
+import longformContent from "@/content_source/reviews/campaigns/longform.json";
+import faqData from "@/content_source/reviews/campaigns/faq.json";
 
 export const metadata = {
   title: "口座開設キャンペーン一覧",
@@ -25,11 +35,13 @@ export default function Page() {
     { name: "DMM FX", url: "/best/forex-brokers-jp#rank-1" },
     { name: "GMOクリック", url: "/best/forex-brokers-jp#rank-2" },
   ]);
+  const faqLd = faqPage(faqData.map(item => ({ q: item.question, a: item.answer })));
 
   return (
     <>
       <JsonLd data={bc} />
       <JsonLd data={il} />
+      <JsonLd data={faqLd} />
       <div className={s.page}>
         <Container>
           <div className={s.grid}>
@@ -65,29 +77,86 @@ export default function Page() {
                 </div>
               </section>
 
-              <section id="compare" data-section style={{ marginTop: 24 }}>
-                <div className="section-card">
-                  <h2 style={{ fontSize: 18, margin: "12px 0" }}>
-                    キャンペーン一覧
-                  </h2>
+              <StickyCTA href="#compare" deadline="2025-12-31" />
+
+              <HubTiles />
+
+              <SectionBand variant="accent" id="compare">
+                <section className={s.section} data-section>
+                  <h2>キャンペーン一覧</h2>
                   <CampaignsTable />
-                </div>
+                </section>
+              </SectionBand>
 
-                <div style={{ marginTop: 20 }}>
-                  <Link href="/best/forex-brokers-jp">← 総合ランキングに戻る</Link>
-                </div>
+              <RecirculationBand />
 
-                <BottomRecirculation
-                  title="関連ページ"
-                  links={[
-                    { href: "/best/forex-brokers-jp", label: "総合ランキング", description: "使いやすさ重視の総合評価" },
-                    { href: "/best/low-spread", label: "低スプレッド", description: "コスト重視で選ぶ" },
-                    { href: "/best/app", label: "アプリ重視", description: "操作性・反応速度で選ぶ" },
-                    { href: "/best/tools", label: "取引ツール", description: "PCツール・機能面で選ぶ" },
-                  ]}
-                  variant="compact"
-                />
-              </section>
+              <SectionBand variant="weak" id="eval">
+                <section className={s.section} data-section>
+                  <EvaluationRules />
+                </section>
+              </SectionBand>
+
+              <SectionBand variant="strong" id="how-to-choose">
+                <section className={s.section} data-section>
+                  <h2>キャンペーン活用ガイド</h2>
+                  <LongForm sections={[
+                    {
+                      id: "guide-intro",
+                      title: "キャンペーン選択の基本",
+                      prose: (
+                        <p>{longformContent.intro}</p>
+                      )
+                    },
+                    {
+                      id: "evaluation-criteria",
+                      title: "評価基準の詳細",
+                      prose: (
+                        <p>{longformContent.criteria}</p>
+                      )
+                    },
+                    {
+                      id: "use-case-strategies",
+                      title: "活用戦略パターン",
+                      prose: (
+                        <p>{longformContent["use-cases"]}</p>
+                      )
+                    },
+                    {
+                      id: "common-mistakes",
+                      title: "よくある失敗例",
+                      prose: (
+                        <p>{longformContent.mistakes}</p>
+                      )
+                    },
+                    {
+                      id: "action-guide",
+                      title: "効果的な活用法",
+                      prose: (
+                        <p>{longformContent.cta}</p>
+                      )
+                    }
+                  ]} />
+                </section>
+              </SectionBand>
+
+              <FAQ items={faqData.map(item => ({ q: item.question, a: item.answer }))} />
+
+              <DisclaimerBox />
+
+              <div style={{ marginTop: 20 }}>
+                <Link href="/best/forex-brokers-jp">← 総合ランキングに戻る</Link>
+              </div>
+
+              <BottomRecirculation
+                title="関連ページ"
+                links={[
+                  { href: "/best/forex-brokers-jp", label: "総合ランキング", description: "使いやすさ重視の総合評価" },
+                  { href: "/best/low-spread", label: "低スプレッド", description: "コスト重視で選ぶ" },
+                  { href: "/best/app", label: "アプリ重視", description: "操作性・反応速度で選ぶ" },
+                  { href: "/best/tools", label: "取引ツール", description: "PCツール・機能面で選ぶ" },
+                ]}
+                variant="compact"
+              />
             </main>
             <LocalNavRail />
           </div>

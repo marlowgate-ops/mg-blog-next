@@ -2,6 +2,7 @@
 import React, { useState, useMemo } from "react";
 import PrimaryCta from "./PrimaryCta";
 import Badge from "./Badge";
+import BadgeOverflow from "./BadgeOverflow";
 import { getBrokerBadges, getEvaluationMeta } from "@/lib/evaluation";
 import s from "@/app/best/layout.module.css";
 
@@ -207,21 +208,21 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
                   <span className={s.brandTag}>{r.brand}</span>
                   {r.score && (
                     <div className={s.tableBadges}>
-                      {getBrokerBadges(r.score).map((badgeKey) => {
-                        const meta = getEvaluationMeta();
-                        const badgeInfo = meta.badges?.[badgeKey];
-                        if (!badgeInfo || !badgeInfo.label || !badgeInfo.description) return null;
-                        
-                        return (
-                          <Badge
-                            key={badgeKey}
-                            badge={badgeKey}
-                            label={badgeInfo.label}
-                            description={badgeInfo.description}
-                            variant="secondary"
-                          />
-                        );
-                      })}
+                      <BadgeOverflow
+                        badges={getBrokerBadges(r.score).map((badgeKey) => {
+                          const meta = getEvaluationMeta();
+                          const badgeInfo = meta.badges?.[badgeKey];
+                          return badgeInfo && badgeInfo.label && badgeInfo.description
+                            ? {
+                                key: badgeKey,
+                                label: badgeInfo.label,
+                                description: badgeInfo.description,
+                              }
+                            : null;
+                        }).filter((badge): badge is { key: string; label: string; description: string } => badge !== null)}
+                        maxVisible={3}
+                        variant="secondary"
+                      />
                     </div>
                   )}
                 </div>

@@ -1,0 +1,50 @@
+.badgeOverflow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.overflowToggle,
+.collapseToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 var(--space-xs);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-weak);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.overflowToggle:hover,
+.collapseToggle:hover {
+  background: var(--surface-accent);
+  color: var(--ink-weak);
+  transform: translateY(-1px);
+}
+
+.overflowToggle:focus-visible,
+.collapseToggle:focus-visible {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 1px;
+}
+
+/* Variant styling */
+.overflowToggle.secondary,
+.collapseToggle.secondary {
+  border-color: var(--border-strong);
+  background: var(--surface-muted);
+}
+
+.overflowToggle.accent,
+.collapseToggle.accent {
+  border-color: var(--border-accent);
+  background: var(--band-accent);
+}
