@@ -92,6 +92,8 @@ export default function Page() {
                 </section>
               </SectionBand>
 
+              <DetailedReviewEntry />
+
               <SectionBand variant="weak" id="eval">
                 <section className={s.section} data-section>
                   <EvaluationRules />
