@@ -13,6 +13,7 @@ interface RankingCardProps {
   highlights: string[];
   caveats?: string[];
   ctaHref: string;
+  reviewHref?: string;
   badge?: string;
   score?: number;
   subscores?: {
@@ -28,6 +29,7 @@ export default function RankingCard({
   highlights,
   caveats = [],
   ctaHref,
+  reviewHref,
   badge,
   score,
   subscores,
@@ -106,6 +108,11 @@ export default function RankingCard({
 
       <div className={s.rankingCard_right}>
         <PrimaryCta href={ctaHref} />
+        {reviewHref && (
+          <a href={reviewHref} className={s.reviewLink}>
+            詳しく見る →
+          </a>
+        )}
         <MicroCopyMessage category="social_proof" subtle />
         {score && (
           <div className={s.badgeList}>

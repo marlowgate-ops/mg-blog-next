@@ -1,0 +1,113 @@
+.detailedReviews {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #fefefe;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+}
+
+.reviewsHeading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.reviewsDescription {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+.reviewsGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.reviewCard {
+  padding: 1.25rem;
+  background: white;
+  border: 1px solid #f3f4f6;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.reviewHeader {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.reviewTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.reviewLink {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.reviewLink:hover {
+  text-decoration: underline;
+}
+
+.reviewOverall {
+  color: #4b5563;
+  font-size: 0.875rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.reviewDetails {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.reviewSection {
+  font-size: 0.875rem;
+}
+
+.sectionLabel {
+  color: #374151;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.reviewBullets {
+  margin: 0.25rem 0 0 1rem;
+  padding: 0;
+  list-style: disc;
+}
+
+.reviewBullets li {
+  color: #6b7280;
+  line-height: 1.4;
+  margin-bottom: 0.125rem;
+}
+
+.bestFor {
+  color: #059669;
+  font-weight: 500;
+  margin-left: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .reviewsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .detailedReviews {
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+  
+  .reviewCard {
+    padding: 1rem;
+  }
+}

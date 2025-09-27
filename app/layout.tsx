@@ -12,7 +12,13 @@ export const metadata: Metadata = {
   description: site.description,
   alternates: { types: { 'application/rss+xml': `${site.url}/rss.xml` } },
   openGraph: { siteName: site.title },
-  twitter: { site: site.twitter || undefined }
+  twitter: { site: site.twitter || undefined },
+  icons: { 
+    icon: '/favicon.svg', 
+    shortcut: '/favicon.svg', 
+    apple: '/favicon.svg' 
+  },
+  manifest: '/site.webmanifest'
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
