@@ -32,6 +32,7 @@ export default function Header() {
           <Link className="u" href="/best">比較</Link>
           <Link className="u" href="/reviews">レビュー</Link>
           <Link className="u" href="/guides">ガイド</Link>
+          <Link className="u" href="/topics">トピック</Link>
           <Link className="u" href="/about">About</Link>
         </nav>
       </div>
@@ -40,6 +41,7 @@ export default function Header() {
           <Link className="i" href="/">トップ</Link>
           <Link className="i" href="/best/forex-brokers-jp">国内FX/CFD</Link>
           <Link className="i" href="/best/insurance">保険</Link>
+          <Link className="i" href="/popular">人気記事</Link>
           <Link className="i" href="/blog">ブログ</Link>
           <Link className="i" href="/sitemap.xml">サイトマップ</Link>
         </nav>

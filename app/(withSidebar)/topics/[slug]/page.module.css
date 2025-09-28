@@ -1,0 +1,128 @@
+/* Header */
+.header {
+  text-align: center;
+  margin: 32px 0 48px;
+  padding: 40px 24px;
+  background: linear-gradient(135deg, var(--surface-primary, #fff), var(--surface-weak, #f8fafc));
+  border: 1px solid var(--border-light, rgba(2,8,23,0.08));
+  border-radius: var(--radius-lg, 16px);
+}
+
+.topicIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary, #0b1324);
+  margin: 0 0 16px 0;
+}
+
+.description {
+  font-size: 18px;
+  color: var(--text-secondary, #475569);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin: 48px 0;
+  padding: 24px;
+}
+
+.paginationLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: var(--surface-primary, #fff);
+  border: 1px solid var(--border-light, rgba(2,8,23,0.12));
+  border-radius: var(--radius-md, 8px);
+  color: var(--color-primary, #0ea5e9);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.paginationLink:hover {
+  background: var(--color-primary, #0ea5e9);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+}
+
+.pageInfo {
+  font-size: 14px;
+  color: var(--text-secondary, #6b7280);
+  font-weight: 500;
+  padding: 0 16px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .header {
+    margin: 24px 0 32px;
+    padding: 24px 16px;
+  }
+  
+  .topicIcon {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+  
+  .title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .description {
+    font-size: 16px;
+  }
+  
+  .pagination {
+    flex-direction: column;
+    gap: 16px;
+    margin: 32px 0;
+    padding: 16px;
+  }
+  
+  .paginationLink {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .header {
+    background: linear-gradient(135deg, var(--surface-primary-dark, #0b1324), var(--surface-weak-dark, #0f172a));
+    border-color: var(--border-light-dark, rgba(148,163,184,0.2));
+  }
+  
+  .title {
+    color: var(--text-primary-dark, #e2e8f0);
+  }
+  
+  .description {
+    color: var(--text-secondary-dark, #cbd5e1);
+  }
+  
+  .paginationLink {
+    background: var(--surface-primary-dark, #0b1324);
+    border-color: var(--border-light-dark, rgba(148,163,184,0.2));
+  }
+  
+  .pageInfo {
+    color: var(--text-secondary-dark, #94a3b8);
+  }
+}
