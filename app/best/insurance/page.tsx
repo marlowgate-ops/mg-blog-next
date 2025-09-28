@@ -8,12 +8,16 @@ import Link from 'next/link';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: '保険比較 | おすすめ保険会社の比較・選び方ガイド',
+  title: '保険比較 | おすすめ保険会社の比較・選び方ガイド | Marlow Gate',
   description: '自動車保険・生命保険・医療保険など各種保険の比較・選び方を解説。保険料や補償内容を比較して最適な保険を見つけましょう。',
   openGraph: {
     title: '保険比較 | おすすめ保険会社の比較・選び方ガイド',
     description: '自動車保険・生命保険・医療保険など各種保険の比較・選び方を解説。',
     type: 'website',
+    url: 'https://marlowgate.com/best/insurance',
+  },
+  alternates: {
+    canonical: 'https://marlowgate.com/best/insurance',
   },
 };
 
@@ -55,7 +59,7 @@ const jsonLdData = {
   "@type": "CollectionPage",
   "name": "保険比較・選び方ガイド",
   "description": "自動車保険・生命保険・医療保険など各種保険の比較・選び方を解説",
-  "url": "https://your-domain.com/best/insurance",
+  "url": "https://marlowgate.com/best/insurance",
   "mainEntity": {
     "@type": "ItemList",
     "numberOfItems": insuranceCategories.length,
@@ -66,7 +70,7 @@ const jsonLdData = {
         "@type": "Service",
         "name": category.title,
         "description": category.description,
-        "url": `https://your-domain.com${category.href}`
+        "url": `https://marlowgate.com${category.href}`
       }
     }))
   }
@@ -133,6 +137,55 @@ export default function InsurancePage() {
                 もしもの時の手続き方法や注意点を説明します。
               </p>
             </div>
+          </div>
+        </section>
+
+        <section className={styles.faq}>
+          <h2 className={styles.faqTitle}>よくある質問</h2>
+          <div className={styles.faqList}>
+            <details className={styles.faqItem}>
+              <summary className={styles.faqQuestion}>
+                保険はいつから入るべきですか？
+              </summary>
+              <div className={styles.faqAnswer}>
+                <p>
+                  保険は必要性を感じた時が加入のタイミングです。特に自動車保険は車を運転する前に必ず加入し、生命保険や医療保険は結婚や出産などのライフイベントを機に検討することをおすすめします。
+                </p>
+              </div>
+            </details>
+            
+            <details className={styles.faqItem}>
+              <summary className={styles.faqQuestion}>
+                保険料を安くする方法はありますか？
+              </summary>
+              <div className={styles.faqAnswer}>
+                <p>
+                  保険料を抑える方法として、必要最低限の補償に絞る、免責額を高めに設定する、インターネット割引を活用する、複数社で見積もりを取って比較するなどがあります。ただし、補償を削りすぎると本来の目的を果たせなくなるため注意が必要です。
+                </p>
+              </div>
+            </details>
+            
+            <details className={styles.faqItem}>
+              <summary className={styles.faqQuestion}>
+                保険の見直しはいつすればいいですか？
+              </summary>
+              <div className={styles.faqAnswer}>
+                <p>
+                  年1回の更新時や、結婚・出産・転職・家の購入などライフステージが変わったタイミングで見直しを行いましょう。また、新しい保険商品が出た際や保険料が家計を圧迫するようになった時も見直しの好機です。
+                </p>
+              </div>
+            </details>
+            
+            <details className={styles.faqItem}>
+              <summary className={styles.faqQuestion}>
+                複数の保険会社で同じ保険に入ってもいいですか？
+              </summary>
+              <div className={styles.faqAnswer}>
+                <p>
+                  生命保険や医療保険など一部の保険では複数社での加入が可能ですが、自動車保険など重複加入に意味がない保険もあります。加入前に保険会社に確認し、必要に応じて既存の保険を見直すことをおすすめします。
+                </p>
+              </div>
+            </details>
           </div>
         </section>
       </Container>

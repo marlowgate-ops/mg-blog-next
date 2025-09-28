@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Container from '@/components/Container';
 import NewsClientWrapper from './NewsClientWrapper';
 import JsonLd from '@/components/JsonLd';
+import JsonLdBreadcrumbs from '@/components/JsonLdBreadcrumbs';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import styles from './page.module.css';
 
@@ -16,12 +17,16 @@ interface NewsItem {
 }
 
 export const metadata: Metadata = {
-  title: '最新マーケットニュース | FX・投資情報',
+  title: '最新マーケットニュース | FX・投資情報 | Marlow Gate',
   description: '最新の金融市場ニュースや投資情報をリアルタイムでお届け。FX、株式、暗号資産など幅広い投資ニュースを提供。',
   openGraph: {
     title: '最新マーケットニュース | FX・投資情報',
     description: '最新の金融市場ニュースや投資情報をリアルタイムでお届け。',
     type: 'website',
+    url: 'https://marlowgate.com/news',
+  },
+  alternates: {
+    canonical: 'https://marlowgate.com/news',
   },
 };
 
@@ -54,6 +59,7 @@ export default async function NewsPage() {
     "@type": "ItemList",
     "name": "最新マーケットニュース",
     "description": "金融・投資関連の最新ニュース一覧",
+    "url": "https://marlowgate.com/news",
     "numberOfItems": newsItems.length,
     "itemListElement": newsItems.map((item, index) => ({
       "@type": "ListItem",
@@ -74,6 +80,7 @@ export default async function NewsPage() {
   return (
     <>
       <JsonLd data={jsonLdData} />
+      <JsonLdBreadcrumbs />
       <Container>
         <Breadcrumbs items={[
           { name: 'ホーム', href: '/' },
