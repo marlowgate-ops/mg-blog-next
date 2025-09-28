@@ -14,14 +14,14 @@ function Meter({ value }: { value: number }) {
 }
 
 export default function RankCard({ rank, broker }: { rank: number; broker: Broker }) {
-  const disabled = broker.status !== "active";
+  const disabled = broker.state !== "active";
   return (
-    <article className={styles.card} aria-disabled={disabled}>
+    <article className={styles.card} data-disabled={disabled}>
       <div className={styles.header}>
         <div className={styles.rank}>{rank}</div>
         <h3 className={styles.name}>
           {broker.name}{" "}
-          {broker.status === "preparing" && <span className={styles.badge}>準備中</span>}
+          {broker.state === "preparing" && <span className={styles.badge}>準備中</span>}
         </h3>
       </div>
       <div className={styles.row}>

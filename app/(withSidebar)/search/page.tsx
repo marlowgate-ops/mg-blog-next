@@ -48,11 +48,11 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
         
         <div className={styles.header}>
           <h1 className={styles.title}>
-            {query ? `"${query}"の検索結果` : '検索'}
+            {query ? `&quot;${query}&quot;の検索結果` : '検索'}
           </h1>
           {query && (
             <p className={styles.description}>
-              キーワード"{query}"に関連するコンテンツを表示しています。
+              キーワード&quot;{query}&quot;に関連するコンテンツを表示しています。
             </p>
           )}
         </div>
