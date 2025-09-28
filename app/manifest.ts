@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   const shortName = 'MG Blog'
   const description =
     process.env.NEXT_PUBLIC_SITE_TAGLINE || '読むたびに価値が積み上がる。'
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.marlowgate.com'
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://marlowgate.com'
 
   return {
     name,

@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
  */
 export default function JsonLdBreadcrumbs() {
   const pathname = usePathname() || '/'
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.marlowgate.com').replace(/\/$/, '')
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://marlowgate.com').replace(/\/$/, '')
   const segments = pathname.split('/').filter(Boolean)
 
   // Build absolute path step by step

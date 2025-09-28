@@ -63,7 +63,7 @@ function getSlug(p: Post) {
 }
 
 export async function GET(_req: NextRequest) {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.marlowgate.com').replace(/\/$/, '')
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://marlowgate.com').replace(/\/$/, '')
   const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Marlow Gate – Blog'
   const siteDesc = process.env.NEXT_PUBLIC_SITE_TAGLINE || '読むたびに価値が積み上がる。'
 
