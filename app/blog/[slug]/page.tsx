@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
+import { site } from '@/lib/site'
 import listStyles from '../../list.module.css'
 import styles from './article.module.css'
 import MDXRenderer from '../../../components/MDXRenderer'
@@ -38,14 +39,14 @@ export default function Page({ params }: PageProps) {
     ldPost = blogPostingLD({
       title: post.title,
       description: post.description || '',
-      url: `https://blog.marlowgate.com${post.url || `/blog/${params.slug}`}`,
+      url: `${site.url}${post.url || `/blog/${params.slug}`}`,
       datePublished: post.date,
       dateModified: post.lastmod || post.date,
       authorName: 'Marlow Gate'
     })
     ldCrumbs = breadcrumbLD([
-      { name: 'ホーム', item: 'https://blog.marlowgate.com/' },
-      { name: 'ブログ', item: 'https://blog.marlowgate.com/blog/' },
+      { name: 'ホーム', item: `${site.url}/` },
+      { name: 'ブログ', item: `${site.url}/blog/` },
       { name: post.title }
     ])
   } catch {}

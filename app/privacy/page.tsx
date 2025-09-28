@@ -9,7 +9,7 @@ export default function Page() {
   return (
     <LegalPage title="プライバシーポリシー">
       <h2>1. 適用範囲</h2>
-      <p>本ポリシーは、<strong>blog.marlowgate.com</strong>（以下「当サイト」）で提供するコンテンツ・機能に適用されます。</p>
+      <p>本ポリシーは、<strong>marlowgate.com</strong>（以下「当サイト」）で提供するコンテンツ・機能に適用されます。</p>
       <h2>2. 取得する情報</h2>
       <ul>
         <li>アクセス解析のためのトラッキング情報。</li>
