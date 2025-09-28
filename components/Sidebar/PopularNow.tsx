@@ -1,61 +1,59 @@
-'use client';
-
-import { useState, useEffect } from 'react';
+import { Suspense } from 'react';
 import Link from 'next/link';
-import { gaEvent } from '@/lib/analytics';
+import PopularItemClient from './PopularItemClient';
 import styles from './PopularNow.module.css';
+import popularFallback from '@/config/popular.json';
 
-interface TopPageData {
-  pathname: string;
-  views: number;
-  title?: string;
-  lastViewed: string;
+interface PopularItem {
+  path: string;
+  score: number;
 }
 
-export default function PopularNow() {
-  const [topPages, setTopPages] = useState<TopPageData[]>([]);
-  const [loading, setLoading] = useState(true);
+interface PopularResponse {
+  items: PopularItem[];
+  fallback?: boolean;
+}
 
-  useEffect(() => {
-    async function fetchTopPages() {
-      try {
-        const response = await fetch('/api/metrics/top?days=7&limit=5');
-        if (response.ok) {
-          const data = await response.json();
-          setTopPages(data.pages || []);
-        }
-      } catch (error) {
-        console.error('Error fetching top pages:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchTopPages();
-  }, []);
-
-  const handleClick = (item: TopPageData) => {
-    gaEvent('popular_click', {
-      pathname: item.pathname,
-      title: item.title || item.pathname,
-      views: item.views
-    });
-  };
-
-  if (loading) {
-    return (
-      <section className={styles.popular}>
-        <div className={styles.header}>
-          <h3 className={styles.title}>人気記事</h3>
-        </div>
-        <div className={styles.loading}>
-          読み込み中...
-        </div>
-      </section>
-    );
+async function fetchPopularPages(): Promise<PopularItem[]> {
+  try {
+    // For server-side rendering, use fallback data immediately
+    // API calls during build should be avoided for better performance
+    console.log('Using fallback popular data during server-side rendering');
+  } catch (error) {
+    console.error('Error fetching popular pages:', error);
   }
+  
+  // Use static popular items as the reliable fallback
+  return popularFallback.slice(0, 10).map((item, index) => ({
+    path: item.url,
+    score: popularFallback.length - index,
+  }));
+}
 
-  if (topPages.length === 0) {
+function getDisplayTitle(path: string): string {
+  // Map common paths to readable titles
+  const titleMap: Record<string, string> = {
+    '/best/forex-brokers-jp': 'FX業者比較',
+    '/best/insurance': '保険比較',
+    '/guides': 'ガイド記事', 
+    '/reviews': 'レビュー',
+    '/topics': 'トピック一覧',
+    '/blog': 'ブログ',
+    '/best': '比較ランキング',
+    '/search': 'サイト内検索',
+    '/about': 'About',
+    '/contact': 'お問い合わせ',
+    '/best/low-spread': '低スプレッド業者',
+    '/best/tools': '取引ツール比較',
+  };
+  
+  return titleMap[path] || path.split('/').filter(Boolean).pop() || path;
+}
+
+async function PopularNowContent() {
+  const items = await fetchPopularPages();
+  
+  if (items.length === 0) {
     return null;
   }
 
@@ -68,25 +66,36 @@ export default function PopularNow() {
         </Link>
       </div>
       <div className={styles.items}>
-        {topPages.map((item, index) => (
-          <Link
-            key={item.pathname}
-            href={item.pathname}
-            className={styles.item}
-            onClick={() => handleClick(item)}
-          >
-            <span className={styles.rank}>#{index + 1}</span>
-            <div className={styles.content}>
-              <span className={styles.itemTitle}>
-                {item.title || item.pathname.split('/').pop() || 'Untitled'}
-              </span>
-              <span className={styles.views}>
-                {item.views.toLocaleString()} views
-              </span>
-            </div>
-          </Link>
+        {items.slice(0, 5).map((item, index) => (
+          <PopularItemClient 
+            key={item.path} 
+            item={item} 
+            index={index} 
+            title={getDisplayTitle(item.path)}
+          />
         ))}
       </div>
     </section>
+  );
+}
+
+function PopularNowLoading() {
+  return (
+    <section className={styles.popular}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>人気記事</h3>
+      </div>
+      <div className={styles.loading}>
+        読み込み中...
+      </div>
+    </section>
+  );
+}
+
+export default function PopularNow() {
+  return (
+    <Suspense fallback={<PopularNowLoading />}>
+      <PopularNowContent />
+    </Suspense>
   );
 }
