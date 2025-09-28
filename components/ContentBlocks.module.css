@@ -1,0 +1,40 @@
+.contentBlocks {
+  margin: 2rem 0;
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sectionLink {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brand-primary, #0ea5e9);
+  text-decoration: none;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+}
+
+.sectionLink:hover {
+  color: var(--brand-dark, #0284c7);
+}
+
+@media (max-width: 768px) {
+  .cardGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .section {
+    margin-bottom: 2rem;
+  }
+}
