@@ -8,6 +8,24 @@ const nextConfig = {
   // TEMP: allow production build to complete even if TS errors exist
   typescript: { ignoreBuildErrors: true },
   output: "standalone",
+  
+  // Domain canonical redirects - blog.marlowgate.com -> marlowgate.com
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'blog.marlowgate.com',
+          },
+        ],
+        destination: 'https://marlowgate.com/:path*',
+        permanent: true,
+        statusCode: 301,
+      },
+    ];
+  },
 };
 
 export default withContentlayer(nextConfig);
