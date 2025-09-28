@@ -10,12 +10,20 @@ export const metadata = {
 export default function Page() {
   return (
     <LegalPage title="運営者情報（About）">
-      <p>Marlow Gate は、FX/CFD に関する「比較・レビュー・口座開設ガイド・実務ツール」を提供し、利用者が安全にブローカーを選び、ムダな損失を防ぐための意思決定を支援します。</p>
+      <p>Marlow Gate は、金融・投資・保険・家計最適化 に関する「比較・レビュー・口座開設ガイド・実務ツール」を提供し、利用者が安全かつ合理的にサービスを選べるよう意思決定を支援します。</p>
       
       <EditorialBlock showPolicyLink={false} />
       
       <h2>運営者</h2>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '24px' }}>
+      <div style={{ 
+        background: 'var(--surface-weak)', 
+        borderRadius: 'var(--radius-lg)', 
+        padding: 'var(--space-lg)',
+        marginBottom: '24px',
+        display: 'flex', 
+        alignItems: 'flex-start', 
+        gap: '12px'
+      }}>
         <Image 
           src="/images/marlow-gate.png" 
           alt="Marlow Gate ロゴ" 
