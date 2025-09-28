@@ -73,7 +73,7 @@ export default async function Page() {
             <Link className={s.seeAllLink} href="/news">See all →</Link>
           </div>
           <div className={s.newsList}>
-            {news.slice(0, 5).map((item: NewsItem) => (
+            {news.slice(0, 8).map((item: NewsItem) => (
               <NewsItemCard key={item.id} item={item} />
             ))}
           </div>
