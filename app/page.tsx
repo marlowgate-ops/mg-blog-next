@@ -2,6 +2,8 @@ import Link from 'next/link'
 import NewsItemClient from '@/components/NewsItemClient'
 import s from './home.module.css'
 
+export const revalidate = 300;
+
 interface NewsItem {
   id: string;
   title: string;
