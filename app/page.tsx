@@ -1,16 +1,12 @@
 import Link from 'next/link'
+import { headers } from 'next/headers'
 import NewsItemClient from '@/components/NewsItemClient'
-import CategoryHub from '@/components/CategoryHub'
-import ContentBlocks from '@/components/ContentBlocks'
-import QuickLinks from '@/components/QuickLinks'
-import { trackHomeHubClick } from '@/lib/analytics'
 import s from './home.module.css'
 
 export const revalidate = 300;
-export const dynamic = 'force-dynamic';
 
 interface NewsItem {
-  id: string;
+  id?: string;
   title: string;
   url: string;
   source: string;
@@ -50,10 +46,21 @@ async function getLatestNews(limit = 10): Promise<NewsItem[]> {
   }
 }
 
-async function getNews() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/news`, { next: { revalidate: 300 } });
-  if (!res.ok) return { items: [] as any[] };
-  return res.json() as Promise<{ items: { title:string; url:string; source:string; publishedAt:string }[] }>;
+async function getNews(): Promise<NewsItem[]> {
+  try {
+    // Prefer runtime host over env to avoid misconfig in prod
+    const h = headers();
+    const proto = h.get("x-forwarded-proto") ?? "https";
+    const host  = h.get("host");
+    const base  = host ? `${proto}://${host}` : (process.env.NEXT_PUBLIC_SITE_URL ?? "https://marlowgate.com");
+
+    const res = await fetch(`${base}/api/news`, { next: { revalidate: 300 } });
+    if (!res.ok) return [];
+    const data = (await res.json()) as { items?: NewsItem[] };
+    return Array.isArray(data?.items) ? data.items : [];
+  } catch {
+    return []; // never throw during render
+  }
 }
 
 const SITE = {
@@ -63,7 +70,7 @@ const SITE = {
 
 export default async function Page() {
   const posts = await getLatest(3)
-  const { items } = await getNews()
+  const items = await getNews()
   
   return (
     <main className={s.container}>
@@ -76,57 +83,41 @@ export default async function Page() {
         </div>
       </section>
 
-      {/* Category Hub */}
-      <CategoryHub onCategoryClick={(category, href) => {
-        if (typeof window !== 'undefined') {
-          trackHomeHubClick('category_hub', `${category} -> ${href}`);
-        }
-      }} />
+      {/* Latest Market News Section */}
+      {items.length > 0 ? (
+        <section className={s.newsSection}>
+          <div className={s.sectionHeader}>
+            <h2 className={s.sectionTitle}>Latest Market News</h2>
+            <Link className={s.seeAllLink} href="/news">See all →</Link>
+          </div>
+          <div className={s.newsList}>
+            {items.slice(0, 8).map((item: any) => (
+              <NewsItemCard key={item.id || item.title} item={item} />
+            ))}
+          </div>
+        </section>
+      ) : (
+        <section className={s.newsSection}>
+          <div className={s.sectionHeader}>
+            <h2 className={s.sectionTitle}>Latest Market News</h2>
+          </div>
+          <div className={s.noNews}>
+            <p className={s.noNewsText}>No recent headlines</p>
+          </div>
+        </section>
+      )}
 
-      {/* Quick Links */}
-      <QuickLinks />
-
-      {/* Main Content - Two Column Layout */}
-      <div className={s.mainContent}>
-        <div className={s.leftColumn}>
-          {/* Latest Market News Section */}
-          {items.length > 0 && (
-            <section className={s.newsSection}>
-              <div className={s.sectionHeader}>
-                <h2 className={s.sectionTitle}>Latest Market News</h2>
-                <Link className={s.seeAllLink} href="/news">See all →</Link>
-              </div>
-              <div className={s.newsList}>
-                {items.slice(0, 8).map((item: any) => (
-                  <NewsItemCard key={item.id || item.title} item={item} />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Recent Articles */}
-          <section className={s.grid}>
-            {posts.length === 0 ? (
-              <>
-                <ArticleCardSkeleton />
-                <ArticleCardSkeleton />
-                <ArticleCardSkeleton />
-              </>
-            ) : (
-              posts.map((p) => <ArticleCard key={String(p._id || p.slug)} post={p} />)
-            )}
-          </section>
-        </div>
-
-        <div className={s.rightColumn}>
-          {/* Content Blocks */}
-          <ContentBlocks onCardClick={(section, target) => {
-            if (typeof window !== 'undefined') {
-              trackHomeHubClick(section, target);
-            }
-          }} />
-        </div>
-      </div>
+      <section className={s.grid}>
+        {posts.length === 0 ? (
+          <>
+            <ArticleCardSkeleton />
+            <ArticleCardSkeleton />
+            <ArticleCardSkeleton />
+          </>
+        ) : (
+          posts.map((p) => <ArticleCard key={String(p._id || p.slug)} post={p} />)
+        )}
+      </section>
 
       <section className={s.promo}>
         <div className={s.promoCard}>
@@ -183,8 +174,14 @@ function NewsItemCard({ item }: { item: NewsItem }) {
     }
   };
 
+  // Ensure NewsItem has required id field for NewsItemClient
+  const itemWithId = {
+    ...item,
+    id: item.id || `${item.title}-${item.source}`
+  };
+
   return (
-    <NewsItemClient item={item} className={s.newsItem}>
+    <NewsItemClient item={itemWithId} className={s.newsItem}>
       <div className={s.newsContent}>
         <span className={s.newsSource}>{item.source}</span>
         <span className={s.newsTime}>{formatTime(item.publishedAt)}</span>
