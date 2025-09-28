@@ -1,0 +1,62 @@
+[
+  {
+    "id": "forex",
+    "label": "FX・外国為替",
+    "description": "外国為替取引、FXブローカー比較、通貨ペア分析",
+    "icon": "💱"
+  },
+  {
+    "id": "stocks",
+    "label": "株式投資",
+    "description": "個別株、ETF、株式市場分析、証券会社比較",
+    "icon": "📈"
+  },
+  {
+    "id": "insurance",
+    "label": "保険",
+    "description": "自動車保険、生命保険、医療保険の比較・選び方",
+    "icon": "🛡️"
+  },
+  {
+    "id": "crypto",
+    "label": "暗号資産",
+    "description": "ビットコイン、アルトコイン、取引所比較",
+    "icon": "₿"
+  },
+  {
+    "id": "personal-finance",
+    "label": "家計管理",
+    "description": "家計簿、節約術、資産形成、ライフプラン",
+    "icon": "💰"
+  },
+  {
+    "id": "banking",
+    "label": "銀行・金融",
+    "description": "銀行口座、住宅ローン、金融サービス比較",
+    "icon": "🏦"
+  },
+  {
+    "id": "tools",
+    "label": "投資ツール",
+    "description": "分析ツール、アプリ、プラットフォーム比較",
+    "icon": "🛠️"
+  },
+  {
+    "id": "education",
+    "label": "投資教育",
+    "description": "投資の基礎知識、学習リソース、セミナー情報",
+    "icon": "📚"
+  },
+  {
+    "id": "news",
+    "label": "マーケットニュース",
+    "description": "金融市場の最新ニュース、経済指標、分析",
+    "icon": "📰"
+  },
+  {
+    "id": "regulations",
+    "label": "規制・法律",
+    "description": "金融規制、税制、法的な注意点",
+    "icon": "⚖️"
+  }
+]
