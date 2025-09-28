@@ -1,5 +1,9 @@
 import Link from 'next/link'
 import NewsItemClient from '@/components/NewsItemClient'
+import CategoryHub from '@/components/CategoryHub'
+import ContentBlocks from '@/components/ContentBlocks'
+import QuickLinks from '@/components/QuickLinks'
+import { trackHomeHubClick } from '@/lib/analytics'
 import s from './home.module.css'
 
 export const revalidate = 300;
@@ -72,32 +76,57 @@ export default async function Page() {
         </div>
       </section>
 
-      {/* Latest Market News Section */}
-      {items.length > 0 && (
-        <section className={s.newsSection}>
-          <div className={s.sectionHeader}>
-            <h2 className={s.sectionTitle}>Latest Market News</h2>
-            <Link className={s.seeAllLink} href="/news">See all →</Link>
-          </div>
-          <div className={s.newsList}>
-            {items.slice(0, 8).map((item: any) => (
-              <NewsItemCard key={item.id || item.title} item={item} />
-            ))}
-          </div>
-        </section>
-      )}
+      {/* Category Hub */}
+      <CategoryHub onCategoryClick={(category, href) => {
+        if (typeof window !== 'undefined') {
+          trackHomeHubClick('category_hub', `${category} -> ${href}`);
+        }
+      }} />
 
-      <section className={s.grid}>
-        {posts.length === 0 ? (
-          <>
-            <ArticleCardSkeleton />
-            <ArticleCardSkeleton />
-            <ArticleCardSkeleton />
-          </>
-        ) : (
-          posts.map((p) => <ArticleCard key={String(p._id || p.slug)} post={p} />)
-        )}
-      </section>
+      {/* Quick Links */}
+      <QuickLinks />
+
+      {/* Main Content - Two Column Layout */}
+      <div className={s.mainContent}>
+        <div className={s.leftColumn}>
+          {/* Latest Market News Section */}
+          {items.length > 0 && (
+            <section className={s.newsSection}>
+              <div className={s.sectionHeader}>
+                <h2 className={s.sectionTitle}>Latest Market News</h2>
+                <Link className={s.seeAllLink} href="/news">See all →</Link>
+              </div>
+              <div className={s.newsList}>
+                {items.slice(0, 8).map((item: any) => (
+                  <NewsItemCard key={item.id || item.title} item={item} />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Recent Articles */}
+          <section className={s.grid}>
+            {posts.length === 0 ? (
+              <>
+                <ArticleCardSkeleton />
+                <ArticleCardSkeleton />
+                <ArticleCardSkeleton />
+              </>
+            ) : (
+              posts.map((p) => <ArticleCard key={String(p._id || p.slug)} post={p} />)
+            )}
+          </section>
+        </div>
+
+        <div className={s.rightColumn}>
+          {/* Content Blocks */}
+          <ContentBlocks onCardClick={(section, target) => {
+            if (typeof window !== 'undefined') {
+              trackHomeHubClick(section, target);
+            }
+          }} />
+        </div>
+      </div>
 
       <section className={s.promo}>
         <div className={s.promoCard}>

@@ -5,3 +5,18 @@ export const gaEvent = (name: string, params: GAParams = {}) => {
   const w = window as any
   if (w?.gtag) w.gtag('event', name, params)
 }
+
+// Specific tracking functions for home page
+export function trackHomeHubClick(section: string, target: string) {
+  gaEvent('home_hub_click', {
+    section,
+    target
+  });
+}
+
+export function trackNewsItemClick(title: string, source: string) {
+  gaEvent('news_item_click', {
+    news_title: title,
+    news_source: source
+  });
+}
