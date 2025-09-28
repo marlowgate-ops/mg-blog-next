@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Container from '@/components/Container';
 import JsonLd from '@/components/JsonLd';
 import JsonLdBreadcrumbs from '@/components/JsonLdBreadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import PrRibbon from '@/components/PrRibbon';
 import Link from 'next/link';
 import styles from './page.module.css';
@@ -44,9 +45,9 @@ const insuranceCategories = [
 ];
 
 const breadcrumbs = [
-  { name: 'ホーム', item: '/' },
-  { name: 'おすすめ比較', item: '/best' },
-  { name: '保険比較', item: '/best/insurance' }
+  { name: 'ホーム', href: '/' },
+  { name: 'おすすめ比較', href: '/best' },
+  { name: '保険比較' }
 ];
 
 const jsonLdData = {
@@ -79,6 +80,8 @@ export default function InsurancePage() {
       
       <Container>
         <PrRibbon />
+        
+        <Breadcrumbs items={breadcrumbs} />
         
         <div className={styles.header}>
           <h1 className={styles.title}>保険比較・選び方ガイド</h1>

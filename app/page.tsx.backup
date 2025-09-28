@@ -1,9 +1,6 @@
 import Link from 'next/link'
 import { headers } from 'next/headers'
 import NewsItemClient from '@/components/NewsItemClient'
-import Popular from '@/components/Popular'
-import Sidebar from '@/components/Sidebar'
-import popularItems from '@/config/popular.json'
 import s from './home.module.css'
 
 export const revalidate = 300;
@@ -86,62 +83,51 @@ export default async function Page() {
         </div>
       </section>
 
-      {/* Two-column layout */}
-      <div className={s.mainContent}>
-        <div className={s.primaryColumn}>
-          {/* Latest Market News Section */}
-          {items.length > 0 ? (
-            <section className={s.newsSection}>
-              <div className={s.sectionHeader}>
-                <h2 className={s.sectionTitle}>Latest Market News</h2>
-                <Link className={s.seeAllLink} href="/news">See all →</Link>
-              </div>
-              <div className={s.newsList}>
-                {items.slice(0, 8).map((item: any) => (
-                  <NewsItemCard key={item.id || item.title} item={item} />
-                ))}
-              </div>
-            </section>
-          ) : (
-            <section className={s.newsSection}>
-              <div className={s.sectionHeader}>
-                <h2 className={s.sectionTitle}>Latest Market News</h2>
-              </div>
-              <div className={s.noNews}>
-                <p className={s.noNewsText}>No recent headlines</p>
-              </div>
-            </section>
-          )}
+      {/* Latest Market News Section */}
+      {items.length > 0 ? (
+        <section className={s.newsSection}>
+          <div className={s.sectionHeader}>
+            <h2 className={s.sectionTitle}>Latest Market News</h2>
+            <Link className={s.seeAllLink} href="/news">See all →</Link>
+          </div>
+          <div className={s.newsList}>
+            {items.slice(0, 8).map((item: any) => (
+              <NewsItemCard key={item.id || item.title} item={item} />
+            ))}
+          </div>
+        </section>
+      ) : (
+        <section className={s.newsSection}>
+          <div className={s.sectionHeader}>
+            <h2 className={s.sectionTitle}>Latest Market News</h2>
+          </div>
+          <div className={s.noNews}>
+            <p className={s.noNewsText}>No recent headlines</p>
+          </div>
+        </section>
+      )}
 
-          <section className={s.grid}>
-            {posts.length === 0 ? (
-              <>
-                <ArticleCardSkeleton />
-                <ArticleCardSkeleton />
-                <ArticleCardSkeleton />
-              </>
-            ) : (
-              posts.map((p) => <ArticleCard key={String(p._id || p.slug)} post={p} />)
-            )}
-          </section>
+      <section className={s.grid}>
+        {posts.length === 0 ? (
+          <>
+            <ArticleCardSkeleton />
+            <ArticleCardSkeleton />
+            <ArticleCardSkeleton />
+          </>
+        ) : (
+          posts.map((p) => <ArticleCard key={String(p._id || p.slug)} post={p} />)
+        )}
+      </section>
 
-          <section className={s.promo}>
-            <div className={s.promoCard}>
-              <div>
-                <div className={s.promoTitle}>業務テンプレ｜ICS検証ノート</div>
-                <div className={s.promoSub}>実務テンプレ｜ICS|検証ノート</div>
-              </div>
-              <Link className={`${s.btn} ${s.small}`} href={process.env.NEXT_PUBLIC_CTA_URL || '/gumroad'}>詳細を見る</Link>
-            </div>
-          </section>
+      <section className={s.promo}>
+        <div className={s.promoCard}>
+          <div>
+            <div className={s.promoTitle}>業務テンプレ｜ICS検証ノート</div>
+            <div className={s.promoSub}>実務テンプレ｜ICS|検証ノート</div>
+          </div>
+          <Link className={`${s.btn} ${s.small}`} href={process.env.NEXT_PUBLIC_CTA_URL || '/gumroad'}>詳細を見る</Link>
         </div>
-
-        {/* Sidebar */}
-        <div className={s.sidebarColumn}>
-          <Popular items={popularItems} />
-          <Sidebar />
-        </div>
-      </div>
+      </section>
     </main>
   )
 }

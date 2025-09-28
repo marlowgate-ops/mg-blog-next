@@ -1,0 +1,32 @@
+[
+  {
+    "id": "forex-brokers-jp",
+    "title": "国内FX業者ランキング", 
+    "url": "/best/forex-brokers-jp",
+    "views": 15420
+  },
+  {
+    "id": "insurance-comparison",
+    "title": "保険比較ガイド",
+    "url": "/best/insurance", 
+    "views": 12850
+  },
+  {
+    "id": "account-opening-guide",
+    "title": "口座開設ガイド",
+    "url": "/guides/account-opening",
+    "views": 9340
+  },
+  {
+    "id": "low-spread-brokers",
+    "title": "低スプレッド業者比較",
+    "url": "/best/low-spread",
+    "views": 8750
+  },
+  {
+    "id": "trading-tools",
+    "title": "取引ツール比較",
+    "url": "/best/tools", 
+    "views": 7890
+  }
+]

@@ -254,3 +254,22 @@
     color: #94a3b8;
   }
 }
+
+/* Two-column layout */
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+@media (max-width: 960px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.primaryColumn {
+  min-width: 0; /* Prevent overflow */
+}
