@@ -1,5 +1,14 @@
 import Link from 'next/link'
+import NewsItemClient from '@/components/NewsItemClient'
 import s from './home.module.css'
+
+interface NewsItem {
+  id: string;
+  title: string;
+  url: string;
+  source: string;
+  publishedAt: string;
+}
 
 async function getLatest(limit = 3) {
   try {
@@ -16,6 +25,24 @@ async function getLatest(limit = 3) {
   }
 }
 
+async function getLatestNews(limit = 10): Promise<NewsItem[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/news`, {
+      next: { revalidate: 300 }
+    });
+    
+    if (!response.ok) {
+      return [];
+    }
+    
+    const data = await response.json();
+    return (data.items || []).slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
 const SITE = {
   name: process.env.NEXT_PUBLIC_SITE_NAME || 'Marlow Gate',
   tagline: '最新の公開記事をお届けします。読みやすさと実用性を両立した、ここでしか読めないノウハウを。'
@@ -23,6 +50,8 @@ const SITE = {
 
 export default async function Page() {
   const posts = await getLatest(3)
+  const news = await getLatestNews(10)
+  
   return (
     <main className={s.container}>
       <section className={s.hero}>
@@ -33,6 +62,21 @@ export default async function Page() {
           <Link className={`${s.btn} ${s.ghost}`} href="/blog">トップへ</Link>
         </div>
       </section>
+
+      {/* Latest Market News Section */}
+      {news.length > 0 && (
+        <section className={s.newsSection}>
+          <div className={s.sectionHeader}>
+            <h2 className={s.sectionTitle}>Latest Market News</h2>
+            <Link className={s.seeAllLink} href="/news">See all →</Link>
+          </div>
+          <div className={s.newsList}>
+            {news.slice(0, 5).map((item: NewsItem) => (
+              <NewsItemCard key={item.id} item={item} />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className={s.grid}>
         {posts.length === 0 ? (
@@ -82,4 +126,32 @@ function ArticleCard({ post }: { post: any }) {
 
 function ArticleCardSkeleton() {
   return <div className={s.skeleton} />
+}
+
+function NewsItemCard({ item }: { item: NewsItem }) {
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) {
+      const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+      return `${diffInMinutes}分前`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours}時間前`;
+    } else {
+      const diffInDays = Math.floor(diffInHours / 24);
+      return `${diffInDays}日前`;
+    }
+  };
+
+  return (
+    <NewsItemClient item={item} className={s.newsItem}>
+      <div className={s.newsContent}>
+        <span className={s.newsSource}>{item.source}</span>
+        <span className={s.newsTime}>{formatTime(item.publishedAt)}</span>
+      </div>
+      <h3 className={s.newsTitle}>{item.title}</h3>
+    </NewsItemClient>
+  );
 }
