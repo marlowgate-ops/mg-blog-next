@@ -1,0 +1,9 @@
+[
+  { 
+    "id": "test-source", 
+    "type": "rss", 
+    "url": "https://feeds.feedburner.com/TechCrunch",
+    "name": "テストニュース",
+    "description": "テスト用のニュースフィード"
+  }
+]
