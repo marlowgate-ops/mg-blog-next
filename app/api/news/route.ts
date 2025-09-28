@@ -120,32 +120,64 @@ async function fetchAllNews(): Promise<NewsItem[]> {
   return uniqueItems;
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Parse query parameters
+    const { searchParams } = new URL(request.url);
+    const limit = Math.max(1, Math.min(100, parseInt(searchParams.get('limit') || '20', 10)));
+    const offset = Math.max(0, parseInt(searchParams.get('offset') || '0', 10));
+    const sourcesParam = searchParams.get('sources');
+    const requestedSources = sourcesParam ? sourcesParam.split(',').map(s => s.trim()) : [];
+    
     // Check cache
     const now = Date.now();
+    let allItems: NewsItem[] = [];
+    
     if (newsCache && (now - newsCache.lastFetch) < CACHE_DURATION) {
-      return Response.json({ items: newsCache.items }, { 
-        headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=60" } 
-      });
+      allItems = newsCache.items;
+    } else {
+      // Fetch fresh data
+      allItems = await fetchAllNews();
+      
+      // Update cache
+      newsCache = {
+        items: allItems,
+        lastFetch: now
+      };
     }
     
-    // Fetch fresh data
-    const items = await fetchAllNews();
+    // Filter by sources if requested
+    let filteredItems = allItems;
+    if (requestedSources.length > 0) {
+      const sources = newsSources as NewsSource[];
+      const sourceNames = sources
+        .filter(s => requestedSources.includes(s.id))
+        .map(s => s.name);
+      
+      filteredItems = allItems.filter(item => 
+        sourceNames.some(name => item.source === name)
+      );
+    }
     
-    // Update cache
-    newsCache = {
-      items,
-      lastFetch: now
-    };
+    // Apply pagination
+    const paginatedItems = filteredItems.slice(offset, offset + limit);
+    const nextOffset = offset + limit < filteredItems.length ? offset + limit : null;
     
-    return Response.json({ items }, { 
+    return Response.json({ 
+      items: paginatedItems,
+      nextOffset,
+      total: filteredItems.length
+    }, { 
       headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=60" } 
     });
   } catch (error) {
     console.error('Error in news API:', error);
     // Never return invalid shapes; if parsing yields nothing, respond with { items: [] }
-    return Response.json({ items: [] }, { 
+    return Response.json({ 
+      items: [], 
+      nextOffset: null, 
+      total: 0 
+    }, { 
       headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=60" } 
     });
   }
