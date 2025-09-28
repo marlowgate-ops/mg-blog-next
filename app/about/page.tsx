@@ -15,7 +15,7 @@ export default function Page() {
       <EditorialBlock showPolicyLink={false} />
       
       <h2>運営者</h2>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '24px' }}>
         <Image 
           src="/images/marlow-gate.png" 
           alt="Marlow Gate ロゴ" 
@@ -23,9 +23,14 @@ export default function Page() {
           height={36} 
           className="rounded-full" 
         />
-        <div>
-          <p style={{ margin: 0, fontWeight: '600' }}>名称：Marlow Gate</p>
-          <p style={{ margin: 0 }}>連絡先：<a href="mailto:support@marlowgate.com">support@marlowgate.com</a></p>
+        <div style={{ flex: 1 }}>
+          <h3 style={{ margin: 0, marginBottom: '8px', fontWeight: '600' }}>Marlow Gate 編集部</h3>
+          <p style={{ margin: 0, marginBottom: '12px', lineHeight: '1.6' }}>
+            金融・投資・保険・家計最適化などに関する「比較・レビュー・口座開設ガイド・実務ツール」を専門に制作する編集チーム。実取引・ヒアリング・ドキュメントレビューに基づく、初心者にも分かりやすい基準を採用します。
+          </p>
+          <p style={{ margin: 0 }}>
+            連絡先：<a href="mailto:support@marlowgate.com">support@marlowgate.com</a>
+          </p>
         </div>
       </div>
       <h2 id="policy">編集方針</h2>
