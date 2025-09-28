@@ -1,9 +1,26 @@
 [
   { 
-    "id": "test-source", 
+    "id": "prtimes", 
+    "name": "PR TIMES", 
     "type": "rss", 
-    "url": "https://feeds.feedburner.com/TechCrunch",
-    "name": "テストニュース",
-    "description": "テスト用のニュースフィード"
+    "url": "https://prtimes.jp/rss/finance.xml", 
+    "icon": "/news-providers/prtimes.svg",
+    "hostname": "prtimes.jp"
+  },
+  { 
+    "id": "kabutan", 
+    "name": "Kabutan", 
+    "type": "rss", 
+    "url": "https://kabutan.jp/news/rss", 
+    "icon": "/news-providers/kabutan.svg",
+    "hostname": "kabutan.jp"
+  },
+  { 
+    "id": "tdnet", 
+    "name": "TDnet", 
+    "type": "rss", 
+    "url": "https://www.release.tdnet.info/rss/disclosure.xml", 
+    "icon": "/news-providers/tdnet.svg",
+    "hostname": "www.release.tdnet.info"
   }
 ]

@@ -6,13 +6,14 @@ import Sidebar from '@/components/Sidebar'
 import popularItems from '@/config/popular.json'
 import s from './home.module.css'
 
-export const revalidate = 300;
+export const revalidate = 120;
 
 interface NewsItem {
-  id?: string;
+  id: string;
   title: string;
   url: string;
-  source: string;
+  sourceId: string;
+  sourceName: string;
   publishedAt: string;
 }
 
@@ -31,20 +32,22 @@ async function getLatest(limit = 3) {
   }
 }
 
-async function getLatestNews(limit = 10): Promise<NewsItem[]> {
+async function getLatestNews(limit = 8): Promise<NewsItem[]> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/news`, {
-      next: { revalidate: 300 }
+    const response = await fetch(`${baseUrl}/api/news?limit=${limit}`, {
+      next: { revalidate: 120 }
     });
     
     if (!response.ok) {
+      console.error('Failed to fetch news:', response.status);
       return [];
     }
     
     const data = await response.json();
-    return (data.items || []).slice(0, limit);
-  } catch {
+    return data.items || [];
+  } catch (error) {
+    console.error('Error fetching news:', error);
     return [];
   }
 }
@@ -188,16 +191,17 @@ function NewsItemCard({ item }: { item: NewsItem }) {
     }
   };
 
-  // Ensure NewsItem has required id field for NewsItemClient
+  // Ensure NewsItem has required id field for NewsItemClient  
   const itemWithId = {
     ...item,
-    id: item.id || `${item.title}-${item.source}`
+    id: item.id,
+    source: item.sourceName // Map sourceName to source for backward compatibility
   };
 
   return (
     <NewsItemClient item={itemWithId} className={s.newsItem}>
       <div className={s.newsContent}>
-        <span className={s.newsSource}>{item.source}</span>
+        <span className={s.newsSource}>{item.sourceName}</span>
         <span className={s.newsTime}>{formatTime(item.publishedAt)}</span>
       </div>
       <h3 className={s.newsTitle}>{item.title}</h3>

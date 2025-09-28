@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }, reset: () => void }) {
   return (
     <html>
@@ -9,7 +11,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
           <p className="mt-3 text-neutral-600">一時的な問題の可能性があります。数秒後に再試行してください。</p>
           <div className="mt-6 flex items-center justify-center gap-4">
             <button onClick={() => reset()} className="rounded-full border px-4 py-2 text-sm hover:bg-neutral-50">再試行</button>
-            <a href="/" className="rounded-full border px-4 py-2 text-sm hover:bg-neutral-50">トップへ戻る</a>
+            <Link href="/" className="rounded-full border px-4 py-2 text-sm hover:bg-neutral-50">トップへ戻る</Link>
           </div>
           <p className="mt-6 text-xs text-neutral-500">詳細: {error?.message}</p>
         </main>

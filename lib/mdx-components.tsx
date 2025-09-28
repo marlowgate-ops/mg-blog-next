@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import CodeBlock from '@/components/CodeBlock'
 
 const A = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
@@ -18,7 +19,14 @@ const CODE = (props: React.HTMLAttributes<HTMLElement>) => (
 )
 
 const IMG = (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
-  <img loading="lazy" decoding="async" width={props.width || 800} height={props.height || 400} {...props} />
+  <Image
+    src={props.src || ""}
+    alt={props.alt || ""}
+    width={typeof props.width === 'string' ? parseInt(props.width) : props.width || 800}
+    height={typeof props.height === 'string' ? parseInt(props.height) : props.height || 400}
+    loading="lazy"
+    {...(props.alt === "" && { "aria-hidden": true })}
+  />
 )
 
 export const components = {

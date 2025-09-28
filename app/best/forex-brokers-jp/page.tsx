@@ -75,7 +75,7 @@ function BrokerLogo({ name }: { name: string }) {
 const SectionHowToChoose = () => (
   <section className={s.section} data-section>
     <p className={s.note}>
-      名目スプレッドは"入口の目安"。実戦では
+      名目スプレッドは&quot;入口の目安&quot;。実戦では
       <strong>配信頻度・約定の安定性</strong>
       を合わせて見ると失敗しません。
     </p>
@@ -108,7 +108,7 @@ const SectionAppUx = () => (
   <section className={s.section} data-section>
     <p>
       日々の意思決定を速くするのは<strong>UIと情報の近さ</strong>
-      です。"迷わない導線"を重視。
+      です。&quot;迷わない導線&quot;を重視。
     </p>
     <ul className={s.bullets}>
       <li>チャートのレイアウト保存、注文~決済の手順が短いか。</li>
@@ -116,7 +116,7 @@ const SectionAppUx = () => (
       <li>入出金や明細確認がアプリ内で完結するか。</li>
     </ul>
     <div className={s.callout}>
-      "毎日触る前提"で、<strong>指が覚えるUI</strong>
+      &quot;毎日触る前提&quot;で、<strong>指が覚えるUI</strong>
       を選ぶとミスが減ります。
     </div>
   </section>
@@ -125,7 +125,7 @@ const SectionAppUx = () => (
 const SectionCostOpt = () => (
   <section className={s.section} data-section>
     <p className={s.note}>
-      "1→2社目の乗り換え"よりも、<strong>用途での使い分け</strong>
+      &quot;1→2社目の乗り換え&quot;よりも、<strong>用途での使い分け</strong>
       がコスパ最強。
     </p>
     <ol className={s.steps}>

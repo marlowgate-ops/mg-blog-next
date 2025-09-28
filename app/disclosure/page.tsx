@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-12">
       <h1 className="text-2xl font-bold mb-6">広告・アフィリエイトの開示</h1>
-      <p className="mb-4">本サイトの一部ページには、アフィリエイト広告リンク（<code>rel="sponsored"</code>）が含まれます。リンクのクリックや口座開設等の成果に応じて報酬を受け取る場合があります。</p>
+      <p className="mb-4">本サイトの一部ページには、アフィリエイト広告リンク（<code>rel=&quot;sponsored&quot;</code>）が含まれます。リンクのクリックや口座開設等の成果に応じて報酬を受け取る場合があります。</p>
       <h2 className="text-xl font-semibold mt-8 mb-3">運用ポリシー</h2>
       <ul className="list-disc pl-5 space-y-2">
         <li>おすすめ/比較は、手数料・スプレッド・約定力・使い勝手等の客観的項目を重視します。</li>
