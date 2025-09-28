@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 import newsSources from '@/config/news-sources.json';
 
+export const runtime = "nodejs";
+
 // Blocklist for domains we must not request or store
 const BLOCKED_DOMAINS = [
   'reuters.com',
@@ -40,54 +42,65 @@ function isUrlBlocked(url: string): boolean {
   }
 }
 
-async function fetchRSSFeed(source: NewsSource): Promise<NewsItem[]> {
-  try {
-    if (isUrlBlocked(source.url)) {
-      console.warn(`Blocked source: ${source.id}`);
-      return [];
-    }
-
-    const parser = new Parser();
-    const feed = await parser.parseURL(source.url);
-    
-    const items: NewsItem[] = [];
-    
-    for (const item of feed.items.slice(0, 20)) { // Limit per source
-      if (!item.link || !item.title || isUrlBlocked(item.link)) {
-        continue;
-      }
-
-      const publishedAt = item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString();
-      
-      items.push({
-        id: `${source.id}-${Buffer.from(item.link).toString('base64').slice(0, 8)}`,
-        title: item.title.trim(),
-        url: item.link,
-        source: source.name,
-        publishedAt
-      });
-    }
-    
-    return items;
-  } catch (error) {
-    console.error(`Error fetching RSS for ${source.id}:`, error);
-    return [];
-  }
-}
-
 async function fetchAllNews(): Promise<NewsItem[]> {
   const sources = newsSources as NewsSource[];
   const allItems: NewsItem[] = [];
   
-  // Fetch from all sources in parallel
-  const fetchPromises = sources.map(source => fetchRSSFeed(source));
-  const results = await Promise.allSettled(fetchPromises);
+  const TIMEOUT = 5000;
+  const controller = () => {
+    const ac = new AbortController();
+    setTimeout(() => ac.abort(), TIMEOUT);
+    return ac;
+  };
+
+  // Fetch from all sources with timeouts
+  const results = await Promise.allSettled(
+    sources.map(async (source) => {
+      try {
+        if (isUrlBlocked(source.url)) {
+          console.warn(`Blocked source: ${source.id}`);
+          return [];
+        }
+
+        const response = await fetch(source.url, { 
+          signal: controller().signal 
+        });
+        
+        if (!response.ok) return [];
+        
+        const text = await response.text();
+        const parser = new Parser();
+        const feed = await parser.parseString(text);
+        
+        const items: NewsItem[] = [];
+        
+        for (const item of feed.items.slice(0, 20)) {
+          if (!item.link || !item.title || isUrlBlocked(item.link)) {
+            continue;
+          }
+
+          const publishedAt = item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString();
+          
+          items.push({
+            id: `${source.id}-${Buffer.from(item.link).toString('base64').slice(0, 8)}`,
+            title: item.title.trim(),
+            url: item.link,
+            source: source.name,
+            publishedAt
+          });
+        }
+        
+        return items;
+      } catch (error) {
+        console.error(`Error fetching RSS for ${source.id}:`, error);
+        return [];
+      }
+    })
+  );
   
-  results.forEach((result, index) => {
+  results.forEach((result) => {
     if (result.status === 'fulfilled') {
       allItems.push(...result.value);
-    } else {
-      console.error(`Failed to fetch from ${sources[index].id}:`, result.reason);
     }
   });
   
@@ -112,7 +125,9 @@ export async function GET() {
     // Check cache
     const now = Date.now();
     if (newsCache && (now - newsCache.lastFetch) < CACHE_DURATION) {
-      return NextResponse.json({ items: newsCache.items });
+      return Response.json({ items: newsCache.items }, { 
+        headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=60" } 
+      });
     }
     
     // Fetch fresh data
@@ -124,12 +139,14 @@ export async function GET() {
       lastFetch: now
     };
     
-    return NextResponse.json({ items });
+    return Response.json({ items }, { 
+      headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=60" } 
+    });
   } catch (error) {
     console.error('Error in news API:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch news' },
-      { status: 500 }
-    );
+    // Never return invalid shapes; if parsing yields nothing, respond with { items: [] }
+    return Response.json({ items: [] }, { 
+      headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=60" } 
+    });
   }
 }

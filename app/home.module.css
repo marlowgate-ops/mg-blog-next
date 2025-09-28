@@ -187,6 +187,17 @@
   color: #0ea5e9;
 }
 
+.noNews {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.noNewsText {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .newsSection {
     padding: 16px;
@@ -242,4 +253,23 @@
   .newsTime {
     color: #94a3b8;
   }
+}
+
+/* Two-column layout */
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+@media (max-width: 960px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.primaryColumn {
+  min-width: 0; /* Prevent overflow */
 }

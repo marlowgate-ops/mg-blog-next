@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Container from '@/components/Container';
 import NewsClientWrapper from './NewsClientWrapper';
 import JsonLd from '@/components/JsonLd';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -74,6 +75,11 @@ export default async function NewsPage() {
     <>
       <JsonLd data={jsonLdData} />
       <Container>
+        <Breadcrumbs items={[
+          { name: 'ホーム', href: '/' },
+          { name: 'ニュース' }
+        ]} />
+        
         <div className={styles.header}>
           <h1 className={styles.title}>最新マーケットニュース</h1>
           <p className={styles.description}>
