@@ -777,3 +777,8 @@ h3 {
     margin-block: var(--space-section-sm);
   }
 }
+
+/* Avatar styling */
+.rounded-full {
+  border-radius: 50%;
+}

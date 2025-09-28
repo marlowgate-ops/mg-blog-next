@@ -1,3 +1,4 @@
+import Image from "next/image";
 import LegalPage from "@/components/LegalPage";
 import EditorialBlock from "@/components/EditorialBlock";
 
@@ -14,8 +15,19 @@ export default function Page() {
       <EditorialBlock showPolicyLink={false} />
       
       <h2>運営者</h2>
-      <p>名称：Marlow Gate</p>
-      <p>連絡先：<a href="mailto:support@marlowgate.com">support@marlowgate.com</a></p>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <Image 
+          src="/images/marlow-gate.png" 
+          alt="Marlow Gate ロゴ" 
+          width={36} 
+          height={36} 
+          className="rounded-full" 
+        />
+        <div>
+          <p style={{ margin: 0, fontWeight: '600' }}>名称：Marlow Gate</p>
+          <p style={{ margin: 0 }}>連絡先：<a href="mailto:support@marlowgate.com">support@marlowgate.com</a></p>
+        </div>
+      </div>
       <h2 id="policy">編集方針</h2>
       <ul>
         <li>比較・ランキングは編集基準に基づき作成し、広告の有無のみで順位を決定しません。</li>
