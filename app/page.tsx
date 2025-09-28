@@ -3,6 +3,7 @@ import NewsItemClient from '@/components/NewsItemClient'
 import s from './home.module.css'
 
 export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 interface NewsItem {
   id: string;
@@ -29,7 +30,7 @@ async function getLatest(limit = 3) {
 
 async function getLatestNews(limit = 10): Promise<NewsItem[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/news`, {
       next: { revalidate: 300 }
     });
@@ -45,6 +46,12 @@ async function getLatestNews(limit = 10): Promise<NewsItem[]> {
   }
 }
 
+async function getNews() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/news`, { next: { revalidate: 300 } });
+  if (!res.ok) return { items: [] as any[] };
+  return res.json() as Promise<{ items: { title:string; url:string; source:string; publishedAt:string }[] }>;
+}
+
 const SITE = {
   name: process.env.NEXT_PUBLIC_SITE_NAME || 'Marlow Gate',
   tagline: '最新の公開記事をお届けします。読みやすさと実用性を両立した、ここでしか読めないノウハウを。'
@@ -52,7 +59,7 @@ const SITE = {
 
 export default async function Page() {
   const posts = await getLatest(3)
-  const news = await getLatestNews(10)
+  const { items } = await getNews()
   
   return (
     <main className={s.container}>
@@ -66,15 +73,15 @@ export default async function Page() {
       </section>
 
       {/* Latest Market News Section */}
-      {news.length > 0 && (
+      {items.length > 0 && (
         <section className={s.newsSection}>
           <div className={s.sectionHeader}>
             <h2 className={s.sectionTitle}>Latest Market News</h2>
             <Link className={s.seeAllLink} href="/news">See all →</Link>
           </div>
           <div className={s.newsList}>
-            {news.slice(0, 8).map((item: NewsItem) => (
-              <NewsItemCard key={item.id} item={item} />
+            {items.slice(0, 8).map((item: any) => (
+              <NewsItemCard key={item.id || item.title} item={item} />
             ))}
           </div>
         </section>
