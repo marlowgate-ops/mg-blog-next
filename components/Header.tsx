@@ -39,6 +39,7 @@ export default function Header() {
         <nav className="nav" aria-label="secondary">
           <Link className="i" href="/">トップ</Link>
           <Link className="i" href="/best/forex-brokers-jp">国内FX/CFD</Link>
+          <Link className="i" href="/best/insurance">保険</Link>
           <Link className="i" href="/blog">ブログ</Link>
           <Link className="i" href="/sitemap.xml">サイトマップ</Link>
         </nav>
