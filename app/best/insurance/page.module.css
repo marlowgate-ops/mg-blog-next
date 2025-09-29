@@ -226,3 +226,62 @@
   color: #374151;
   line-height: 1.6;
 }
+
+/* Popular section */
+.popular {
+  margin-top: 64px;
+}
+
+.popularTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+.popularDescription {
+  font-size: 16px;
+  color: #6b7280;
+  text-align: center;
+  margin: 0 0 40px 0;
+}
+
+.popularGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.popularItem {
+  position: relative;
+}
+
+.popularRank {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  background: #2563eb;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .popularGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .popularTitle {
+    font-size: 24px;
+  }
+}
