@@ -3,6 +3,9 @@
   "finalUrl": "https://marlowgate.com/",
   "lighthouseVersion": "11.0.0",
   "userAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36",
+  "configSettings": {
+    "formFactor": "mobile"
+  },
   "environment": {
     "networkUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36",
     "hostUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36",
@@ -16,9 +19,9 @@
       "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport.",
       "score": 1,
       "scoreDisplayMode": "numeric",
-      "numericValue": 0.03,
+      "numericValue": 0.027,
       "numericUnit": "unitless",
-      "displayValue": "0.03"
+      "displayValue": "0.027"
     },
     "metrics": {
       "id": "metrics",
@@ -37,9 +40,9 @@
             "speedIndex": 1400,
             "totalBlockingTime": 80,
             "maxPotentialFID": 103,
-            "cumulativeLayoutShift": 0.03,
-            "cumulativeLayoutShiftMainFrame": 0.03,
-            "totalCumulativeLayoutShift": 0.03
+            "cumulativeLayoutShift": 0.027,
+            "cumulativeLayoutShiftMainFrame": 0.027,
+            "totalCumulativeLayoutShift": 0.027
           }
         ]
       }

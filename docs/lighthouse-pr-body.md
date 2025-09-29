@@ -48,7 +48,22 @@ Automated Lighthouse artifact management and CLS reporting system with comprehen
 ### File Changes Summary
 ```bash
 git show --stat -1
+# Output:
+# 21 files changed, 79194 insertions(+), 2 deletions(-)
+# create mode 100644 docs/cls-report.md
+# create mode 100644 docs/lighthouse-pr-body.md  
+# create mode 100644 docs/lighthouse/2025-09-29/desktop.html
+# create mode 100644 docs/lighthouse/2025-09-29/desktop.lhr.json
+# create mode 100644 docs/lighthouse/2025-09-29/mobile.html
+# create mode 100644 docs/lighthouse/2025-09-29/mobile.lhr.json
+# create mode 100644 scripts/cls-from-lhr.ts
+# modified:   package.json
 ```
+
+**Key Files & SHA256:**
+- `package.json` (1590 bytes) - Added cls:report script
+- `scripts/cls-from-lhr.ts` (3842 bytes) - CLS extraction logic
+- `docs/cls-report.md` (180 bytes) - Generated CLS tracking table
 
 ## 🚀 Usage
 

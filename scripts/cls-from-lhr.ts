@@ -1,8 +1,12 @@
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 
 interface LighthouseResult {
   requestedUrl: string;
+  configSettings?: {
+    formFactor?: string;
+  };
+  userAgent?: string;
   audits: {
     'cumulative-layout-shift'?: {
       numericValue: number;
@@ -39,6 +43,64 @@ function extractCLS(lhrPath: string): number {
   }
 }
 
+function detectFormFactor(lhrPath: string): 'desktop' | 'mobile' | 'unknown' {
+  try {
+    const data: LighthouseResult = JSON.parse(readFileSync(lhrPath, 'utf8'));
+    
+    // Primary: Check configSettings.formFactor
+    if (data.configSettings?.formFactor) {
+      return data.configSettings.formFactor === 'desktop' ? 'desktop' : 'mobile';
+    }
+    
+    // Fallback: Check user agent
+    if (data.userAgent) {
+      if (data.userAgent.includes('Mobile') || data.userAgent.includes('Android')) {
+        return 'mobile';
+      }
+      return 'desktop';
+    }
+    
+    return 'unknown';
+  } catch (error) {
+    console.error(`Error detecting form factor for ${lhrPath}:`, error);
+    return 'unknown';
+  }
+}
+
+function findLighthouseFiles(dateDir: string): { desktop?: string; mobile?: string } {
+  const result: { desktop?: string; mobile?: string } = {};
+  
+  // First, try standard naming
+  const desktopPath = join(dateDir, 'desktop.lhr.json');
+  const mobilePath = join(dateDir, 'mobile.lhr.json');
+  
+  if (existsSync(desktopPath)) result.desktop = desktopPath;
+  if (existsSync(mobilePath)) result.mobile = mobilePath;
+  
+  // If we have both standard files, return early
+  if (result.desktop && result.mobile) return result;
+  
+  // Auto-detect from lhr-*.json files
+  try {
+    const files = readdirSync(dateDir).filter(f => f.match(/^lhr-.*\.json$/));
+    
+    for (const file of files) {
+      const filePath = join(dateDir, file);
+      const formFactor = detectFormFactor(filePath);
+      
+      if (formFactor === 'desktop' && !result.desktop) {
+        result.desktop = filePath;
+      } else if (formFactor === 'mobile' && !result.mobile) {
+        result.mobile = filePath;
+      }
+    }
+  } catch (error) {
+    console.warn(`Error auto-detecting lighthouse files in ${dateDir}:`, error);
+  }
+  
+  return result;
+}
+
 function getStatus(desktopCLS: number, mobileCLS: number): string {
   if (desktopCLS < 0 || mobileCLS < 0) return '❌';
   return (desktopCLS < 0.05 && mobileCLS < 0.05) ? '✅' : '⚠️';
@@ -49,20 +111,26 @@ function updateCLSReport() {
   const artifactsDir = join(process.cwd(), 'docs', 'lighthouse', today);
   const reportPath = join(process.cwd(), 'docs', 'cls-report.md');
   
-  // Extract CLS values
-  const desktopPath = join(artifactsDir, 'desktop.lhr.json');
-  const mobilePath = join(artifactsDir, 'mobile.lhr.json');
-  
-  if (!existsSync(desktopPath) || !existsSync(mobilePath)) {
-    console.error(`Missing lighthouse files in ${artifactsDir}`);
-    console.error(`Expected: desktop.lhr.json, mobile.lhr.json`);
+  if (!existsSync(artifactsDir)) {
+    console.error(`Artifacts directory not found: ${artifactsDir}`);
+    console.error(`Please create the directory and place lighthouse reports inside.`);
     process.exit(1);
   }
   
-  const desktopCLS = extractCLS(desktopPath);
-  const mobileCLS = extractCLS(mobilePath);
+  // Find lighthouse files (preferring standard naming, falling back to auto-detection)
+  const files = findLighthouseFiles(artifactsDir);
   
-  console.log(`Extracted CLS - Desktop: ${desktopCLS}, Mobile: ${mobileCLS}`);
+  if (!files.desktop || !files.mobile) {
+    console.error(`Missing lighthouse files in ${artifactsDir}`);
+    console.error(`Found: desktop=${files.desktop ? 'YES' : 'NO'}, mobile=${files.mobile ? 'YES' : 'NO'}`);
+    console.error(`Expected: desktop.lhr.json, mobile.lhr.json (or auto-detectable lhr-*.json files)`);
+    process.exit(1);
+  }
+  
+  const desktopCLS = extractCLS(files.desktop);
+  const mobileCLS = extractCLS(files.mobile);
+  
+  console.log(`Extracted CLS - Desktop: ${desktopCLS} (${files.desktop}), Mobile: ${mobileCLS} (${files.mobile})`);
   
   // URLs to test (assuming both desktop and mobile tested same URLs)
   const urls = ['/', '/best/forex-brokers-jp'];
