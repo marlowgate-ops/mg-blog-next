@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import PrimaryCta from "./PrimaryCta";
-import Badge from "./Badge";
 import BadgeOverflow from "./BadgeOverflow";
 import MicroCopyMessage from "./MicroCopyMessage";
 import { getBrokerBadges, getEvaluationMeta } from "@/lib/evaluation";

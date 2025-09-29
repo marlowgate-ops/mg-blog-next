@@ -1,5 +1,5 @@
 // lib/evaluation.ts
-import { EvaluationCriteria, EvaluationWeights, BrokerScores } from "@/types/eval";
+import { EvaluationCriteria, EvaluationWeights } from "@/types/eval";
 import criteriaData from "@/data/eval/criteria.json";
 
 export type BrokerRow = {
@@ -41,6 +41,7 @@ function loadCriteria(pageSlug?: string): EvaluationCriteria {
   // Apply page-specific overrides if available
   if (pageSlug) {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const overrideData = require(`@/data/eval/overrides/${pageSlug}.json`);
       criteria = deepMerge(criteria, overrideData);
     } catch (error) {

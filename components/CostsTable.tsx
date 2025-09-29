@@ -24,7 +24,7 @@ export default function CostsTable(){
                 <td>{r.avg_deviation_pips ?? 0} pips</td>
                 <td>¥{(r.fee ?? 0).toLocaleString()}</td>
                 <td><strong>¥{effectiveCostYen(r).toLocaleString()}</strong></td>
-                <td>{r.swap_buy ?? 0} / {r.swap_sell ?? 0}</td>
+                <td>{r.swap_long ?? 0} / {r.swap_short ?? 0}</td>
               </tr>
             ))}
           </tbody>

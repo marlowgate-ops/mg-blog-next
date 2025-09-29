@@ -23,13 +23,13 @@ export default function SpecTable({ rows }: { rows: Broker[] }) {
           </thead>
           <tbody>
             {rows.map((b)=>(
-              <tr key={b.id} className={b.status !== "active" ? styles.inactive : undefined}>
+              <tr key={b.id} className={b.state !== "active" ? styles.inactive : undefined}>
                 <td>{b.name}</td>
                 <td>FX</td>
                 <td>Web / アプリ</td>
                 <td>—</td>
                 <td>—</td>
-                <td><AffCta broker={b} disabled={b.status!=="active"} placement="spec-table" size="sm" /></td>
+                <td><AffCta broker={b} disabled={b.state!=="active"} placement="spec-table" size="sm" /></td>
               </tr>
             ))}
           </tbody>

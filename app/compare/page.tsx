@@ -1,7 +1,6 @@
 import Container from "@/components/Container";
 import HubTiles from "@/components/HubTiles";
 import SectionBand from "@/components/SectionBand";
-import CategoryTiles from "@/components/CategoryTiles";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbList } from "@/lib/seo/jsonld";
 import { generateSEOMetadata } from "@/lib/seo/metadata";

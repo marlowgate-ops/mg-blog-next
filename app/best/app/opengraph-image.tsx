@@ -15,7 +15,7 @@ export default async function Image() {
   const mode = 'app';
   const first: any = top(mode)
   const brand = first?.name || first?.brand || '—'
-  const score = (mode==='total') ? (first?.score ?? 0) : (first?.subs?.[mode] ?? 0)
+  const score = (mode==='app') ? (first?.subs?.[mode] ?? 0) : (first?.score ?? 0)
   const title = 'アプリの使いやすさで選ぶ'
 
   return new ImageResponse(

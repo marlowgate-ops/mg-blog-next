@@ -5,9 +5,7 @@ import type { Broker } from "../../data/brokers";
 
 function gtagEvent(name: string, params: Record<string, any>) {
   try {
-    // @ts-ignore
     if (typeof window !== "undefined" && window.gtag) {
-      // @ts-ignore
       window.gtag("event", name, params);
     }
   } catch {}

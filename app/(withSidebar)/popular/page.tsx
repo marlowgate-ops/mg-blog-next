@@ -57,8 +57,7 @@ async function getTopPages(): Promise<TopPageData[]> {
 
 // Helper to get topic from pathname
 function getTopicFromPath(pathname: string): string | null {
-  const topics = topicsData as Topic[];
-  
+  // Direct pathname matching without needing topics data
   if (pathname.includes('/forex') || pathname.includes('/fx')) return 'forex';
   if (pathname.includes('/insurance')) return 'insurance';
   if (pathname.includes('/stock')) return 'stocks';

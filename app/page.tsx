@@ -32,26 +32,6 @@ async function getLatest(limit = 3) {
   }
 }
 
-async function getLatestNews(limit = 8): Promise<NewsItem[]> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/news?limit=${limit}`, {
-      next: { revalidate: 120 }
-    });
-    
-    if (!response.ok) {
-      console.error('Failed to fetch news:', response.status);
-      return [];
-    }
-    
-    const data = await response.json();
-    return data.items || [];
-  } catch (error) {
-    console.error('Error fetching news:', error);
-    return [];
-  }
-}
-
 async function getNews(): Promise<NewsItem[]> {
   try {
     // Prefer runtime host over env to avoid misconfig in prod

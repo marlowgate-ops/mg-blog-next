@@ -5,7 +5,6 @@ import MicroCopyMessage from "./MicroCopyMessage";
 
 interface StickyCTAProps {
   href?: string;
-  company?: string;
   deadline?: string;
   campaignText?: string;
   visible?: boolean;
@@ -13,13 +12,11 @@ interface StickyCTAProps {
 
 export default function StickyCTA({
   href = "#table",
-  company = "default",
   deadline,
   campaignText = "公式サイトで口座開設",
   visible = true,
 }: StickyCTAProps) {
   const [isVisible, setIsVisible] = React.useState(false);
-  const [isScrollingDown, setIsScrollingDown] = React.useState(false);
   const lastScrollY = React.useRef(0);
 
   const getDaysRemaining = (deadline: string) => {
@@ -33,10 +30,8 @@ export default function StickyCTA({
   React.useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const scrollingDown = currentScrollY > lastScrollY.current;
       const scrolledPastHero = currentScrollY > 300;
 
-      setIsScrollingDown(scrollingDown);
       setIsVisible(visible && scrolledPastHero);
       
       lastScrollY.current = currentScrollY;

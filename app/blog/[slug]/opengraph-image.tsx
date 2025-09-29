@@ -1,5 +1,4 @@
 import { ImageResponse } from "next/og";
-import type { Metadata } from "next";
 
 export const runtime = "edge";
 export const alt = "Marlow Gate Blog";

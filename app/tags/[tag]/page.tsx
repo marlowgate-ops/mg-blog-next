@@ -49,7 +49,7 @@ export default function TagPage({ params }: { params: { tag: string } }) {
             <p className="text-sm text-neutral-600 mt-2 line-clamp-3">{p.description}</p>
             <div className="text-xs text-neutral-500 mt-3 flex gap-3">
               <span>{new Date(p.date).toISOString().slice(0,10)}</span>
-              <span>・{p.readingTimeMins} min</span>
+              <span>{new Date(p.date).toISOString().slice(0,10)}</span>
             </div>
           </li>
         ))}

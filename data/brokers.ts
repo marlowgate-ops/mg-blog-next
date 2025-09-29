@@ -18,6 +18,7 @@ export type Broker = {
   appScoreText?: string;
   support?: string;
   note?: string;
+  ctaEnv?: string;
 };
 
 export const brokers: Broker[] = [

@@ -7,7 +7,7 @@ export default function ReviewDMM() {
   return (
     <>
       <div className="cta">
-        {AFF.DMM ? <AffLink href={AFF.DMM} label="公式サイトで開設手順を見る" gaLabel="DMM-review" /> : <a href="https://securities.dmm.com/" className="ghost">公式サイト</a>}
+        {AFF.DMM ? <AffLink href={AFF.DMM} gaLabel="DMM-review">公式サイトで開設手順を見る</AffLink> : <a href="https://securities.dmm.com/" className="ghost">公式サイト</a>}
       </div>
       <h2>良い点</h2>
       <ul>

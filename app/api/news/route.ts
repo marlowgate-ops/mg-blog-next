@@ -24,6 +24,8 @@ interface NewsSource {
   hostname: string;
 }
 
+// Legacy hostname validation function (kept for reference but not used)
+/*
 function isUrlAllowed(url: string, allowedHostname: string): boolean {
   try {
     const urlObj = new URL(url);
@@ -32,6 +34,7 @@ function isUrlAllowed(url: string, allowedHostname: string): boolean {
     return false; // Block invalid URLs
   }
 }
+*/
 
 async function fetchSourceNews(source: NewsSource): Promise<NewsItem[]> {
   const items: NewsItem[] = [];

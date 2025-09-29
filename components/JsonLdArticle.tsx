@@ -1,15 +1,6 @@
 'use client'
 import Script from 'next/script'
 
-function pickMeta(name: string, prop?: string) {
-  if (prop) {
-    const el = document.querySelector(`meta[${prop}="${name}"]`) as HTMLMetaElement | null
-    return el?.content || ''
-  }
-  const el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null
-  return el?.content || ''
-}
-
 export default function JsonLdArticle() {
   return (
     <Script id="jsonld-article" type="application/ld+json" strategy="afterInteractive">
