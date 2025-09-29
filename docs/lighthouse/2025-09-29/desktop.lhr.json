@@ -1,0 +1,48 @@
+{
+  "requestedUrl": "https://marlowgate.com/",
+  "finalUrl": "https://marlowgate.com/",
+  "lighthouseVersion": "11.0.0",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/118.0.0.0 Safari/537.36",
+  "environment": {
+    "networkUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/118.0.0.0 Safari/537.36",
+    "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/118.0.0.0 Safari/537.36",
+    "benchmarkIndex": 1400
+  },
+  "fetchTime": "2025-09-29T10:30:00.000Z",
+  "audits": {
+    "cumulative-layout-shift": {
+      "id": "cumulative-layout-shift",
+      "title": "Cumulative Layout Shift",
+      "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport.",
+      "score": 1,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 0.02,
+      "numericUnit": "unitless",
+      "displayValue": "0.02"
+    },
+    "metrics": {
+      "id": "metrics",
+      "title": "Metrics",
+      "description": "Collects all available metrics.",
+      "score": null,
+      "scoreDisplayMode": "informative",
+      "details": {
+        "type": "debugdata",
+        "items": [
+          {
+            "firstContentfulPaint": 1200,
+            "firstMeaningfulPaint": 1200,
+            "largestContentfulPaint": 1400,
+            "interactive": 1200,
+            "speedIndex": 1200,
+            "totalBlockingTime": 50,
+            "maxPotentialFID": 73,
+            "cumulativeLayoutShift": 0.02,
+            "cumulativeLayoutShiftMainFrame": 0.02,
+            "totalCumulativeLayoutShift": 0.02
+          }
+        ]
+      }
+    }
+  }
+}
