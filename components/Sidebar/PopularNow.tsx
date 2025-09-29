@@ -9,11 +9,6 @@ interface PopularItem {
   score: number;
 }
 
-interface PopularResponse {
-  items: PopularItem[];
-  fallback?: boolean;
-}
-
 async function fetchPopularPages(): Promise<PopularItem[]> {
   try {
     // For server-side rendering, use fallback data immediately

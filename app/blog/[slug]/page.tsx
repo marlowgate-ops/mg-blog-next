@@ -37,7 +37,7 @@ export default function Page({ params }: PageProps) {
   let ldCrumbs: any = {}
   try {
     ldPost = blogPostingLD({
-      title: post.title,
+      headline: post.title,
       description: post.description || '',
       url: `${site.url}${post.url || `/blog/${params.slug}`}`,
       datePublished: post.date,
@@ -45,9 +45,9 @@ export default function Page({ params }: PageProps) {
       authorName: 'Marlow Gate'
     })
     ldCrumbs = breadcrumbLD([
-      { name: 'ホーム', item: `${site.url}/` },
-      { name: 'ブログ', item: `${site.url}/blog/` },
-      { name: post.title }
+      { name: 'ホーム', url: `${site.url}/` },
+      { name: 'ブログ', url: `${site.url}/blog/` },
+      { name: post.title, url: `${site.url}${post.url || `/blog/${params.slug}`}` }
     ])
   } catch {}
 

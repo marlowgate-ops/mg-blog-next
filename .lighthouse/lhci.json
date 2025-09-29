@@ -1,0 +1,24 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "desktop"
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  },
+  "categories": {
+    "performance": true,
+    "accessibility": true,
+    "best-practices": true,
+    "seo": true
+  },
+  "audits": [
+    "cumulative-layout-shift",
+    "largest-contentful-paint",
+    "first-input-delay"
+  ]
+}

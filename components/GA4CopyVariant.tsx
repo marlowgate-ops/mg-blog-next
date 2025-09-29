@@ -7,7 +7,7 @@ export default function GA4CopyVariant() {
     if (!v) return
     // dataLayer 存在保証
     ;(window as any).dataLayer = (window as any).dataLayer || []
-    const gtag = function(){ (window as any).dataLayer.push(arguments as any) } as any
+    const gtag = function(...args: any[]){ (window as any).dataLayer.push(...args) } as any
     // user_properties に載せる（探索で使いやすい）
     gtag('set', 'user_properties', { copy_variant: v })
     // ページビューと同時にイベントパラメータでも送る（保険）

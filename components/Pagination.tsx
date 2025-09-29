@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { site } from '@/lib/site'
 
 export function Pagination({ current, total }:{ current:number, total:number }){
   const to = (n:number) => n===1 ? '/blog' : `/blog/page/${n}`

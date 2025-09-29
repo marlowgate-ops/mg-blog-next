@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './toc.module.css'
 
 type TocItem = { id: string; text: string; level: number }

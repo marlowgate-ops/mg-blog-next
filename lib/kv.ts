@@ -59,11 +59,9 @@ export const safeKvZrevrange = async (key: string, start: number, stop: number, 
   if (!kv) return [];
   try {
     if (withScores) {
-      // @ts-ignore - VercelKV types might be incomplete
-      return await kv.zrevrange(key, start, stop, { withscores: true });
+      return await kv.zrange(key, start, stop, { rev: true, withScores: true });
     } else {
-      // @ts-ignore - VercelKV types might be incomplete
-      return await kv.zrevrange(key, start, stop);
+      return await kv.zrange(key, start, stop, { rev: true });
     }
   } catch (error) {
     console.warn('KV zrevrange failed:', error);

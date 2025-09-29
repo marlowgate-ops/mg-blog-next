@@ -51,8 +51,8 @@ export function renderSafeMarkdown(md: string): string {
   }
   function splitRow(r:string){ return r.trim().replace(/^\|/,"").replace(/\|$/,"").split("|").map(c=>c.trim()); }
 
-  for (let raw of lines) {
-    let line = raw.replace(/\t/g,"    ").trimRight();
+  for (const raw of lines) {
+    const line = raw.replace(/\t/g,"    ").trimRight();
     // blank
     if (!line.trim()) { closeList(); flushTable(); closeAdmo(); html += "<p></p>"; continue; }
 

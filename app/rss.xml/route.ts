@@ -1,5 +1,3 @@
-import type { NextRequest } from 'next/server'
-
 export const revalidate = 3600  // Re-generate at most once per hour
 
 type Post = {
@@ -62,7 +60,7 @@ function getSlug(p: Post) {
   return String(p.slug || p.slugAsParams || p._raw?.flattenedPath || '')
 }
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://marlowgate.com').replace(/\/$/, '')
   const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Marlow Gate – Blog'
   const siteDesc = process.env.NEXT_PUBLIC_SITE_TAGLINE || '読むたびに価値が積み上がる。'

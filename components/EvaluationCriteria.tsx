@@ -6,6 +6,7 @@ const criterionDescriptions = {
   cost: "スプレッド/手数料/スワップの総額。",
   reliability: "ティック密度/約定の安定（混雑時含む）。",
   app: "視認性/操作導線/反応速度。",
+  spread: "主要ペアのスプレッドの狭さ。",
 };
 
 export default function EvaluationCriteria() {

@@ -22,7 +22,7 @@ export default function Badge({
       tabIndex={0}
       role="button"
     >
-      {label}
+      {badge}
     </span>
   );
 }

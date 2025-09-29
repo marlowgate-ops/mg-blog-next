@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import ListGrid from '@/components/ListGrid';
+import React from 'react';
 import topicsData from '@/config/topics.json';
 import styles from './SearchResults.module.css';
 
