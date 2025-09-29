@@ -11,6 +11,7 @@
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "validate-criteria": "node scripts/validate-criteria.js",
+    "validate:schema": "tsx scripts/validate-schema.ts",
     "validate-schema": "ajv validate -s data/eval/criteria.schema.json -d data/eval/criteria.json",
     "validate": "npm run validate-criteria && npm run validate-schema"
   },
@@ -39,6 +40,9 @@
     "ajv-cli": "^5.0.0",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.5.4",
+    "playwright": "^1.55.1",
+    "structured-data-testing-tool": "^4.5.0",
+    "tsx": "^4.20.6",
     "typescript": "5.4.5",
     "vitest": "^3.2.4"
   },
