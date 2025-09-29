@@ -13,7 +13,8 @@
     "validate-criteria": "node scripts/validate-criteria.js",
     "validate:schema": "tsx scripts/validate-schema.ts",
     "validate-schema": "ajv validate -s data/eval/criteria.schema.json -d data/eval/criteria.json",
-    "validate": "npm run validate-criteria && npm run validate-schema"
+    "validate": "npm run validate-criteria && npm run validate-schema",
+    "cls:report": "tsx scripts/cls-from-lhr.ts"
   },
   "dependencies": {
     "@vercel/kv": "^3.0.0",
