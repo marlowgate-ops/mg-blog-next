@@ -1,3 +1,11 @@
 node_modules
 .next/
 .contentlayer/
+
+# TS build cache
+*.tsbuildinfo
+
+# Lighthouse artifacts - keep organized ones, ignore loose files
+docs/lighthouse/*/*/*.zip
+docs/lighthouse/lhr-*.json
+docs/lighthouse/lhr-*.html
