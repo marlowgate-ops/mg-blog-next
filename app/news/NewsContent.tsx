@@ -266,12 +266,14 @@ export default function NewsContent() {
             <button
               className={`${styles.periodButton} ${selectedPeriod === 'day' ? styles.active : ''}`}
               onClick={() => handlePeriodToggle('day')}
+              data-period="day"
             >
               今日
             </button>
             <button
               className={`${styles.periodButton} ${selectedPeriod === 'week' ? styles.active : ''}`}
               onClick={() => handlePeriodToggle('week')}
+              data-period="week"
             >
               1週間
             </button>
@@ -326,7 +328,7 @@ export default function NewsContent() {
               {groupItems.map(item => {
                 const source = sources.find(s => s.id === item.sourceId);
                 return (
-                  <div key={item.id} className={styles.newsItem}>
+                  <div key={item.id} className={styles.newsItem} data-testid="news-item">
                     <div className={styles.itemHeader}>
                       {source && (
                         <Image
