@@ -2,15 +2,20 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  
   useEffect(()=>{
     const onScroll=()=> setScrolled(window.scrollY>6)
     onScroll()
     window.addEventListener('scroll', onScroll)
     return ()=> window.removeEventListener('scroll', onScroll)
   },[])
+
+  const isInsurancePage = pathname?.startsWith('/insurance')
 
   return (
     <header className={`hd ${scrolled ? 'shadow' : ''}`}>
@@ -40,7 +45,7 @@ export default function Header() {
         <nav className="nav" aria-label="secondary">
           <Link className="i" href="/">トップ</Link>
           <Link className="i" href="/best/forex-brokers-jp">国内FX/CFD</Link>
-          <Link className="i" href="/insurance">保険</Link>
+          <Link className={`i ${isInsurancePage ? 'active' : ''}`} href="/insurance">保険</Link>
           <Link className="i" href="/popular">人気記事</Link>
           <Link className="i" href="/blog">ブログ</Link>
           <Link className="i" href="/sitemap.xml">サイトマップ</Link>
@@ -61,6 +66,7 @@ export default function Header() {
         .util, .nav { display:flex; gap:10px; }
         .u, .i { padding:6px 10px; border-radius:10px; }
         .u:hover, .i:hover { background:#f3f4f6; }
+        .i.active { background:#e0f2fe; color:#0284c7; font-weight:600; }
         .menubar { padding-top:4px; padding-bottom:10px; }
         .search input{ padding:6px 10px; border:1px solid #e5e7eb; border-radius:8px; min-width:160px; }
         @media (max-width:720px){ .menubar{ display:none; } .logo { width:24px; height:24px; } }

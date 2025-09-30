@@ -27,7 +27,7 @@ const compareCategories = [
     id: 'auto',
     title: '自動車保険',
     description: '対人・対物補償やロードサービスを比較',
-    href: '/best/insurance/auto',
+    href: '/insurance/compare/auto',
     icon: '🚗',
     color: '#3b82f6'
   },
@@ -35,7 +35,7 @@ const compareCategories = [
     id: 'life',
     title: '生命保険',
     description: '死亡保障や医療特約を比較',
-    href: '/best/insurance/life',
+    href: '/insurance/compare/life',
     icon: '🛡️',
     color: '#10b981'
   },
@@ -43,7 +43,7 @@ const compareCategories = [
     id: 'medical',
     title: '医療保険',
     description: '入院・手術給付金を比較',
-    href: '/best/insurance/medical',
+    href: '/insurance/compare/medical',
     icon: '🏥',
     color: '#f59e0b'
   }
