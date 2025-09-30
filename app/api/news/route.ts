@@ -6,6 +6,61 @@ import { isUrlAllowed as isUrlAllowedByList } from '@/lib/url-allowlist';
 export const runtime = "nodejs";
 export const revalidate = 120;
 
+// Simple in-memory cache (would use Redis/KV in production)
+const cache = new Map<string, { data: any; timestamp: number; staleTimestamp: number }>();
+const CACHE_TTL = 120 * 1000; // 120 seconds
+const STALE_WHILE_REVALIDATE = 60 * 1000; // 60 seconds
+
+type Period = 'day' | 'week';
+
+function filterByPeriod(items: NewsItem[], period: Period): NewsItem[] {
+  const now = new Date();
+  const cutoffTime = new Date(now);
+  
+  if (period === 'day') {
+    cutoffTime.setHours(0, 0, 0, 0); // Start of today
+  } else if (period === 'week') {
+    cutoffTime.setDate(now.getDate() - 7); // 7 days ago
+  }
+  
+  return items.filter(item => {
+    const publishedAt = new Date(item.publishedAt);
+    return publishedAt >= cutoffTime;
+  });
+}
+
+function getCacheKey(providers: string[], period: Period): string {
+  const providerKey = providers.length > 0 ? providers.sort().join(',') : 'all';
+  return `mg:news:${providerKey}:${period}`;
+}
+
+function getCachedData(cacheKey: string): { data: NewsItem[] | null; isStale: boolean } {
+  const cached = cache.get(cacheKey);
+  if (!cached) {
+    return { data: null, isStale: false };
+  }
+  
+  const now = Date.now();
+  const isExpired = now > cached.timestamp + CACHE_TTL;
+  const isStale = now > cached.staleTimestamp;
+  
+  if (isExpired) {
+    cache.delete(cacheKey);
+    return { data: null, isStale: false };
+  }
+  
+  return { data: cached.data, isStale };
+}
+
+function setCachedData(cacheKey: string, data: NewsItem[]): void {
+  const now = Date.now();
+  cache.set(cacheKey, {
+    data,
+    timestamp: now,
+    staleTimestamp: now + STALE_WHILE_REVALIDATE
+  });
+}
+
 interface NewsItem {
   id: string;
   title: string;
@@ -107,7 +162,27 @@ async function fetchSourceNews(source: NewsSource): Promise<NewsItem[]> {
   }
 }
 
-async function fetchAllNews(requestedProviders: string[] = []): Promise<NewsItem[]> {
+async function fetchAllNews(requestedProviders: string[] = [], period: Period = 'week'): Promise<NewsItem[]> {
+  const cacheKey = getCacheKey(requestedProviders, period);
+  const cached = getCachedData(cacheKey);
+  
+  // Return cached data if available and not stale
+  if (cached.data && !cached.isStale) {
+    return cached.data;
+  }
+  
+  // If stale, return cached data but refresh in background
+  if (cached.data && cached.isStale) {
+    // Background refresh (don't await)
+    refreshNewsData(requestedProviders, period, cacheKey).catch(console.error);
+    return cached.data;
+  }
+  
+  // No cached data, fetch fresh
+  return await refreshNewsData(requestedProviders, period, cacheKey);
+}
+
+async function refreshNewsData(requestedProviders: string[], period: Period, cacheKey: string): Promise<NewsItem[]> {
   const sources = newsSources as NewsSource[];
   
   // Filter sources based on provider request
@@ -115,15 +190,17 @@ async function fetchAllNews(requestedProviders: string[] = []): Promise<NewsItem
     ? sources.filter(s => requestedProviders.includes(s.id))
     : sources;
   
-  // Fetch from all target sources in parallel
+  // Fetch from all target sources in parallel with individual try/catch
   const results = await Promise.allSettled(
     targetSources.map(source => fetchSourceNews(source))
   );
   
   const allItems: NewsItem[] = [];
-  results.forEach((result) => {
+  results.forEach((result, index) => {
     if (result.status === 'fulfilled') {
       allItems.push(...result.value);
+    } else {
+      console.warn(`Failed to fetch from ${targetSources[index].id}:`, result.reason);
     }
   });
   
@@ -140,7 +217,13 @@ async function fetchAllNews(requestedProviders: string[] = []): Promise<NewsItem
   // Sort by publishedAt desc
   uniqueItems.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
   
-  return uniqueItems;
+  // Apply period filter
+  const filteredItems = filterByPeriod(uniqueItems, period);
+  
+  // Cache the filtered results
+  setCachedData(cacheKey, filteredItems);
+  
+  return filteredItems;
 }
 
 export async function GET(request: NextRequest) {
@@ -149,13 +232,17 @@ export async function GET(request: NextRequest) {
     const limit = Math.max(1, Math.min(100, parseInt(searchParams.get('limit') || '20', 10)));
     const offset = Math.max(0, parseInt(searchParams.get('offset') || '0', 10));
     const providers = searchParams.get('providers');
+    const periodParam = searchParams.get('period');
+    
+    // Validate period parameter
+    const period: Period = (periodParam === 'day' || periodParam === 'week') ? periodParam : 'week';
     
     const requestedProviders = providers 
       ? providers.split(',').map(p => p.trim()).filter(Boolean)
       : [];
     
-    // Fetch news items
-    const allItems = await fetchAllNews(requestedProviders);
+    // Fetch news items with period filtering
+    const allItems = await fetchAllNews(requestedProviders, period);
     
     // Apply pagination
     const paginatedItems = allItems.slice(offset, offset + limit);
@@ -165,7 +252,8 @@ export async function GET(request: NextRequest) {
       { 
         items: paginatedItems,
         nextOffset,
-        total: allItems.length
+        total: allItems.length,
+        period
       }, 
       { 
         headers: { 
@@ -181,7 +269,8 @@ export async function GET(request: NextRequest) {
       { 
         items: [], 
         nextOffset: null, 
-        total: 0 
+        total: 0,
+        period: 'week'
       }, 
       { 
         status: 200, // Don't return error status for graceful degradation
