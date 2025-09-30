@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useDebounce } from '@/hooks/useDebounce';
+import JsonLdItemList from '@/components/JsonLdItemList';
 import newsSources from '@/config/news-sources.json';
 import styles from './page.module.css';
 
@@ -245,9 +246,11 @@ export default function NewsContent() {
   const groupedItems = groupItemsByDate(items);
   
   return (
-    <div className={styles.content}>
-      {/* Period and Provider filters */}
-      <div className={styles.filters}>
+    <>
+      <JsonLdItemList items={items} />
+      <div className={styles.content}>
+        {/* Period and Provider filters */}
+        <div className={styles.filters}>
         <div className={styles.topFilters}>
           <div className={styles.searchInput}>
             <input
@@ -377,5 +380,6 @@ export default function NewsContent() {
         </div>
       )}
     </div>
+    </>
   );
 }

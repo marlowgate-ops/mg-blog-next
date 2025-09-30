@@ -319,6 +319,7 @@
 /* News groups */
 .newsGroups {
   margin: 32px 0;
+  min-height: 400px; /* Prevent CLS when loading */
 }
 
 .dateGroup {
