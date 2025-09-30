@@ -35,6 +35,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const ogImageUrl = `/api/og?type=broker&title=${encodeURIComponent(broker.name)}&subtitle=${encodeURIComponent(`${broker.country}のFXブローカー`)}&score=${broker.ratingValue}`
+
   return {
     title: `${broker.name} - FXブローカー詳細レビュー | 評価・スプレッド・安全性`,
     description: `${broker.name}の詳細レビュー。スプレッド、手数料、安全性、取引プラットフォームなど、実際の評価とユーザーレビューをご紹介。`,
@@ -43,6 +45,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: `${broker.name}の詳細レビュー。スプレッド、手数料、安全性、取引プラットフォームなど、実際の評価とユーザーレビューをご紹介。`,
       type: 'article',
       url: `https://marlowgate.com${broker.url}`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${broker.name} - FXブローカー詳細レビュー`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${broker.name} - FXブローカー詳細レビュー`,
+      description: `${broker.name}の詳細レビュー。評価: ${broker.ratingValue}/5.0`,
+      images: [ogImageUrl],
     },
     alternates: {
       canonical: `https://marlowgate.com${broker.url}`,
