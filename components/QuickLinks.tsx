@@ -9,7 +9,7 @@ interface QuickLink {
 const quickLinks: QuickLink[] = [
   { label: '口座開設ガイド', href: '/guides/account-opening' },
   { label: '比較一覧', href: '/best' },
-  { label: '保険トップ', href: '/best/insurance' },
+  { label: '保険トップ', href: '/insurance' },
   { label: 'レビュー', href: '/reviews' },
 ];
 

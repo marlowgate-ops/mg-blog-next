@@ -1,0 +1,310 @@
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+  margin-bottom: 3rem;
+  border-radius: 12px;
+}
+
+.heroContent {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.heroDescription {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.heroCta {
+  display: inline-block;
+  background: white;
+  color: #667eea;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.heroCta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Section Headers */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+}
+
+.sectionDescription {
+  font-size: 1.125rem;
+  color: #6b7280;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Compare Section */
+.compareSection {
+  margin-bottom: 4rem;
+}
+
+.compareGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.compareCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 2rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.compareCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--card-color);
+}
+
+.compareCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  border-color: var(--card-color);
+}
+
+.compareCardIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.compareCardTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+}
+
+.compareCardDescription {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.compareCardAction {
+  color: var(--card-color);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+/* Guides Section */
+.guidesSection {
+  margin-bottom: 4rem;
+}
+
+.guidesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.guideCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.guideCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: #3b82f6;
+}
+
+.guideCategory {
+  display: inline-block;
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.guideTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.guideDescription {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.guideUpdated {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+/* FAQ Section */
+.faqSection {
+  margin-bottom: 3rem;
+}
+
+.faqList {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faqItem {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.faqQuestion {
+  padding: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.faqQuestion:hover {
+  background: #f9fafb;
+}
+
+.faqQuestion::after {
+  content: '+';
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  font-weight: 300;
+  transition: transform 0.2s ease;
+}
+
+.faqItem[open] .faqQuestion::after {
+  content: '−';
+  transform: translateY(-50%) rotate(0deg);
+}
+
+.faqAnswer {
+  padding: 0 1.5rem 1.5rem;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.faqAnswer p {
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero {
+    padding: 3rem 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroDescription {
+    font-size: 1.125rem;
+  }
+
+  .compareGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .compareCard {
+    padding: 1.5rem;
+  }
+
+  .guidesGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+
+  .sectionDescription {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 2rem 1rem;
+  }
+
+  .heroTitle {
+    font-size: 1.75rem;
+  }
+
+  .heroCta {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .compareCard {
+    padding: 1.25rem;
+  }
+
+  .guideCard {
+    padding: 1.25rem;
+  }
+
+  .faqQuestion {
+    padding: 1.25rem;
+  }
+
+  .faqAnswer {
+    padding: 0 1.25rem 1.25rem;
+  }
+}

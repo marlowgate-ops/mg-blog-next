@@ -15,7 +15,7 @@ const categories: CategoryItem[] = [
   { label: 'Guides', href: '/guides', icon: '📚' },
   { label: 'Reviews', href: '/reviews', icon: '⭐' },
   { label: 'Comparisons', href: '/best', icon: '⚖️' },
-  { label: 'Insurance', href: '/best/insurance', icon: '🛡️' },
+  { label: 'Insurance', href: '/insurance', icon: '🛡️' },
 ];
 
 interface CategoryHubProps {
