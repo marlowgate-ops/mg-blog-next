@@ -25,6 +25,12 @@ export const GET = async () => {
     { loc: `${site.url}/topics`, lastmod: new Date().toISOString(), priority: 0.7, changefreq: 'monthly' },
     { loc: `${site.url}/search`, lastmod: new Date().toISOString(), priority: 0.6, changefreq: 'monthly' },
     
+    // Tools section
+    { loc: `${site.url}/tools`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
+    { loc: `${site.url}/tools/position-size-calculator`, lastmod: new Date().toISOString(), priority: 0.7, changefreq: 'monthly' },
+    { loc: `${site.url}/tools/pip-value-calculator`, lastmod: new Date().toISOString(), priority: 0.7, changefreq: 'monthly' },
+    { loc: `${site.url}/tools/margin-calculator`, lastmod: new Date().toISOString(), priority: 0.7, changefreq: 'monthly' },
+    
     // Best section pages
     { loc: `${site.url}/best/app`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
     { loc: `${site.url}/best/campaigns`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'daily' },

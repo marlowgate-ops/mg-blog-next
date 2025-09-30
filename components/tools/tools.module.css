@@ -1,0 +1,123 @@
+/* Tool Layout Styles - CLS Prevention */
+
+.toolContainer {
+  min-height: 600px;
+  contain: layout style;
+}
+
+.inputSection {
+  min-height: 400px;
+}
+
+.resultSection {
+  min-height: 400px;
+}
+
+.inputField {
+  contain: layout;
+  height: 42px; /* Fixed height for form elements */
+}
+
+.resultCard {
+  contain: layout;
+  min-height: 120px;
+}
+
+.calculationResult {
+  contain: layout;
+  min-height: 80px;
+}
+
+.infoSection {
+  contain: layout;
+  min-height: 200px;
+}
+
+/* Button styles with fixed dimensions */
+.actionButton {
+  height: 42px;
+  min-width: 100px;
+  contain: layout;
+}
+
+/* Grid layouts with stable sizing */
+.toolGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  contain: layout;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  contain: layout;
+}
+
+/* Skeleton loading states */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Responsive breakpoints with stable layouts */
+@media (max-width: 768px) {
+  .toolContainer {
+    min-height: 800px;
+  }
+  
+  .inputSection,
+  .resultSection {
+    min-height: 350px;
+  }
+}
+
+/* Focus states without layout shift */
+.inputField:focus {
+  transform: none;
+  box-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);
+}
+
+.actionButton:hover {
+  transform: none;
+  background-color: rgb(29 78 216);
+}
+
+/* Prevent text reflow on number changes */
+.numericDisplay {
+  font-variant-numeric: tabular-nums;
+  min-width: 100px;
+  text-align: right;
+}
+
+/* Status indicators with fixed dimensions */
+.statusIndicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  contain: layout;
+}
+
+.statusGreen {
+  background-color: #10b981;
+}
+
+.statusYellow {
+  background-color: #f59e0b;
+}
+
+.statusRed {
+  background-color: #ef4444;
+}
