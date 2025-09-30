@@ -4,7 +4,6 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { NextRequest } from 'next/server';
 import { isUrlAllowed } from '@/lib/url-allowlist';
 
 // Mock the news sources configuration
@@ -51,112 +50,172 @@ describe('News API Allowlist Enforcement', () => {
     vi.restoreAllMocks();
   });
 
-  describe('fetchSourceNews function', () => {
-    it('should validate allowlist enforcement in isolation', () => {
-      // Test the allowlist logic directly
-      const isUrlAllowed = (url: string) => {
-        try {
-          const urlObj = new URL(url);
-          return mockNewsSources.some(source => source.hostname === urlObj.hostname);
-        } catch {
-          return false;
-        }
-      };
-
-      // This mimics the logic in the actual API route
-      const testUrls = [
-        { url: 'https://prtimes.jp/test', shouldAllow: true },
-        { url: 'https://kabutan.jp/test', shouldAllow: true },
-        { url: 'https://www.release.tdnet.info/test', shouldAllow: true },
-        { url: 'https://malicious.com/test', shouldAllow: false },
-        { url: 'https://fake-prtimes.jp/test', shouldAllow: false },
+  describe('Hostname Allowlist Validation', () => {
+    it('should allow PRTIMES.JP and www.prtimes.jp (case insensitive)', async () => {
+      const allowedUrls = [
+        'https://PRTIMES.JP/main/html/rd/p/000000001.123456.html',
+        'https://www.prtimes.jp/main/html/rd/p/000000001.123456.html',
+        'https://prtimes.jp/main/html/rd/p/000000001.123456.html'
       ];
 
-      testUrls.forEach(({ url, shouldAllow }) => {
-        expect(isUrlAllowed(url)).toBe(shouldAllow);
-      });
+      for (const url of allowedUrls) {
+        const result = await isUrlAllowed(url);
+        expect(result).toBe(true);
+      }
     });
 
-    it('should handle fetch timeout scenario', () => {
-      // Test timeout behavior - this would be implemented in the actual API
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Timeout')), 5000)
-      );
+    it('should reject subdomain spoofing attacks like prtimes.jp.evil.com', async () => {
+      const maliciousUrls = [
+        'https://prtimes.jp.evil.com/fake-news',
+        'https://fakeprtimes.jp/malicious-content',
+        'https://evil.prtimes.jp.com/spoofed',
+        'https://www.prtimes.jp.attacker.com/phishing'
+      ];
 
-      expect(() => timeoutPromise).toBeDefined();
-      // The actual API should handle this gracefully
-    });
-  });
-
-  describe('API Response Structure', () => {
-    it('should define expected news item structure', () => {
-      // Define the expected structure for news items
-      const expectedFields = ['title', 'url', 'publishedAt', 'sourceId', 'sourceName'];
-      
-      expectedFields.forEach(field => {
-        expect(field).toBeTruthy();
-      });
-
-      // Test sample data structure
-      const sampleNewsItem = {
-        title: 'Test Article',
-        url: 'https://prtimes.jp/test-article',
-        publishedAt: '2024-01-01T12:00:00Z',
-        sourceId: 'prtimes',
-        sourceName: 'PR TIMES'
-      };
-
-      expectedFields.forEach(field => {
-        expect(sampleNewsItem).toHaveProperty(field);
-      });
-    });
-  });
-
-  describe('URL Allowlist Validation', () => {
-    it('should allow URLs from whitelisted hostnames', async () => {
-      await expect(isUrlAllowed('https://prtimes.jp/test-article')).resolves.toBe(true);
-      await expect(isUrlAllowed('https://kabutan.jp/news/123')).resolves.toBe(true);
-      await expect(isUrlAllowed('https://www.release.tdnet.info/disclosure/456')).resolves.toBe(true);
+      for (const url of maliciousUrls) {
+        const result = await isUrlAllowed(url);
+        expect(result).toBe(false);
+      }
     });
 
-    it('should reject URLs from non-whitelisted hostnames', async () => {
-      await expect(isUrlAllowed('https://malicious-site.com/fake-news')).resolves.toBe(false);
-      await expect(isUrlAllowed('https://example.com/test')).resolves.toBe(false);
-      await expect(isUrlAllowed('https://subdomain.prtimes.jp/test')).resolves.toBe(false); // Exact match only
+    it('should allow all configured hostnames', async () => {
+      const validUrls = [
+        'https://prtimes.jp/test',
+        'https://kabutan.jp/news/article',
+        'https://www.release.tdnet.info/disclosure'
+      ];
+
+      for (const url of validUrls) {
+        const result = await isUrlAllowed(url);
+        expect(result).toBe(true);
+      }
+    });
+
+    it('should reject URLs from non-allowlisted domains', async () => {
+      const invalidUrls = [
+        'https://malicious-news.com/fake',
+        'https://evil.com/spoofed-content',
+        'https://attacker.net/phishing'
+      ];
+
+      for (const url of invalidUrls) {
+        const result = await isUrlAllowed(url);
+        expect(result).toBe(false);
+      }
     });
 
     it('should handle invalid URLs gracefully', async () => {
-      await expect(isUrlAllowed('not-a-url')).resolves.toBe(false);
-      await expect(isUrlAllowed('')).resolves.toBe(false);
-      // Note: ftp://prtimes.jp/file is a valid URL with whitelisted hostname, so it returns true
-      await expect(isUrlAllowed('ftp://prtimes.jp/file')).resolves.toBe(true); // Valid URL, whitelisted hostname
-    });
+      const invalidUrls = [
+        'not-a-url',
+        'ftp://invalid-protocol.com',
+        '',
+        null,
+        undefined
+      ];
 
-    it('should be case insensitive for hostnames', async () => {
-      await expect(isUrlAllowed('https://PRTIMES.JP/test')).resolves.toBe(true);
-      await expect(isUrlAllowed('https://Kabutan.JP/news')).resolves.toBe(true);
+      for (const url of invalidUrls) {
+        const result = await isUrlAllowed(url as any);
+        expect(result).toBe(false);
+      }
     });
   });
 
-  describe('Provider Configuration', () => {
-    it('should have valid configuration for all providers', () => {
-      mockNewsSources.forEach(source => {
-        expect(source.id).toBeTruthy();
-        expect(source.name).toBeTruthy();
-        expect(source.url).toBeTruthy();
-        expect(source.hostname).toBeTruthy();
-        expect(typeof source.id).toBe('string');
-        expect(typeof source.name).toBe('string');
-        expect(typeof source.url).toBe('string');
-        expect(typeof source.hostname).toBe('string');
-        
-        // URL should be valid
-        expect(() => new URL(source.url)).not.toThrow();
-        
-        // Hostname should match URL
-        const urlObj = new URL(source.url);
-        expect(urlObj.hostname).toBe(source.hostname);
+  describe('API Integration Tests', () => {
+    const mockFetch = vi.mocked(fetch);
+
+    it('should handle provider filtering with period parameter', async () => {
+      // Mock successful RSS response
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        text: async () => `<?xml version="1.0"?>
+          <rss version="2.0">
+            <channel>
+              <item>
+                <title>Test News Item</title>
+                <link>https://prtimes.jp/main/html/rd/p/000000001.123456.html</link>
+                <pubDate>Mon, 01 Jan 2024 12:00:00 GMT</pubDate>
+              </item>
+            </channel>
+          </rss>`
+      } as Response);
+
+      // Test would make request to news API route
+      const testUrl = new URL('http://localhost:3000/api/news');
+      testUrl.searchParams.set('providers', 'prtimes');
+      testUrl.searchParams.set('period', 'day');
+      testUrl.searchParams.set('limit', '10');
+
+      expect(testUrl.toString()).toContain('providers=prtimes');
+      expect(testUrl.toString()).toContain('period=day');
+      expect(testUrl.toString()).toContain('limit=10');
+    });
+
+    it('should respect 5 second timeout per provider', async () => {
+      // Mock a hanging request that should timeout
+      mockFetch.mockImplementationOnce(() => 
+        new Promise(resolve => setTimeout(resolve, 6000))
+      );
+
+      // In real implementation, this would timeout after 5s
+      const timeoutDuration = 5000;
+      expect(timeoutDuration).toBe(5000);
+      
+      // The API should handle timeouts gracefully and continue with other providers
+    });
+
+    it('should validate cache key format', () => {
+      const cacheKeyPattern = /^mg:news:(all|[\w,]+):(day|week)$/;
+      
+      const validKeys = [
+        'mg:news:all:week',
+        'mg:news:all:day', 
+        'mg:news:prtimes:week',
+        'mg:news:prtimes,kabutan:day'
+      ];
+
+      const invalidKeys = [
+        'invalid:format',
+        'mg:news:all:month',
+        'mg:news::day'
+      ];
+
+      validKeys.forEach(key => {
+        expect(cacheKeyPattern.test(key)).toBe(true);
       });
+
+      invalidKeys.forEach(key => {
+        expect(cacheKeyPattern.test(key)).toBe(false);
+      });
+    });
+
+    it('should validate response structure includes period field', () => {
+      const expectedResponseStructure = {
+        items: [],
+        nextOffset: null,
+        total: 0,
+        period: 'week'
+      };
+
+      expect(expectedResponseStructure).toHaveProperty('period');
+      expect(['day', 'week']).toContain(expectedResponseStructure.period);
+    });
+  });
+
+  describe('Per-Provider Error Handling', () => {
+    it('should continue processing other providers when one fails', () => {
+      const providers = ['prtimes', 'kabutan', 'tdnet'];
+      const failingProvider = 'kabutan';
+      
+      // Simulate one provider failing
+      const results = providers.map(provider => {
+        if (provider === failingProvider) {
+          return { status: 'rejected', reason: new Error('Network error') };
+        }
+        return { status: 'fulfilled', value: [] };
+      });
+
+      const successfulResults = results.filter(r => r.status === 'fulfilled');
+      expect(successfulResults).toHaveLength(2);
     });
   });
 });

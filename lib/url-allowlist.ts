@@ -53,6 +53,7 @@ function extractHostname(url: string): string | null {
 
 /**
  * Checks if a URL is allowed based on the configured news sources allowlist
+ * Supports exact hostname matching and www subdomain matching
  * @param url - The URL to validate
  * @returns Promise<boolean> - true if URL hostname is in allowlist
  */
@@ -63,7 +64,27 @@ export async function isUrlAllowed(url: string): Promise<boolean> {
   }
 
   const allowedHostnames = await getAllowedHostnames();
-  return allowedHostnames.includes(hostname);
+  
+  // Check exact match first
+  if (allowedHostnames.includes(hostname)) {
+    return true;
+  }
+  
+  // Check if this is a www subdomain of an allowed hostname
+  if (hostname.startsWith('www.')) {
+    const baseHostname = hostname.substring(4); // Remove 'www.'
+    if (allowedHostnames.includes(baseHostname)) {
+      return true;
+    }
+  }
+  
+  // Check if we have a www version of this hostname allowed
+  const wwwHostname = `www.${hostname}`;
+  if (allowedHostnames.includes(wwwHostname)) {
+    return true;
+  }
+  
+  return false;
 }
 
 /**

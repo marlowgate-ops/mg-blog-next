@@ -40,7 +40,8 @@ async function getNews(): Promise<NewsItem[]> {
     const host  = h.get("host");
     const base  = host ? `${proto}://${host}` : (process.env.NEXT_PUBLIC_SITE_URL ?? "https://marlowgate.com");
 
-    const res = await fetch(`${base}/api/news`, { next: { revalidate: 300 } });
+    // Fetch 8 items for homepage with default week period
+    const res = await fetch(`${base}/api/news?limit=8&period=week`, { next: { revalidate: 300 } });
     if (!res.ok) return [];
     const data = (await res.json()) as { items?: NewsItem[] };
     return Array.isArray(data?.items) ? data.items : [];

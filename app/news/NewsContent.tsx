@@ -19,6 +19,7 @@ interface NewsResponse {
   items: NewsItem[];
   nextOffset: number | null;
   total: number;
+  period: 'day' | 'week';
 }
 
 interface NewsSource {
@@ -78,22 +79,29 @@ export default function NewsContent() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [nextOffset, setNextOffset] = useState<number | null>(null);
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [selectedPeriod, setSelectedPeriod] = useState<'day' | 'week'>('week');
   
   const searchParams = useSearchParams();
   const router = useRouter();
   
   const sources = newsSources as NewsSource[];
   
-  // Update URL when providers change
+  // Update URL when providers or period change
   useEffect(() => {
     const providersParam = searchParams.get('providers');
+    const periodParam = searchParams.get('period');
+    
     if (providersParam) {
       setSelectedProviders(providersParam.split(',').filter(Boolean));
+    }
+    
+    if (periodParam === 'day' || periodParam === 'week') {
+      setSelectedPeriod(periodParam);
     }
   }, [searchParams]);
   
   // Fetch news data
-  const fetchNews = async (offset = 0, providers: string[] = [], replace = true) => {
+  const fetchNews = async (offset = 0, providers: string[] = [], period: 'day' | 'week' = 'week', replace = true) => {
     try {
       if (offset === 0) setLoading(true);
       else setLoadingMore(true);
@@ -101,6 +109,7 @@ export default function NewsContent() {
       const params = new URLSearchParams();
       params.set('limit', '20');
       params.set('offset', offset.toString());
+      params.set('period', period);
       if (providers.length > 0) {
         params.set('providers', providers.join(','));
       }
@@ -125,8 +134,8 @@ export default function NewsContent() {
   
   // Initial load
   useEffect(() => {
-    fetchNews(0, selectedProviders);
-  }, [selectedProviders]);
+    fetchNews(0, selectedProviders, selectedPeriod);
+  }, [selectedProviders, selectedPeriod]);
   
   const handleProviderToggle = (providerId: string) => {
     const newProviders = selectedProviders.includes(providerId)
@@ -142,12 +151,25 @@ export default function NewsContent() {
     } else {
       params.delete('providers');
     }
+    params.set('period', selectedPeriod);
+    router.replace(`/news?${params.toString()}`);
+  };
+  
+  const handlePeriodToggle = (period: 'day' | 'week') => {
+    setSelectedPeriod(period);
+    
+    // Update URL
+    const params = new URLSearchParams(searchParams);
+    params.set('period', period);
+    if (selectedProviders.length > 0) {
+      params.set('providers', selectedProviders.join(','));
+    }
     router.replace(`/news?${params.toString()}`);
   };
   
   const handleLoadMore = () => {
     if (nextOffset !== null) {
-      fetchNews(nextOffset, selectedProviders, false);
+      fetchNews(nextOffset, selectedProviders, selectedPeriod, false);
     }
   };
   
@@ -170,36 +192,54 @@ export default function NewsContent() {
   
   return (
     <div className={styles.content}>
-      {/* Provider chips */}
+      {/* Period and Provider filters */}
       <div className={styles.filters}>
-        <button
-          className={`${styles.chip} ${selectedProviders.length === 0 ? styles.active : ''}`}
-          onClick={() => {
-            setSelectedProviders([]);
-            const params = new URLSearchParams(searchParams);
-            params.delete('providers');
-            router.replace(`/news?${params.toString()}`);
-          }}
-        >
-          すべて
-        </button>
-        
-        {sources.map(source => (
+        <div className={styles.periodToggle}>
           <button
-            key={source.id}
-            className={`${styles.chip} ${selectedProviders.includes(source.id) ? styles.active : ''}`}
-            onClick={() => handleProviderToggle(source.id)}
+            className={`${styles.periodButton} ${selectedPeriod === 'day' ? styles.active : ''}`}
+            onClick={() => handlePeriodToggle('day')}
           >
-            <Image
-              src={source.icon}
-              alt={source.name}
-              width={16}
-              height={16}
-              className={styles.chipIcon}
-            />
-            {source.name}
+            今日
           </button>
-        ))}
+          <button
+            className={`${styles.periodButton} ${selectedPeriod === 'week' ? styles.active : ''}`}
+            onClick={() => handlePeriodToggle('week')}
+          >
+            1週間
+          </button>
+        </div>
+        
+        <div className={styles.providerChips}>
+          <button
+            className={`${styles.chip} ${selectedProviders.length === 0 ? styles.active : ''}`}
+            onClick={() => {
+              setSelectedProviders([]);
+              const params = new URLSearchParams(searchParams);
+              params.delete('providers');
+              params.set('period', selectedPeriod);
+              router.replace(`/news?${params.toString()}`);
+            }}
+          >
+            すべて
+          </button>
+          
+          {sources.map(source => (
+            <button
+              key={source.id}
+              className={`${styles.chip} ${selectedProviders.includes(source.id) ? styles.active : ''}`}
+              onClick={() => handleProviderToggle(source.id)}
+            >
+              <Image
+                src={source.icon}
+                alt={source.name}
+                width={16}
+                height={16}
+                className={styles.chipIcon}
+              />
+              {source.name}
+            </button>
+          ))}
+        </div>
       </div>
       
       {/* News items grouped by date */}
