@@ -1,0 +1,182 @@
+[
+  {
+    "slug": "dmm-fx",
+    "brand": "DMM FX",
+    "country": "JP",
+    "regulator": ["JFSA"],
+    "min_deposit": 0,
+    "leverage_max": 25,
+    "spread_typical": {
+      "USDJPY": 0.2,
+      "EURUSD": 0.3,
+      "GBPJPY": 0.9,
+      "AUDJPY": 0.7,
+      "EURJPY": 0.5
+    },
+    "platforms": ["DMM FX PLUS", "DMM FX STANDARD", "スマホアプリ"],
+    "instruments": ["FX", "CFD"],
+    "fees": {
+      "deposit": 0,
+      "withdrawal": 0,
+      "overnight": 0.1
+    },
+    "funding": ["bank_transfer", "quick_deposit"],
+    "notes": "国内大手のDMM.comグループが運営するFX業者。スプレッドの狭さと取引ツールの使いやすさが特徴。",
+    "urls": {
+      "official": "https://fx.dmm.com/",
+      "account_open": "https://fx.dmm.com/account/"
+    },
+    "scores": {
+      "cost": 4.5,
+      "platform": 4.2,
+      "execution": 4.3,
+      "support": 4.0,
+      "education": 3.8
+    },
+    "score_total": 4.2
+  },
+  {
+    "slug": "gmo-click",
+    "brand": "GMOクリック証券",
+    "country": "JP",
+    "regulator": ["JFSA"],
+    "min_deposit": 0,
+    "leverage_max": 25,
+    "spread_typical": {
+      "USDJPY": 0.2,
+      "EURUSD": 0.3,
+      "GBPJPY": 1.0,
+      "AUDJPY": 0.7,
+      "EURJPY": 0.5
+    },
+    "platforms": ["はっちゅう君FX+", "FXneo", "ブラウザ版"],
+    "instruments": ["FX", "CFD", "株式", "投資信託"],
+    "fees": {
+      "deposit": 0,
+      "withdrawal": 0,
+      "overnight": 0.1
+    },
+    "funding": ["bank_transfer", "quick_deposit"],
+    "notes": "GMOインターネットグループの証券会社。FX取引量8年連続国内第1位の実績。幅広い金融商品を取り扱い。",
+    "urls": {
+      "official": "https://www.click-sec.com/",
+      "account_open": "https://www.click-sec.com/corp/guide/fxtrade/"
+    },
+    "scores": {
+      "cost": 4.4,
+      "platform": 4.5,
+      "execution": 4.4,
+      "support": 4.2,
+      "education": 4.0
+    },
+    "score_total": 4.3
+  },
+  {
+    "slug": "sbi-fx",
+    "brand": "SBI FXトレード",
+    "country": "JP",
+    "regulator": ["JFSA"],
+    "min_deposit": 1,
+    "leverage_max": 25,
+    "spread_typical": {
+      "USDJPY": 0.18,
+      "EURUSD": 0.28,
+      "GBPJPY": 0.88,
+      "AUDJPY": 0.58,
+      "EURJPY": 0.48
+    },
+    "platforms": ["Rich Client NEXT", "WEB NEXT", "スマートフォンアプリ"],
+    "instruments": ["FX", "積立FX", "オプション"],
+    "fees": {
+      "deposit": 0,
+      "withdrawal": 0,
+      "overnight": 0.1
+    },
+    "funding": ["bank_transfer", "quick_deposit", "即時入金"],
+    "notes": "SBIグループのFX専業会社。1通貨から取引可能で初心者にも優しい。積立FXサービスも提供。",
+    "urls": {
+      "official": "https://www.sbifxt.co.jp/",
+      "account_open": "https://www.sbifxt.co.jp/account_open/"
+    },
+    "scores": {
+      "cost": 4.6,
+      "platform": 4.0,
+      "execution": 4.2,
+      "support": 4.1,
+      "education": 4.3
+    },
+    "score_total": 4.2
+  },
+  {
+    "slug": "matsui-fx",
+    "brand": "松井証券 MATSUI FX",
+    "country": "JP",
+    "regulator": ["JFSA"],
+    "min_deposit": 0,
+    "leverage_max": 25,
+    "spread_typical": {
+      "USDJPY": 0.2,
+      "EURUSD": 0.3,
+      "GBPJPY": 1.1,
+      "AUDJPY": 0.7,
+      "EURJPY": 0.5
+    },
+    "platforms": ["FXトレーダー・プラス", "スマートフォンアプリ", "ブラウザ版"],
+    "instruments": ["FX"],
+    "fees": {
+      "deposit": 0,
+      "withdrawal": 0,
+      "overnight": 0.1
+    },
+    "funding": ["bank_transfer", "リアルタイム入金"],
+    "notes": "創業100年超の老舗証券会社によるFXサービス。1通貨から取引可能で手数料の安さが魅力。",
+    "urls": {
+      "official": "https://www.matsui.co.jp/fx/",
+      "account_open": "https://www.matsui.co.jp/account_open/"
+    },
+    "scores": {
+      "cost": 4.3,
+      "platform": 3.8,
+      "execution": 4.0,
+      "support": 4.4,
+      "education": 3.9
+    },
+    "score_total": 4.1
+  },
+  {
+    "slug": "line-fx",
+    "brand": "LINE FX",
+    "country": "JP",
+    "regulator": ["JFSA"],
+    "min_deposit": 0,
+    "leverage_max": 25,
+    "spread_typical": {
+      "USDJPY": 0.2,
+      "EURUSD": 0.3,
+      "GBPJPY": 1.0,
+      "AUDJPY": 0.7,
+      "EURJPY": 0.5
+    },
+    "platforms": ["LINE FXアプリ", "ブラウザ版"],
+    "instruments": ["FX"],
+    "fees": {
+      "deposit": 0,
+      "withdrawal": 0,
+      "overnight": 0.1
+    },
+    "funding": ["bank_transfer", "LINE Pay"],
+    "notes": "LINEグループによるFXサービス。スマートフォン重視の使いやすいインターフェースが特徴。",
+    "urls": {
+      "official": "https://line-fx.com/",
+      "account_open": "https://line-fx.com/account/"
+    },
+    "scores": {
+      "cost": 4.2,
+      "platform": 4.1,
+      "execution": 3.9,
+      "support": 3.7,
+      "education": 3.5
+    },
+    "score_total": 3.9
+  }
+]
