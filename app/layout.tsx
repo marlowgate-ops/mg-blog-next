@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { site } from '@/lib/site'
 import { Inter } from 'next/font/google'
 import Header from '@/components/Header'
+import JsonLdSitewide from '@/components/JsonLdSitewide'
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
@@ -22,20 +23,6 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const org = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: site.brand?.name || site.title,
-    url: site.url,
-    logo: site.brand?.logo || undefined,
-  }
-  const website = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: site.title,
-    url: site.url
-  }
-
   // Analytics（GA4推奨）
   // 既存の NEXT_PUBLIC_GA_ID / NEXT_PUBLIC_GA4_ID どちらでも拾う
   const gaId = process.env.NEXT_PUBLIC_GA_ID || process.env.NEXT_PUBLIC_GA4_ID
@@ -45,8 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja">
       <body className={inter.className + " min-h-screen antialiased"}>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(org) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }} />
+        <JsonLdSitewide />
         {gaId ? (
           <>
             <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />

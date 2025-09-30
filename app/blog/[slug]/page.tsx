@@ -5,7 +5,9 @@ import { site } from '@/lib/site'
 import listStyles from '../../list.module.css'
 import styles from './article.module.css'
 import MDXRenderer from '../../../components/MDXRenderer'
-import { blogPostingLD, breadcrumbLD } from '../../../lib/jsonld'
+import JsonLd from '../../../components/JsonLd'
+import JsonLdBreadcrumbs from '../../../components/JsonLdBreadcrumbs'
+import { articleSchema } from '../../../lib/seo/jsonld'
 
 // Restrict dynamic paths strictly to generated params
 export const dynamicParams = false
@@ -33,59 +35,55 @@ export default function Page({ params }: PageProps) {
   const post: any = getPost(params.slug)
   if (!post) return notFound()
 
-  let ldPost: any = {}
-  let ldCrumbs: any = {}
-  try {
-    ldPost = blogPostingLD({
-      headline: post.title,
-      description: post.description || '',
-      url: `${site.url}${post.url || `/blog/${params.slug}`}`,
-      datePublished: post.date,
-      dateModified: post.lastmod || post.date,
-      authorName: 'Marlow Gate'
-    })
-    ldCrumbs = breadcrumbLD([
-      { name: 'ホーム', url: `${site.url}/` },
-      { name: 'ブログ', url: `${site.url}/blog/` },
-      { name: post.title, url: `${site.url}${post.url || `/blog/${params.slug}`}` }
-    ])
-  } catch {}
+  // Calculate word count from content
+  const wordCount = post.body?.raw ? post.body.raw.split(/\s+/).length : 0;
+  const readingTime = Math.max(1, Math.ceil(wordCount / 200)); // ~200 words per minute
+
+  const articleData = articleSchema({
+    headline: post.title,
+    description: post.description || '',
+    url: `${site.url}${post.url || `/blog/${params.slug}`}`,
+    datePublished: post.date,
+    dateModified: post.lastmod || post.date,
+    authorName: 'Marlow Gate編集部',
+    image: post.image ? [`${site.url}${post.image}`] : undefined,
+    wordCount,
+    readingTime: `PT${readingTime}M`,
+    category: post.category || '金融・投資',
+    tags: post.tags || []
+  });
 
   const CTA_URL = process.env.NEXT_PUBLIC_ARTICLE_CTA_URL || ''
   const CTA_LABEL = process.env.NEXT_PUBLIC_ARTICLE_CTA_LABEL || ''
   const CTA_BENEFITS = process.env.NEXT_PUBLIC_ARTICLE_CTA_BENEFITS || ''
 
   return (
-    <main className={styles.wrap}>
-      <section className={styles.article}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>{post.title}</h1>
-          {post.date ? <time dateTime={post.date}>{post.date}</time> : null}
-        </header>
+    <>
+      <JsonLd data={articleData} />
+      <JsonLdBreadcrumbs />
+      
+      <main className={styles.wrap}>
+        <section className={styles.article}>
+          <header className={styles.header}>
+            <h1 className={styles.title}>{post.title}</h1>
+            {post.date ? <time dateTime={post.date}>{post.date}</time> : null}
+          </header>
 
-        <article className={styles.content}>
-          {post?.body?.code ? <MDXRenderer code={post.body.code} /> : null}
-        </article>
+          <article className={styles.content}>
+            {post?.body?.code ? <MDXRenderer code={post.body.code} /> : null}
+          </article>
 
-        {(CTA_URL && CTA_LABEL) ? (
-          <div className={listStyles.ctaBox}>
-            <div>
-              <div className={listStyles.ctaTitle}>業務テンプレ｜ICS検証ノート</div>
-              {CTA_BENEFITS ? <div className={listStyles.ctaBenefits}>{CTA_BENEFITS}</div> : null}
+          {(CTA_URL && CTA_LABEL) ? (
+            <div className={listStyles.ctaBox}>
+              <div>
+                <div className={listStyles.ctaTitle}>業務テンプレ｜ICS検証ノート</div>
+                {CTA_BENEFITS ? <div className={listStyles.ctaBenefits}>{CTA_BENEFITS}</div> : null}
+              </div>
+              <div><Link href={CTA_URL} className={listStyles.btnPrimary}>{CTA_LABEL}</Link></div>
             </div>
-            <div><Link href={CTA_URL} className={listStyles.btnPrimary}>{CTA_LABEL}</Link></div>
-          </div>
-        ) : null}
-
-        {Object.keys(ldPost).length ? (
-          <script type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(ldPost) }} />
-        ) : null}
-        {Object.keys(ldCrumbs).length ? (
-          <script type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(ldCrumbs) }} />
-        ) : null}
-      </section>
-    </main>
+          ) : null}
+        </section>
+      </main>
+    </>
   )
 }
