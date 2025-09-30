@@ -38,6 +38,11 @@ export default function Header() {
           <Link className="u" href="/reviews">レビュー</Link>
           <Link className="u" href="/guides">ガイド</Link>
           <Link className="u" href="/topics">トピック</Link>
+          <Link className="u rss" href="/feed/posts.xml" title="ブログRSS" aria-label="ブログRSS">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.818c-.062-8.71-7.118-15.758-15.84-15.82zm0-3.368c10.58.046 19.152 8.594 19.183 19.188h4.817c-.03-13.231-10.755-23.954-24-24v4.812z"/>
+            </svg>
+          </Link>
           <Link className="u" href="/about">About</Link>
         </nav>
       </div>
@@ -66,6 +71,8 @@ export default function Header() {
         .util, .nav { display:flex; gap:10px; }
         .u, .i { padding:6px 10px; border-radius:10px; }
         .u:hover, .i:hover { background:#f3f4f6; }
+        .u.rss { padding:6px 8px; display:flex; align-items:center; color:#ff6600; }
+        .u.rss:hover { background:#fff3e6; }
         .i.active { background:#e0f2fe; color:#0284c7; font-weight:600; }
         .menubar { padding-top:4px; padding-bottom:10px; }
         .search input{ padding:6px 10px; border:1px solid #e5e7eb; border-radius:8px; min-width:160px; }

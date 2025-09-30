@@ -10,8 +10,13 @@ Allow: /
 # Sitemaps
 Sitemap: ${base}/sitemap.xml
 
-# Feed (crawler helper)
+# Feeds
 Sitemap: ${base}/rss.xml
+Sitemap: ${base}/feed/posts.xml
+Sitemap: ${base}/feed/news.xml
+
+# OpenSearch
+Allow: /opensearch.xml
 `
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } })
 }

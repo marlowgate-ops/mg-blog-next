@@ -48,6 +48,11 @@ export const GET = async () => {
     { loc: `${site.url}/disclaimer`, lastmod: new Date().toISOString(), priority: 0.4, changefreq: 'yearly' },
     { loc: `${site.url}/policy`, lastmod: new Date().toISOString(), priority: 0.4, changefreq: 'yearly' },
     { loc: `${site.url}/disclosure`, lastmod: new Date().toISOString(), priority: 0.4, changefreq: 'yearly' },
+    
+    // Feeds and OpenSearch
+    { loc: `${site.url}/opensearch.xml`, lastmod: new Date().toISOString(), priority: 0.3, changefreq: 'monthly' },
+    { loc: `${site.url}/feed/posts.xml`, lastmod: new Date().toISOString(), priority: 0.3, changefreq: 'daily' },
+    { loc: `${site.url}/feed/news.xml`, lastmod: new Date().toISOString(), priority: 0.3, changefreq: 'hourly' },
   ]
   
   const urls: SitemapEntry[] = [
@@ -63,6 +68,12 @@ export const GET = async () => {
       lastmod: new Date().toISOString(),
       priority: 0.5,
       changefreq: 'weekly' as const
+    })),
+    ...tags.map(t => ({ 
+      loc: `${site.url}/feed/tags/${encodeURIComponent(t)}.xml`, 
+      lastmod: new Date().toISOString(),
+      priority: 0.3,
+      changefreq: 'daily' as const
     })),
   ]
   
