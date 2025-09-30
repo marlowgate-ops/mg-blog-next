@@ -1,0 +1,241 @@
+/* MarketTicker.module.css */
+.container {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  min-height: 200px; /* Fixed height to prevent layout shift */
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+  border-bottom: 2px solid #3b82f6;
+  padding-bottom: 0.5rem;
+}
+
+.ticker {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  min-height: 60px; /* Fixed height to prevent layout shift */
+}
+
+.item:hover {
+  background: #f3f4f6;
+}
+
+.itemHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.symbol {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.name {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.itemData {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.change {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  min-width: 50px; /* Fixed width to prevent layout shift */
+  text-align: center;
+}
+
+.positive {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.negative {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-align: center;
+  margin-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.75rem;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  gap: 0.5rem;
+}
+
+.errorIcon {
+  font-size: 1.5rem;
+}
+
+.errorText {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+/* Skeleton loading styles */
+.skeleton {
+  pointer-events: none;
+}
+
+.skeletonText {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+  color: transparent !important;
+}
+
+.skeleton .symbol.skeletonText {
+  width: 60px;
+  height: 14px;
+}
+
+.skeleton .name.skeletonText {
+  width: 80px;
+  height: 12px;
+}
+
+.skeleton .value.skeletonText {
+  width: 70px;
+  height: 16px;
+}
+
+.skeleton .change.skeletonText {
+  width: 50px;
+  height: 12px;
+}
+
+.timestamp.skeletonText {
+  width: 120px;
+  height: 12px;
+  margin: 0.75rem auto 0;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 0.75rem;
+    min-height: 180px;
+  }
+  
+  .item {
+    padding: 0.5rem;
+    min-height: 50px;
+  }
+  
+  .symbol {
+    font-size: 0.8125rem;
+  }
+  
+  .value {
+    font-size: 0.9375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .ticker {
+    gap: 0.5rem;
+  }
+  
+  .item {
+    padding: 0.5rem;
+    min-height: 45px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .title {
+    color: #f9fafb;
+    border-bottom-color: #60a5fa;
+  }
+  
+  .item {
+    background: #374151;
+  }
+  
+  .item:hover {
+    background: #4b5563;
+  }
+  
+  .symbol {
+    color: #e5e7eb;
+  }
+  
+  .name {
+    color: #9ca3af;
+  }
+  
+  .value {
+    color: #f9fafb;
+  }
+  
+  .timestamp {
+    color: #6b7280;
+    border-top-color: #4b5563;
+  }
+  
+  .errorText {
+    color: #9ca3af;
+  }
+}

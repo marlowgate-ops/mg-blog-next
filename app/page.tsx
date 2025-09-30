@@ -3,6 +3,7 @@ import { headers } from 'next/headers'
 import NewsItemClient from '@/components/NewsItemClient'
 import Popular from '@/components/Popular'
 import Sidebar from '@/components/Sidebar'
+import MarketTicker from '@/components/MarketTicker'
 import popularItems from '@/config/popular.json'
 import s from './home.module.css'
 
@@ -73,6 +74,11 @@ export default async function Page() {
       {/* Two-column layout */}
       <div className={s.mainContent}>
         <div className={s.primaryColumn}>
+          {/* Market Ticker Section */}
+          <section className={s.marketSection}>
+            <MarketTicker limit={5} showTitle={true} />
+          </section>
+
           {/* Latest Market News Section */}
           {items.length > 0 ? (
             <section className={s.newsSection}>
