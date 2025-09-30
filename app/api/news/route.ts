@@ -233,6 +233,7 @@ export async function GET(request: NextRequest) {
     const offset = Math.max(0, parseInt(searchParams.get('offset') || '0', 10));
     const providers = searchParams.get('providers');
     const periodParam = searchParams.get('period');
+    const searchQuery = searchParams.get('q')?.trim() || '';
     
     // Validate period parameter
     const period: Period = (periodParam === 'day' || periodParam === 'week') ? periodParam : 'week';
@@ -242,7 +243,16 @@ export async function GET(request: NextRequest) {
       : [];
     
     // Fetch news items with period filtering
-    const allItems = await fetchAllNews(requestedProviders, period);
+    let allItems = await fetchAllNews(requestedProviders, period);
+    
+    // Apply search filtering if query is provided
+    if (searchQuery) {
+      const searchTerms = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
+      allItems = allItems.filter(item => {
+        const titleLower = item.title.toLowerCase();
+        return searchTerms.every(term => titleLower.includes(term));
+      });
+    }
     
     // Apply pagination
     const paginatedItems = allItems.slice(offset, offset + limit);
@@ -253,7 +263,8 @@ export async function GET(request: NextRequest) {
         items: paginatedItems,
         nextOffset,
         total: allItems.length,
-        period
+        period,
+        query: searchQuery
       }, 
       { 
         headers: { 
@@ -270,7 +281,8 @@ export async function GET(request: NextRequest) {
         items: [], 
         nextOffset: null, 
         total: 0,
-        period: 'week'
+        period: 'week',
+        query: ''
       }, 
       { 
         status: 200, // Don't return error status for graceful degradation

@@ -70,6 +70,39 @@
   box-shadow: 0 2px 4px rgba(14, 165, 233, 0.2);
 }
 
+.topFilters {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 200px;
+}
+
+.searchField {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid var(--border-light, rgba(2,8,23,0.12));
+  border-radius: var(--radius-md, 12px);
+  background: var(--surface-primary, #fff);
+  color: var(--text-primary, #0b1324);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.searchField:focus {
+  outline: none;
+  border-color: var(--color-primary, #0ea5e9);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.searchField::placeholder {
+  color: var(--text-muted, #94a3b8);
+}
+
 .providerChips {
   display: flex;
   flex-wrap: wrap;
