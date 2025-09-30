@@ -55,6 +55,93 @@ export function organization(opts?: { name?: string; url?: string; logo?: string
   };
 }
 
+// Enhanced Article schema
+export function articleSchema(input: {
+  headline: string;
+  url: string;
+  description?: string;
+  datePublished?: string;
+  dateModified?: string;
+  authorName?: string;
+  image?: string[];
+  wordCount?: number;
+  readingTime?: string;
+  category?: string;
+  tags?: string[];
+}) {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marlowgate.com';
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": input.headline,
+    "description": input.description,
+    "url": input.url,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": input.url
+    },
+    "author": {
+      "@type": "Person",
+      "name": input.authorName || "Marlow Gate編集部",
+      "url": `${baseUrl}/about`
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Marlow Gate",
+      "url": baseUrl,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/og/logo_gate_monogram_dark.png`,
+        "width": 200,
+        "height": 200
+      }
+    },
+    "datePublished": input.datePublished,
+    "dateModified": input.dateModified || input.datePublished,
+    "image": input.image || [`${baseUrl}/og/default-og.png`],
+    "articleSection": input.category || "金融・投資",
+    "keywords": input.tags?.join(', '),
+    "wordCount": input.wordCount,
+    "timeRequired": input.readingTime || "PT5M",
+    "inLanguage": "ja-JP",
+    "isAccessibleForFree": true,
+    "genre": "finance"
+  };
+}
+
+// WebSite schema for homepage and search functionality
+export function websiteSchema() {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marlowgate.com';
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Marlow Gate",
+    "description": "FX・投資・保険の比較・ランキング情報サイト",
+    "url": baseUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${baseUrl}/search?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Marlow Gate",
+      "url": baseUrl,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/og/logo_gate_monogram_dark.png`,
+        "width": 200,
+        "height": 200
+      }
+    }
+  };
+}
+
 // Enhanced ranking schema for broker lists
 export function brokerRankingSchema(
   brokers: Array<{ 
