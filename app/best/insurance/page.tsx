@@ -5,6 +5,9 @@ import JsonLdBreadcrumbs from '@/components/JsonLdBreadcrumbs';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import PrRibbon from '@/components/PrRibbon';
 import Link from 'next/link';
+import { allInsuranceProducts } from 'contentlayer/generated';
+import InsuranceCard from '@/components/insurance/InsuranceCard';
+import { itemListJSONLD } from '@/lib/seo/jsonld';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -54,26 +57,34 @@ const breadcrumbs = [
   { name: '保険比較' }
 ];
 
+// Get popular insurance products (top rated from each category)
+const getPopularInsuranceProducts = () => {
+  const productsByCategory = {
+    auto: allInsuranceProducts.filter(p => p.category === 'auto').sort((a, b) => b.ratingValue - a.ratingValue),
+    medical: allInsuranceProducts.filter(p => p.category === 'medical').sort((a, b) => b.ratingValue - a.ratingValue),
+    life: allInsuranceProducts.filter(p => p.category === 'life').sort((a, b) => b.ratingValue - a.ratingValue),
+  };
+  
+  return [
+    ...productsByCategory.auto.slice(0, 3),
+    ...productsByCategory.medical.slice(0, 3), 
+    ...productsByCategory.life.slice(0, 4)
+  ].sort((a, b) => b.ratingValue - a.ratingValue);
+};
+
+const popularProducts = getPopularInsuranceProducts();
+
 const jsonLdData = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   "name": "保険比較・選び方ガイド",
   "description": "自動車保険・生命保険・医療保険など各種保険の比較・選び方を解説",
   "url": "https://marlowgate.com/best/insurance",
-  "mainEntity": {
-    "@type": "ItemList",
-    "numberOfItems": insuranceCategories.length,
-    "itemListElement": insuranceCategories.map((category, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "item": {
-        "@type": "Service",
-        "name": category.title,
-        "description": category.description,
-        "url": `https://marlowgate.com${category.href}`
-      }
-    }))
-  }
+  "mainEntity": itemListJSONLD("保険商品人気ランキング", popularProducts.slice(0, 10).map((product) => ({
+    name: product.title,
+    url: `https://marlowgate.com${product.url}`,
+    ratingValue: product.ratingValue
+  })))
 };
 
 export default function InsurancePage() {
@@ -186,6 +197,32 @@ export default function InsurancePage() {
                 </p>
               </div>
             </details>
+          </div>
+        </section>
+
+        <section className={styles.popular}>
+          <h2 className={styles.popularTitle}>人気ランキング</h2>
+          <p className={styles.popularDescription}>
+            各カテゴリーから特に評価の高い保険商品をご紹介します。
+          </p>
+          <div className={styles.popularGrid}>
+            {popularProducts.slice(0, 10).map((product, index) => (
+              <div key={product.slug} className={styles.popularItem}>
+                <div className={styles.popularRank}>#{index + 1}</div>
+                <InsuranceCard
+                  title={product.title}
+                  provider={product.provider}
+                  tagline={product.tagline}
+                  pros={product.pros}
+                  ratingValue={product.ratingValue}
+                  ratingCount={product.ratingCount}
+                  ctaLabel={product.ctaLabel}
+                  ctaUrl={product.ctaUrl}
+                  updatedAt={product.updatedAt}
+                  url={product.url}
+                />
+              </div>
+            ))}
           </div>
         </section>
       </Container>
