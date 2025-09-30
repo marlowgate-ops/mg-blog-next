@@ -22,7 +22,7 @@ export const Post = defineDocumentType(() => ({
 
 export const InsuranceProduct = defineDocumentType(() => ({
   name: 'InsuranceProduct',
-  filePathPattern: `insurance/**/*.mdx`,
+  filePathPattern: `insurance/**/*.{md,mdx}`,
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
@@ -32,7 +32,7 @@ export const InsuranceProduct = defineDocumentType(() => ({
     tagline: { type: 'string', required: true },
     pros: { type: 'list', of: { type: 'string' }, required: true },
     cons: { type: 'list', of: { type: 'string' }, required: true },
-    priceNote: { type: 'string', required: false },
+    priceNote: { type: 'string', required: true },
     ratingValue: { type: 'number', required: true },
     ratingCount: { type: 'number', required: true },
     ctaLabel: { type: 'string', required: true },
@@ -40,7 +40,16 @@ export const InsuranceProduct = defineDocumentType(() => ({
     updatedAt: { type: 'date', required: true },
   },
   computedFields: {
-    url: { type: 'string', resolve: (doc) => `/insurance/${doc.category}/${doc.slug}` },
+    url: { type: 'string', resolve: (doc) => `/best/insurance/${doc.category}/${doc.slug}` },
+    slug: { type: 'string', resolve: (doc) => doc.slug || doc._raw.flattenedPath.split('/').pop()?.replace(/\.mdx?$/, '') || '' },
+    rating: { 
+      type: 'json', 
+      resolve: (doc) => ({ value: doc.ratingValue, count: doc.ratingCount })
+    },
+    cta: {
+      type: 'json',
+      resolve: (doc) => ({ label: doc.ctaLabel, url: doc.ctaUrl })
+    },
   },
 }))
 
