@@ -1,0 +1,276 @@
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 18px;
+  color: #6b7280;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.selector {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.selectorTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.brokerList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.brokerItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.brokerItem:hover {
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.brokerItem.selected {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.brokerInfo {
+  flex: 1;
+}
+
+.brokerName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.brokerMeta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.rating {
+  font-size: 14px;
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.safety {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.selectButton {
+  padding: 8px 16px;
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.brokerItem.selected .selectButton {
+  background: #3b82f6;
+  color: white;
+}
+
+.compareSection {
+  margin-bottom: 48px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.tips {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.tipsTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.tipsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.tip {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.tipTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.tipText {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.disclaimer {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.disclaimerTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #9a3412;
+  margin-bottom: 12px;
+}
+
+.disclaimerText {
+  font-size: 14px;
+  color: #9a3412;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .header {
+    margin-bottom: 32px;
+  }
+  
+  .title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .description {
+    font-size: 16px;
+  }
+  
+  .selector {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .selectorTitle {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .brokerList {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .brokerItem {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .brokerMeta {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .selectButton {
+    align-self: stretch;
+    text-align: center;
+  }
+  
+  .sectionTitle {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .tips {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .tipsTitle {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .tipsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .tip {
+    padding: 16px;
+  }
+  
+  .tipTitle {
+    font-size: 15px;
+  }
+  
+  .tipText {
+    font-size: 13px;
+  }
+  
+  .disclaimer {
+    padding: 20px;
+  }
+  
+  .disclaimerTitle {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .disclaimerText {
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,169 @@
+.keyFacts {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.value {
+  font-size: 16px;
+  color: #111827;
+}
+
+.regulators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.safetyScore {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.score {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 6px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.score.excellent {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.score.good {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.score.fair {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.score.poor {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.safetyLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.platforms {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.platform {
+  font-size: 14px;
+  color: #374151;
+  padding: 4px 0;
+  border-left: 3px solid #3b82f6;
+  padding-left: 12px;
+}
+
+.funding {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fundingMethod {
+  font-size: 12px;
+  background-color: #f3f4f6;
+  color: #374151;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+}
+
+@media (max-width: 768px) {
+  .keyFacts {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .sectionTitle {
+    font-size: 16px;
+  }
+  
+  .safetyScore {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .score {
+    font-size: 16px;
+    min-width: 70px;
+  }
+  
+  .platforms {
+    gap: 4px;
+  }
+  
+  .platform {
+    font-size: 13px;
+    padding-left: 10px;
+  }
+}

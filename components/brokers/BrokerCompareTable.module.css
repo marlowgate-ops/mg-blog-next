@@ -1,0 +1,432 @@
+.compareTable {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.empty {
+  padding: 48px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+/* Mobile View */
+.mobileView {
+  display: block;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px 8px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.tab:hover {
+  background: #f3f4f6;
+}
+
+.tab.active {
+  color: #1f2937;
+  background: #ffffff;
+  border-bottom: 2px solid #3b82f6;
+}
+
+.tabContent {
+  display: none;
+  padding: 24px;
+}
+
+.tabContent.active {
+  display: block;
+}
+
+/* Desktop View */
+.desktopView {
+  display: none;
+  flex-direction: row;
+}
+
+.stickyColumn {
+  min-width: 200px;
+  background: #f9fafb;
+  border-right: 1px solid #e5e7eb;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+}
+
+.rowHeader {
+  padding: 16px 12px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.subRowHeader {
+  padding: 12px 12px 12px 24px;
+  font-weight: 500;
+  font-size: 12px;
+  color: #6b7280;
+  border-bottom: 1px solid #f3f4f6;
+  background: #f9fafb;
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+}
+
+.dataColumns {
+  display: flex;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.dataColumn {
+  min-width: 250px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.dataColumn:last-child {
+  border-right: none;
+}
+
+.dataCell {
+  padding: 16px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.subDataCell {
+  padding: 12px 12px 12px 24px;
+  border-bottom: 1px solid #f3f4f6;
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+/* Broker Card (Mobile) */
+.brokerCard {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.cardTitle {
+  text-decoration: none;
+  color: inherit;
+}
+
+.cardTitle h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.cardGrid {
+  padding: 16px 20px;
+  display: grid;
+  gap: 20px;
+}
+
+.cardSection {
+  background: #f9fafb;
+  padding: 16px;
+  border-radius: 6px;
+}
+
+.cardSectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 12px 0;
+}
+
+.cardItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.cardItem:last-child {
+  margin-bottom: 0;
+}
+
+.cardLabel {
+  font-size: 13px;
+  color: #6b7280;
+  flex: 1;
+}
+
+.cardFooter {
+  padding: 16px 20px 20px;
+}
+
+.cardCta {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  background: #3b82f6;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.cardCta:hover {
+  background: #2563eb;
+}
+
+/* Common Components */
+.brokerLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.brokerName {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.safetyScore {
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.safetyScore.excellent {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.safetyScore.good {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.safetyScore.fair {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.safetyScore.poor {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.regulators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.moreRegulators {
+  font-size: 12px;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.spreadsHeader {
+  font-weight: 600;
+  color: #374151;
+  font-size: 13px;
+}
+
+.spreadValue {
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.spreadValue.excellent {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.spreadValue.good {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.spreadValue.fair {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.spreadValue.poor {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.noData {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.platforms {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.platform {
+  font-size: 12px;
+  color: #374151;
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.morePlatforms {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.funding {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fundingMethod {
+  font-size: 12px;
+  color: #374151;
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.moreFunding {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.feesNote {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.prosList,
+.consList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+}
+
+.prosItem {
+  color: #059669;
+  margin-bottom: 4px;
+}
+
+.consItem {
+  color: #dc2626;
+  margin-bottom: 4px;
+}
+
+.morePros,
+.moreCons {
+  color: #6b7280;
+  font-style: italic;
+  font-size: 11px;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+  transition: background-color 0.2s ease;
+  min-width: 120px;
+}
+
+.ctaButton:hover {
+  background: #2563eb;
+}
+
+/* Responsive Design */
+@media (min-width: 1024px) {
+  .mobileView {
+    display: none;
+  }
+  
+  .desktopView {
+    display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+  }
+  
+  .tab {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .tab.active {
+    border-bottom: 1px solid #3b82f6;
+  }
+  
+  .tabContent {
+    padding: 16px;
+  }
+  
+  .cardGrid {
+    padding: 12px 16px;
+  }
+  
+  .cardSection {
+    padding: 12px;
+  }
+  
+  .cardFooter {
+    padding: 12px 16px 16px;
+  }
+}
