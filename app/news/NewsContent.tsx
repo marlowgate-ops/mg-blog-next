@@ -174,12 +174,14 @@ export default function NewsContent() {
   };
   
   const handleNewsClick = (item: NewsItem) => {
-    // GA4 tracking
+    // GA4 tracking for news item clicks
     if (typeof window !== 'undefined' && 'gtag' in window) {
       (window as any).gtag('event', 'news_item_click', {
-        sourceId: item.sourceId,
-        url: item.url,
-        title: item.title,
+        source_id: item.sourceId,
+        source_name: item.sourceName,
+        news_url: item.url,
+        news_title: item.title,
+        page_location: 'news_listing'
       });
     }
   };
