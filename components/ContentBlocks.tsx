@@ -61,7 +61,7 @@ const insuranceData = [
   {
     title: '保険比較トップ',
     description: '生命保険・医療保険・自動車保険を比較',
-    href: '/best/insurance',
+    href: '/insurance',
   },
   {
     title: '自動車保険',

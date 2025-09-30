@@ -29,7 +29,7 @@ function getDisplayTitle(path: string): string {
   // Map common paths to readable titles
   const titleMap: Record<string, string> = {
     '/best/forex-brokers-jp': 'FX業者比較',
-    '/best/insurance': '保険比較',
+    '/insurance': '保険比較',
     '/guides': 'ガイド記事', 
     '/reviews': 'レビュー',
     '/topics': 'トピック一覧',

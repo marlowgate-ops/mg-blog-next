@@ -1,4 +1,55 @@
-.footer { margin-top: 28px; border-top: 1px solid #e2e8f0; background: #fff; }
+/* Sitemap Section */
+.sitemap { 
+  background: #f8fafc; 
+  border-top: 1px solid #e2e8f0; 
+  margin-top: 28px;
+}
+
+.sitemapInner { 
+  max-width: 1120px; 
+  margin: 0 auto; 
+  padding: 2rem clamp(16px, 4vw, 28px);
+}
+
+.sitemapGrid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+  gap: 2rem;
+}
+
+.sitemapColumn { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1rem;
+}
+
+.sitemapTitle { 
+  font-size: 1.125rem; 
+  font-weight: 700; 
+  color: #1f2937; 
+  margin: 0;
+}
+
+.sitemapNav { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.5rem;
+}
+
+.sitemapLink { 
+  color: #6b7280; 
+  text-decoration: none; 
+  font-size: 0.875rem; 
+  padding: 0.25rem 0;
+  transition: color 0.2s ease;
+}
+
+.sitemapLink:hover { 
+  color: #3b82f6;
+}
+
+/* Footer */
+.footer { margin-top: 0; border-top: 1px solid #e2e8f0; background: #fff; }
 .inner { max-width: 1120px; margin: 0 auto; padding: 18px clamp(16px, 4vw, 28px);
          display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .brand { color: #475569; font-size: 14px; display:flex; align-items:center; gap:8px; }
@@ -12,7 +63,23 @@
 .cta { text-decoration: none; color: #fff; background: #0ea5e9; border: 1px solid rgba(255,255,255,.08);
        border-radius: 999px; padding: 8px 14px; font-weight: 700; box-shadow: 0 6px 18px rgba(2,132,199,.25); }
 .cta:hover { background:#0284c7; }
+
+@media (max-width: 768px) {
+  .sitemapGrid { 
+    grid-template-columns: 1fr; 
+    gap: 1.5rem;
+  }
+  
+  .sitemapInner { 
+    padding: 1.5rem clamp(16px, 4vw, 28px);
+  }
+}
+
 @media (prefers-color-scheme: dark) {
+  .sitemap { background:#0b1220; border-top-color:#172033; }
+  .sitemapTitle { color: #e2e8f0; }
+  .sitemapLink { color: #94a3b8; }
+  .sitemapLink:hover { color: #60a5fa; }
   .footer { background:#0b1220; border-top-color:#172033; }
   .inner { color:#cbd5e1; }
   .link { color:#e2e8f0; background:#10192b; border-color:#172033; }
