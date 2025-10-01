@@ -1,5 +1,6 @@
 import { allPosts } from 'contentlayer/generated'
 import { site } from '@/lib/site'
+import { getAllTopicHubs } from '@/lib/topics/hubs'
 
 type SitemapEntry = {
   loc: string;
@@ -11,6 +12,7 @@ type SitemapEntry = {
 export const GET = async () => {
   const posts = allPosts.filter(p=>!p.draft)
   const tags = Array.from(new Set(posts.flatMap(p => p.tags || [])))
+  const topicHubs = getAllTopicHubs()
   
   // High priority static pages
   const staticPages: SitemapEntry[] = [
@@ -22,7 +24,7 @@ export const GET = async () => {
     { loc: `${site.url}/best`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
     { loc: `${site.url}/reviews`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
     { loc: `${site.url}/guides`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
-    { loc: `${site.url}/topics`, lastmod: new Date().toISOString(), priority: 0.7, changefreq: 'monthly' },
+    { loc: `${site.url}/topics`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
     { loc: `${site.url}/search`, lastmod: new Date().toISOString(), priority: 0.6, changefreq: 'monthly' },
     
     // Tools section
@@ -69,6 +71,15 @@ export const GET = async () => {
       priority: 0.6,
       changefreq: 'monthly' as const
     })),
+    
+    // Topic hub pages
+    ...topicHubs.map(hub => ({
+      loc: `${site.url}/topics/${hub.id}`,
+      lastmod: new Date().toISOString(),
+      priority: hub.featured ? 0.8 : 0.7,
+      changefreq: 'weekly' as const
+    })),
+    
     ...tags.map(t => ({ 
       loc: `${site.url}/tags/${encodeURIComponent(t)}`, 
       lastmod: new Date().toISOString(),

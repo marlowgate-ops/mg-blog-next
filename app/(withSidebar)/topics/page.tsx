@@ -4,7 +4,7 @@ import Container from '@/components/Container';
 import JsonLd from '@/components/JsonLd';
 import JsonLdBreadcrumbs from '@/components/JsonLdBreadcrumbs';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import topicsData from '@/config/topics.json';
+import { getAllTopicHubs, getFeaturedTopicHubs } from '@/lib/topics/hubs';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: '金融・投資・保険に関するトピック一覧。カテゴリ別に整理された記事やガイドを探せます。',
   openGraph: {
     title: 'トピック一覧 | Marlow Gate',
-    description: '金融・投資・保険に関するトピック一覧。',
+    description: '金融・投資・保険に関するトピック一覧。カテゴリ別に整理された記事やガイドを探せます。',
     type: 'website',
     url: 'https://marlowgate.com/topics',
   },
@@ -21,15 +21,9 @@ export const metadata: Metadata = {
   },
 };
 
-interface Topic {
-  id: string;
-  label: string;
-  description: string;
-  icon: string;
-}
-
 export default function TopicsPage() {
-  const topics = topicsData as Topic[];
+  const allHubs = getAllTopicHubs();
+  const featuredHubs = getFeaturedTopicHubs();
   
   const breadcrumbs = [
     { name: 'ホーム', href: '/' },
@@ -44,15 +38,15 @@ export default function TopicsPage() {
     "url": "https://marlowgate.com/topics",
     "mainEntity": {
       "@type": "ItemList",
-      "numberOfItems": topics.length,
-      "itemListElement": topics.map((topic, index) => ({
+      "numberOfItems": allHubs.length,
+      "itemListElement": allHubs.map((hub, index) => ({
         "@type": "ListItem",
         "position": index + 1,
         "item": {
           "@type": "Thing",
-          "name": topic.label,
-          "description": topic.description,
-          "url": `https://marlowgate.com/topics/${topic.id}`
+          "name": hub.title,
+          "description": hub.description,
+          "url": `https://marlowgate.com/topics/${hub.id}`
         }
       }))
     }
@@ -72,21 +66,60 @@ export default function TopicsPage() {
           </p>
         </div>
 
-        <div className={styles.topicsGrid}>
-          {topics.map((topic) => (
-            <Link 
-              key={topic.id} 
-              href={`/topics/${topic.id}`}
-              className={styles.topicCard}
-            >
-              <div className={styles.topicIcon}>{topic.icon}</div>
-              <h2 className={styles.topicTitle}>{topic.label}</h2>
-              <p className={styles.topicDescription}>{topic.description}</p>
-              <div className={styles.topicArrow}>→</div>
-            </Link>
-          ))}
-        </div>
+        {/* Featured Topics */}
+        {featuredHubs.length > 0 && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>注目のトピック</h2>
+            <div className={styles.featuredGrid}>
+              {featuredHubs.map((hub) => (
+                <Link 
+                  key={hub.id} 
+                  href={`/topics/${hub.id}`}
+                  className={`${styles.topicCard} ${styles.featured}`}
+                >
+                  <div className={styles.topicIcon}>{hub.icon}</div>
+                  <h3 className={styles.topicTitle}>{hub.title}</h3>
+                  <p className={styles.topicDescription}>{hub.description}</p>
+                  <div className={styles.topicArrow}>→</div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* All Topics */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>すべてのトピック</h2>
+          <div className={styles.topicsGrid}>
+            {allHubs.map((hub) => (
+              <Link 
+                key={hub.id} 
+                href={`/topics/${hub.id}`}
+                className={styles.topicCard}
+              >
+                <div className={styles.topicIcon}>{hub.icon}</div>
+                <h3 className={styles.topicTitle}>{hub.title}</h3>
+                <p className={styles.topicDescription}>{hub.description}</p>
+                <div className={styles.topicMeta}>
+                  <span className={styles.topicCategory}>{getCategoryLabel(hub.category)}</span>
+                  <div className={styles.topicArrow}>→</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
       </Container>
     </>
   );
+}
+
+function getCategoryLabel(category: string): string {
+  const labels: Record<string, string> = {
+    forex: 'FX・外国為替',
+    investment: '投資',
+    insurance: '保険',
+    trading: '取引・トレード',
+    education: '教育・学習'
+  };
+  return labels[category] || category;
 }

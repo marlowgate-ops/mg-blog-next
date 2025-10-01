@@ -1,21 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Container from '@/components/Container';
-import ListGrid from '@/components/ListGrid';
 import JsonLd from '@/components/JsonLd';
 import JsonLdBreadcrumbs from '@/components/JsonLdBreadcrumbs';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import topicsData from '@/config/topics.json';
+import RelatedContent from '@/components/RelatedContent';
+import { getTopicHub, getCuratedContent, getRelatedTopicHubs } from '@/lib/topics/hubs';
 import styles from './page.module.css';
 
 export const revalidate = 300;
-
-interface Topic {
-  id: string;
-  label: string;
-  description: string;
-  icon: string;
-}
 
 interface PageProps {
   params: {
@@ -23,6 +16,41 @@ interface PageProps {
   };
   searchParams: {
     page?: string;
+  };
+}
+
+export async function generateStaticParams() {
+  // Import topic hubs to generate static params
+  const { getAllTopicHubs } = await import('@/lib/topics/hubs');
+  const hubs = getAllTopicHubs();
+  
+  return hubs.map((hub) => ({
+    slug: hub.id,
+  }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const hub = getTopicHub(params.slug);
+
+  if (!hub) {
+    return {
+      title: 'トピックが見つかりません | Marlow Gate',
+    };
+  }
+
+  return {
+    title: `${hub.title} | Marlow Gate`,
+    description: hub.description,
+    keywords: hub.keywords.join(', '),
+    openGraph: {
+      title: `${hub.title} | Marlow Gate`,
+      description: hub.description,
+      type: 'website',
+      url: `https://marlowgate.com/topics/${hub.id}`,
+    },
+    alternates: {
+      canonical: `https://marlowgate.com/topics/${hub.id}`,
+    },
   };
 }
 
@@ -71,67 +99,41 @@ async function getTopicContent(topicId: string, page: number = 1) {
   }
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const topics = topicsData as Topic[];
-  const topic = topics.find(t => t.id === params.slug);
-  
-  if (!topic) {
-    return {
-      title: 'トピックが見つかりません',
-      description: '指定されたトピックは存在しません。'
-    };
-  }
-
-  return {
-    title: `${topic.label} | トピック | Marlow Gate`,
-    description: topic.description,
-    openGraph: {
-      title: `${topic.label} | トピック`,
-      description: topic.description,
-      type: 'website',
-      url: `https://marlowgate.com/topics/${topic.id}`,
-    },
-    alternates: {
-      canonical: `https://marlowgate.com/topics/${topic.id}`,
-    },
-  };
-}
-
 export default async function TopicPage({ params, searchParams }: PageProps) {
-  const topics = topicsData as Topic[];
-  const topic = topics.find(t => t.id === params.slug);
+  const hub = getTopicHub(params.slug);
   
-  if (!topic) {
+  if (!hub) {
     notFound();
   }
 
   const page = parseInt(searchParams.page || '1', 10);
-  const { items, totalPages, currentPage } = await getTopicContent(topic.id, page);
+  const curatedContent = getCuratedContent(hub.id);
+  const relatedHubs = getRelatedTopicHubs(hub.id);
   
   const breadcrumbs = [
     { name: 'ホーム', href: '/' },
     { name: 'トピック', href: '/topics' },
-    { name: topic.label }
+    { name: hub.title }
   ];
 
   const jsonLdData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": topic.label,
-    "description": topic.description,
-    "url": `https://marlowgate.com/topics/${topic.id}`,
+    "name": hub.title,
+    "description": hub.description,
+    "url": `https://marlowgate.com/topics/${hub.id}`,
     "mainEntity": {
       "@type": "ItemList",
-      "numberOfItems": items.length,
-      "itemListElement": items.map((item, index) => ({
+      "numberOfItems": Object.values(curatedContent).flat().length,
+      "itemListElement": Object.values(curatedContent).flat().map((item, index) => ({
         "@type": "ListItem",
         "position": index + 1,
         "item": {
           "@type": "Article",
           "name": item.title,
-          "description": item.excerpt,
-          "url": `https://marlowgate.com${item.href}`,
-          "keywords": [topic.label]
+          "description": item.description,
+          "url": `https://marlowgate.com${item.url}`,
+          "keywords": [hub.title]
         }
       }))
     }
@@ -145,37 +147,83 @@ export default async function TopicPage({ params, searchParams }: PageProps) {
         <Breadcrumbs items={breadcrumbs} />
         
         <div className={styles.header}>
-          <div className={styles.topicIcon}>{topic.icon}</div>
-          <h1 className={styles.title}>{topic.label}</h1>
-          <p className={styles.description}>{topic.description}</p>
+          <div className={styles.topicIcon}>{hub.icon}</div>
+          <h1 className={styles.title}>{hub.title}</h1>
+          <p className={styles.description}>{hub.description}</p>
         </div>
 
-        <ListGrid items={items} />
-        
-        {totalPages > 1 && (
-          <div className={styles.pagination}>
-            {currentPage > 1 && (
-              <a 
-                href={`/topics/${topic.id}?page=${currentPage - 1}`}
-                className={styles.paginationLink}
-              >
-                ← 前のページ
-              </a>
-            )}
-            
-            <span className={styles.pageInfo}>
-              {currentPage} / {totalPages}
-            </span>
-            
-            {currentPage < totalPages && (
-              <a 
-                href={`/topics/${topic.id}?page=${currentPage + 1}`}
-                className={styles.paginationLink}
-              >
-                次のページ →
-              </a>
-            )}
-          </div>
+        {curatedContent.guides.length > 0 && (
+          <RelatedContent
+            title="関連ガイド"
+            items={curatedContent.guides}
+            type="guides"
+            showViewAll={false}
+          />
+        )}
+
+        {curatedContent.tools.length > 0 && (
+          <RelatedContent
+            title="関連ツール"
+            items={curatedContent.tools}
+            type="tools"
+            showViewAll={false}
+          />
+        )}
+
+        {curatedContent.brokers.length > 0 && (
+          <RelatedContent
+            title="関連ブローカー"
+            items={curatedContent.brokers.map(broker => ({
+              id: broker.id,
+              title: broker.brand,
+              description: broker.description,
+              url: broker.url,
+              score: broker.score,
+              featured: broker.featured
+            }))}
+            type="brokers"
+            showViewAll={false}
+          />
+        )}
+
+        {curatedContent.insurance.length > 0 && (
+          <RelatedContent
+            title="関連保険"
+            items={curatedContent.insurance.map(insurance => ({
+              id: insurance.id,
+              title: insurance.company,
+              description: insurance.description,
+              url: insurance.url,
+              category: insurance.category,
+              rating: insurance.rating,
+              featured: insurance.featured
+            }))}
+            type="insurance"
+            showViewAll={false}
+          />
+        )}
+
+        {curatedContent.posts.length > 0 && (
+          <RelatedContent
+            title="関連記事"
+            items={curatedContent.posts}
+            type="posts"
+            showViewAll={false}
+          />
+        )}
+
+        {relatedHubs.length > 0 && (
+          <RelatedContent
+            title="関連トピック"
+            items={relatedHubs.map(relatedHub => ({
+              id: relatedHub.id,
+              title: relatedHub.title,
+              description: relatedHub.description,
+              url: `/topics/${relatedHub.id}`
+            }))}
+            type="topics"
+            showViewAll={false}
+          />
         )}
       </Container>
     </>
