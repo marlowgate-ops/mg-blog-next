@@ -1,0 +1,136 @@
+name: E2E Testing with Playwright
+
+on:
+  push:
+    branches: [ main, develop, 'feat/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+      fail-fast: false
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright Browsers
+      run: npx playwright install ${{ matrix.browser }} --with-deps
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Run E2E tests
+      run: npx playwright test --project=${{ matrix.browser }}
+      env:
+        PLAYWRIGHT_BASE_URL: http://localhost:3000
+        
+    - name: Upload Playwright Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report-${{ matrix.browser }}
+        path: playwright-report/
+        retention-days: 30
+        
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ matrix.browser }}
+        path: test-results/
+        retention-days: 30
+        
+  # Consolidate reports from all browsers
+  consolidate-reports:
+    name: Consolidate Test Reports
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+    if: always()
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
+        
+    - name: Consolidate HTML Reports
+      run: |
+        mkdir -p consolidated-report
+        for browser in chromium firefox webkit; do
+          if [ -d "artifacts/playwright-report-$browser" ]; then
+            cp -r "artifacts/playwright-report-$browser" "consolidated-report/$browser-report"
+          fi
+        done
+        
+    - name: Upload Consolidated Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: consolidated-playwright-report
+        path: consolidated-report/
+        retention-days: 30
+
+  # Quality Gates Check
+  quality-gates:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+    if: always()
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: TypeScript Check
+      run: npx tsc --noEmit
+      
+    - name: Lint Check
+      run: npm run lint
+      
+    - name: Build Check
+      run: npm run build
+      
+    - name: Check E2E Test Results
+      run: |
+        # This will be set by the e2e-tests job
+        if [ "${{ needs.e2e-tests.result }}" != "success" ]; then
+          echo "E2E tests failed - Quality gates not met"
+          exit 1
+        fi
+        echo "All quality gates passed ✅"

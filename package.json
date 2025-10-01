@@ -10,6 +10,11 @@
     "test": "vitest run --reporter=verbose",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
     "validate-criteria": "node scripts/validate-criteria.js",
     "validate:schema": "tsx scripts/validate-schema.ts",
     "validate-schema": "ajv validate -s data/eval/criteria.schema.json -d data/eval/criteria.json",
@@ -33,6 +38,7 @@
     "shiki": "^1.13.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.1",
     "@types/react": "18.3.5",
     "@types/react-dom": "18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0",

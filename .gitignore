@@ -9,3 +9,8 @@ node_modules
 docs/lighthouse/*/*/*.zip
 docs/lighthouse/lhr-*.json
 docs/lighthouse/lhr-*.html
+
+# Playwright test results
+/test-results/
+/playwright-report/
+/playwright/.cache/
