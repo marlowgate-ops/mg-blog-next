@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useDebounce } from '@/hooks/useDebounce';
 import JsonLdItemList from '@/components/JsonLdItemList';
+import EventBadge from '@/components/EventBadge';
 import newsSources from '@/config/news-sources.json';
 import styles from './page.module.css';
 
@@ -355,6 +356,7 @@ export default function NewsContent() {
                         {item.title}
                       </a>
                     </h3>
+                    <EventBadge newsTitle={item.title} className={styles.eventBadge} />
                   </div>
                 );
               })}
