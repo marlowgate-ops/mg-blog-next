@@ -86,18 +86,18 @@ export default function NewsContent() {
   const [selectedPeriod, setSelectedPeriod] = useState<'day' | 'week'>('week');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentOffset, setCurrentOffset] = useState(0);
-  const [skipNextDebouncedUpdate, setSkipNextDebouncedUpdate] = useState(false);
   const [hasReadInitialParams, setHasReadInitialParams] = useState(false);
+  const [userHasTyped, setUserHasTyped] = useState(false);
   
   const searchParams = useSearchParams();
   const router = useRouter();
   
-  // Debounce search query
+  // Debounce search query for auto-updating URL while typing
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   
   const sources = newsSources as NewsSource[];
   
-  // Update URL when providers, period, or search change
+  // Read URL parameters on mount/navigation
   useEffect(() => {
     const providersParam = searchParams.get('providers');
     const periodParam = searchParams.get('period');
@@ -136,19 +136,50 @@ export default function NewsContent() {
     setHasReadInitialParams(true);
   }, [searchParams]);
   
-  // Centralized URL update function
-  const updateURL = useCallback((providers: string[], period: 'day' | 'week', query: string) => {
-    const params = new URLSearchParams();
+  // Update URL when debounced search completes (only while typing, not on initial load)
+  useEffect(() => {
+    // Only update URL if user has actively typed (not from hydration)
+    if (!hasReadInitialParams || !userHasTyped) {
+      return;
+    }
     
+    updateURL(selectedProviders, selectedPeriod, debouncedSearchQuery);
+    setUserHasTyped(false); // Reset flag after updating
+  }, [debouncedSearchQuery]); // Only trigger on debounced query change
+  
+  // Centralized URL update function - always preserves current URL state
+  const updateURL = useCallback((providers: string[], period: 'day' | 'week', query?: string) => {
+    console.log('[NewsContent] updateURL called with:', { providers, period, query });
+    
+    // Start with current search params to preserve any other params
+    const params = new URLSearchParams(window.location.search);
+    
+    // Update/remove provider param
     if (providers.length > 0) {
       params.set('providers', providers.join(','));
-    }
-    params.set('period', period);
-    if (query.trim()) {
-      params.set('q', query.trim());
+    } else {
+      params.delete('providers');
     }
     
-    router.replace(`/news?${params.toString()}`);
+    // Always set period
+    params.set('period', period);
+    
+    // Update/remove query param (undefined means keep current value from URL)
+    if (query !== undefined) {
+      if (query.trim()) {
+        params.set('q', query.trim());
+      } else {
+        params.delete('q');
+      }
+    }
+    // If query is undefined, keep the existing 'q' param from current URL (already in params)
+    
+    // Remove offset when filters change (start from beginning)
+    params.delete('offset');
+    
+    const newUrl = `/news?${params.toString()}`;
+    console.log('[NewsContent] Updating URL to:', newUrl);
+    router.replace(newUrl);
   }, [router]);
 
   // Fetch news data
@@ -188,48 +219,36 @@ export default function NewsContent() {
     }
   };
 
-  // Update URL when debounced search query changes
-  useEffect(() => {
-    // Skip this update if we just did a manual URL update
-    if (skipNextDebouncedUpdate) {
-      setSkipNextDebouncedUpdate(false);
-      return;
-    }
-    
-    // Skip during initial load to prevent overriding URL parameters
-    if (!hasReadInitialParams) {
-      return;
-    }
-    
-    updateURL(selectedProviders, selectedPeriod, debouncedSearchQuery);
-  }, [debouncedSearchQuery, selectedProviders, selectedPeriod, updateURL, skipNextDebouncedUpdate, hasReadInitialParams]);
-
-  // Initial load and state changes
+  // Fetch news when filters or search query changes
   useEffect(() => {
     // Use immediate searchQuery during initial load, debouncedSearchQuery otherwise
     const queryToUse = hasReadInitialParams ? debouncedSearchQuery : searchQuery;
     fetchNews(0, selectedProviders, selectedPeriod, queryToUse);
-  }, [selectedProviders, selectedPeriod, debouncedSearchQuery, searchQuery, hasReadInitialParams]);  const handleProviderToggle = (providerId: string) => {
+  }, [selectedProviders, selectedPeriod, debouncedSearchQuery, hasReadInitialParams]);
+  
+  const handleProviderToggle = (providerId: string) => {
     const newProviders = selectedProviders.includes(providerId)
       ? selectedProviders.filter(p => p !== providerId)
       : [...selectedProviders, providerId];
     
     setSelectedProviders(newProviders);
-    updateURL(newProviders, selectedPeriod, searchQuery);
+    // Don't pass query - let it be preserved from current URL
+    updateURL(newProviders, selectedPeriod);
   };
   
   const handlePeriodToggle = (period: 'day' | 'week') => {
     setSelectedPeriod(period);
-    updateURL(selectedProviders, period, searchQuery);
+    // Don't pass query - let it be preserved from current URL
+    updateURL(selectedProviders, period);
   };
   
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();  // Prevent form submission
-      // Update search query state AND URL immediately
+      // Update URL immediately with current search value (don't wait for debounce)
       const currentValue = e.currentTarget.value;
       setSearchQuery(currentValue);
-      setSkipNextDebouncedUpdate(true); // Skip the next debounced update
+      setUserHasTyped(false); // Prevent debounce from updating again
       updateURL(selectedProviders, selectedPeriod, currentValue);
     }
   };
@@ -271,7 +290,10 @@ export default function NewsContent() {
               type="text"
               placeholder="記事のタイトルを検索..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setUserHasTyped(true);
+              }}
               onKeyDown={handleSearchKeyDown}
               className={styles.searchField}
               data-testid="news-search-input"
@@ -296,7 +318,8 @@ export default function NewsContent() {
             className={`${styles.chip} ${selectedProviders.length === 0 ? styles.active : ''}`}
             onClick={() => {
               setSelectedProviders([]);
-              updateURL([], selectedPeriod, searchQuery);
+              // Don't pass query - preserve it from URL
+              updateURL([], selectedPeriod);
             }}
             data-testid="provider-chip-all"
           >
