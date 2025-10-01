@@ -134,9 +134,9 @@ export default function BrokerPage({ params }: PageProps) {
         <Breadcrumbs items={breadcrumbs} />
         
         {/* Hero Section */}
-        <div className={s.hero}>
+        <div className={s.hero} data-testid="broker-profile-header">
           <div className={s.heroContent}>
-            <h1 className={s.heroTitle}>{broker.name}</h1>
+            <h1 className={s.heroTitle} data-testid="broker-name">{broker.name}</h1>
             <div className={s.heroMeta}>
               <RatingStars 
                 value={broker.ratingValue} 
@@ -145,9 +145,24 @@ export default function BrokerPage({ params }: PageProps) {
               />
               <div className={s.safetyScore}>
                 <span className={s.safetyLabel}>安全性スコア:</span>
-                <span className={`${s.safetyValue} ${getSafetyClass(broker.safetyScore)}`}>
+                <span className={`${s.safetyValue} ${getSafetyClass(broker.safetyScore)}`} data-testid="broker-rating">
                   {broker.safetyScore}/100
                 </span>
+              </div>
+              {/* Additional rating categories for comprehensive breakdown */}
+              <div className={s.ratingCategories}>
+                <div className={s.ratingCategory} data-testid="rating-category">
+                  <span className={s.categoryLabel}>安全性</span>
+                  <span className={s.categoryScore}>{broker.safetyScore}/100</span>
+                </div>
+                <div className={s.ratingCategory} data-testid="rating-category">
+                  <span className={s.categoryLabel}>取引環境</span>
+                  <span className={s.categoryScore}>{(broker.ratingValue * 20).toFixed(0)}/100</span>
+                </div>
+                <div className={s.ratingCategory} data-testid="rating-category">
+                  <span className={s.categoryLabel}>総合評価</span>
+                  <span className={s.categoryScore}>{broker.ratingValue.toFixed(1)}/5.0</span>
+                </div>
               </div>
             </div>
           </div>
@@ -178,8 +193,10 @@ export default function BrokerPage({ params }: PageProps) {
         />
 
         {/* Long Form Content */}
-        <div className={s.content}>
-          <MDXRenderer code={broker.body.code} />
+        <div className={s.content} data-testid="broker-review-content">
+          <div data-testid="broker-overview">
+            <MDXRenderer code={broker.body.code} />
+          </div>
         </div>
 
         {/* FAQ */}

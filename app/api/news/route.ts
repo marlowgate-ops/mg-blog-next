@@ -5,6 +5,7 @@ import { isUrlAllowed as isUrlAllowedByList } from '@/lib/url-allowlist';
 
 export const runtime = "nodejs";
 export const revalidate = 120;
+export const dynamic = 'force-dynamic';
 
 // Simple in-memory cache (would use Redis/KV in production)
 const cache = new Map<string, { data: any; timestamp: number; staleTimestamp: number }>();
@@ -228,7 +229,7 @@ async function refreshNewsData(requestedProviders: string[], period: Period, cac
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const limit = Math.max(1, Math.min(100, parseInt(searchParams.get('limit') || '20', 10)));
     const offset = Math.max(0, parseInt(searchParams.get('offset') || '0', 10));
     const providers = searchParams.get('providers');

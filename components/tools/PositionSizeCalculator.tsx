@@ -45,7 +45,7 @@ export default function PositionSizeCalculator() {
   }
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border p-6 ${styles.toolContainer}`}>
+    <div className={`bg-white rounded-lg shadow-sm border p-6 ${styles.toolContainer}`} data-testid="position-calculator">
       <div className={styles.toolGrid}>
         {/* Input Section */}
         <div className={styles.inputSection}>
@@ -65,6 +65,7 @@ export default function PositionSizeCalculator() {
                 placeholder="例: 1000000"
                 min="0"
                 step="1000"
+                data-testid="account-balance-input"
               />
             </div>
 
@@ -82,6 +83,7 @@ export default function PositionSizeCalculator() {
                 min="0.1"
                 max="10"
                 step="0.1"
+                data-testid="risk-percentage-input"
               />
               <p className="text-xs text-gray-500 mt-1">
                 推奨: 1-3% (初心者は1-2%を推奨)
@@ -101,6 +103,7 @@ export default function PositionSizeCalculator() {
                 placeholder="例: 20"
                 min="1"
                 step="0.1"
+                data-testid="stop-loss-input"
               />
               <p className="text-xs text-gray-500 mt-1">
                 エントリーポイントからストップロスまでの距離
@@ -132,7 +135,7 @@ export default function PositionSizeCalculator() {
             <div className="space-y-6">
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">推奨ポジションサイズ</h4>
-                <p className="text-3xl font-bold text-blue-700">
+                <p className="text-3xl font-bold text-blue-700" data-testid="position-size-result">
                   {result.positionSize.toFixed(2)} ロット
                 </p>
                 <p className="text-sm text-blue-600 mt-1">

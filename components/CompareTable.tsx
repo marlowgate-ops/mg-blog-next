@@ -162,7 +162,7 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
         </div>
       </div>
       <div className={s.scrollHint}>横スクロールできます</div>
-      <table className={`${s.compareTable} ${s.gradientEdges}`}>
+      <table className={`${s.compareTable} ${s.gradientEdges}`} data-testid="broker-compare-table">
         <thead>
           <tr>
             <th className={`${s.stickyColStart} ${s.stickyHeader}`}>

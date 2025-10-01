@@ -3,10 +3,12 @@ import { safeKvZrevrange } from '@/lib/kv';
 import popularFallback from '@/config/popular.json';
 
 export const runtime = "nodejs";
+export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const limit = Math.max(1, Math.min(50, parseInt(searchParams.get('limit') || '10', 10)));
     
     // Try to get data from KV sorted set

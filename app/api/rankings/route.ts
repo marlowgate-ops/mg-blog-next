@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getRankingData, getPopularContent, trackGA4Event } from '@/lib/rankings/data';
-import { RankingsApiParams, RankingWindow, RankingType } from '@/lib/rankings/types';
+import { RankingWindow, RankingType } from '@/lib/rankings/types';
 
 export const runtime = 'edge';
+export const revalidate = 300; // Cache for 5 minutes
+export const dynamic = 'force-dynamic';
 
 // GET /api/rankings - Retrieve ranking data with caching
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams;
     
     const window = (searchParams.get('window') as RankingWindow) || '24h';
     const type = (searchParams.get('type') as RankingType) || 'all';

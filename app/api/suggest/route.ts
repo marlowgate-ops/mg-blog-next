@@ -5,6 +5,8 @@ import { providers } from '@/lib/news/providers';
 import Fuse from 'fuse.js';
 
 export const runtime = 'nodejs';
+export const revalidate = 300; // Cache for 5 minutes
+export const dynamic = 'force-dynamic';
 
 interface SearchSuggestion {
   id: string;
@@ -182,7 +184,7 @@ function buildSearchIndices() {
 // GET /api/suggest?q=search_term
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get('q')?.trim();
 
     if (!query || query.length < 1) {

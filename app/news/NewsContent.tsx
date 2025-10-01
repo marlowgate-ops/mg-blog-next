@@ -251,7 +251,7 @@ export default function NewsContent() {
   return (
     <>
       <JsonLdItemList items={items} />
-      <div className={styles.content}>
+      <div className={styles.content} data-testid="news-container">
         {/* Period and Provider filters */}
         <div className={styles.filters}>
         <div className={styles.topFilters}>
@@ -262,24 +262,20 @@ export default function NewsContent() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchField}
+              data-testid="news-search-input"
             />
           </div>
           
           <div className={styles.periodToggle}>
-            <button
-              className={`${styles.periodButton} ${selectedPeriod === 'day' ? styles.active : ''}`}
-              onClick={() => handlePeriodToggle('day')}
-              data-period="day"
+            <select
+              value={selectedPeriod}
+              onChange={(e) => handlePeriodToggle(e.target.value as 'day' | 'week')}
+              className={styles.periodSelect}
+              data-testid="period-select"
             >
-              今日
-            </button>
-            <button
-              className={`${styles.periodButton} ${selectedPeriod === 'week' ? styles.active : ''}`}
-              onClick={() => handlePeriodToggle('week')}
-              data-period="week"
-            >
-              1週間
-            </button>
+              <option value="week">1週間</option>
+              <option value="day">今日</option>
+            </select>
           </div>
         </div>
         
@@ -299,6 +295,7 @@ export default function NewsContent() {
               params.delete('offset'); // Reset pagination on filter change
               router.replace(`/news?${params.toString()}`);
             }}
+            data-testid="provider-chip-all"
           >
             すべて
           </button>
@@ -308,6 +305,7 @@ export default function NewsContent() {
               key={source.id}
               className={`${styles.chip} ${selectedProviders.includes(source.id) ? styles.active : ''}`}
               onClick={() => handleProviderToggle(source.id)}
+              data-testid={`provider-chip-${source.id}`}
             >
               <Image
                 src={source.icon}
