@@ -1,0 +1,157 @@
+/* Rankings Page Styles */
+
+.rankingsHeader {
+  margin-bottom: 32px;
+}
+
+.pageTitle {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: #1a1a1a;
+}
+
+.pageDescription {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Skeleton Components */
+.rankingsSkeleton {
+  width: 100%;
+}
+
+.tabsSkeleton {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e1e1e1;
+  padding-bottom: 16px;
+}
+
+.tabSkeleton {
+  width: 120px;
+  height: 40px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.windowSelectorSkeleton {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.windowButtonSkeleton {
+  width: 80px;
+  height: 32px;
+  background: #f3f4f6;
+  border-radius: 16px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.contentSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rankingItemSkeleton {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  height: 80px; /* Fixed height for CLS stability */
+}
+
+.rankNumberSkeleton {
+  width: 32px;
+  height: 32px;
+  background: #f3f4f6;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.contentDetailsSkeleton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.titleSkeleton {
+  width: 70%;
+  height: 20px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.metaSkeleton {
+  width: 40%;
+  height: 14px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.scoreSkeleton {
+  width: 60px;
+  height: 24px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .pageTitle {
+    font-size: 24px;
+  }
+  
+  .pageDescription {
+    font-size: 14px;
+  }
+  
+  .tabsSkeleton {
+    flex-wrap: wrap;
+  }
+  
+  .tabSkeleton {
+    width: calc(50% - 4px);
+  }
+  
+  .rankingItemSkeleton {
+    height: 100px; /* Slightly taller on mobile */
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .pageTitle {
+    color: #eee;
+  }
+  
+  .pageDescription {
+    color: #ccc;
+  }
+  
+  .tabsSkeleton {
+    border-bottom-color: #404040;
+  }
+  
+  .rankingItemSkeleton {
+    background: #1a1a1a;
+    border-color: #404040;
+  }
+}
