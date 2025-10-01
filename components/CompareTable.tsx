@@ -74,6 +74,40 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
   const [accountTypeFilter, setAccountTypeFilter] = useState<string>('');
   const [sortValue, setSortValue] = useState<string>('');
 
+  // Handle row click navigation
+  const handleRowClick = (brand: string) => {
+    // Map brand names to broker slugs - updated with actual brand names
+    const brandToSlug: Record<string, string> = {
+      'DMM.com証券': 'dmm-fx',
+      'DMM FX': 'dmm-fx',
+      'GMOクリック証券': 'gmo-click',
+      'GMO': 'gmo-click',
+      'SBI': 'sbi-fx',
+      'SBI FXトレード': 'sbi-fx',
+      '松井証券': 'matsui',
+      // Add more mappings as needed
+    };
+    
+    const slug = brandToSlug[brand] || brand.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    router.push(`/brokers/${slug}`);
+  };
+
+  // Get broker slug for a brand name
+  const getBrokerSlug = (brand: string): string => {
+    const brandToSlug: Record<string, string> = {
+      'DMM.com証券': 'dmm-fx',
+      'DMM FX': 'dmm-fx',
+      'GMOクリック証券': 'gmo-click',
+      'GMO': 'gmo-click', 
+      'SBI': 'sbi-fx',
+      'SBI FXトレード': 'sbi-fx',
+      '松井証券': 'matsui',
+      // Add more mappings as needed
+    };
+    
+    return brandToSlug[brand] || brand.toLowerCase().replace(/[^a-z0-9]/g, '-');
+  };
+
   // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -330,8 +364,10 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
           {filteredAndSortedRows.map((r, i) => (
             <tr
               key={i}
-              className={r.state === "preparing" ? s.isPreparing : ""}
+              className={`${r.state === "preparing" ? s.isPreparing : ""} cursor-pointer hover:bg-gray-50`}
               data-testid="broker-table-row"
+              data-broker-slug={getBrokerSlug(r.brand)}
+              onClick={() => handleRowClick(r.brand)}
             >
               <td className={s.stickyColStart}>
                 <div className={s.brandCell}>
@@ -375,7 +411,11 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
                 <td key={key}>{(r as any)[key] ?? "-"}</td>
               ))}
               <td className={s.stickyColEnd}>
-                {r.ctaHref && <PrimaryCta href={r.ctaHref} />}
+                {r.ctaHref && (
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <PrimaryCta href={r.ctaHref} />
+                  </div>
+                )}
               </td>
             </tr>
           ))}
