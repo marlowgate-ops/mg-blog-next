@@ -25,6 +25,12 @@ export const GET = async () => {
     { loc: `${site.url}/topics`, lastmod: new Date().toISOString(), priority: 0.7, changefreq: 'monthly' },
     { loc: `${site.url}/search`, lastmod: new Date().toISOString(), priority: 0.6, changefreq: 'monthly' },
     
+    // Tools section
+    { loc: `${site.url}/tools`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
+    { loc: `${site.url}/tools/position-size-calculator`, lastmod: new Date().toISOString(), priority: 0.7, changefreq: 'monthly' },
+    { loc: `${site.url}/tools/pip-value-calculator`, lastmod: new Date().toISOString(), priority: 0.7, changefreq: 'monthly' },
+    { loc: `${site.url}/tools/margin-calculator`, lastmod: new Date().toISOString(), priority: 0.7, changefreq: 'monthly' },
+    
     // Best section pages
     { loc: `${site.url}/best/app`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
     { loc: `${site.url}/best/campaigns`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'daily' },
@@ -48,6 +54,11 @@ export const GET = async () => {
     { loc: `${site.url}/disclaimer`, lastmod: new Date().toISOString(), priority: 0.4, changefreq: 'yearly' },
     { loc: `${site.url}/policy`, lastmod: new Date().toISOString(), priority: 0.4, changefreq: 'yearly' },
     { loc: `${site.url}/disclosure`, lastmod: new Date().toISOString(), priority: 0.4, changefreq: 'yearly' },
+    
+    // Feeds and OpenSearch
+    { loc: `${site.url}/opensearch.xml`, lastmod: new Date().toISOString(), priority: 0.3, changefreq: 'monthly' },
+    { loc: `${site.url}/feed/posts.xml`, lastmod: new Date().toISOString(), priority: 0.3, changefreq: 'daily' },
+    { loc: `${site.url}/feed/news.xml`, lastmod: new Date().toISOString(), priority: 0.3, changefreq: 'hourly' },
   ]
   
   const urls: SitemapEntry[] = [
@@ -63,6 +74,12 @@ export const GET = async () => {
       lastmod: new Date().toISOString(),
       priority: 0.5,
       changefreq: 'weekly' as const
+    })),
+    ...tags.map(t => ({ 
+      loc: `${site.url}/feed/tags/${encodeURIComponent(t)}.xml`, 
+      lastmod: new Date().toISOString(),
+      priority: 0.3,
+      changefreq: 'daily' as const
     })),
   ]
   

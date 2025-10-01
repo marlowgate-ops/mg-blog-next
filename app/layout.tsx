@@ -11,7 +11,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.title, template: `%s — ${site.title}` },
   description: site.description,
-  alternates: { types: { 'application/rss+xml': `${site.url}/rss.xml` } },
+  alternates: { 
+    types: { 
+      'application/rss+xml': [
+        { url: `${site.url}/feed/posts.xml`, title: 'ブログ記事' },
+        { url: `${site.url}/feed/news.xml`, title: 'FX・投資ニュース' }
+      ]
+    } 
+  },
   openGraph: { siteName: site.title },
   twitter: { site: site.twitter || undefined },
   icons: { 
@@ -19,7 +26,10 @@ export const metadata: Metadata = {
     shortcut: '/favicon.svg', 
     apple: '/favicon.svg' 
   },
-  manifest: '/site.webmanifest'
+  manifest: '/site.webmanifest',
+  other: {
+    'search': `${site.url}/opensearch.xml`
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -31,6 +41,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="ja">
+      <head>
+        <link rel="search" type="application/opensearchdescription+xml" title={`${site.title} 検索`} href={`${site.url}/opensearch.xml`} />
+      </head>
       <body className={inter.className + " min-h-screen antialiased"}>
         <JsonLdSitewide />
         {gaId ? (

@@ -3,7 +3,6 @@ import styles from './footer.module.css'
 import Link from 'next/link'
 
 const storeUrl = process.env.NEXT_PUBLIC_CTA_URL || process.env.NEXT_PUBLIC_HERO_CTA_URL || '/'
-const showRss = process.env.NEXT_PUBLIC_SHOW_RSS_LINK === '1'
 const showSitemap = process.env.NEXT_PUBLIC_SHOW_SITEMAP_LINK === '1'
 
 export default function FooterMini() {
@@ -40,6 +39,15 @@ export default function FooterMini() {
                 <Link href="/guides" className={styles.sitemapLink}>ガイド</Link>
               </nav>
             </div>
+            <div className={styles.sitemapColumn}>
+              <h3 className={styles.sitemapTitle}>フィード</h3>
+              <nav className={styles.sitemapNav}>
+                <Link href="/feed/posts.xml" className={styles.sitemapLink}>ブログRSS</Link>
+                <Link href="/feed/news.xml" className={styles.sitemapLink}>ニュースRSS</Link>
+                <Link href="/opensearch.xml" className={styles.sitemapLink}>検索エンジン</Link>
+                <Link href="/sitemap.xml" className={styles.sitemapLink}>サイトマップ</Link>
+              </nav>
+            </div>
           </div>
         </div>
       </section>
@@ -56,7 +64,8 @@ export default function FooterMini() {
             <Link href="/privacy" className={styles.link}>Privacy</Link>
             <Link href="/disclaimer" className={styles.link}>免責事項</Link>
             <Link href="/policy" className={styles.link}>サイトポリシー</Link>
-            {showRss ? <Link href="/rss.xml" className={styles.link}>RSS</Link> : null}
+            <Link href="/feed/posts.xml" className={styles.link}>ブログRSS</Link>
+            <Link href="/feed/news.xml" className={styles.link}>ニュースRSS</Link>
             {showSitemap ? <Link href="/sitemap.xml" className={styles.link}>Sitemap</Link> : null}
             <a href={storeUrl} target="_blank" rel="noopener noreferrer" className={styles.cta}>Store</a>
           </nav>
