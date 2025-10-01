@@ -104,8 +104,6 @@ export default function NewsContent() {
     const queryParam = searchParams.get('q');
     const offsetParam = searchParams.get('offset');
     
-    console.log('[NewsContent] Reading URL params:', { providersParam, periodParam, queryParam, offsetParam, url: window.location.href });
-    
     // Update providers
     const providers = providersParam ? providersParam.split(',').filter(Boolean) : [];
     setSelectedProviders(providers);
@@ -116,7 +114,6 @@ export default function NewsContent() {
     
     // Update search query - ALWAYS set it, even if empty
     const query = queryParam || '';
-    console.log('[NewsContent] Setting searchQuery from URL:', query);
     setSearchQuery(query);
     
     // Update offset
@@ -140,8 +137,6 @@ export default function NewsContent() {
   
   // Centralized URL update function - always preserves current URL state
   const updateURL = useCallback((providers: string[], period: 'day' | 'week', query?: string) => {
-    console.log('[NewsContent] updateURL called with:', { providers, period, query });
-    
     // Start with current search params to preserve any other params
     const params = new URLSearchParams(window.location.search);
     
@@ -168,9 +163,7 @@ export default function NewsContent() {
     // Remove offset when filters change (start from beginning)
     params.delete('offset');
     
-    const newUrl = `/news?${params.toString()}`;
-    console.log('[NewsContent] Updating URL to:', newUrl);
-    router.replace(newUrl);
+    router.replace(`/news?${params.toString()}`);
   }, [router]);
 
   // Fetch news data
