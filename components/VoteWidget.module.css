@@ -1,0 +1,165 @@
+/* Vote Widget Styles */
+.voteWidget {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.voteWidget.minimal {
+  gap: 4px;
+}
+
+.voteWidget.compact {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  font-size: 12px;
+}
+
+.voteButtons {
+  display: flex;
+  gap: 4px;
+}
+
+.voteButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  background: #fff;
+  color: #666;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: auto;
+}
+
+.voteButton:hover:not(:disabled) {
+  border-color: #ccc;
+  background: #f8f8f8;
+}
+
+.voteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.voteButton.upvote.voted {
+  border-color: #10a37f;
+  background: #f0f9f5;
+  color: #10a37f;
+}
+
+.voteButton.downvote.voted {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.voteButton svg {
+  flex-shrink: 0;
+}
+
+.voteStats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 12px;
+}
+
+.score {
+  font-weight: 500;
+  color: #333;
+}
+
+.percentage {
+  color: #888;
+}
+
+.voteConfirmation {
+  font-size: 11px;
+  color: #10a37f;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+/* Compact layout adjustments */
+.voteWidget.compact .score {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.voteWidget.compact .percentage {
+  font-size: 10px;
+  color: #999;
+}
+
+/* Minimal layout for initial voting */
+.voteWidget.minimal .voteButton {
+  padding: 2px 4px;
+  border-color: #ddd;
+  background: transparent;
+}
+
+.voteWidget.minimal .voteButton:hover:not(:disabled) {
+  border-color: #10a37f;
+  color: #10a37f;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .voteButton {
+    border-color: #404040;
+    background: #1a1a1a;
+    color: #ccc;
+  }
+  
+  .voteButton:hover:not(:disabled) {
+    border-color: #666;
+    background: #2a2a2a;
+  }
+  
+  .voteButton.upvote.voted {
+    border-color: #10a37f;
+    background: #0a2419;
+    color: #10a37f;
+  }
+  
+  .voteButton.downvote.voted {
+    border-color: #ef4444;
+    background: #2a1111;
+    color: #ef4444;
+  }
+  
+  .score {
+    color: #eee;
+  }
+  
+  .voteStats {
+    color: #aaa;
+  }
+  
+  .percentage {
+    color: #888;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .voteWidget {
+    font-size: 12px;
+  }
+  
+  .voteButton {
+    padding: 3px 6px;
+    font-size: 11px;
+  }
+  
+  .voteStats {
+    font-size: 11px;
+  }
+}
