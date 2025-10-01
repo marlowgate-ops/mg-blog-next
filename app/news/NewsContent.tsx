@@ -104,33 +104,24 @@ export default function NewsContent() {
     const queryParam = searchParams.get('q');
     const offsetParam = searchParams.get('offset');
     
-    if (providersParam) {
-      const providers = providersParam.split(',').filter(Boolean);
-      setSelectedProviders(providers);
-    } else {
-      setSelectedProviders([]);
-    }
+    console.log('[NewsContent] Reading URL params:', { providersParam, periodParam, queryParam, offsetParam, url: window.location.href });
     
-    if (periodParam === 'day' || periodParam === 'week') {
-      setSelectedPeriod(periodParam);
-    } else {
-      setSelectedPeriod('week');
-    }
+    // Update providers
+    const providers = providersParam ? providersParam.split(',').filter(Boolean) : [];
+    setSelectedProviders(providers);
     
-    if (queryParam) {
-      setSearchQuery(queryParam);
-    } else {
-      setSearchQuery('');
-    }
+    // Update period
+    const period = (periodParam === 'day' || periodParam === 'week') ? periodParam : 'week';
+    setSelectedPeriod(period);
     
-    if (offsetParam) {
-      const offset = parseInt(offsetParam, 10);
-      if (!isNaN(offset)) {
-        setCurrentOffset(offset);
-      }
-    } else {
-      setCurrentOffset(0);
-    }
+    // Update search query - ALWAYS set it, even if empty
+    const query = queryParam || '';
+    console.log('[NewsContent] Setting searchQuery from URL:', query);
+    setSearchQuery(query);
+    
+    // Update offset
+    const offset = offsetParam ? parseInt(offsetParam, 10) : 0;
+    setCurrentOffset(isNaN(offset) ? 0 : offset);
     
     // Mark that initial params are read
     setHasReadInitialParams(true);
