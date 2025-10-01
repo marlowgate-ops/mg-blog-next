@@ -1,39 +1,185 @@
-export const runtime = 'edge';
-import { ImageResponse } from 'next/og'
-import { brokers } from '@/data/brokers'
+import { ImageResponse } from '@vercel/og'
 
-function top(mode: string) {
-  const list = [...(brokers as any[])].filter(b => (b as any)?.state !== 'preparing')
-  list.sort((a:any,b:any)=>{
-    if (mode==='total') return (b?.score??0)-(a?.score??0)
-    const ax=a?.subs?.[mode]??0; const bx=b?.subs?.[mode]??0; return bx-ax
-  })
-  return list[0]
+import { site } from '@/lib/site'
+
+export const runtime = 'edge'
+
+interface OGParams {
+  title: string
+  subtitle?: string
+  type?: 'news' | 'broker' | 'default'
+  source?: string
+  time?: string
+  score?: string
 }
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url)
-  const title = searchParams.get('title') || 'おすすめFX・CFD 業者ランキング'
-  const mode = (searchParams.get('mode') || 'total') as string
-  const first: any = top(mode)
-  const brand = first?.name || first?.brand || '—'
-  const score = (mode==='total') ? (first?.score ?? 0) : (first?.subs?.[mode] ?? 0)
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url)
+    
+    const params: OGParams = {
+      title: searchParams.get('title') || site.title,
+      subtitle: searchParams.get('subtitle') || site.description,
+      type: (searchParams.get('type') as OGParams['type']) || 'default',
+      source: searchParams.get('source') || '',
+      time: searchParams.get('time') || '',
+      score: searchParams.get('score') || ''
+    }
 
-  return new ImageResponse(
-    (
-      <div style={{width:'100%',height:'100%',display:'flex',background:'linear-gradient(135deg,#0f172a,#0b2b3a)',color:'#e6f9ff',fontSize:44,padding:'48px 56px',flexDirection:'column',justifyContent:'space-between'}}>
-        <div style={{display:'flex',alignItems:'center',gap:16}}>
-          <div style={{width:64,height:64,borderRadius:16,background:'#0ea5b7',display:'grid',placeItems:'center',fontSize:34,fontWeight:800,color:'#032c33'}}>MG</div>
-          <div style={{fontSize:28,opacity:.9}}>Marlow Gate</div>
+    // Truncate title to 2 lines max (approximately 50 characters per line)
+    const titleLines = params.title.length > 50 
+      ? [params.title.slice(0, 50), params.title.slice(50, 100)]
+      : [params.title]
+
+    // Determine subtitle based on type
+    let displaySubtitle = params.subtitle
+    if (params.type === 'news' && params.source) {
+      displaySubtitle = `${params.source}${params.time ? ` • ${params.time}` : ''}`
+    } else if (params.type === 'broker' && params.score) {
+      displaySubtitle = `評価スコア: ${params.score}/5.0`
+    }
+
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            backgroundColor: '#ffffff',
+            padding: '80px',
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '40px',
+              left: '80px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+            }}
+          >
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                backgroundColor: '#1f2937',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ffffff',
+                fontSize: '16px',
+                fontWeight: 'bold',
+              }}
+            >
+              M
+            </div>
+            <span
+              style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: '#1f2937',
+              }}
+            >
+              {site.brand.name}
+            </span>
+          </div>
+
+          {params.type !== 'default' && (
+            <div
+              style={{
+                backgroundColor: params.type === 'news' ? '#ef4444' : '#3b82f6',
+                color: '#ffffff',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                fontSize: '14px',
+                fontWeight: '500',
+                marginBottom: '24px',
+              }}
+            >
+              {params.type === 'news' ? 'ニュース' : 'ブローカー'}
+            </div>
+          )}
+
+          <div style={{ marginBottom: '24px' }}>
+            {titleLines.map((line, index) => (
+              <div
+                key={index}
+                style={{
+                  fontSize: '48px',
+                  fontWeight: '700',
+                  lineHeight: '1.1',
+                  color: '#1f2937',
+                  marginBottom: index < titleLines.length - 1 ? '8px' : '0',
+                }}
+              >
+                {line}
+              </div>
+            ))}
+          </div>
+
+          {displaySubtitle && (
+            <div
+              style={{
+                fontSize: '24px',
+                color: '#6b7280',
+                fontWeight: '400',
+                marginBottom: '40px',
+              }}
+            >
+              {displaySubtitle}
+            </div>
+          )}
+
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '0',
+              left: '0',
+              right: '0',
+              height: '8px',
+              background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ef4444)',
+            }}
+          />
         </div>
-        <div style={{lineHeight:1.2}}>
-          <div style={{fontSize:54,fontWeight:800}}>{title}</div>
-          <div style={{fontSize:28,marginTop:10,opacity:.9}}>1位: {brand}　スコア: {String(score)}</div>
+      ),
+      {
+        width: 1200,
+        height: 630,
+      }
+    )
+  } catch (error) {
+    console.error('OG Image generation error:', error)
+    
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#1f2937',
+            color: '#ffffff',
+            fontSize: '48px',
+            fontWeight: 'bold',
+          }}
+        >
+          {site.brand.name}
         </div>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end'}}>
-          <div style={{fontSize:22,opacity:.6}}>自動生成OGP</div>
-        </div>
-      </div>
-    ), { width:1200, height:630 }
-  )
+      ),
+      {
+        width: 1200,
+        height: 630,
+      }
+    )
+  }
 }

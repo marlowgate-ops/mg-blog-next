@@ -17,6 +17,20 @@ export const metadata: Metadata = {
     description: '最新の金融市場ニュースや投資情報をリアルタイムでお届け。',
     type: 'website',
     url: 'https://marlowgate.com/news',
+    images: [
+      {
+        url: '/api/og?type=news&title=最新マーケットニュース&subtitle=FX・投資・暗号資産の最新情報をリアルタイムでお届け&source=Marlow Gate',
+        width: 1200,
+        height: 630,
+        alt: '最新マーケットニュース | Marlow Gate',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '最新マーケットニュース | FX・投資情報',
+    description: '最新の金融市場ニュースや投資情報をリアルタイムでお届け。',
+    images: ['/api/og?type=news&title=最新マーケットニュース&subtitle=FX・投資・暗号資産の最新情報をリアルタイムでお届け&source=Marlow Gate'],
   },
   alternates: {
     canonical: 'https://marlowgate.com/news',
