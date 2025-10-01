@@ -51,6 +51,7 @@ export default function Header() {
           <Link className="i" href="/">トップ</Link>
           <Link className="i" href="/best/forex-brokers-jp">国内FX/CFD</Link>
           <Link className={`i ${isInsurancePage ? 'active' : ''}`} href="/insurance">保険</Link>
+          <Link className="i" href="/rankings">ランキング</Link>
           <Link className="i" href="/popular">人気記事</Link>
           <Link className="i" href="/blog">ブログ</Link>
           <Link className="i" href="/sitemap.xml">サイトマップ</Link>

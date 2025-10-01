@@ -22,6 +22,7 @@ export const GET = async () => {
     { loc: `${site.url}/markets`, lastmod: new Date().toISOString(), priority: 0.9, changefreq: 'daily' },
     { loc: `${site.url}/news`, lastmod: new Date().toISOString(), priority: 0.9, changefreq: 'hourly' },
     { loc: `${site.url}/events`, lastmod: new Date().toISOString(), priority: 0.9, changefreq: 'daily' },
+    { loc: `${site.url}/rankings`, lastmod: new Date().toISOString(), priority: 0.9, changefreq: 'hourly' },
     { loc: `${site.url}/best`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
     { loc: `${site.url}/reviews`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
     { loc: `${site.url}/guides`, lastmod: new Date().toISOString(), priority: 0.8, changefreq: 'weekly' },
