@@ -467,3 +467,8 @@
     width: 100%;
   }
 }
+
+/* Event Badge Integration */
+.eventBadge {
+  margin-top: 12px;
+}

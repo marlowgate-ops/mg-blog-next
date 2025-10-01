@@ -35,6 +35,7 @@ export default function FooterMini() {
               <nav className={styles.sitemapNav}>
                 <Link href="/blog" className={styles.sitemapLink}>ブログ</Link>
                 <Link href="/news" className={styles.sitemapLink}>ニュース</Link>
+                <Link href="/events" className={styles.sitemapLink}>イベント</Link>
                 <Link href="/reviews" className={styles.sitemapLink}>レビュー</Link>
                 <Link href="/guides" className={styles.sitemapLink}>ガイド</Link>
               </nav>
