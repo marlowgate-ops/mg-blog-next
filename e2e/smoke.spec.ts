@@ -31,7 +31,7 @@ test.describe('Smoke Tests - Critical Paths', () => {
   });
 
   test('/brokers/compare page critical functionality', async ({ page }) => {
-    await page.goto('/brokers/compare');
+    await page.goto('/compare');
     await TestHelpers.waitForPageLoad(page);
     
     // Check table loads
@@ -58,7 +58,7 @@ test.describe('Smoke Tests - Critical Paths', () => {
   });
 
   test('/tools/position-size calculator basic functionality', async ({ page }) => {
-    await page.goto('/tools/position-size');
+    await page.goto('/tools/position-size-calculator');
     await TestHelpers.waitForPageLoad(page);
     
     // Check calculator form

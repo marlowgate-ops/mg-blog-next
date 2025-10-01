@@ -205,6 +205,7 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
             <tr
               key={i}
               className={r.state === "preparing" ? s.isPreparing : ""}
+              data-testid="broker-table-row"
             >
               <td className={s.stickyColStart}>
                 <div className={s.brandCell}>

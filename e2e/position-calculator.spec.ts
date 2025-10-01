@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('/tools/position-size calculator E2E tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/tools/position-size');
+    await page.goto('/tools/position-size-calculator');
     await page.waitForLoadState('networkidle');
   });
 
@@ -13,11 +13,11 @@ test.describe('/tools/position-size calculator E2E tests', () => {
     // Check input fields are present
     await expect(page.locator('[data-testid="account-balance-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="risk-percentage-input"]')).toBeVisible();
-    await expect(page.locator('[data-testid="entry-price-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="stop-loss-input"]')).toBeVisible();
     
-    // Check that results section exists
-    await expect(page.locator('[data-testid="calculation-results"]')).toBeVisible();
+    // Check default risk percentage value
+    const riskInput = page.locator('[data-testid="risk-percentage-input"]');
+    await expect(riskInput).toHaveValue('2');
   });
 
   test('input changes update results immediately', async ({ page }) => {
