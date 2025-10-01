@@ -65,8 +65,15 @@ test.describe('/brokers/compare page E2E tests', () => {
       const firstRating = await tableRows.first().locator('[data-testid="broker-rating"]').textContent();
       const secondRating = await tableRows.nth(1).locator('[data-testid="broker-rating"]').textContent();
       
-      const firstScore = parseFloat(firstRating || '0');
-      const secondScore = parseFloat(secondRating || '0');
+      // Parse rating from "評価: 85/100" format
+      const parseRating = (text: string | null): number => {
+        if (!text) return 0;
+        const match = text.match(/評価:\s*(\d+)\/100/);
+        return match ? parseFloat(match[1]) : 0;
+      };
+      
+      const firstScore = parseRating(firstRating);
+      const secondScore = parseRating(secondRating);
       expect(firstScore).toBeGreaterThanOrEqual(secondScore);
     }
   });
@@ -153,15 +160,26 @@ test.describe('/brokers/compare page E2E tests', () => {
     await page.waitForLoadState('networkidle');
     
     const urlBeforeReload = page.url();
+    console.log('URL before reload:', urlBeforeReload);
     
     // Reload page
     await page.reload();
     await page.waitForLoadState('networkidle');
     
     // Check URL parameters persist
-    expect(page.url()).toBe(urlBeforeReload);
+    const urlAfterReload = page.url();
+    console.log('URL after reload:', urlAfterReload);
+    expect(urlAfterReload).toBe(urlBeforeReload);
+    
+    // Wait a bit for React to hydrate and restore state
+    await page.waitForTimeout(1000);
     
     // Check filters are still applied in UI
+    const regulationValue = await page.locator('[data-testid="filter-regulation"]').inputValue();
+    const sortValue = await page.locator('[data-testid="sort-select"]').inputValue();
+    console.log('Regulation filter value:', regulationValue);
+    console.log('Sort select value:', sortValue);
+    
     await expect(page.locator('[data-testid="filter-regulation"]')).toHaveValue('FSA');
     await expect(page.locator('[data-testid="sort-select"]')).toHaveValue('rating-desc');
   });

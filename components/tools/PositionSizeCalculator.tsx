@@ -14,11 +14,33 @@ export default function PositionSizeCalculator() {
   const [riskPercent, setRiskPercent] = useState<string>('2')
   const [stopLossPips, setStopLossPips] = useState<string>('20')
   const [result, setResult] = useState<CalculationResult | null>(null)
+  const [errors, setErrors] = useState<{balance?: string, risk?: string}>({})
+
+  const validateInputs = useCallback(() => {
+    const newErrors: {balance?: string, risk?: string} = {}
+    
+    if (!balance || parseFloat(balance) <= 0) {
+      newErrors.balance = '口座残高を正しく入力してください'
+    }
+    
+    if (!riskPercent || parseFloat(riskPercent) <= 0 || parseFloat(riskPercent) > 10) {
+      newErrors.risk = 'リスク許容度は0.1%〜10%の範囲で入力してください'
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }, [balance, riskPercent])
 
   const calculatePosition = useCallback(() => {
     const balanceNum = parseFloat(balance)
     const riskPercentNum = parseFloat(riskPercent)
     const stopLossNum = parseFloat(stopLossPips)
+
+    // Validate inputs first
+    if (!validateInputs()) {
+      setResult(null)
+      return
+    }
 
     // Only calculate if all values are valid numbers and positive
     if (isNaN(balanceNum) || isNaN(riskPercentNum) || isNaN(stopLossNum) || 
@@ -44,7 +66,7 @@ export default function PositionSizeCalculator() {
       risk: riskAmount,
       pipValue: pipValue
     })
-  }, [balance, riskPercent, stopLossPips, result])
+  }, [balance, riskPercent, stopLossPips, result, validateInputs])
 
   // Auto-calculate when inputs change
   useEffect(() => {
@@ -81,6 +103,11 @@ export default function PositionSizeCalculator() {
                 step="1000"
                 data-testid="account-balance-input"
               />
+              {errors.balance && (
+                <p className="text-red-500 text-sm mt-1" data-testid="balance-error">
+                  {errors.balance}
+                </p>
+              )}
             </div>
 
             <div>
@@ -99,6 +126,11 @@ export default function PositionSizeCalculator() {
                 step="0.1"
                 data-testid="risk-percentage-input"
               />
+              {errors.risk && (
+                <p className="text-red-500 text-sm mt-1" data-testid="risk-error">
+                  {errors.risk}
+                </p>
+              )}
               <p className="text-xs text-gray-500 mt-1">
                 推奨: 1-3% (初心者は1-2%を推奨)
               </p>

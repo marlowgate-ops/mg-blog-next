@@ -66,7 +66,7 @@ test.describe('/tools/position-size calculator E2E tests', () => {
     // Should show validation error or limit the value
     const errorMessage = page.locator('[data-testid="risk-error"]');
     if (await errorMessage.isVisible()) {
-      await expect(errorMessage).toContainText('risk');
+      await expect(errorMessage).toContainText('リスク');
     }
   });
 
@@ -142,8 +142,9 @@ test.describe('/tools/position-size calculator E2E tests', () => {
   });
 
   test('CLS (Cumulative Layout Shift) remains at 0', async ({ page }) => {
-    // Navigate to page
-    await page.goto('/tools/position-size');
+    // Navigate to page - use correct URL
+    await page.goto('/tools/position-size-calculator');
+    await page.waitForLoadState('networkidle');
     
     // Get initial layout
     const initialLayout = await page.locator('[data-testid="position-calculator"]').boundingBox();
@@ -211,13 +212,16 @@ test.describe('/tools/position-size calculator E2E tests', () => {
   });
 
   test('keyboard navigation and accessibility', async ({ page }) => {
-    // Test tab navigation through form
-    await page.keyboard.press('Tab'); // Should focus first input
+    // First focus on the calculator form specifically
+    await page.locator('[data-testid="account-balance-input"]').focus();
     await expect(page.locator('[data-testid="account-balance-input"]')).toBeFocused();
     
-    // Continue tabbing
+    // Continue tabbing from the first input
     await page.keyboard.press('Tab');
     await expect(page.locator('[data-testid="risk-percentage-input"]')).toBeFocused();
+    
+    await page.keyboard.press('Tab');
+    await expect(page.locator('[data-testid="currency-pair-select"]')).toBeFocused();
     
     await page.keyboard.press('Tab');
     await expect(page.locator('[data-testid="entry-price-input"]')).toBeFocused();
@@ -226,9 +230,9 @@ test.describe('/tools/position-size calculator E2E tests', () => {
     await expect(page.locator('[data-testid="stop-loss-input"]')).toBeFocused();
     
     // Test that inputs work with keyboard
-    await page.keyboard.type('149.00');
+    await page.keyboard.type('20');
     
     const inputValue = await page.locator('[data-testid="stop-loss-input"]').inputValue();
-    expect(inputValue).toBe('149.00');
+    expect(inputValue).toBe('20');
   });
 });

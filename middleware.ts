@@ -38,7 +38,6 @@ export function middleware(request: NextRequest) {
   // Add performance hints
   if (request.headers.get('Accept')?.includes('text/html')) {
     response.headers.set('Link', [
-      '</fonts/inter-var.woff2>; rel=preload; as=font; type=font/woff2; crossorigin',
       '</api/news>; rel=prefetch',
       '</api/search>; rel=prefetch'
     ].join(', '));

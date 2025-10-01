@@ -143,6 +143,7 @@ export default function Page() {
       state: b.state,
       ctaHref: b.site,
       tags,
+      score: b.score, // Add score for broker-rating test ID
     };
   });
 

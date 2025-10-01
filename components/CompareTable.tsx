@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import PrimaryCta from "./PrimaryCta";
 import BadgeOverflow from "./BadgeOverflow";
 import MicroCopyMessage from "./MicroCopyMessage";
@@ -66,6 +66,7 @@ const FILTER_CHIPS = [
 export default function CompareTable({ rows }: { rows: Row[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -108,46 +109,55 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
     return brandToSlug[brand] || brand.toLowerCase().replace(/[^a-z0-9]/g, '-');
   };
 
-  // Update URL when filters change
+  // Update URL when filters change - avoid circular updates
   useEffect(() => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams();
     
     if (regulationFilter) {
       params.set('regulation', regulationFilter);
-    } else {
-      params.delete('regulation');
     }
     
     if (minDepositFilter) {
       params.set('minDeposit', minDepositFilter);
-    } else {
-      params.delete('minDeposit');
     }
     
     if (accountTypeFilter) {
       params.set('accountType', accountTypeFilter);
-    } else {
-      params.delete('accountType');
     }
     
     if (sortValue) {
       params.set('sort', sortValue);
-    } else {
-      params.delete('sort');
     }
     
-    const newUrl = params.toString() ? `?${params.toString()}` : '';
-    if (newUrl !== `?${searchParams.toString()}` && params.toString() !== searchParams.toString()) {
-      router.push(`${window.location.pathname}${newUrl}`, { scroll: false });
+    const newQueryString = params.toString();
+    const currentQueryString = searchParams.toString();
+    
+    console.log('CompareTable URL update:', {
+      regulationFilter,
+      sortValue,
+      newQueryString,
+      currentQueryString,
+      pathname
+    });
+    
+    if (newQueryString !== currentQueryString) {
+      const newUrl = newQueryString ? `?${newQueryString}` : '';
+      console.log('Pushing new URL:', `${pathname}${newUrl}`);
+      router.push(`${pathname}${newUrl}`, { scroll: false });
     }
-  }, [regulationFilter, minDepositFilter, accountTypeFilter, sortValue, router, searchParams]);
+  }, [regulationFilter, minDepositFilter, accountTypeFilter, sortValue, router, searchParams, pathname]);
 
-  // Initialize filters from URL on mount
+  // Initialize filters from URL on mount - improved dependency handling
   useEffect(() => {
-    setRegulationFilter(searchParams.get('regulation') || '');
-    setMinDepositFilter(searchParams.get('minDeposit') || '');
-    setAccountTypeFilter(searchParams.get('accountType') || '');
-    setSortValue(searchParams.get('sort') || '');
+    const regulation = searchParams.get('regulation') || '';
+    const minDeposit = searchParams.get('minDeposit') || '';
+    const accountType = searchParams.get('accountType') || '';
+    const sort = searchParams.get('sort') || '';
+    
+    setRegulationFilter(regulation);
+    setMinDepositFilter(minDeposit);
+    setAccountTypeFilter(accountType);
+    setSortValue(sort);
   }, [searchParams]);
 
   const allKeys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))));
@@ -169,19 +179,64 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
       );
     }
 
-    // Then sort
-    if (!sortConfig) return filteredRows;
+    // Apply URL-based filters
+    if (regulationFilter) {
+      // For demo, all brokers have FSA regulation
+      if (regulationFilter !== 'FSA') {
+        filteredRows = [];
+      }
+    }
 
-    return [...filteredRows].sort((a, b) => {
-      const aVal = (a as any)[sortConfig.key] || "";
-      const bVal = (b as any)[sortConfig.key] || "";
+    if (accountTypeFilter) {
+      // For demo, all brokers support demo accounts
+      if (accountTypeFilter !== 'demo') {
+        filteredRows = [];
+      }
+    }
 
-      // Simple string comparison for now
-      if (aVal < bVal) return sortConfig.direction === "asc" ? -1 : 1;
-      if (aVal > bVal) return sortConfig.direction === "asc" ? 1 : -1;
-      return 0;
-    });
-  }, [rows, sortConfig, activeFilters]);
+    // Apply sorting based on sortValue from URL
+    if (sortValue) {
+      filteredRows = [...filteredRows].sort((a, b) => {
+        if (sortValue === 'rating-desc') {
+          const aScore = a.score || 0;
+          const bScore = b.score || 0;
+          return bScore - aScore;
+        }
+        if (sortValue === 'rating-asc') {
+          const aScore = a.score || 0;
+          const bScore = b.score || 0;
+          return aScore - bScore;
+        }
+        if (sortValue === 'spread-asc') {
+          // For demo, sort by cost alphabetically as proxy for spread
+          const aCost = a.cost || 'zzz';
+          const bCost = b.cost || 'zzz';
+          return aCost.localeCompare(bCost);
+        }
+        if (sortValue === 'spread-desc') {
+          const aCost = a.cost || '';
+          const bCost = b.cost || '';
+          return bCost.localeCompare(aCost);
+        }
+        return 0;
+      });
+    }
+
+    // Legacy sort config (keep for compatibility)
+    if (!sortValue && sortConfig) {
+      filteredRows = [...filteredRows].sort((a, b) => {
+        const aVal = (a as any)[sortConfig.key] || "";
+        const bVal = (b as any)[sortConfig.key] || "";
+
+        // Simple string comparison for legacy sorting
+        if (aVal < bVal) return sortConfig.direction === "asc" ? -1 : 1;
+        if (aVal > bVal) return sortConfig.direction === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+
+    return filteredRows;
+  }, [rows, sortConfig, activeFilters, regulationFilter, accountTypeFilter, sortValue]);
 
   const handleSort = (key: string) => {
     if (!SORTABLE_COLUMNS.includes(key)) return;
@@ -229,7 +284,10 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
             id="regulation-filter"
             data-testid="filter-regulation"
             value={regulationFilter}
-            onChange={(e) => setRegulationFilter(e.target.value)}
+            onChange={(e) => {
+              console.log('Regulation filter changed to:', e.target.value);
+              setRegulationFilter(e.target.value);
+            }}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">すべて</option>
@@ -283,7 +341,13 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
             id="sort-select"
             data-testid="sort-select"
             value={sortValue}
-            onChange={(e) => setSortValue(e.target.value)}
+            onChange={(e) => {
+              setSortValue(e.target.value);
+              // Clear legacy sortConfig when using new sort
+              if (e.target.value) {
+                setSortConfig(null);
+              }
+            }}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">デフォルト</option>

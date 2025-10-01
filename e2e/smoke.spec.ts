@@ -100,6 +100,7 @@ test.describe('Smoke Tests - Critical Paths', () => {
 
   test('Site build quality - no console errors', async ({ page }) => {
     const consoleErrors: string[] = [];
+    const failedRequests: string[] = [];
     
     page.on('console', msg => {
       if (msg.type() === 'error') {
@@ -107,8 +108,19 @@ test.describe('Smoke Tests - Critical Paths', () => {
       }
     });
     
+    page.on('response', response => {
+      if (response.status() === 404) {
+        failedRequests.push(`404: ${response.url()}`);
+      }
+    });
+    
     await page.goto('/');
     await TestHelpers.waitForPageLoad(page);
+    
+    // Log the specific 404s for debugging
+    if (failedRequests.length > 0) {
+      console.log('404 requests found:', failedRequests);
+    }
     
     // Allow some common non-critical errors but fail on critical ones
     const criticalErrors = consoleErrors.filter(error => 
