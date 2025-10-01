@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -86,6 +86,8 @@ export default function NewsContent() {
   const [selectedPeriod, setSelectedPeriod] = useState<'day' | 'week'>('week');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentOffset, setCurrentOffset] = useState(0);
+  const [skipNextDebouncedUpdate, setSkipNextDebouncedUpdate] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -104,14 +106,20 @@ export default function NewsContent() {
     
     if (providersParam) {
       setSelectedProviders(providersParam.split(',').filter(Boolean));
+    } else {
+      setSelectedProviders([]);
     }
     
     if (periodParam === 'day' || periodParam === 'week') {
       setSelectedPeriod(periodParam);
+    } else {
+      setSelectedPeriod('week');
     }
     
     if (queryParam) {
       setSearchQuery(queryParam);
+    } else {
+      setSearchQuery('');
     }
     
     if (offsetParam) {
@@ -119,9 +127,29 @@ export default function NewsContent() {
       if (!isNaN(offset)) {
         setCurrentOffset(offset);
       }
+    } else {
+      setCurrentOffset(0);
     }
+    
+    // Mark that initial load is complete
+    setIsInitialLoad(false);
   }, [searchParams]);
   
+  // Centralized URL update function
+  const updateURL = useCallback((providers: string[], period: 'day' | 'week', query: string) => {
+    const params = new URLSearchParams();
+    
+    if (providers.length > 0) {
+      params.set('providers', providers.join(','));
+    }
+    params.set('period', period);
+    if (query.trim()) {
+      params.set('q', query.trim());
+    }
+    
+    router.replace(`/news?${params.toString()}`);
+  }, [router]);
+
   // Fetch news data
   const fetchNews = async (offset = 0, providers: string[] = [], period: 'day' | 'week' = 'week', query = '', replace = true) => {
     try {
@@ -158,71 +186,45 @@ export default function NewsContent() {
       setLoadingMore(false);
     }
   };
-  
-  // Initial load
-  useEffect(() => {
-    fetchNews(0, selectedProviders, selectedPeriod, debouncedSearchQuery);
-  }, [selectedProviders, selectedPeriod, debouncedSearchQuery]);
 
   // Update URL when debounced search query changes
   useEffect(() => {
-    const params = new URLSearchParams(searchParams);
-    if (debouncedSearchQuery.trim()) {
-      params.set('q', debouncedSearchQuery.trim());
-    } else {
-      params.delete('q');
+    // Skip this update if we just did a manual URL update or if it's initial load
+    if (skipNextDebouncedUpdate || isInitialLoad) {
+      setSkipNextDebouncedUpdate(false);
+      return;
     }
-    params.delete('offset'); // Reset pagination on search change
     
-    // Only update URL if search query actually changed
-    const currentQuery = searchParams.get('q') || '';
-    if (currentQuery !== debouncedSearchQuery.trim()) {
-      router.replace(`/news?${params.toString()}`);
-    }
-  }, [debouncedSearchQuery, searchParams, router]);
-  
-  const handleProviderToggle = (providerId: string) => {
+    updateURL(selectedProviders, selectedPeriod, debouncedSearchQuery);
+  }, [debouncedSearchQuery, selectedProviders, selectedPeriod, updateURL, skipNextDebouncedUpdate, isInitialLoad]);
+
+  // Initial load
+  useEffect(() => {
+    fetchNews(0, selectedProviders, selectedPeriod, debouncedSearchQuery);
+  }, [selectedProviders, selectedPeriod, debouncedSearchQuery]);  const handleProviderToggle = (providerId: string) => {
     const newProviders = selectedProviders.includes(providerId)
       ? selectedProviders.filter(p => p !== providerId)
       : [...selectedProviders, providerId];
     
     setSelectedProviders(newProviders);
-    
-    // Update URL
-    const params = new URLSearchParams(searchParams);
-    if (newProviders.length > 0) {
-      params.set('providers', newProviders.join(','));
-    } else {
-      params.delete('providers');
-    }
-    params.set('period', selectedPeriod);
-    if (debouncedSearchQuery.trim()) {
-      params.set('q', debouncedSearchQuery.trim());
-    } else {
-      params.delete('q');
-    }
-    params.delete('offset'); // Reset pagination on filter change
-    router.replace(`/news?${params.toString()}`);
+    updateURL(newProviders, selectedPeriod, searchQuery);
   };
   
   const handlePeriodToggle = (period: 'day' | 'week') => {
     setSelectedPeriod(period);
-    
-    // Update URL
-    const params = new URLSearchParams(searchParams);
-    params.set('period', period);
-    if (selectedProviders.length > 0) {
-      params.set('providers', selectedProviders.join(','));
-    }
-    if (debouncedSearchQuery.trim()) {
-      params.set('q', debouncedSearchQuery.trim());
-    } else {
-      params.delete('q');
-    }
-    params.delete('offset'); // Reset pagination on filter change
-    router.replace(`/news?${params.toString()}`);
+    updateURL(selectedProviders, period, searchQuery);
   };
   
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      // Update search query state AND URL immediately
+      const currentValue = e.currentTarget.value;
+      setSearchQuery(currentValue);
+      setSkipNextDebouncedUpdate(true); // Skip the next debounced update
+      updateURL(selectedProviders, selectedPeriod, currentValue);
+    }
+  };
+
   const handleLoadMore = () => {
     if (nextOffset !== null) {
       fetchNews(nextOffset, selectedProviders, selectedPeriod, debouncedSearchQuery, false);
@@ -261,6 +263,7 @@ export default function NewsContent() {
               placeholder="記事のタイトルを検索..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
               className={styles.searchField}
               data-testid="news-search-input"
             />
@@ -284,16 +287,7 @@ export default function NewsContent() {
             className={`${styles.chip} ${selectedProviders.length === 0 ? styles.active : ''}`}
             onClick={() => {
               setSelectedProviders([]);
-              const params = new URLSearchParams(searchParams);
-              params.delete('providers');
-              params.set('period', selectedPeriod);
-              if (debouncedSearchQuery.trim()) {
-                params.set('q', debouncedSearchQuery.trim());
-              } else {
-                params.delete('q');
-              }
-              params.delete('offset'); // Reset pagination on filter change
-              router.replace(`/news?${params.toString()}`);
+              updateURL([], selectedPeriod, searchQuery);
             }}
             data-testid="provider-chip-all"
           >
@@ -340,7 +334,7 @@ export default function NewsContent() {
                           className={styles.sourceIcon}
                         />
                       )}
-                      <span className={styles.sourceName}>{item.sourceName}</span>
+                      <span className={styles.sourceName} data-testid="news-source">{item.sourceName}</span>
                       <span className={styles.time}>{formatRelativeTime(item.publishedAt)}</span>
                     </div>
                     <h3 className={styles.itemTitle}>

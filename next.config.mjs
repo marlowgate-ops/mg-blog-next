@@ -7,7 +7,7 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   // TEMP: allow production build to complete even if TS errors exist
   typescript: { ignoreBuildErrors: true },
-  output: "standalone",
+  // output: "standalone", // Commented out for local testing
   
   // Performance optimizations
   swcMinify: true,

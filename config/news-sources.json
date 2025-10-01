@@ -22,5 +22,29 @@
     "url": "https://www.release.tdnet.info/rss/disclosure.xml", 
     "icon": "/news-providers/tdnet.svg",
     "hostname": "www.release.tdnet.info"
+  },
+  { 
+    "id": "reuters", 
+    "name": "Reuters", 
+    "type": "rss", 
+    "url": "https://www.reuters.com/finance/japan/rss", 
+    "icon": "/news-providers/reuters.svg",
+    "hostname": "reuters.com"
+  },
+  { 
+    "id": "bloomberg", 
+    "name": "Bloomberg", 
+    "type": "rss", 
+    "url": "https://feeds.bloomberg.com/markets/news.rss", 
+    "icon": "/news-providers/bloomberg.svg",
+    "hostname": "bloomberg.com"
+  },
+  { 
+    "id": "nikkei", 
+    "name": "Nikkei", 
+    "type": "rss", 
+    "url": "https://www.nikkei.com/money/rss", 
+    "icon": "/news-providers/nikkei.svg",
+    "hostname": "nikkei.com"
   }
 ]

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Container from "@/components/Container";
 import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
@@ -225,7 +225,9 @@ export default function Page() {
               <SectionBand variant="accent" id="compare">
                 <section className={s.section} data-section>
                   <h2 className={s.sectionTitle}><span className={s.bar} />主要スペック比較</h2>
-                  <CompareTable rows={rows} />
+                  <Suspense fallback={<div>比較表を読み込み中...</div>}>
+                    <CompareTable rows={rows} />
+                  </Suspense>
                 </section>
               </SectionBand>
 

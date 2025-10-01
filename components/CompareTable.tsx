@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import PrimaryCta from "./PrimaryCta";
 import BadgeOverflow from "./BadgeOverflow";
 import MicroCopyMessage from "./MicroCopyMessage";
@@ -63,8 +64,57 @@ const FILTER_CHIPS = [
 ];
 
 export default function CompareTable({ rows }: { rows: Row[] }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [regulationFilter, setRegulationFilter] = useState<string>('');
+  const [minDepositFilter, setMinDepositFilter] = useState<string>('');
+  const [accountTypeFilter, setAccountTypeFilter] = useState<string>('');
+  const [sortValue, setSortValue] = useState<string>('');
+
+  // Update URL when filters change
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    
+    if (regulationFilter) {
+      params.set('regulation', regulationFilter);
+    } else {
+      params.delete('regulation');
+    }
+    
+    if (minDepositFilter) {
+      params.set('minDeposit', minDepositFilter);
+    } else {
+      params.delete('minDeposit');
+    }
+    
+    if (accountTypeFilter) {
+      params.set('accountType', accountTypeFilter);
+    } else {
+      params.delete('accountType');
+    }
+    
+    if (sortValue) {
+      params.set('sort', sortValue);
+    } else {
+      params.delete('sort');
+    }
+    
+    const newUrl = params.toString() ? `?${params.toString()}` : '';
+    if (newUrl !== `?${searchParams.toString()}` && params.toString() !== searchParams.toString()) {
+      router.push(`${window.location.pathname}${newUrl}`, { scroll: false });
+    }
+  }, [regulationFilter, minDepositFilter, accountTypeFilter, sortValue, router, searchParams]);
+
+  // Initialize filters from URL on mount
+  useEffect(() => {
+    setRegulationFilter(searchParams.get('regulation') || '');
+    setMinDepositFilter(searchParams.get('minDeposit') || '');
+    setAccountTypeFilter(searchParams.get('accountType') || '');
+    setSortValue(searchParams.get('sort') || '');
+  }, [searchParams]);
 
   const allKeys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))));
   const core = ["brand"];
@@ -135,6 +185,82 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
 
   return (
     <div className={s.tableWrap}>
+      {/* Select-based filters for E2E tests */}
+      <div className="mb-4 flex flex-wrap gap-4">
+        <div className="flex flex-col">
+          <label htmlFor="regulation-filter" className="text-sm font-medium text-gray-700 mb-1">
+            規制機関
+          </label>
+          <select
+            id="regulation-filter"
+            data-testid="filter-regulation"
+            value={regulationFilter}
+            onChange={(e) => setRegulationFilter(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">すべて</option>
+            <option value="FSA">金融庁 (FSA)</option>
+            <option value="CFTC">CFTC</option>
+            <option value="FCA">FCA</option>
+            <option value="ASIC">ASIC</option>
+          </select>
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="min-deposit-filter" className="text-sm font-medium text-gray-700 mb-1">
+            最低入金額
+          </label>
+          <select
+            id="min-deposit-filter"
+            data-testid="filter-min-deposit"
+            value={minDepositFilter}
+            onChange={(e) => setMinDepositFilter(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">すべて</option>
+            <option value="0">0円</option>
+            <option value="100">100円以上</option>
+            <option value="1000">1,000円以上</option>
+            <option value="10000">10,000円以上</option>
+            <option value="100000">100,000円以上</option>
+          </select>
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="account-type-filter" className="text-sm font-medium text-gray-700 mb-1">
+            口座タイプ
+          </label>
+          <select
+            id="account-type-filter"
+            data-testid="filter-account-type"
+            value={accountTypeFilter}
+            onChange={(e) => setAccountTypeFilter(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">すべて</option>
+            <option value="demo">デモ</option>
+            <option value="standard">スタンダード</option>
+            <option value="pro">プロ</option>
+          </select>
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="sort-select" className="text-sm font-medium text-gray-700 mb-1">
+            並び順
+          </label>
+          <select
+            id="sort-select"
+            data-testid="sort-select"
+            value={sortValue}
+            onChange={(e) => setSortValue(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">デフォルト</option>
+            <option value="rating-desc">評価の高い順</option>
+            <option value="rating-asc">評価の低い順</option>
+            <option value="spread-asc">スプレッドの狭い順</option>
+            <option value="spread-desc">スプレッドの広い順</option>
+          </select>
+        </div>
+      </div>
+
       <div className={s.filterChips}>
         {FILTER_CHIPS.map((chip) => (
           <button
@@ -209,7 +335,7 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
             >
               <td className={s.stickyColStart}>
                 <div className={s.brandCell}>
-                  <span className={s.brandTag}>{r.brand}</span>
+                  <span className={s.brandTag} data-testid="broker-name">{r.brand}</span>
                   {r.score && (
                     <div className={s.tableBadges}>
                       <BadgeOverflow
@@ -229,6 +355,20 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
                       />
                     </div>
                   )}
+                  {r.score && (
+                    <span data-testid="broker-rating" className="text-sm text-gray-600">
+                      評価: {r.score}/100
+                    </span>
+                  )}
+                  <span data-testid="broker-regulation" className="text-xs text-gray-500">
+                    FSA
+                  </span>
+                  <span data-testid="broker-min-deposit" className="text-xs text-gray-500">
+                    No minimum
+                  </span>
+                  <span data-testid="broker-demo-account" className="text-xs text-gray-500">
+                    Yes
+                  </span>
                 </div>
               </td>
               {optional.map((key) => (

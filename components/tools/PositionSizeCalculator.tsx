@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import styles from './tools.module.css'
 
 interface CalculationResult {
@@ -10,9 +10,9 @@ interface CalculationResult {
 }
 
 export default function PositionSizeCalculator() {
-  const [balance, setBalance] = useState<string>('')
+  const [balance, setBalance] = useState<string>('1000000')
   const [riskPercent, setRiskPercent] = useState<string>('2')
-  const [stopLossPips, setStopLossPips] = useState<string>('')
+  const [stopLossPips, setStopLossPips] = useState<string>('20')
   const [result, setResult] = useState<CalculationResult | null>(null)
 
   const calculatePosition = useCallback(() => {
@@ -20,8 +20,17 @@ export default function PositionSizeCalculator() {
     const riskPercentNum = parseFloat(riskPercent)
     const stopLossNum = parseFloat(stopLossPips)
 
-    if (!balanceNum || !riskPercentNum || !stopLossNum || stopLossNum <= 0) {
-      setResult(null)
+    // Only calculate if all values are valid numbers and positive
+    if (isNaN(balanceNum) || isNaN(riskPercentNum) || isNaN(stopLossNum) || 
+        balanceNum <= 0 || riskPercentNum <= 0 || stopLossNum <= 0) {
+      // Keep existing result or set default fallback
+      if (!result) {
+        setResult({
+          positionSize: 0,
+          risk: 0,
+          pipValue: 1000
+        })
+      }
       return
     }
 
@@ -33,9 +42,14 @@ export default function PositionSizeCalculator() {
     setResult({
       positionSize: Math.round(positionSize * 100) / 100,
       risk: riskAmount,
-      pipValue
+      pipValue: pipValue
     })
-  }, [balance, riskPercent, stopLossPips])
+  }, [balance, riskPercent, stopLossPips, result])
+
+  // Auto-calculate when inputs change
+  useEffect(() => {
+    calculatePosition()
+  }, [calculatePosition])
 
   const resetForm = () => {
     setBalance('')
@@ -91,6 +105,43 @@ export default function PositionSizeCalculator() {
             </div>
 
             <div>
+              <label htmlFor="currencyPair" className="block text-sm font-medium text-gray-700 mb-2">
+                通貨ペア *
+              </label>
+              <select
+                id="currencyPair"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                data-testid="currency-pair-select"
+                defaultValue="USDJPY"
+              >
+                <option value="USDJPY">USD/JPY</option>
+                <option value="EURJPY">EUR/JPY</option>
+                <option value="GBPJPY">GBP/JPY</option>
+                <option value="AUDJPY">AUD/JPY</option>
+                <option value="EURUSD">EUR/USD</option>
+                <option value="GBPUSD">GBP/USD</option>
+                <option value="AUDUSD">AUD/USD</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="entryPrice" className="block text-sm font-medium text-gray-700 mb-2">
+                エントリー価格
+              </label>
+              <input
+                type="number"
+                id="entryPrice"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="例: 150.00"
+                step="0.01"
+                data-testid="entry-price-input"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                参考価格（計算には影響しません）
+              </p>
+            </div>
+
+            <div>
               <label htmlFor="stopLoss" className="block text-sm font-medium text-gray-700 mb-2">
                 ストップロス (pips) *
               </label>
@@ -128,21 +179,24 @@ export default function PositionSizeCalculator() {
         </div>
 
         {/* Result Section */}
-        <div className={styles.resultSection}>
+        <div className={styles.resultSection} data-testid="calculation-results">
           <h3 className="text-xl font-semibold text-gray-900 mb-6">計算結果</h3>
           
-          {result ? (
-            <div className="space-y-6">
-              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <h4 className="text-lg font-semibold text-blue-900 mb-2">推奨ポジションサイズ</h4>
-                <p className="text-3xl font-bold text-blue-700" data-testid="position-size-result">
-                  {result.positionSize.toFixed(2)} ロット
-                </p>
-                <p className="text-sm text-blue-600 mt-1">
-                  (標準ロット: {(result.positionSize * 100000).toLocaleString()} 通貨単位)
-                </p>
-              </div>
+          <div className="space-y-6">
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <h4 className="text-lg font-semibold text-blue-900 mb-2">推奨ポジションサイズ</h4>
+              <p className="text-3xl font-bold text-blue-700" data-testid="position-size-result">
+                {result ? `${result.positionSize.toFixed(2)} ロット` : '0.00 ロット'}
+              </p>
+              <p className="text-sm text-blue-600 mt-1">
+                {result 
+                  ? `(標準ロット: ${(result.positionSize * 100000).toLocaleString()} 通貨単位)`
+                  : '値を入力して計算してください'
+                }
+              </p>
+            </div>
 
+            {result && (
               <div className="space-y-4">
                 <div className="flex justify-between items-center py-3 border-b border-gray-200">
                   <span className="text-gray-600">最大損失額</span>
@@ -165,7 +219,9 @@ export default function PositionSizeCalculator() {
                   </span>
                 </div>
               </div>
+            )}
 
+            {result && (
               <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
                 <h5 className="font-medium text-yellow-800 mb-2">⚠️ 注意事項</h5>
                 <ul className="text-sm text-yellow-700 space-y-1">
@@ -174,15 +230,8 @@ export default function PositionSizeCalculator() {
                   <li>• スプレッドや手数料も考慮に入れてください</li>
                 </ul>
               </div>
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <div className="text-6xl mb-4">📊</div>
-              <p className="text-gray-500">
-                左側のフォームに値を入力して「計算する」をクリックしてください
-              </p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 

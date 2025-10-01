@@ -61,7 +61,7 @@ export default async function Page() {
   const items = await getNews()
   
   return (
-    <main className={s.container}>
+    <div className={s.container}>
       <section className={s.hero}>
         <h1 className={s.heroTitle}>Latest articles</h1>
         <p className={s.heroLead}>{SITE.tagline}</p>
@@ -132,7 +132,7 @@ export default async function Page() {
           <Sidebar />
         </div>
       </div>
-    </main>
+    </div>
   )
 }
 
