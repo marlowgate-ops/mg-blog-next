@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import SearchTypeahead from './SearchTypeahead'
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -56,9 +57,12 @@ export default function Header() {
           <Link className="i" href="/blog">ブログ</Link>
           <Link className="i" href="/sitemap.xml">サイトマップ</Link>
         </nav>
-        <form action="/search" className="search" role="search">
-          <input name="q" type="search" placeholder="検索…" aria-label="検索" />
-        </form>
+        <div className="search-wrapper">
+          <SearchTypeahead 
+            placeholder="記事、業者、ツールを検索..." 
+            className="header-search"
+          />
+        </div>
       </div>
       <style jsx>{`
         .hd { position:sticky; top:0; z-index:40; backdrop-filter:saturate(180%) blur(8px);
@@ -76,9 +80,24 @@ export default function Header() {
         .u.rss:hover { background:#fff3e6; }
         .i.active { background:#e0f2fe; color:#0284c7; font-weight:600; }
         .menubar { padding-top:4px; padding-bottom:10px; }
-        .search input{ padding:6px 10px; border:1px solid #e5e7eb; border-radius:8px; min-width:160px; }
-        @media (max-width:720px){ .menubar{ display:none; } .logo { width:24px; height:24px; } }
-        @media (max-width:480px){ .brand-text { max-width:120px; } }
+        .search-wrapper { min-width:200px; }
+        .search-wrapper :global(.header-search) { width:100%; max-width:250px; }
+        .search-wrapper :global(.header-search .searchInput) { 
+          font-size:14px; 
+          padding:8px 12px;
+          border-radius:8px;
+        }
+        .search-wrapper :global(.header-search .searchButton) { 
+          padding:8px 10px;
+          border-radius:0 8px 8px 0;
+        }
+        @media (max-width:720px){ 
+          .menubar{ display:none; } 
+          .logo { width:24px; height:24px; } 
+        }
+        @media (max-width:480px){ 
+          .brand-text { max-width:120px; } 
+        }
       `}</style>
     </header>
   )

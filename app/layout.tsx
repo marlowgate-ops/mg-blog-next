@@ -4,6 +4,7 @@ import { site } from '@/lib/site'
 import { Inter } from 'next/font/google'
 import Header from '@/components/Header'
 import JsonLdSitewide from '@/components/JsonLdSitewide'
+import JsonLdSearchBox from '@/components/JsonLdSearchBox'
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
@@ -46,6 +47,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={inter.className + " min-h-screen antialiased"}>
         <JsonLdSitewide />
+        <JsonLdSearchBox 
+          domain={site.url} 
+          searchUrl="/search"
+        />
         {gaId ? (
           <>
             <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
