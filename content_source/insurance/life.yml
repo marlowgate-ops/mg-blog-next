@@ -1,0 +1,108 @@
+- slug: nippon-life-whole
+  brand: 日本生命
+  category: life
+  coverage:
+    - 死亡保障
+    - 高度障害保障
+    - 災害死亡保障
+    - リビングニーズ特約
+  exclusions:
+    - 自殺（契約から2年以内）
+    - 戦争・暴動
+    - 薬物使用による死亡
+  premium_from: 15000
+  age_range:
+    min: 18
+    max: 75
+  apply_methods:
+    - online
+    - phone
+    - agent
+  notes: 配当金付きの終身保険。保険料払込期間を選択可能。
+  urls:
+    official: https://www.nissay.co.jp/kojin/shohin/seiho/whole/
+    apply: https://www.nissay.co.jp/kojin/shohin/seiho/whole/simulation/
+  scores:
+    cost: 3
+    coverage: 5
+    service: 4
+    claim: 4
+  score_total: 4.0
+  company_size: large
+  established_year: 1889
+  customer_base: 10500000
+  special_features:
+    - 国内最大手の安心感
+    - 豊富な商品ラインナップ
+    - 全国の営業拠点ネットワーク
+
+- slug: meiji-yasuda-whole
+  brand: 明治安田生命
+  category: life
+  coverage:
+    - 死亡保障
+    - 高度障害保障
+    - 災害死亡保障
+  exclusions:
+    - 自殺（契約から3年以内）
+    - 戦争・内乱
+  premium_from: 12000
+  age_range:
+    min: 20
+    max: 70
+  apply_methods:
+    - online
+    - phone
+    - agent
+  notes: 保険料が比較的安く、加入しやすい終身保険。
+  urls:
+    official: https://www.meijiyasuda.co.jp/find/list/whole/
+    apply: https://www.meijiyasuda.co.jp/find/list/whole/simulation/
+  scores:
+    cost: 4
+    coverage: 4
+    service: 4
+    claim: 4
+  score_total: 4.0
+  company_size: large
+  established_year: 1881
+  customer_base: 7200000
+  special_features:
+    - コストパフォーマンス重視
+    - 柔軟な保険料払込方法
+    - 充実したアフターサービス
+
+- slug: sony-life-variable
+  brand: ソニー生命
+  category: life
+  coverage:
+    - 死亡保障（変動型）
+    - 高度障害保障
+    - 運用益による保障額増加
+  exclusions:
+    - 自殺（契約から2年以内）
+    - 投資リスクによる元本割れ
+  premium_from: 20000
+  age_range:
+    min: 20
+    max: 65
+  apply_methods:
+    - online
+    - agent
+  notes: 運用実績に応じて保障額が変動する変額保険。
+  urls:
+    official: https://www.sonylife.co.jp/examine/lineup/list/variableins/
+    apply: https://www.sonylife.co.jp/examine/lineup/list/variableins/simulation/
+  scores:
+    cost: 2
+    coverage: 5
+    service: 5
+    claim: 4
+  score_total: 4.0
+  company_size: large
+  established_year: 1979
+  customer_base: 1800000
+  special_features:
+    - 運用型保険のパイオニア
+    - ライフプランナーによる個別相談
+    - 運用ファンド選択の自由度

@@ -1,0 +1,115 @@
+- slug: tokio-marine-tap
+  brand: 東京海上日動
+  category: auto
+  coverage:
+    - 対人賠償保険
+    - 対物賠償保険
+    - 人身傷害保険
+    - 車両保険
+    - 弁護士費用特約
+  exclusions:
+    - 飲酒運転による事故
+    - 無免許運転
+    - 故意の事故
+  premium_from: 45000
+  deductible: 50000
+  age_range:
+    min: 18
+    max: 99
+  apply_methods:
+    - online
+    - phone
+    - agent
+  notes: 業界トップクラスの事故対応力と充実した補償内容。
+  urls:
+    official: https://www.tokiomarine-nichido.co.jp/service/auto/tap/
+    apply: https://www.tokiomarine-nichido.co.jp/service/auto/tap/estimate/
+  scores:
+    cost: 3
+    coverage: 5
+    service: 5
+    claim: 5
+  score_total: 4.5
+  company_size: large
+  established_year: 1879
+  customer_base: 4500000
+  special_features:
+    - 24時間365日事故受付
+    - 全国約280か所のサービス拠点
+    - 示談交渉サービス
+
+- slug: sony-damage-auto
+  brand: ソニー損保
+  category: auto
+  coverage:
+    - 対人・対物賠償保険
+    - 人身傷害保険
+    - 車両保険
+    - ロードサービス
+  exclusions:
+    - 飲酒・薬物使用運転
+    - 競技・曲技使用
+  premium_from: 28000
+  deductible: 30000
+  age_range:
+    min: 18
+    max: 99
+  apply_methods:
+    - online
+    - phone
+  notes: ダイレクト型で保険料が安く、充実したロードサービス。
+  urls:
+    official: https://www.sonysonpo.co.jp/auto/
+    apply: https://www.sonysonpo.co.jp/auto/estimate/
+  scores:
+    cost: 5
+    coverage: 4
+    service: 4
+    claim: 4
+  score_total: 4.25
+  company_size: medium
+  established_year: 1998
+  customer_base: 1800000
+  special_features:
+    - ダイレクト型で保険料節約
+    - 全国約9000か所のロードサービス拠点
+    - セコム事故現場急行サービス
+
+- slug: aioi-nissay-auto
+  brand: あいおいニッセイ同和損保
+  category: auto
+  coverage:
+    - 対人・対物賠償保険
+    - 人身傷害保険
+    - 車両保険
+    - 事故・故障時代車費用特約
+  exclusions:
+    - 飲酒運転
+    - 無免許運転
+    - 地震・噴火・津波
+  premium_from: 38000
+  deductible: 40000
+  age_range:
+    min: 18
+    max: 99
+  apply_methods:
+    - online
+    - phone
+    - agent
+  notes: MS&ADグループの安心感と豊富な特約オプション。
+  urls:
+    official: https://www.aioinissaydowa.co.jp/personal/product/tough/
+    apply: https://www.aioinissaydowa.co.jp/personal/product/tough/estimate/
+  scores:
+    cost: 3
+    coverage: 4
+    service: 4
+    claim: 4
+  score_total: 3.75
+  company_size: large
+  established_year: 2010
+  customer_base: 2800000
+  special_features:
+    - MS&ADグループの総合力
+    - 豊富な特約ラインナップ
+    - 全国の代理店ネットワーク
