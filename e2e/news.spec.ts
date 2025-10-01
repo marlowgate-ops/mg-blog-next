@@ -132,8 +132,11 @@ test.describe('/news page E2E tests', () => {
     await searchInput.fill('investment');
     await searchInput.press('Enter');
     
+    // Wait a bit for URL update to complete
+    await page.waitForTimeout(500);
     await page.waitForLoadState('networkidle');
     const urlBeforeReload = page.url();
+    console.log('URL before reload:', urlBeforeReload);
     
     // Reload page
     await page.reload();
@@ -141,6 +144,7 @@ test.describe('/news page E2E tests', () => {
     
     // Check URL parameters persist
     expect(page.url()).toBe(urlBeforeReload);
+    console.log('URL after reload:', page.url());
     
     // Check filters are still applied in UI
     await expect(page.locator('[data-testid="provider-chip-reuters"]').first()).toHaveClass(/active|selected/);

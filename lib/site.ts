@@ -1,6 +1,6 @@
 export const site = {
   title: 'Marlow Gate',
-  description: 'FX・投資・資産運用の実践的ガイド。初心者から上級者まで、効果的な取引戦略、リスク管理、ブローカー比較、最新ニュースまで、投資成功に必要な情報を分かりやすく提供しています。',
+  description: 'FX・投資・資産運用の実践的ガイド。初心者から上級者まで、効果的な取引戦略、リスク管理、ブローカー比較、最新ニュース、市場分析まで、投資成功に必要な情報を分かりやすく提供。専門的な知識と実用的なツールで投資家の資産形成を確実にサポートしています。',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://marlowgate.com',
   author: 'Marlow Gate',
   brand: {

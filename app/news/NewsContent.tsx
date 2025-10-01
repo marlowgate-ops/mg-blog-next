@@ -87,7 +87,7 @@ export default function NewsContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentOffset, setCurrentOffset] = useState(0);
   const [skipNextDebouncedUpdate, setSkipNextDebouncedUpdate] = useState(false);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [hasReadInitialParams, setHasReadInitialParams] = useState(false);
   
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -105,7 +105,8 @@ export default function NewsContent() {
     const offsetParam = searchParams.get('offset');
     
     if (providersParam) {
-      setSelectedProviders(providersParam.split(',').filter(Boolean));
+      const providers = providersParam.split(',').filter(Boolean);
+      setSelectedProviders(providers);
     } else {
       setSelectedProviders([]);
     }
@@ -131,8 +132,8 @@ export default function NewsContent() {
       setCurrentOffset(0);
     }
     
-    // Mark that initial load is complete
-    setIsInitialLoad(false);
+    // Mark that initial params are read
+    setHasReadInitialParams(true);
   }, [searchParams]);
   
   // Centralized URL update function
@@ -189,19 +190,26 @@ export default function NewsContent() {
 
   // Update URL when debounced search query changes
   useEffect(() => {
-    // Skip this update if we just did a manual URL update or if it's initial load
-    if (skipNextDebouncedUpdate || isInitialLoad) {
+    // Skip this update if we just did a manual URL update
+    if (skipNextDebouncedUpdate) {
       setSkipNextDebouncedUpdate(false);
       return;
     }
     
+    // Skip during initial load to prevent overriding URL parameters
+    if (!hasReadInitialParams) {
+      return;
+    }
+    
     updateURL(selectedProviders, selectedPeriod, debouncedSearchQuery);
-  }, [debouncedSearchQuery, selectedProviders, selectedPeriod, updateURL, skipNextDebouncedUpdate, isInitialLoad]);
+  }, [debouncedSearchQuery, selectedProviders, selectedPeriod, updateURL, skipNextDebouncedUpdate, hasReadInitialParams]);
 
-  // Initial load
+  // Initial load and state changes
   useEffect(() => {
-    fetchNews(0, selectedProviders, selectedPeriod, debouncedSearchQuery);
-  }, [selectedProviders, selectedPeriod, debouncedSearchQuery]);  const handleProviderToggle = (providerId: string) => {
+    // Use immediate searchQuery during initial load, debouncedSearchQuery otherwise
+    const queryToUse = hasReadInitialParams ? debouncedSearchQuery : searchQuery;
+    fetchNews(0, selectedProviders, selectedPeriod, queryToUse);
+  }, [selectedProviders, selectedPeriod, debouncedSearchQuery, searchQuery, hasReadInitialParams]);  const handleProviderToggle = (providerId: string) => {
     const newProviders = selectedProviders.includes(providerId)
       ? selectedProviders.filter(p => p !== providerId)
       : [...selectedProviders, providerId];
@@ -217,6 +225,7 @@ export default function NewsContent() {
   
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();  // Prevent form submission
       // Update search query state AND URL immediately
       const currentValue = e.currentTarget.value;
       setSearchQuery(currentValue);
