@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('/brokers/compare page E2E tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/compare');
+    await page.goto('/best/forex-brokers-jp');
     await page.waitForLoadState('networkidle');
   });
 

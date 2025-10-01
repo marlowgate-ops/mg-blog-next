@@ -31,7 +31,7 @@ test.describe('Smoke Tests - Critical Paths', () => {
   });
 
   test('/brokers/compare page critical functionality', async ({ page }) => {
-    await page.goto('/compare');
+    await page.goto('/best/forex-brokers-jp');
     await TestHelpers.waitForPageLoad(page);
     
     // Check table loads
