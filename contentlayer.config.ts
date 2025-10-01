@@ -20,6 +20,34 @@ export const Post = defineDocumentType(() => ({
   },
 }))
 
+export const NewInsuranceProduct = defineDocumentType(() => ({
+  name: 'NewInsuranceProduct',
+  filePathPattern: `../content_source/insurance/*.yml`,
+  contentType: 'data',
+  fields: {
+    slug: { type: 'string', required: true },
+    brand: { type: 'string', required: true },
+    category: { type: 'enum', options: ['life', 'medical', 'auto', 'property', 'travel'], required: true },
+    coverage: { type: 'list', of: { type: 'string' }, required: true },
+    exclusions: { type: 'list', of: { type: 'string' }, required: true },
+    premium_from: { type: 'number', required: true },
+    deductible: { type: 'number', required: false },
+    age_range: { type: 'json', required: true },
+    apply_methods: { type: 'list', of: { type: 'string' }, required: true },
+    notes: { type: 'string', required: false },
+    urls: { type: 'json', required: true },
+    scores: { type: 'json', required: false },
+    score_total: { type: 'number', required: false },
+    company_size: { type: 'enum', options: ['large', 'medium', 'small'], required: false },
+    established_year: { type: 'number', required: false },
+    customer_base: { type: 'number', required: false },
+    special_features: { type: 'list', of: { type: 'string' }, required: false },
+  },
+  computedFields: {
+    url: { type: 'string', resolve: (doc) => `/insurance/${doc.slug}` },
+  },
+}))
+
 export const InsuranceProduct = defineDocumentType(() => ({
   name: 'InsuranceProduct',
   filePathPattern: `insurance/**/*.{md,mdx}`,
@@ -91,7 +119,7 @@ export const Broker = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'content',
-  documentTypes: [Post, InsuranceProduct, Broker],
+  documentTypes: [Post, InsuranceProduct, Broker, NewInsuranceProduct],
   // TEMP: drop remark-gfm entirely while we stabilize
   mdx: {},
 })

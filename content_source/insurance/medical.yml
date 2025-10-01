@@ -1,0 +1,117 @@
+- slug: aflac-cancer
+  brand: アフラック
+  category: medical
+  coverage:
+    - がん診断給付金
+    - がん入院給付金
+    - がん手術給付金
+    - 抗がん剤治療給付金
+    - 放射線治療給付金
+  exclusions:
+    - 上皮内新生物（一部）
+    - 契約前の既往症
+    - 責任開始日前のがん診断
+  premium_from: 3500
+  deductible: 0
+  age_range:
+    min: 18
+    max: 85
+  apply_methods:
+    - online
+    - phone
+    - agent
+  notes: がん治療に特化した医療保険。診断時から継続的にサポート。
+  urls:
+    official: https://www.aflac.co.jp/iryo/ganyobou/
+    apply: https://www.aflac.co.jp/iryo/ganyobou/simulation/
+  scores:
+    cost: 4
+    coverage: 5
+    service: 4
+    claim: 5
+  score_total: 4.5
+  company_size: large
+  established_year: 1974
+  customer_base: 2500000
+  special_features:
+    - がん保険のパイオニア
+    - 診断時一時金あり
+    - 治療方法を問わず保障
+
+- slug: orix-medical
+  brand: オリックス生命
+  category: medical
+  coverage:
+    - 疾病入院給付金
+    - 災害入院給付金
+    - 手術給付金
+    - 先進医療給付金
+  exclusions:
+    - 自殺・自傷行為
+    - 薬物依存
+    - 戦争・暴動
+  premium_from: 2800
+  deductible: 0
+  age_range:
+    min: 18
+    max: 80
+  apply_methods:
+    - online
+    - phone
+  notes: シンプルな保障内容で保険料を抑えた医療保険。
+  urls:
+    official: https://www.orixlife.co.jp/product/medical/
+    apply: https://www.orixlife.co.jp/product/medical/simulation/
+  scores:
+    cost: 5
+    coverage: 3
+    service: 3
+    claim: 4
+  score_total: 3.75
+  company_size: medium
+  established_year: 1991
+  customer_base: 800000
+  special_features:
+    - 業界最安水準の保険料
+    - シンプルな保障設計
+    - ネット申込で簡単手続き
+
+- slug: tokio-marine-medical
+  brand: 東京海上日動あんしん生命
+  category: medical
+  coverage:
+    - 疾病入院給付金
+    - 災害入院給付金
+    - 手術給付金
+    - 先進医療給付金
+    - 通院給付金
+  exclusions:
+    - 契約前の既往症
+    - 美容整形手術
+    - 正常分娩
+  premium_from: 4200
+  deductible: 0
+  age_range:
+    min: 16
+    max: 85
+  apply_methods:
+    - online
+    - phone
+    - agent
+  notes: 充実した保障内容と安心のサービス体制。
+  urls:
+    official: https://www.tmn-anshin.co.jp/kojin/goods_medical/
+    apply: https://www.tmn-anshin.co.jp/kojin/goods_medical/simulation/
+  scores:
+    cost: 3
+    coverage: 5
+    service: 5
+    claim: 5
+  score_total: 4.5
+  company_size: large
+  established_year: 1996
+  customer_base: 1200000
+  special_features:
+    - 損保系の安心感
+    - 24時間健康相談サービス
+    - 充実したアフターサポート
