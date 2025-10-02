@@ -9,7 +9,7 @@ async function globalSetup(config: FullConfig) {
   const page = await context.newPage();
   
   // Wait for the app to be ready
-  const baseURL = config.projects[0].use.baseURL || 'http://localhost:3000';
+  const baseURL = config.projects[0].use.baseURL || process.env.BASE_URL || 'http://localhost:3100';
   
   try {
     // Health check - wait for the app to respond

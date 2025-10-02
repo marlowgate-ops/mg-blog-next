@@ -103,6 +103,11 @@ const nextConfig = {
   
   // Domain canonical redirects - blog.marlowgate.com -> marlowgate.com
   async redirects() {
+    // Skip redirects during CI testing to avoid interference
+    if (process.env.DISABLE_CANONICAL_REDIRECTS === '1') {
+      return [];
+    }
+    
     return [
       {
         source: '/:path*',

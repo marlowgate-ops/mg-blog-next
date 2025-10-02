@@ -6,11 +6,27 @@ import { Page, expect } from '@playwright/test';
 export class TestHelpers {
   
   /**
-   * Wait for page to be fully loaded including network idle
+   * Wait for page to be fully loaded - optimized for Next.js apps
    */
   static async waitForPageLoad(page: Page) {
-    await page.waitForLoadState('networkidle');
+    // Wait for DOM to be ready
     await page.waitForLoadState('domcontentloaded');
+    
+    // Wait for initial resources but don't wait for network idle 
+    // as Next.js apps often have ongoing background requests
+    try {
+      await page.waitForLoadState('load', { timeout: 10000 });
+    } catch {
+      // If load state takes too long, continue - the page is likely functional
+    }
+    
+    // Ensure React has hydrated by checking for interactive elements
+    try {
+      await page.waitForSelector('main, [data-testid]', { timeout: 5000 });
+    } catch {
+      // Fallback: just ensure body is present
+      await page.waitForSelector('body');
+    }
   }
 
   /**

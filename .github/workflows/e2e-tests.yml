@@ -28,21 +28,33 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version-file: .nvmrc
-        node-version: '20.x'
         cache: 'npm'
         
     - run: npm ci
     - run: npx playwright install --with-deps
-    - run: NEXT_TELEMETRY_DISABLED=1 npm run -s build
-    - run: (npm run -s start &) && npx wait-on http://127.0.0.1:3000
-    - env:
-        PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
-        E2E: '1'
-        NEXT_TELEMETRY_DISABLED: '1'
-      run: npx playwright test --project=${{ matrix.browser }} --reporter=line
-    - uses: actions/upload-artifact@v4
+    - run: npm run build:e2e
+    
+    - name: Run Playwright tests
+      env:
+        PORT: 3100
+        BASE_URL: http://localhost:3100
+        NEXT_PUBLIC_SITE_URL: http://localhost:3100
+        DISABLE_CANONICAL_REDIRECTS: "1"
+        CI: "1"
+      run: npm run test:e2e:ci -- --project=${{ matrix.browser }}
+      
+    - name: Upload Playwright report
       if: always()
+      uses: actions/upload-artifact@v4
       with:
         name: playwright-report-${{ matrix.browser }}
         path: playwright-report
+        retention-days: 3
+        
+    - name: Upload traces
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: traces-${{ matrix.browser }}
+        path: test-results/**/*.zip
         retention-days: 3
