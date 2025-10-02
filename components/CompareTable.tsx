@@ -84,7 +84,7 @@ export default function CompareTable({ rows, initialState }: CompareTableProps) 
   const router = useRouter();
   
   // Debug logging
-  console.log('CompareTable: initialState received:', initialState);
+
   
   // Use new URL state management system with SSR-compatible initialization
   const [urlState, updateUrlState] = useUrlState({
@@ -94,7 +94,7 @@ export default function CompareTable({ rows, initialState }: CompareTableProps) 
   });
   
   // Debug logging for URL state
-  console.log('CompareTable: urlState:', urlState);
+
   
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -258,7 +258,7 @@ export default function CompareTable({ rows, initialState }: CompareTableProps) 
             data-testid="filter-regulation"
             value={urlState.regulation}
             onChange={(e) => {
-              console.log('Regulation filter changed to:', e.target.value);
+
               updateUrlState({ regulation: e.target.value });
             }}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

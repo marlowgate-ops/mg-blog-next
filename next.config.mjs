@@ -2,12 +2,15 @@
 import { withContentlayer } from "next-contentlayer";
 
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig = {
   reactStrictMode: true,
   eslint: { ignoreDuringBuilds: true },
-  // TEMP: allow production build to complete even if TS errors exist
-  typescript: { ignoreBuildErrors: true },
-  // output: "standalone", // Commented out for local testing
+  // Only allow TS errors in development
+  ...(isProd ? {} : { typescript: { ignoreBuildErrors: true } }),
+  // Enable standalone output in production only
+  ...(isProd ? { output: 'standalone' } : {}),
   
   // Performance optimizations
   swcMinify: true,

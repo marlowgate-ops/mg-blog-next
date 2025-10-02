@@ -85,6 +85,10 @@ export default defineConfig({
     timeout: 120 * 1000,
     stdout: 'ignore',
     stderr: 'pipe',
+    env: {
+      ...process.env,
+      E2E: process.env.E2E || '0',
+    },
   },
 
   /* Global setup and teardown */

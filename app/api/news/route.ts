@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { XMLParser } from 'fast-xml-parser';
 import newsSources from '@/config/news-sources.json';
 import { isUrlAllowed } from '@/lib/url-allowlist';
+import { debug } from '@/lib/debug';
 
 export const runtime = "nodejs";
 export const revalidate = 120;
@@ -249,7 +250,7 @@ async function refreshNewsData(requestedProviders: string[], period: Period, cac
     }
   });
 
-  console.log(`Total items fetched: ${allItems.length} from ${targetSources.length} sources`);
+  debug(`Total items fetched: ${allItems.length} from ${targetSources.length} sources`);
 
   // Dedupe by canonical URL
   const seenUrls = new Set<string>();
@@ -267,11 +268,11 @@ async function refreshNewsData(requestedProviders: string[], period: Period, cac
   // Apply period filter
   const filteredItems = filterByPeriod(uniqueItems, period);
 
-  console.log(`Final filtered items count: ${filteredItems.length}`);
+  debug(`Final filtered items count: ${filteredItems.length}`);
 
   // If no items after all processing (feeds failed or filtering removed all), provide fallback data for CI/testing
   if (filteredItems.length === 0) {
-    console.log('Using fallback news data for CI/testing - no items after processing');
+    debug('Using fallback news data for CI/testing - no items after processing');
     const fallbackItems: NewsItem[] = [
       {
         id: 'fallback-1',
@@ -304,7 +305,7 @@ async function refreshNewsData(requestedProviders: string[], period: Period, cac
       ? fallbackItems.filter(item => requestedProviders.includes(item.sourceId))
       : fallbackItems;
     
-    console.log('Using fallback news data for CI/testing');
+    debug('Using fallback news data for CI/testing');
     setCachedData(cacheKey, filteredFallback);
     return filteredFallback;
   }
@@ -316,11 +317,11 @@ async function refreshNewsData(requestedProviders: string[], period: Period, cac
 }
 
 export async function GET(request: NextRequest) {
-  console.log('News API: GET request received');
+
   
   // E2E test mode - return deterministic data
   if (process.env.E2E === '1') {
-    console.log('News API: E2E mode active, returning test data');
+    debug('News API: E2E mode active, returning test data');
     
     const { searchParams } = new URL(request.url);
     const providers = searchParams.get('providers')?.split(',').filter(Boolean) || [];
@@ -375,7 +376,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const offset = parseInt(searchParams.get('offset') || '0');
     
-    console.log('News API: Query params:', { providers, period, query, limit, offset });
+    debug('News API: Query params:', { providers, period, query, limit, offset });
     
     // Enhanced fallback data with different content for filtering tests
     const allFallbackData: NewsItem[] = [
@@ -425,7 +426,7 @@ export async function GET(request: NextRequest) {
     let filteredData = allFallbackData;
     if (providers.length > 0) {
       filteredData = filteredData.filter(item => providers.includes(item.sourceId));
-      console.log('News API: Filtered by providers:', providers, 'Result count:', filteredData.length);
+      debug('News API: Filtered by providers:', providers, 'Result count:', filteredData.length);
     }
 
     // Apply search query filtering
@@ -433,7 +434,7 @@ export async function GET(request: NextRequest) {
       filteredData = filteredData.filter(item => 
         item.title.toLowerCase().includes(query.toLowerCase())
       );
-      console.log('News API: Filtered by query:', query, 'Result count:', filteredData.length);
+      debug('News API: Filtered by query:', query, 'Result count:', filteredData.length);
     }
 
     // Apply period filtering (for day period, only return items from last 24 hours)
@@ -442,7 +443,7 @@ export async function GET(request: NextRequest) {
       filteredData = filteredData.filter(item => 
         new Date(item.publishedAt) > oneDayAgo
       );
-      console.log('News API: Filtered by period (day). Result count:', filteredData.length);
+      debug('News API: Filtered by period (day). Result count:', filteredData.length);
     }
 
     // Apply pagination
@@ -452,7 +453,7 @@ export async function GET(request: NextRequest) {
     const paginatedData = filteredData.slice(startIndex, endIndex);
     const nextOffset = endIndex < total ? endIndex : null;
 
-    console.log('News API: Returning', paginatedData.length, 'items out of', total, 'total');
+    debug('News API: Returning', paginatedData.length, 'items out of', total, 'total');
 
     return NextResponse.json(
       {

@@ -13,7 +13,7 @@ async function fetchPopularPages(): Promise<PopularItem[]> {
   try {
     // For server-side rendering, use fallback data immediately
     // API calls during build should be avoided for better performance
-    console.log('Using fallback popular data during server-side rendering');
+
   } catch (error) {
     console.error('Error fetching popular pages:', error);
   }

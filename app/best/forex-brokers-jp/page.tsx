@@ -117,8 +117,7 @@ export default function Page({ searchParams }: BrokerPageProps = { searchParams:
   // Parse URL params on server for SSR initialization
   const compareInitialState = parseCompareSearchParams(searchParams);
   
-  console.log('BrokerPage: searchParams received:', searchParams);
-  console.log('BrokerPage: compareInitialState parsed:', compareInitialState);
+
 
   const faqs = [
     {
