@@ -4,7 +4,7 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 import { z } from 'zod';
 import { parseParams, mergeParams, buildUrl } from './params';
-import { commitUrl, commitState } from './commitUrl';
+import { commitState } from './commitUrl';
 
 interface UseUrlStateOptions<T> {
   schema: z.ZodSchema<T>;
@@ -37,20 +37,20 @@ export function useUrlState<T>({ schema, defaults, initialState }: UseUrlStateOp
   
   // Function to patch state and update URL synchronously
   const setPatch = useCallback((patch: Partial<T>) => {
-    // Use commitState for synchronous state updates during testing
+    // Update React state synchronously first
     commitState(setState, (current: T) => {
-      const newState = { ...current, ...patch };
-      
-      // Update URL with the complete new state (not just patch)
-      const currentParams = new URLSearchParams(searchParams);
-      const mergedParams = mergeParams(currentParams, newState as Record<string, unknown>);
-      
-      // Use commitUrl for synchronous URL updates
-      commitUrl(router, pathname, mergedParams);
-      
-      return newState;
+      return { ...current, ...patch };
     });
-  }, [router, pathname, searchParams]);
+    
+    // Then immediately update URL with the new complete state
+    const newState = { ...state, ...patch };
+    const currentParams = new URLSearchParams(searchParams);
+    const mergedParams = mergeParams(currentParams, newState as Record<string, unknown>);
+    
+    // Immediate router replace (no startTransition for URL writes)
+    const newUrl = buildUrl(pathname, mergedParams);
+    router.replace(newUrl, { scroll: false });
+  }, [router, pathname, searchParams, state]);
   
   // Function to manually trigger URL replacement
   const replaceUrl = useCallback(() => {

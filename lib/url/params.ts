@@ -29,6 +29,7 @@ export function parseParams<T>(
 /**
  * Merge current URL parameters with a patch object
  * Never drops existing keys, arrays encoded as repeated keys
+ * Empty string preserved, delete only on null|undefined
  */
 export function mergeParams(
   current: URLSearchParams,
@@ -40,19 +41,20 @@ export function mergeParams(
     // Remove existing values for this key
     result.delete(key);
     
-    if (value === null || value === undefined || value === '') {
-      // Skip empty values (effectively removes the param)
+    if (value === null || value === undefined) {
+      // Skip null/undefined values (effectively removes the param)
       continue;
     }
     
     if (Array.isArray(value)) {
       // Add each array item as a separate param
       for (const item of value) {
-        if (item !== null && item !== undefined && item !== '') {
+        if (item !== null && item !== undefined) {
           result.append(key, String(item));
         }
       }
     } else {
+      // Preserve empty strings, convert everything else to string
       result.set(key, String(value));
     }
   }
