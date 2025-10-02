@@ -97,7 +97,7 @@ export default function NewsContent({ initialState }: NewsContentProps = {}) {
   const [nextOffset, setNextOffset] = useState<number | null>(null);
   
   // Use URL state management with type safety and SSR-compatible initialization
-  const [urlState, setUrlState] = useUrlState({
+  const [urlState, setPatch] = useUrlState({
     schema: newsUrlSchema,
     defaults: { q: '', providers: [], period: 'week' as const, offset: 0 },
     ...(initialState && { initialState }),
@@ -220,24 +220,24 @@ export default function NewsContent({ initialState }: NewsContentProps = {}) {
       ? providers.filter(p => p !== providerId)
       : [...providers, providerId];
     
-    setUrlState({ providers: newProviders, offset: 0 });
+    setPatch({ providers: newProviders, offset: 0 });
   };
   
   const handlePeriodToggle = (period: 'day' | 'week') => {
-    setUrlState({ period, offset: 0 });
+    setPatch({ period, offset: 0 });
   };
   
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       // Immediate URL update on Enter for better UX
-      setUrlState({ q: (searchQuery || '').trim(), offset: 0 });
+      setPatch({ q: (searchQuery || '').trim(), offset: 0 });
     }
   };
 
   const handleLoadMore = () => {
     if (nextOffset !== null) {
-      setUrlState({ offset: nextOffset });
+      setPatch({ offset: nextOffset });
     }
   };
   
@@ -295,7 +295,7 @@ export default function NewsContent({ initialState }: NewsContentProps = {}) {
         <div className={styles.providerChips}>
           <button
             className={`${styles.chip} ${(urlState.providers || []).length === 0 ? styles.active : ''}`}
-            onClick={() => setUrlState({ providers: [], offset: 0 })}
+            onClick={() => setPatch({ providers: [], offset: 0 })}
             data-testid="provider-chip-all"
           >
             すべて
