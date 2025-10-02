@@ -24,7 +24,7 @@ export function useUrlState<T>({ schema, defaults, initialState }: UseUrlStateOp
   // Initialize state with initialState if provided (for SSR), otherwise use defaults
   const [state, setState] = useState<T>(initialState ?? defaults);
   
-  // Initialize state from URL on mount and when searchParams change
+  // Initialize state from URL only on mount, not when searchParams change
   useEffect(() => {
     try {
       const parsed = parseParams(schema, searchParams);
@@ -33,24 +33,34 @@ export function useUrlState<T>({ schema, defaults, initialState }: UseUrlStateOp
       // If parsing fails, use initialState if available, otherwise defaults
       setState(initialState ?? defaults);
     }
-  }, [searchParams, schema, defaults, initialState]);
+  }, []); // Only run on mount
   
   // Function to patch state and update URL synchronously
   const setPatch = useCallback((patch: Partial<T>) => {
-    // Update React state synchronously first
+    let newState: T;
+    
+    // Update React state synchronously first and capture the new state
     commitState(setState, (current: T) => {
-      return { ...current, ...patch };
+      newState = { ...current, ...patch };
+      return newState;
     });
     
-    // Then immediately update URL with the new complete state
-    const newState = { ...state, ...patch };
-    const currentParams = new URLSearchParams(searchParams);
-    const mergedParams = mergeParams(currentParams, newState as Record<string, unknown>);
+    // Get current URL parameters directly to avoid stale searchParams
+    const currentUrl = new URL(window.location.href);
+    const currentParams = new URLSearchParams(currentUrl.search);
+    const mergedParams = mergeParams(currentParams, newState! as Record<string, unknown>);
     
     // Immediate router replace (no startTransition for URL writes)
     const newUrl = buildUrl(pathname, mergedParams);
+    
+    // Use both router.replace and manual history update for reliability
     router.replace(newUrl, { scroll: false });
-  }, [router, pathname, searchParams, state]);
+    
+    // Also update browser history directly as fallback
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', newUrl);
+    }
+  }, [router, pathname]);
   
   // Function to manually trigger URL replacement
   const replaceUrl = useCallback(() => {

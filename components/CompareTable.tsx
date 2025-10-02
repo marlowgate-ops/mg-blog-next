@@ -87,7 +87,7 @@ export default function CompareTable({ rows, initialState }: CompareTableProps) 
 
   
   // Use new URL state management system with SSR-compatible initialization
-  const [urlState, updateUrlState] = useUrlState({
+  const [urlState, setPatch] = useUrlState({
     schema: compareUrlSchema,
     defaults: { regulation: '', minDeposit: '', accountType: '', sort: '' },
     ...(initialState && { initialState }),
@@ -259,7 +259,7 @@ export default function CompareTable({ rows, initialState }: CompareTableProps) 
             value={urlState.regulation}
             onChange={(e) => {
 
-              updateUrlState({ regulation: e.target.value });
+              setPatch({ regulation: e.target.value });
             }}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
@@ -278,7 +278,7 @@ export default function CompareTable({ rows, initialState }: CompareTableProps) 
             id="min-deposit-filter"
             data-testid="filter-min-deposit"
             value={urlState.minDeposit}
-            onChange={(e) => updateUrlState({ minDeposit: e.target.value })}
+            onChange={(e) => setPatch({ minDeposit: e.target.value })}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">すべて</option>
@@ -297,7 +297,7 @@ export default function CompareTable({ rows, initialState }: CompareTableProps) 
             id="account-type-filter"
             data-testid="filter-account-type"
             value={urlState.accountType}
-            onChange={(e) => updateUrlState({ accountType: e.target.value })}
+            onChange={(e) => setPatch({ accountType: e.target.value })}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">すべて</option>
@@ -315,7 +315,7 @@ export default function CompareTable({ rows, initialState }: CompareTableProps) 
             data-testid="sort-select"
             value={urlState.sort}
             onChange={(e) => {
-              updateUrlState({ sort: e.target.value });
+              setPatch({ sort: e.target.value });
               // Clear legacy sortConfig when using new sort
               if (e.target.value) {
                 setSortConfig(null);
