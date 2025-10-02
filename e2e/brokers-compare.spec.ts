@@ -157,12 +157,14 @@ test.describe('/brokers/compare page E2E tests', () => {
     // Set up filters and sort
     await page.locator('[data-testid="filter-regulation"]').selectOption('FSA');
     
-    // Wait for URL to update with regulation parameter
+    // Wait for URL to update with regulation parameter - robust wait for Firefox
+    await page.waitForURL(/regulation=FSA/, { timeout: 4000 });
     await expect(page).toHaveURL(/regulation=FSA/);
     
     await page.locator('[data-testid="sort-select"]').selectOption('rating-desc');
     
     // Wait for URL to update with sort parameter
+    await page.waitForURL(/sort=rating-desc/, { timeout: 4000 });
     await expect(page).toHaveURL(/sort=rating-desc/);
     
     await page.waitForLoadState('networkidle');
