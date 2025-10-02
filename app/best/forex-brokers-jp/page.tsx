@@ -58,6 +58,7 @@ const compareUrlSchema = z.object({
 type CompareUrlState = z.infer<typeof compareUrlSchema>;
 
 interface BrokerPageProps {
+  params: Record<string, never>;
   searchParams: Record<string, string | string[] | undefined>;
 }
 
@@ -113,7 +114,7 @@ function BrokerLogo({ name }: { name: string }) {
 }
 
 // Main page component
-export default function Page({ searchParams }: BrokerPageProps = { searchParams: {} }) {
+export default function Page({ searchParams }: BrokerPageProps) {
   // Parse URL params on server for SSR initialization
   const compareInitialState = parseCompareSearchParams(searchParams);
   

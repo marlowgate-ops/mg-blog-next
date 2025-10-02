@@ -21,6 +21,7 @@ const newsUrlSchema = z.object({
 type NewsUrlState = z.infer<typeof newsUrlSchema>;
 
 interface NewsPageProps {
+  params: Record<string, never>;
   searchParams: Record<string, string | string[] | undefined>;
 }
 
@@ -83,7 +84,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function NewsPage({ searchParams }: NewsPageProps = { searchParams: {} }) {
+export default function NewsPage({ searchParams }: NewsPageProps) {
   // Parse URL params on server for SSR initialization
   const initialState = parseNewsSearchParams(searchParams);
   

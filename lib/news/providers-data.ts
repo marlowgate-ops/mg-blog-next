@@ -17,7 +17,7 @@ export function getProviderBySlug(slug: string): NewsProvider | null {
 
 export function getProvidersByCategory(category?: string): NewsProvider[] {
   if (!category) return providers;
-  return providers.filter(p => p.categories.includes(category));
+  return providers.filter(p => p.categories?.includes(category));
 }
 
 export function getProvidersByCountry(country?: string): NewsProvider[] {
@@ -27,7 +27,7 @@ export function getProvidersByCountry(country?: string): NewsProvider[] {
 
 export function getProviderCategories(): string[] {
   const categories = new Set<string>();
-  providers.forEach(p => p.categories.forEach(c => categories.add(c)));
+  providers.forEach(p => p.categories?.forEach(c => categories.add(c)));
   return Array.from(categories).sort();
 }
 

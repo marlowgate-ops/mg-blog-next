@@ -46,7 +46,7 @@ export const GET = async (request: Request) => {
       <width>144</width>
       <height>144</height>
     </image>
-    ${latest20.map(item => `
+    ${latest20.map((item: any) => `
     <item>
       <title><![CDATA[${item.title}]]></title>
       <description><![CDATA[${item.sourceName} からの最新ニュース]]></description>
