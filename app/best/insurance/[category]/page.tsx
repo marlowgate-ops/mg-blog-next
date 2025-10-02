@@ -4,7 +4,7 @@ import Container from '@/components/Container';
 import JsonLd from '@/components/JsonLd';
 import JsonLdBreadcrumbs from '@/components/JsonLdBreadcrumbs';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import PrRibbon from '@/components/PrRibbon';
+import PrRibbon from '@/components/PRRibbon';
 import { allInsuranceProducts } from 'contentlayer/generated';
 import CategoryHero from '@/components/insurance/CategoryHero';
 import InsuranceCard from '@/components/insurance/InsuranceCard';
