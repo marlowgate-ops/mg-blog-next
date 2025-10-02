@@ -1,4 +1,5 @@
 import { chromium, FullConfig } from '@playwright/test';
+import { TestHelpers } from './test-helpers';
 
 async function globalSetup(config: FullConfig) {
   console.log('🚀 Starting E2E tests global setup...');
@@ -14,7 +15,7 @@ async function globalSetup(config: FullConfig) {
   try {
     // Health check - wait for the app to respond
     await page.goto(baseURL);
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     console.log('✅ Application is ready for testing');
     
     // You can add any global setup here like:

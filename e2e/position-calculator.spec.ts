@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { TestHelpers } from './test-helpers';
 
 test.describe('/tools/position-size calculator E2E tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/tools/position-size-calculator');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
   });
 
   test('calculator loads with default values', async ({ page }) => {
@@ -144,7 +145,7 @@ test.describe('/tools/position-size calculator E2E tests', () => {
   test('CLS (Cumulative Layout Shift) remains at 0', async ({ page }) => {
     // Navigate to page - use correct URL
     await page.goto('/tools/position-size-calculator');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Get initial layout
     const initialLayout = await page.locator('[data-testid="position-calculator"]').boundingBox();
@@ -196,7 +197,7 @@ test.describe('/tools/position-size calculator E2E tests', () => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await page.reload();
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Check all inputs are still accessible
     await expect(page.locator('[data-testid="account-balance-input"]')).toBeVisible();

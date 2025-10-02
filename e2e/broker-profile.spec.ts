@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { TestHelpers } from './test-helpers';
 
 test.describe('/brokers/[slug] page E2E tests', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to a broker profile page (using a known broker)
     await page.goto('/brokers/dmm-fx');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
   });
 
   test('page loads with correct broker information', async ({ page }) => {
@@ -137,7 +138,7 @@ test.describe('/brokers/[slug] page E2E tests', () => {
         const relatedSlug = await firstRelated.getAttribute('data-broker-slug');
         
         await firstRelated.click();
-        await page.waitForLoadState('networkidle');
+        await TestHelpers.waitForPageLoad(page);
         
         if (relatedSlug) {
           await expect(page).toHaveURL(new RegExp(`/brokers/${relatedSlug}`));
@@ -225,7 +226,7 @@ test.describe('/brokers/[slug] page E2E tests', () => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await page.reload();
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Check that key elements are still visible and accessible
     await expect(page.locator('[data-testid="broker-name"]')).toBeVisible();
@@ -239,7 +240,7 @@ test.describe('/brokers/[slug] page E2E tests', () => {
     
     // Test tablet viewport
     await page.setViewportSize({ width: 768, height: 1024 });
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     await expect(page.locator('[data-testid="broker-profile-header"]')).toBeVisible();
   });

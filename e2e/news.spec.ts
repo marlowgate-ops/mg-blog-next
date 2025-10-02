@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { TestHelpers } from './test-helpers';
 
 test.describe('/news page E2E tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/news');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
   });
 
   test('provider chips reflect in URL and filter content', async ({ page }) => {
@@ -33,7 +34,7 @@ test.describe('/news page E2E tests', () => {
     await expect(page).toHaveURL(/period=day/);
     
     // Wait for content to update
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify news items are from today
     const newsItems = page.locator('[data-testid="news-item"]');
@@ -52,7 +53,7 @@ test.describe('/news page E2E tests', () => {
     await expect(page).toHaveURL(new RegExp(`q=${encodeURIComponent(searchTerm)}`));
     
     // Wait for search results
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify search results contain the search term
     const newsItems = page.locator('[data-testid="news-item"]');
@@ -72,7 +73,7 @@ test.describe('/news page E2E tests', () => {
     const loadMoreButton = page.locator('[data-testid="load-more-button"]');
     if (await loadMoreButton.isVisible()) {
       await loadMoreButton.click();
-      await page.waitForLoadState('networkidle');
+      await TestHelpers.waitForPageLoad(page);
       
       // Verify more items loaded
       const newItemsCount = await page.locator('[data-testid="news-item"]').count();
@@ -104,7 +105,7 @@ test.describe('/news page E2E tests', () => {
     await expect(page).toHaveURL(/q=market/);
     
     // Verify filtered results
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     const newsItems = page.locator('[data-testid="news-item"]');
     
     if (await newsItems.count() > 0) {
@@ -148,7 +149,7 @@ test.describe('/news page E2E tests', () => {
     await expect(page).toHaveURL(/period=day/);
     
     // Wait for page stability
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     const urlBeforeReload = page.url();
     console.log('URL before reload:', urlBeforeReload);
     
@@ -158,7 +159,7 @@ test.describe('/news page E2E tests', () => {
     
     // Reload page
     await page.reload();
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Give hydration time to complete
     await page.waitForTimeout(800);

@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { TestHelpers } from './test-helpers';
 
 test.describe('/brokers/compare page E2E tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/best/forex-brokers-jp');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
   });
 
   test('facet filters update table content and URL', async ({ page }) => {
@@ -15,7 +16,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await expect(page).toHaveURL(/regulation=FSA/);
     
     // Wait for table to update
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify filtered results in table
     const tableRows = page.locator('[data-testid="broker-table-row"]');
@@ -36,7 +37,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await expect(page).toHaveURL(/minDeposit=1000/);
     
     // Wait for table to update
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify filtered results
     const tableRows = page.locator('[data-testid="broker-table-row"]');
@@ -57,7 +58,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await expect(page).toHaveURL(/sort=rating-desc/);
     
     // Wait for table to update
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify sort order - first item should have highest rating
     const tableRows = page.locator('[data-testid="broker-table-row"]');
@@ -90,7 +91,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await expect(page).toHaveURL(/sort=spread-asc/);
     
     // Wait for table to update
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify results match all filters
     const tableRows = page.locator('[data-testid="broker-table-row"]');
@@ -114,7 +115,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await firstRow.click({ force: true });
     
     // Wait for navigation
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify navigation to broker profile
     if (brokerSlug) {
@@ -130,19 +131,19 @@ test.describe('/brokers/compare page E2E tests', () => {
 
   test('table remains stable during sort and filter operations', async ({ page }) => {
     // Initial table state
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Apply filter
     await page.locator('[data-testid="filter-regulation"]').selectOption('FSA');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Change sort
     await page.locator('[data-testid="sort-select"]').selectOption('rating-desc');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Add another filter
     await page.locator('[data-testid="filter-min-deposit"]').selectOption('100');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify table structure is stable (no flickering or layout shifts)
     const tableElement = page.locator('[data-testid="broker-compare-table"]');
@@ -167,7 +168,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await page.waitForURL(/sort=rating-desc/, { timeout: 4000 });
     await expect(page).toHaveURL(/sort=rating-desc/);
     
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     const urlBeforeReload = page.url();
     console.log('URL before reload:', urlBeforeReload);
@@ -178,7 +179,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     
     // Reload page
     await page.reload();
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Check URL parameters persist
     const urlAfterReload = page.url();
