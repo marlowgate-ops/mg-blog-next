@@ -107,7 +107,7 @@ export async function GET(request: Request) {
             </div>
           )}
 
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: '24px', display: 'flex', flexDirection: 'column' }}>
             {titleLines.map((line, index) => (
               <div
                 key={index}

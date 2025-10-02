@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { z } from 'zod';
 import Container from '@/components/Container';
 import NewsContent from './NewsContent';
 import JsonLd from '@/components/JsonLd';
@@ -8,6 +9,52 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import styles from './page.module.css';
 
 export const revalidate = 120;
+
+// News URL state schema (matching NewsContent)
+const newsUrlSchema = z.object({
+  q: z.string().optional().default(''),
+  providers: z.array(z.string()).optional().default([]),
+  period: z.enum(['day', 'week']).optional().default('week'),
+  offset: z.number().optional().default(0),
+});
+
+type NewsUrlState = z.infer<typeof newsUrlSchema>;
+
+interface NewsPageProps {
+  params: Record<string, never>;
+  searchParams: Record<string, string | string[] | undefined>;
+}
+
+function parseNewsSearchParams(searchParams: Record<string, string | string[] | undefined>): NewsUrlState {
+  try {
+    // Convert searchParams to URLSearchParams for consistent handling
+    const urlSearchParams = new URLSearchParams();
+    
+    for (const [key, value] of Object.entries(searchParams)) {
+      if (value !== undefined) {
+        if (Array.isArray(value)) {
+          for (const v of value) {
+            urlSearchParams.append(key, v);
+          }
+        } else {
+          urlSearchParams.set(key, value);
+        }
+      }
+    }
+    
+    // Parse with proper types
+    const q = urlSearchParams.get('q') || '';
+    const providersParam = urlSearchParams.get('providers');
+    const providers = providersParam ? providersParam.split(',').filter(Boolean) : [];
+    const period = urlSearchParams.get('period') === 'day' ? 'day' : 'week';
+    const offset = Math.max(0, parseInt(urlSearchParams.get('offset') || '0', 10));
+    
+    return newsUrlSchema.parse({ q, providers, period, offset });
+  } catch {
+    // Return defaults if parsing fails
+    return newsUrlSchema.parse({});
+  }
+}
 
 export const metadata: Metadata = {
   title: '最新マーケットニュース | FX・投資情報 | Marlow Gate',
@@ -37,7 +84,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function NewsPage() {
+export default function NewsPage({ searchParams }: NewsPageProps) {
+  // Parse URL params on server for SSR initialization
+  const initialState = parseNewsSearchParams(searchParams);
+  
   const jsonLdData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -64,7 +114,7 @@ export default function NewsPage() {
         </div>
 
         <Suspense fallback={<div className={styles.loading}>読み込み中...</div>}>
-          <NewsContent />
+          <NewsContent initialState={initialState} />
         </Suspense>
       </Container>
     </>

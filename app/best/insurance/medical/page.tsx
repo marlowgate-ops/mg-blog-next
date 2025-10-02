@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Container from '@/components/Container';
 import JsonLd from '@/components/JsonLd';
 import JsonLdBreadcrumbs from '@/components/JsonLdBreadcrumbs';
-import PrRibbon from '@/components/PrRibbon';
+import PrRibbon from '@/components/PRRibbon';
 
 export const metadata: Metadata = {
   title: '医療保険比較 | おすすめ医療保険の保険料・給付内容を比較',

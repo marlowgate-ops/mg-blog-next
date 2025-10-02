@@ -34,7 +34,7 @@ export default function Header() {
             <span className="brand-text">Marlow Gate</span>
           </Link>
         </div>
-        <nav className="util" aria-label="primary">
+        <nav className="util" aria-label="primary" data-testid="main-navigation">
           <Link className="u" href="/best">比較</Link>
           <Link className="u" href="/reviews">レビュー</Link>
           <Link className="u" href="/guides">ガイド</Link>

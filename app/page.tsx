@@ -1,13 +1,34 @@
 import Link from 'next/link'
 import { headers } from 'next/headers'
+import type { Metadata } from 'next'
 import NewsItemClient from '@/components/NewsItemClient'
 import Popular from '@/components/Popular'
 import Sidebar from '@/components/Sidebar'
 import MarketTicker from '@/components/MarketTicker'
+import { site } from '@/lib/site'
 import popularItems from '@/config/popular.json'
 import s from './home.module.css'
 
 export const revalidate = 120;
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: site.url
+  },
+  openGraph: {
+    url: site.url,
+    title: site.title,
+    description: site.description,
+    images: [
+      {
+        url: `${site.url}/og/logo_gate_monogram_dark.png`,
+        width: 1200,
+        height: 630,
+        alt: site.title
+      }
+    ]
+  }
+}
 
 interface NewsItem {
   id: string;
@@ -61,7 +82,7 @@ export default async function Page() {
   const items = await getNews()
   
   return (
-    <main className={s.container}>
+    <div className={s.container}>
       <section className={s.hero}>
         <h1 className={s.heroTitle}>Latest articles</h1>
         <p className={s.heroLead}>{SITE.tagline}</p>
@@ -132,7 +153,7 @@ export default async function Page() {
           <Sidebar />
         </div>
       </div>
-    </main>
+    </div>
   )
 }
 

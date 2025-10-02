@@ -1,0 +1,312 @@
+
+
+Running 46 tests using 14 workers
+
+[1A[2K[1/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:74:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ broker specifications table is displayed
+[1A[2K[2/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:24:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ outbound links trigger GA4 events (mocked)
+[1A[2K[3/46] [chromium] 窶ｺ e2e\brokers-compare.spec.ts:30:7 窶ｺ /brokers/compare page E2E tests 窶ｺ minimum deposit filter works correctly
+[1A[2K[4/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:10:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ page loads with correct broker information
+[1A[2K[5/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:149:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ FAQ section functionality
+[1A[2K[6/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:92:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ pros and cons section is displayed
+[1A[2K[7/46] [chromium] 窶ｺ e2e\brokers-compare.spec.ts:51:7 窶ｺ /brokers/compare page E2E tests 窶ｺ sort functionality updates table order and URL
+[1A[2K[8/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:110:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ review content and rating breakdown
+[1A[2K[9/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:176:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ page meta data and SEO elements
+[1A[2K[10/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:53:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ affiliate links have proper attributes
+[1A[2K[11/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:203:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ structured data (JSON-LD) is present
+[1A[2K[12/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:125:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ related brokers or comparison section
+[1A[2K[13/46] [chromium] 窶ｺ e2e\brokers-compare.spec.ts:9:7 窶ｺ /brokers/compare page E2E tests 窶ｺ facet filters update table content and URL
+[1A[2K[14/46] [chromium] 窶ｺ e2e\broker-profile.spec.ts:224:7 窶ｺ /brokers/[slug] page E2E tests 窶ｺ mobile responsiveness and CLS prevention
+[1A[2K[15/46] [chromium] 窶ｺ e2e\brokers-compare.spec.ts:74:7 窶ｺ /brokers/compare page E2E tests 窶ｺ combined facet and sort filters work together
+[1A[2K[16/46] [chromium] 窶ｺ e2e\brokers-compare.spec.ts:97:7 窶ｺ /brokers/compare page E2E tests 窶ｺ table row click navigates to broker profile
+[1A[2K[17/46] [chromium] 窶ｺ e2e\brokers-compare.spec.ts:124:7 窶ｺ /brokers/compare page E2E tests 窶ｺ table remains stable during sort and filter operations
+[1A[2K[18/46] [chromium] 窶ｺ e2e\brokers-compare.spec.ts:149:7 窶ｺ /brokers/compare page E2E tests 窶ｺ filter and sort state persists on page reload
+[1A[2K[19/46] [chromium] 窶ｺ e2e\news.spec.ts:9:7 窶ｺ /news page E2E tests 窶ｺ provider chips reflect in URL and filter content
+[1A[2K[20/46] [chromium] 窶ｺ e2e\news.spec.ts:27:7 窶ｺ /news page E2E tests 窶ｺ period filter reflects in URL and updates content
+[1A[2K[21/46] [chromium] 窶ｺ e2e\brokers-compare.spec.ts:169:7 窶ｺ /brokers/compare page E2E tests 窶ｺ responsive table behavior on mobile
+[1A[2K[22/46] [chromium] 窶ｺ e2e\news.spec.ts:44:7 窶ｺ /news page E2E tests 窶ｺ search functionality updates URL and filters results
+[1A[2K[23/46] [chromium] 窶ｺ e2e\news.spec.ts:67:7 窶ｺ /news page E2E tests 窶ｺ load more button functionality
+[1A[2K[24/46] [chromium] 窶ｺ e2e\news.spec.ts:86:7 窶ｺ /news page E2E tests 窶ｺ combined filters (provider + period + search) work together
+[1A[2K[25/46] [chromium] 窶ｺ e2e\news.spec.ts:111:7 窶ｺ /news page E2E tests 窶ｺ external links open with noopener
+[1A[2K[26/46] [chromium] 窶ｺ e2e\news.spec.ts:126:7 窶ｺ /news page E2E tests 窶ｺ URL parameters persist on page reload
+[1A[2K[27/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:9:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ calculator loads with default values
+[1A[2K[28/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:23:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ input changes update results immediately
+[1A[2K[29/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:41:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ risk percentage input validation and updates
+[1A[2K[30/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:73:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ entry price and stop loss calculation
+[1A[2K[31/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:101:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ different currency pairs work correctly
+[1A[2K[32/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:118:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ real-time calculation with no delays
+[1A[2K[33/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:144:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ CLS (Cumulative Layout Shift) remains at 0
+[1A[2K[34/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:172:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ form validation and error handling
+[1A[2K[35/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:190:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ mobile responsiveness maintains functionality
+[1A[2K[chromium] 窶ｺ e2e\news.spec.ts:126:7 窶ｺ /news page E2E tests 窶ｺ URL parameters persist on page reload
+URL before reload: http://localhost:3000/news?providers=reuters&period=day
+
+[1A[2K[36/46] [chromium] 窶ｺ e2e\position-calculator.spec.ts:213:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ keyboard navigation and accessibility
+[1A[2K[37/46] [chromium] 窶ｺ e2e\smoke.spec.ts:6:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ homepage loads successfully
+[1A[2K[38/46] [chromium] 窶ｺ e2e\smoke.spec.ts:18:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ /news page critical functionality
+[1A[2K[39/46] [chromium] 窶ｺ e2e\smoke.spec.ts:33:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ /brokers/compare page critical functionality
+[1A[2K[40/46] [chromium] 窶ｺ e2e\smoke.spec.ts:48:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ /brokers/[slug] page loads and has key elements
+[1A[2K[41/46] [chromium] 窶ｺ e2e\smoke.spec.ts:60:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ /tools/position-size calculator basic functionality
+[1A[2K  1) [chromium] 窶ｺ e2e\position-calculator.spec.ts:172:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ form validation and error handling 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      185 |     const hasErrors = await balanceError.isVisible() || await riskError.isVisible();
+      186 |     
+    > 187 |     expect(hasErrors || resultText === 'N/A' || resultText === '0').toBeTruthy();
+          |                                                                     ^
+      188 |   });
+      189 |
+      190 |   test('mobile responsiveness maintains functionality', async ({ page }) => {
+        at C:\Marlow Gate\GitHub\mg-blog-next\mg-blog-next\e2e\position-calculator.spec.ts:187:69
+
+    attachment #1: screenshot (image/png) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\position-calculator--tools-281d8-lidation-and-error-handling-chromium\test-failed-1.png
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    attachment #2: video (video/webm) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\position-calculator--tools-281d8-lidation-and-error-handling-chromium\video.webm
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    Error Context: test-results\position-calculator--tools-281d8-lidation-and-error-handling-chromium\error-context.md
+
+
+[1A[2K[42/46] [chromium] 窶ｺ e2e\smoke.spec.ts:77:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ RSS feeds are accessible
+[1A[2K[43/46] [chromium] 窶ｺ e2e\smoke.spec.ts:89:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ Dynamic OG cards are working
+[1A[2K[44/46] [chromium] 窶ｺ e2e\smoke.spec.ts:101:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ Site build quality - no console errors
+[1A[2KURL after reload: http://localhost:3000/news?providers=reuters&period=day
+
+[1A[2K[45/46] [chromium] 窶ｺ e2e\smoke.spec.ts:123:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ Basic accessibility compliance
+[1A[2K  2) [chromium] 窶ｺ e2e\brokers-compare.spec.ts:97:7 窶ｺ /brokers/compare page E2E tests 窶ｺ table row click navigates to broker profile 
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveURL[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Expected pattern: [32m/\/brokers\/[^/]+$/[39m
+    Received string:  [31m"http://localhost:3000/best/forex-brokers-jp"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toHaveURL" with timeout 5000ms[22m
+    [2m    9 ﾃ・unexpected value "http://localhost:3000/best/forex-brokers-jp"[22m
+
+
+      115 |     } else {
+      116 |       // Fallback: check we're on a broker profile page
+    > 117 |       await expect(page).toHaveURL(/\/brokers\/[^/]+$/);
+          |                          ^
+      118 |     }
+      119 |     
+      120 |     // Verify we're on a broker profile page
+        at C:\Marlow Gate\GitHub\mg-blog-next\mg-blog-next\e2e\brokers-compare.spec.ts:117:26
+
+    attachment #1: screenshot (image/png) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\brokers-compare--brokers-c-95d0f-navigates-to-broker-profile-chromium\test-failed-1.png
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    attachment #2: video (video/webm) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\brokers-compare--brokers-c-95d0f-navigates-to-broker-profile-chromium\video.webm
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    Error Context: test-results\brokers-compare--brokers-c-95d0f-navigates-to-broker-profile-chromium\error-context.md
+
+
+[1A[2K  3) [chromium] 窶ｺ e2e\brokers-compare.spec.ts:169:7 窶ｺ /brokers/compare page E2E tests 窶ｺ responsive table behavior on mobile 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  locator('[data-testid="broker-table-row"]').first().locator('[data-testid="broker-rating"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('[data-testid="broker-table-row"]').first().locator('[data-testid="broker-rating"]')[22m
+
+
+      181 |       const firstRow = tableRows.first();
+      182 |       await expect(firstRow.locator('[data-testid="broker-name"]')).toBeVisible();
+    > 183 |       await expect(firstRow.locator('[data-testid="broker-rating"]')).toBeVisible();
+          |                                                                       ^
+      184 |     }
+      185 |   });
+      186 | });
+        at C:\Marlow Gate\GitHub\mg-blog-next\mg-blog-next\e2e\brokers-compare.spec.ts:183:71
+
+    attachment #1: screenshot (image/png) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\brokers-compare--brokers-c-59cac-ve-table-behavior-on-mobile-chromium\test-failed-1.png
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    attachment #2: video (video/webm) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\brokers-compare--brokers-c-59cac-ve-table-behavior-on-mobile-chromium\video.webm
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    Error Context: test-results\brokers-compare--brokers-c-59cac-ve-table-behavior-on-mobile-chromium\error-context.md
+
+
+[1A[2K[46/46] [chromium] 窶ｺ e2e\smoke.spec.ts:130:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ Mobile responsiveness check
+[1A[2K  4) [chromium] 窶ｺ e2e\brokers-compare.spec.ts:149:7 窶ｺ /brokers/compare page E2E tests 窶ｺ filter and sort state persists on page reload 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveValue[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('[data-testid="filter-regulation"]')
+    Expected string: [32m"FSA"[39m
+    Received string: [31m""[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toHaveValue" with timeout 5000ms[22m
+    [2m  - waiting for locator('[data-testid="filter-regulation"]')[22m
+    [2m    9 ﾃ・locator resolved to <select id="regulation-filter" data-testid="filter-regulation" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">窶ｦ</select>[22m
+    [2m      - unexpected value ""[22m
+
+
+      163 |     
+      164 |     // Check filters are still applied in UI
+    > 165 |     await expect(page.locator('[data-testid="filter-regulation"]')).toHaveValue('FSA');
+          |                                                                     ^
+      166 |     await expect(page.locator('[data-testid="sort-select"]')).toHaveValue('rating-desc');
+      167 |   });
+      168 |
+        at C:\Marlow Gate\GitHub\mg-blog-next\mg-blog-next\e2e\brokers-compare.spec.ts:165:69
+
+    attachment #1: screenshot (image/png) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\brokers-compare--brokers-c-1aa65-ate-persists-on-page-reload-chromium\test-failed-1.png
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    attachment #2: video (video/webm) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\brokers-compare--brokers-c-1aa65-ate-persists-on-page-reload-chromium\video.webm
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    Error Context: test-results\brokers-compare--brokers-c-1aa65-ate-persists-on-page-reload-chromium\error-context.md
+
+
+[1A[2K  5) [chromium] 窶ｺ e2e\smoke.spec.ts:101:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ Site build quality - no console errors 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m3[39m
+    Received array:  [31m["Failed to load resource: the server responded with a status of 404 (Not Found)", "Failed to load resource: the server responded with a status of 404 (Not Found)", "Failed to load resource: the server responded with a status of 404 (Not Found)"][39m
+
+      118 |     );
+      119 |     
+    > 120 |     expect(criticalErrors).toHaveLength(0);
+          |                            ^
+      121 |   });
+      122 |
+      123 |   test('Basic accessibility compliance', async ({ page }) => {
+        at C:\Marlow Gate\GitHub\mg-blog-next\mg-blog-next\e2e\smoke.spec.ts:120:28
+
+    attachment #1: screenshot (image/png) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\smoke-Smoke-Tests---Critic-b9d9c-quality---no-console-errors-chromium\test-failed-1.png
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    attachment #2: video (video/webm) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\smoke-Smoke-Tests---Critic-b9d9c-quality---no-console-errors-chromium\video.webm
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    Error Context: test-results\smoke-Smoke-Tests---Critic-b9d9c-quality---no-console-errors-chromium\error-context.md
+
+
+[1A[2K  6) [chromium] 窶ｺ e2e\position-calculator.spec.ts:213:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ keyboard navigation and accessibility 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeFocused[2m()[22m failed
+
+    Locator:  locator('[data-testid="account-balance-input"]')
+    Expected: focused
+    Received: inactive
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeFocused" with timeout 5000ms[22m
+    [2m  - waiting for locator('[data-testid="account-balance-input"]')[22m
+    [2m    9 ﾃ・locator resolved to <input min="0" step="1000" id="balance" type="number" value="1000000" placeholder="萓・ 1000000" data-testid="account-balance-input" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 tools_inputField__G_q5G"/>[22m
+    [2m      - unexpected value "inactive"[22m
+
+
+      214 |     // Test tab navigation through form
+      215 |     await page.keyboard.press('Tab'); // Should focus first input
+    > 216 |     await expect(page.locator('[data-testid="account-balance-input"]')).toBeFocused();
+          |                                                                         ^
+      217 |     
+      218 |     // Continue tabbing
+      219 |     await page.keyboard.press('Tab');
+        at C:\Marlow Gate\GitHub\mg-blog-next\mg-blog-next\e2e\position-calculator.spec.ts:216:73
+
+    attachment #1: screenshot (image/png) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\position-calculator--tools-ba52c-avigation-and-accessibility-chromium\test-failed-1.png
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    attachment #2: video (video/webm) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\position-calculator--tools-ba52c-avigation-and-accessibility-chromium\video.webm
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    Error Context: test-results\position-calculator--tools-ba52c-avigation-and-accessibility-chromium\error-context.md
+
+
+[1A[2K  7) [chromium] 窶ｺ e2e\brokers-compare.spec.ts:51:7 窶ｺ /brokers/compare page E2E tests 窶ｺ sort functionality updates table order and URL 
+
+    TimeoutError: locator.textContent: Timeout 10000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="broker-table-row"]').first().locator('[data-testid="broker-rating"]')[22m
+
+
+      63 |     const tableRows = page.locator('[data-testid="broker-table-row"]');
+      64 |     if (await tableRows.count() >= 2) {
+    > 65 |       const firstRating = await tableRows.first().locator('[data-testid="broker-rating"]').textContent();
+         |                                                                                            ^
+      66 |       const secondRating = await tableRows.nth(1).locator('[data-testid="broker-rating"]').textContent();
+      67 |       
+      68 |       const firstScore = parseFloat(firstRating || '0');
+        at C:\Marlow Gate\GitHub\mg-blog-next\mg-blog-next\e2e\brokers-compare.spec.ts:65:92
+
+    attachment #1: screenshot (image/png) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\brokers-compare--brokers-c-c4576-updates-table-order-and-URL-chromium\test-failed-1.png
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    attachment #2: video (video/webm) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\brokers-compare--brokers-c-c4576-updates-table-order-and-URL-chromium\video.webm
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    Error Context: test-results\brokers-compare--brokers-c-c4576-updates-table-order-and-URL-chromium\error-context.md
+
+
+[1A[2K  8) [chromium] 窶ｺ e2e\position-calculator.spec.ts:144:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ CLS (Cumulative Layout Shift) remains at 0 
+
+    TimeoutError: locator.boundingBox: Timeout 10000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="position-calculator"]')[22m
+
+
+      147 |     
+      148 |     // Get initial layout
+    > 149 |     const initialLayout = await page.locator('[data-testid="position-calculator"]').boundingBox();
+          |                                                                                     ^
+      150 |     
+      151 |     // Perform calculations that might cause layout shift
+      152 |     await page.locator('[data-testid="account-balance-input"]').fill('100000');
+        at C:\Marlow Gate\GitHub\mg-blog-next\mg-blog-next\e2e\position-calculator.spec.ts:149:85
+
+    attachment #1: screenshot (image/png) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\position-calculator--tools-aee0c-e-Layout-Shift-remains-at-0-chromium\test-failed-1.png
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    attachment #2: video (video/webm) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+    test-results\position-calculator--tools-aee0c-e-Layout-Shift-remains-at-0-chromium\video.webm
+    笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏
+
+    Error Context: test-results\position-calculator--tools-aee0c-e-Layout-Shift-remains-at-0-chromium\error-context.md
+
+
+[1A[2K  8 failed
+    [chromium] 窶ｺ e2e\brokers-compare.spec.ts:51:7 窶ｺ /brokers/compare page E2E tests 窶ｺ sort functionality updates table order and URL 
+    [chromium] 窶ｺ e2e\brokers-compare.spec.ts:97:7 窶ｺ /brokers/compare page E2E tests 窶ｺ table row click navigates to broker profile 
+    [chromium] 窶ｺ e2e\brokers-compare.spec.ts:149:7 窶ｺ /brokers/compare page E2E tests 窶ｺ filter and sort state persists on page reload 
+    [chromium] 窶ｺ e2e\brokers-compare.spec.ts:169:7 窶ｺ /brokers/compare page E2E tests 窶ｺ responsive table behavior on mobile 
+    [chromium] 窶ｺ e2e\position-calculator.spec.ts:144:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ CLS (Cumulative Layout Shift) remains at 0 
+    [chromium] 窶ｺ e2e\position-calculator.spec.ts:172:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ form validation and error handling 
+    [chromium] 窶ｺ e2e\position-calculator.spec.ts:213:7 窶ｺ /tools/position-size calculator E2E tests 窶ｺ keyboard navigation and accessibility 
+    [chromium] 窶ｺ e2e\smoke.spec.ts:101:7 窶ｺ Smoke Tests - Critical Paths 窶ｺ Site build quality - no console errors 
+  38 passed (29.2s)

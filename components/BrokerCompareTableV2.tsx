@@ -146,7 +146,7 @@ export default function BrokerCompareTableV2({ brokers }: BrokerCompareTableV2Pr
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
+      <div className="bg-white rounded-lg shadow-sm border overflow-hidden" data-testid="broker-compare-table">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
@@ -188,11 +188,11 @@ export default function BrokerCompareTableV2({ brokers }: BrokerCompareTableV2Pr
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {processedBrokers.map((broker) => (
-                <tr key={broker.slug} className="hover:bg-gray-50">
+                <tr key={broker.slug} className="hover:bg-gray-50" data-testid="broker-table-row">
                   <td className="px-4 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-medium text-gray-900" data-testid="broker-name">
                           {broker.brand}
                         </div>
                         <div className="text-sm text-gray-500">
@@ -204,7 +204,7 @@ export default function BrokerCompareTableV2({ brokers }: BrokerCompareTableV2Pr
                   <td className="px-4 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <Stars score={broker.score_total} />
-                      <span className="ml-2 text-sm font-medium text-gray-900">
+                      <span className="ml-2 text-sm font-medium text-gray-900" data-testid="broker-rating">
                         {broker.score_total.toFixed(1)}
                       </span>
                     </div>

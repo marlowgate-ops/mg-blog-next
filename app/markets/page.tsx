@@ -3,7 +3,7 @@ import Container from '@/components/Container';
 import JsonLd from '@/components/JsonLd';
 import JsonLdBreadcrumbs from '@/components/JsonLdBreadcrumbs';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import PrRibbon from '@/components/PrRibbon';
+import PrRibbon from '@/components/PRRibbon';
 import MarketTicker from '@/components/MarketTicker';
 import { getMarketData } from '@/lib/market-data';
 import styles from './page.module.css';

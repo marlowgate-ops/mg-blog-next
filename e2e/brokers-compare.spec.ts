@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { TestHelpers } from './test-helpers';
 
 test.describe('/brokers/compare page E2E tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/brokers/compare');
-    await page.waitForLoadState('networkidle');
+    await page.goto('/best/forex-brokers-jp');
+    await TestHelpers.waitForPageLoad(page);
   });
 
   test('facet filters update table content and URL', async ({ page }) => {
@@ -15,7 +16,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await expect(page).toHaveURL(/regulation=FSA/);
     
     // Wait for table to update
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify filtered results in table
     const tableRows = page.locator('[data-testid="broker-table-row"]');
@@ -36,7 +37,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await expect(page).toHaveURL(/minDeposit=1000/);
     
     // Wait for table to update
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify filtered results
     const tableRows = page.locator('[data-testid="broker-table-row"]');
@@ -57,7 +58,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await expect(page).toHaveURL(/sort=rating-desc/);
     
     // Wait for table to update
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify sort order - first item should have highest rating
     const tableRows = page.locator('[data-testid="broker-table-row"]');
@@ -65,8 +66,15 @@ test.describe('/brokers/compare page E2E tests', () => {
       const firstRating = await tableRows.first().locator('[data-testid="broker-rating"]').textContent();
       const secondRating = await tableRows.nth(1).locator('[data-testid="broker-rating"]').textContent();
       
-      const firstScore = parseFloat(firstRating || '0');
-      const secondScore = parseFloat(secondRating || '0');
+      // Parse rating from "評価: 85/100" format
+      const parseRating = (text: string | null): number => {
+        if (!text) return 0;
+        const match = text.match(/評価:\s*(\d+)\/100/);
+        return match ? parseFloat(match[1]) : 0;
+      };
+      
+      const firstScore = parseRating(firstRating);
+      const secondScore = parseRating(secondRating);
       expect(firstScore).toBeGreaterThanOrEqual(secondScore);
     }
   });
@@ -83,7 +91,7 @@ test.describe('/brokers/compare page E2E tests', () => {
     await expect(page).toHaveURL(/sort=spread-asc/);
     
     // Wait for table to update
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify results match all filters
     const tableRows = page.locator('[data-testid="broker-table-row"]');
@@ -103,11 +111,11 @@ test.describe('/brokers/compare page E2E tests', () => {
     const firstRow = tableRows.first();
     const brokerSlug = await firstRow.getAttribute('data-broker-slug');
     
-    // Click the row
-    await firstRow.click();
+    // Click the row (force click to avoid element interception on mobile)
+    await firstRow.click({ force: true });
     
     // Wait for navigation
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify navigation to broker profile
     if (brokerSlug) {
@@ -123,19 +131,19 @@ test.describe('/brokers/compare page E2E tests', () => {
 
   test('table remains stable during sort and filter operations', async ({ page }) => {
     // Initial table state
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Apply filter
     await page.locator('[data-testid="filter-regulation"]').selectOption('FSA');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Change sort
     await page.locator('[data-testid="sort-select"]').selectOption('rating-desc');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Add another filter
     await page.locator('[data-testid="filter-min-deposit"]').selectOption('100');
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Verify table structure is stable (no flickering or layout shifts)
     const tableElement = page.locator('[data-testid="broker-compare-table"]');
@@ -149,19 +157,44 @@ test.describe('/brokers/compare page E2E tests', () => {
   test('filter and sort state persists on page reload', async ({ page }) => {
     // Set up filters and sort
     await page.locator('[data-testid="filter-regulation"]').selectOption('FSA');
+    
+    // Wait for URL to update with regulation parameter - robust wait for Firefox
+    await page.waitForURL(/regulation=FSA/, { timeout: 4000 });
+    await expect(page).toHaveURL(/regulation=FSA/);
+    
     await page.locator('[data-testid="sort-select"]').selectOption('rating-desc');
-    await page.waitForLoadState('networkidle');
+    
+    // Wait for URL to update with sort parameter
+    await page.waitForURL(/sort=rating-desc/, { timeout: 4000 });
+    await expect(page).toHaveURL(/sort=rating-desc/);
+    
+    await TestHelpers.waitForPageLoad(page);
     
     const urlBeforeReload = page.url();
+    console.log('URL before reload:', urlBeforeReload);
+    
+    // Verify URL contains both parameters before reload
+    expect(urlBeforeReload).toContain('regulation=FSA');
+    expect(urlBeforeReload).toContain('sort=rating-desc');
     
     // Reload page
     await page.reload();
-    await page.waitForLoadState('networkidle');
+    await TestHelpers.waitForPageLoad(page);
     
     // Check URL parameters persist
-    expect(page.url()).toBe(urlBeforeReload);
+    const urlAfterReload = page.url();
+    console.log('URL after reload:', urlAfterReload);
+    expect(urlAfterReload).toBe(urlBeforeReload);
+    
+    // Wait a bit for React to hydrate and restore state
+    await page.waitForTimeout(1000);
     
     // Check filters are still applied in UI
+    const regulationValue = await page.locator('[data-testid="filter-regulation"]').inputValue();
+    const sortValue = await page.locator('[data-testid="sort-select"]').inputValue();
+    console.log('Regulation filter value:', regulationValue);
+    console.log('Sort select value:', sortValue);
+    
     await expect(page.locator('[data-testid="filter-regulation"]')).toHaveValue('FSA');
     await expect(page.locator('[data-testid="sort-select"]')).toHaveValue('rating-desc');
   });
