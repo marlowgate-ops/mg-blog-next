@@ -1,0 +1,433 @@
+/* Author Profile Page */
+.authorProfile {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Hero Section */
+.heroSection {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 32px;
+  border: 1px solid #e2e8f0;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.authorHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.avatarWrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.verifiedBadge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 32px;
+  height: 32px;
+  background: #10b981;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.authorInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.authorName {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1.2;
+}
+
+.authorTitle {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.organization {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.orgLink {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.orgLink:hover {
+  text-decoration: underline;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 12px;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.socialLink:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.stat {
+  text-align: center;
+}
+
+.statValue {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+/* Section Styles */
+.aboutSection,
+.expertiseSection,
+.credentialsSection,
+.recognitionSection,
+.articlesSection {
+  margin-bottom: 32px;
+}
+
+.sectionContent {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.sectionTitle {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+/* Bio Content */
+.bioContent {
+  line-height: 1.7;
+}
+
+.bio {
+  margin: 0;
+  font-size: 16px;
+  color: #4b5563;
+}
+
+/* Expertise Grid */
+.expertiseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.expertiseItem {
+  display: flex;
+  align-items: center;
+}
+
+.expertiseTag {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #f0f9ff;
+  color: #0284c7;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #bae6fd;
+}
+
+/* Credentials Grid */
+.credentialsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.credentialItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #f3f4f6;
+}
+
+.credentialIcon {
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+/* Recognition Section */
+.recognitionCategory {
+  margin-bottom: 24px;
+}
+
+.recognitionCategory:last-child {
+  margin-bottom: 0;
+}
+
+.categoryTitle {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.recognitionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recognitionItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #4b5563;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.recognitionItem:last-child {
+  border-bottom: none;
+}
+
+.awardIcon {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.speakingIcon {
+  color: #8b5cf6;
+  flex-shrink: 0;
+}
+
+/* Articles Section */
+.articlesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.viewAllLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #3b82f6;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.viewAllLink:hover {
+  color: #2563eb;
+}
+
+.viewAllLink svg {
+  transition: transform 0.2s ease;
+}
+
+.viewAllLink:hover svg {
+  transform: translateX(2px);
+}
+
+.articlesPlaceholder {
+  padding: 32px;
+  text-align: center;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
+}
+
+.articlesPlaceholder p {
+  margin: 0 0 8px 0;
+  color: #6b7280;
+}
+
+.articlesPlaceholder p:last-child {
+  margin-bottom: 0;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+/* Related Section */
+.relatedSection {
+  margin-top: 32px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 24px 16px;
+    margin-bottom: 24px;
+  }
+  
+  .authorHeader {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  
+  .authorName {
+    font-size: 24px;
+  }
+  
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .statValue {
+    font-size: 24px;
+  }
+  
+  .sectionContent {
+    padding: 16px;
+  }
+  
+  .expertiseGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .credentialsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .socialLinks {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .articlesHeader {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroSection {
+    border-radius: 0;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: 20px;
+  }
+  
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .authorName {
+    font-size: 20px;
+  }
+  
+  .authorTitle {
+    font-size: 16px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .heroSection {
+    border-width: 2px;
+  }
+  
+  .sectionContent {
+    border-width: 2px;
+  }
+  
+  .expertiseTag {
+    border-width: 2px;
+  }
+  
+  .socialLink {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .socialLink,
+  .viewAllLink,
+  .viewAllLink svg {
+    transition: none;
+  }
+}
