@@ -3,14 +3,15 @@ import { withContentlayer } from "next-contentlayer";
 
 /** @type {import('next').NextConfig} */
 const isProd = process.env.NODE_ENV === 'production';
+const isDockerBuild = process.env.DOCKER_BUILD === '1';
 
 const nextConfig = {
   reactStrictMode: true,
   eslint: { ignoreDuringBuilds: true },
   // Only allow TS errors in development
   ...(isProd ? {} : { typescript: { ignoreBuildErrors: true } }),
-  // Enable standalone output in production only
-  ...(isProd ? { output: 'standalone' } : {}),
+  // Enable standalone output only for Docker builds
+  ...(isDockerBuild ? { output: 'standalone' } : {}),
   
   // Performance optimizations
   swcMinify: true,
