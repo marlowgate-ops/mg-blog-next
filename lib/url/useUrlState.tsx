@@ -20,30 +20,26 @@ export function useUrlState<T>({ schema, defaults }: UseUrlStateOptions<T>) {
   const pathname = usePathname();
   
   const [state, setState] = useState<T>(defaults);
-  const [isInitialized, setIsInitialized] = useState(false);
   
-  // Initialize state from URL on mount
+  // Initialize state from URL on mount and when searchParams change
   useEffect(() => {
-    if (!isInitialized) {
-      try {
-        const parsed = parseParams(schema, searchParams);
-        setState(parsed);
-      } catch {
-        // If parsing fails, use defaults
-        setState(defaults);
-      }
-      setIsInitialized(true);
+    try {
+      const parsed = parseParams(schema, searchParams);
+      setState(parsed);
+    } catch {
+      // If parsing fails, use defaults
+      setState(defaults);
     }
-  }, [searchParams, schema, defaults, isInitialized]);
+  }, [searchParams, schema, defaults]);
   
   // Function to patch state and update URL
   const setPatch = useCallback((patch: Partial<T>) => {
     setState(current => {
       const newState = { ...current, ...patch };
       
-      // Update URL immediately
+      // Update URL with the complete new state
       const currentParams = new URLSearchParams(searchParams);
-      const mergedParams = mergeParams(currentParams, patch as Record<string, unknown>);
+      const mergedParams = mergeParams(currentParams, newState as Record<string, unknown>);
       const newUrl = buildUrl(pathname, mergedParams);
       
       router.replace(newUrl, { scroll: false });
