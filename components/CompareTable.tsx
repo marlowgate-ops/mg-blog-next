@@ -1,6 +1,8 @@
 "use client";
-import React, { useState, useMemo, useEffect } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import React, { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { useUrlState } from "@/lib/url/useUrlState";
 import PrimaryCta from "./PrimaryCta";
 import BadgeOverflow from "./BadgeOverflow";
 import MicroCopyMessage from "./MicroCopyMessage";
@@ -55,6 +57,14 @@ const SORTABLE_COLUMNS = [
   "appScore",
 ];
 
+// URL state schema for broker comparison table
+const compareUrlSchema = z.object({
+  regulation: z.string().optional().default(''),
+  minDeposit: z.string().optional().default(''),
+  accountType: z.string().optional().default(''),
+  sort: z.string().optional().default(''),
+});
+
 const FILTER_CHIPS = [
   { id: "beginner", label: "初心者向け", tag: "初心者向け" },
   { id: "low-spread", label: "低スプレッド", tag: "低スプレッド" },
@@ -65,15 +75,15 @@ const FILTER_CHIPS = [
 
 export default function CompareTable({ rows }: { rows: Row[] }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
+  
+  // Use new URL state management system  
+  const [urlState, updateUrlState] = useUrlState({
+    schema: compareUrlSchema,
+    defaults: { regulation: '', minDeposit: '', accountType: '', sort: '' }
+  });
   
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
-  const [regulationFilter, setRegulationFilter] = useState<string>('');
-  const [minDepositFilter, setMinDepositFilter] = useState<string>('');
-  const [accountTypeFilter, setAccountTypeFilter] = useState<string>('');
-  const [sortValue, setSortValue] = useState<string>('');
 
   // Handle row click navigation
   const handleRowClick = (brand: string) => {
@@ -109,57 +119,6 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
     return brandToSlug[brand] || brand.toLowerCase().replace(/[^a-z0-9]/g, '-');
   };
 
-  // Update URL when filters change - avoid circular updates
-  useEffect(() => {
-    const params = new URLSearchParams();
-    
-    if (regulationFilter) {
-      params.set('regulation', regulationFilter);
-    }
-    
-    if (minDepositFilter) {
-      params.set('minDeposit', minDepositFilter);
-    }
-    
-    if (accountTypeFilter) {
-      params.set('accountType', accountTypeFilter);
-    }
-    
-    if (sortValue) {
-      params.set('sort', sortValue);
-    }
-    
-    const newQueryString = params.toString();
-    const currentQueryString = searchParams.toString();
-    
-    console.log('CompareTable URL update:', {
-      regulationFilter,
-      sortValue,
-      newQueryString,
-      currentQueryString,
-      pathname
-    });
-    
-    if (newQueryString !== currentQueryString) {
-      const newUrl = newQueryString ? `?${newQueryString}` : '';
-      console.log('Pushing new URL:', `${pathname}${newUrl}`);
-      router.push(`${pathname}${newUrl}`, { scroll: false });
-    }
-  }, [regulationFilter, minDepositFilter, accountTypeFilter, sortValue, router, searchParams, pathname]);
-
-  // Initialize filters from URL on mount - improved dependency handling
-  useEffect(() => {
-    const regulation = searchParams.get('regulation') || '';
-    const minDeposit = searchParams.get('minDeposit') || '';
-    const accountType = searchParams.get('accountType') || '';
-    const sort = searchParams.get('sort') || '';
-    
-    setRegulationFilter(regulation);
-    setMinDepositFilter(minDeposit);
-    setAccountTypeFilter(accountType);
-    setSortValue(sort);
-  }, [searchParams]);
-
   const allKeys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))));
   const core = ["brand"];
   const EXCLUDED_KEYS = ["state", "ctaHref", "tags", "score"];
@@ -180,40 +139,40 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
     }
 
     // Apply URL-based filters
-    if (regulationFilter) {
+    if (urlState.regulation) {
       // For demo, all brokers have FSA regulation
-      if (regulationFilter !== 'FSA') {
+      if (urlState.regulation !== 'FSA') {
         filteredRows = [];
       }
     }
 
-    if (accountTypeFilter) {
+    if (urlState.accountType) {
       // For demo, all brokers support demo accounts
-      if (accountTypeFilter !== 'demo') {
+      if (urlState.accountType !== 'demo') {
         filteredRows = [];
       }
     }
 
-    // Apply sorting based on sortValue from URL
-    if (sortValue) {
+    // Apply sorting based on sort from URL
+    if (urlState.sort) {
       filteredRows = [...filteredRows].sort((a, b) => {
-        if (sortValue === 'rating-desc') {
+        if (urlState.sort === 'rating-desc') {
           const aScore = a.score || 0;
           const bScore = b.score || 0;
           return bScore - aScore;
         }
-        if (sortValue === 'rating-asc') {
+        if (urlState.sort === 'rating-asc') {
           const aScore = a.score || 0;
           const bScore = b.score || 0;
           return aScore - bScore;
         }
-        if (sortValue === 'spread-asc') {
+        if (urlState.sort === 'spread-asc') {
           // For demo, sort by cost alphabetically as proxy for spread
           const aCost = a.cost || 'zzz';
           const bCost = b.cost || 'zzz';
           return aCost.localeCompare(bCost);
         }
-        if (sortValue === 'spread-desc') {
+        if (urlState.sort === 'spread-desc') {
           const aCost = a.cost || '';
           const bCost = b.cost || '';
           return bCost.localeCompare(aCost);
@@ -223,7 +182,7 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
     }
 
     // Legacy sort config (keep for compatibility)
-    if (!sortValue && sortConfig) {
+    if (!urlState.sort && sortConfig) {
       filteredRows = [...filteredRows].sort((a, b) => {
         const aVal = (a as any)[sortConfig.key] || "";
         const bVal = (b as any)[sortConfig.key] || "";
@@ -236,7 +195,7 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
     }
 
     return filteredRows;
-  }, [rows, sortConfig, activeFilters, regulationFilter, accountTypeFilter, sortValue]);
+  }, [rows, sortConfig, activeFilters, urlState.regulation, urlState.accountType, urlState.sort]);
 
   const handleSort = (key: string) => {
     if (!SORTABLE_COLUMNS.includes(key)) return;
@@ -283,10 +242,10 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
           <select
             id="regulation-filter"
             data-testid="filter-regulation"
-            value={regulationFilter}
+            value={urlState.regulation}
             onChange={(e) => {
               console.log('Regulation filter changed to:', e.target.value);
-              setRegulationFilter(e.target.value);
+              updateUrlState({ regulation: e.target.value });
             }}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
@@ -304,8 +263,8 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
           <select
             id="min-deposit-filter"
             data-testid="filter-min-deposit"
-            value={minDepositFilter}
-            onChange={(e) => setMinDepositFilter(e.target.value)}
+            value={urlState.minDeposit}
+            onChange={(e) => updateUrlState({ minDeposit: e.target.value })}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">すべて</option>
@@ -323,8 +282,8 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
           <select
             id="account-type-filter"
             data-testid="filter-account-type"
-            value={accountTypeFilter}
-            onChange={(e) => setAccountTypeFilter(e.target.value)}
+            value={urlState.accountType}
+            onChange={(e) => updateUrlState({ accountType: e.target.value })}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">すべて</option>
@@ -340,9 +299,9 @@ export default function CompareTable({ rows }: { rows: Row[] }) {
           <select
             id="sort-select"
             data-testid="sort-select"
-            value={sortValue}
+            value={urlState.sort}
             onChange={(e) => {
-              setSortValue(e.target.value);
+              updateUrlState({ sort: e.target.value });
               // Clear legacy sortConfig when using new sort
               if (e.target.value) {
                 setSortConfig(null);
