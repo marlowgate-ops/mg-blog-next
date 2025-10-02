@@ -110,8 +110,8 @@ test.describe('/brokers/compare page E2E tests', () => {
     const firstRow = tableRows.first();
     const brokerSlug = await firstRow.getAttribute('data-broker-slug');
     
-    // Click the row
-    await firstRow.click();
+    // Click the row (force click to avoid element interception on mobile)
+    await firstRow.click({ force: true });
     
     // Wait for navigation
     await page.waitForLoadState('networkidle');
@@ -156,11 +156,23 @@ test.describe('/brokers/compare page E2E tests', () => {
   test('filter and sort state persists on page reload', async ({ page }) => {
     // Set up filters and sort
     await page.locator('[data-testid="filter-regulation"]').selectOption('FSA');
+    
+    // Wait for URL to update with regulation parameter
+    await expect(page).toHaveURL(/regulation=FSA/);
+    
     await page.locator('[data-testid="sort-select"]').selectOption('rating-desc');
+    
+    // Wait for URL to update with sort parameter
+    await expect(page).toHaveURL(/sort=rating-desc/);
+    
     await page.waitForLoadState('networkidle');
     
     const urlBeforeReload = page.url();
     console.log('URL before reload:', urlBeforeReload);
+    
+    // Verify URL contains both parameters before reload
+    expect(urlBeforeReload).toContain('regulation=FSA');
+    expect(urlBeforeReload).toContain('sort=rating-desc');
     
     // Reload page
     await page.reload();

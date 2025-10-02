@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import { z } from "zod";
 import Container from "@/components/Container";
 import AuthorMeta from "@/components/AuthorMeta";
 import PrBadge from "@/components/PrBadge";
@@ -46,6 +47,50 @@ import s from "@/app/best/layout.module.css";
 import longformContent from "@/content_source/reviews/forex-brokers-jp/longform.json";
 import faqData from "@/content_source/reviews/forex-brokers-jp/faq.json";
 
+// Compare table URL state schema (matching CompareTable)
+const compareUrlSchema = z.object({
+  regulation: z.string().optional().default(''),
+  minDeposit: z.string().optional().default(''),
+  accountType: z.string().optional().default(''),
+  sort: z.string().optional().default(''),
+});
+
+type CompareUrlState = z.infer<typeof compareUrlSchema>;
+
+interface BrokerPageProps {
+  searchParams: Record<string, string | string[] | undefined>;
+}
+
+function parseCompareSearchParams(searchParams: Record<string, string | string[] | undefined>): CompareUrlState {
+  try {
+    // Convert searchParams to URLSearchParams for consistent handling
+    const urlSearchParams = new URLSearchParams();
+    
+    for (const [key, value] of Object.entries(searchParams)) {
+      if (value !== undefined) {
+        if (Array.isArray(value)) {
+          for (const v of value) {
+            urlSearchParams.append(key, v);
+          }
+        } else {
+          urlSearchParams.set(key, value);
+        }
+      }
+    }
+    
+    // Parse with proper types
+    const regulation = urlSearchParams.get('regulation') || '';
+    const minDeposit = urlSearchParams.get('minDeposit') || '';
+    const accountType = urlSearchParams.get('accountType') || '';
+    const sort = urlSearchParams.get('sort') || '';
+    
+    return compareUrlSchema.parse({ regulation, minDeposit, accountType, sort });
+  } catch {
+    // Return defaults if parsing fails
+    return compareUrlSchema.parse({});
+  }
+}
+
 export const metadata = generateSEOMetadata({
   title: "国内向けおすすめFX・CFD業者ランキング",
   description: "使いやすさ/実用性を重視。スプレッド・手数料・約定・アプリ・サポートを総合評価。",
@@ -68,7 +113,12 @@ function BrokerLogo({ name }: { name: string }) {
 }
 
 // Main page component
-export default function Page() {
+export default function Page({ searchParams }: BrokerPageProps = { searchParams: {} }) {
+  // Parse URL params on server for SSR initialization
+  const compareInitialState = parseCompareSearchParams(searchParams);
+  
+  console.log('BrokerPage: searchParams received:', searchParams);
+  console.log('BrokerPage: compareInitialState parsed:', compareInitialState);
 
   const faqs = [
     {
@@ -227,7 +277,7 @@ export default function Page() {
                 <section className={s.section} data-section>
                   <h2 className={s.sectionTitle}><span className={s.bar} />主要スペック比較</h2>
                   <Suspense fallback={<div>比較表を読み込み中...</div>}>
-                    <CompareTable rows={rows} />
+                    <CompareTable rows={rows} initialState={compareInitialState} />
                   </Suspense>
                 </section>
               </SectionBand>

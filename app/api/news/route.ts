@@ -7,6 +7,50 @@ export const runtime = "nodejs";
 export const revalidate = 120;
 export const dynamic = 'force-dynamic';
 
+// E2E deterministic test data
+const E2E_TEST_DATA = {
+  items: [
+    // Reuters items
+    { id: 'reuters-1', title: 'USD/JPY rises on Federal Reserve policy expectations', sourceId: 'reuters', sourceName: 'Reuters', publishedAt: new Date(Date.now() - 1000*60*30).toISOString(), url: 'https://reuters.com/test-1' },
+    { id: 'reuters-2', title: 'Japan central bank maintains 金利 policy stance', sourceId: 'reuters', sourceName: 'Reuters', publishedAt: new Date(Date.now() - 1000*60*60*2).toISOString(), url: 'https://reuters.com/test-2' },
+    { id: 'reuters-3', title: 'Market volatility expected amid FX interventions', sourceId: 'reuters', sourceName: 'Reuters', publishedAt: new Date(Date.now() - 1000*60*60*4).toISOString(), url: 'https://reuters.com/test-3' },
+    { id: 'reuters-4', title: 'Economic indicators show mixed signals', sourceId: 'reuters', sourceName: 'Reuters', publishedAt: new Date(Date.now() - 1000*60*60*6).toISOString(), url: 'https://reuters.com/test-4' },
+    
+    // Bloomberg items 
+    { id: 'bloomberg-1', title: 'FX trading volumes surge in Asian markets', sourceId: 'bloomberg', sourceName: 'Bloomberg', publishedAt: new Date(Date.now() - 1000*60*45).toISOString(), url: 'https://bloomberg.com/test-1' },
+    { id: 'bloomberg-2', title: 'Dollar strength continues against major currencies', sourceId: 'bloomberg', sourceName: 'Bloomberg', publishedAt: new Date(Date.now() - 1000*60*60*3).toISOString(), url: 'https://bloomberg.com/test-2' },
+    { id: 'bloomberg-3', title: 'Central bank 金利 decisions impact market sentiment', sourceId: 'bloomberg', sourceName: 'Bloomberg', publishedAt: new Date(Date.now() - 1000*60*60*5).toISOString(), url: 'https://bloomberg.com/test-3' },
+    { id: 'bloomberg-4', title: 'USD/JPY technical analysis shows bullish pattern', sourceId: 'bloomberg', sourceName: 'Bloomberg', publishedAt: new Date(Date.now() - 1000*60*60*7).toISOString(), url: 'https://bloomberg.com/test-4' },
+    
+    // PR Times items
+    { id: 'prtimes-1', title: 'New FX platform launches with advanced features', sourceId: 'prtimes', sourceName: 'PR TIMES', publishedAt: new Date(Date.now() - 1000*60*20).toISOString(), url: 'https://prtimes.jp/test-1' },
+    { id: 'prtimes-2', title: 'Fintech company announces market expansion', sourceId: 'prtimes', sourceName: 'PR TIMES', publishedAt: new Date(Date.now() - 1000*60*90).toISOString(), url: 'https://prtimes.jp/test-2' },
+    { id: 'prtimes-3', title: 'Trading platform updates with new 金利 tools', sourceId: 'prtimes', sourceName: 'PR TIMES', publishedAt: new Date(Date.now() - 1000*60*60*8).toISOString(), url: 'https://prtimes.jp/test-3' },
+    
+    // Yahoo Finance items
+    { id: 'yahoo-1', title: 'Asian markets react to USD/JPY movements', sourceId: 'yahoo-finance', sourceName: 'Yahoo Finance', publishedAt: new Date(Date.now() - 1000*60*15).toISOString(), url: 'https://finance.yahoo.com/test-1' },
+    { id: 'yahoo-2', title: 'FX volatility creates trading opportunities', sourceId: 'yahoo-finance', sourceName: 'Yahoo Finance', publishedAt: new Date(Date.now() - 1000*60*75).toISOString(), url: 'https://finance.yahoo.com/test-2' },
+    { id: 'yahoo-3', title: 'Interest rate speculation drives market moves', sourceId: 'yahoo-finance', sourceName: 'Yahoo Finance', publishedAt: new Date(Date.now() - 1000*60*60*9).toISOString(), url: 'https://finance.yahoo.com/test-3' },
+    
+    // Nikkei items
+    { id: 'nikkei-1', title: 'Japanese 金利 policy maintains stability', sourceId: 'nikkei', sourceName: 'Nikkei', publishedAt: new Date(Date.now() - 1000*60*35).toISOString(), url: 'https://nikkei.com/test-1' },
+    { id: 'nikkei-2', title: 'FX market outlook remains cautiously optimistic', sourceId: 'nikkei', sourceName: 'Nikkei', publishedAt: new Date(Date.now() - 1000*60*60*1).toISOString(), url: 'https://nikkei.com/test-2' },
+    { id: 'nikkei-3', title: 'USD/JPY technical levels watched by traders', sourceId: 'nikkei', sourceName: 'Nikkei', publishedAt: new Date(Date.now() - 1000*60*60*10).toISOString(), url: 'https://nikkei.com/test-3' },
+    
+    // Additional items for pagination
+    { id: 'reuters-5', title: 'Economic data points to steady growth', sourceId: 'reuters', sourceName: 'Reuters', publishedAt: new Date(Date.now() - 1000*60*60*12).toISOString(), url: 'https://reuters.com/test-5' },
+    { id: 'bloomberg-5', title: 'Currency hedge funds adjust positions', sourceId: 'bloomberg', sourceName: 'Bloomberg', publishedAt: new Date(Date.now() - 1000*60*60*14).toISOString(), url: 'https://bloomberg.com/test-5' },
+    { id: 'yahoo-4', title: 'Retail FX trading reaches new highs', sourceId: 'yahoo-finance', sourceName: 'Yahoo Finance', publishedAt: new Date(Date.now() - 1000*60*60*16).toISOString(), url: 'https://finance.yahoo.com/test-4' },
+    { id: 'nikkei-4', title: 'Bank of Japan signals policy continuity', sourceId: 'nikkei', sourceName: 'Nikkei', publishedAt: new Date(Date.now() - 1000*60*60*18).toISOString(), url: 'https://nikkei.com/test-4' },
+    { id: 'prtimes-4', title: 'FX education platform gains traction', sourceId: 'prtimes', sourceName: 'PR TIMES', publishedAt: new Date(Date.now() - 1000*60*60*20).toISOString(), url: 'https://prtimes.jp/test-4' },
+    { id: 'reuters-6', title: 'Global FX reserves show diversification trend', sourceId: 'reuters', sourceName: 'Reuters', publishedAt: new Date(Date.now() - 1000*60*60*22).toISOString(), url: 'https://reuters.com/test-6' },
+    { id: 'bloomberg-6', title: 'Algorithmic trading shapes FX liquidity', sourceId: 'bloomberg', sourceName: 'Bloomberg', publishedAt: new Date(Date.now() - 1000*60*60*24).toISOString(), url: 'https://bloomberg.com/test-6' },
+    { id: 'yahoo-5', title: 'Cross-currency volatility creates opportunities', sourceId: 'yahoo-finance', sourceName: 'Yahoo Finance', publishedAt: new Date(Date.now() - 1000*60*60*26).toISOString(), url: 'https://finance.yahoo.com/test-5' }
+  ],
+  total: 25,
+  hasMore: false
+};
+
 // Simple in-memory cache (would use Redis/KV in production)
 const cache = new Map<string, { data: any; timestamp: number; staleTimestamp: number }>();
 const CACHE_TTL = 120 * 1000; // 120 seconds
@@ -273,6 +317,55 @@ async function refreshNewsData(requestedProviders: string[], period: Period, cac
 
 export async function GET(request: NextRequest) {
   console.log('News API: GET request received');
+  
+  // E2E test mode - return deterministic data
+  if (process.env.E2E === '1') {
+    console.log('News API: E2E mode active, returning test data');
+    
+    const { searchParams } = new URL(request.url);
+    const providers = searchParams.get('providers')?.split(',').filter(Boolean) || [];
+    const period = searchParams.get('period') || 'week';
+    const query = searchParams.get('q') || '';
+    const limit = parseInt(searchParams.get('limit') || '20');
+    const offset = parseInt(searchParams.get('offset') || '0');
+    
+    // Filter test data by providers
+    let filteredItems = [...E2E_TEST_DATA.items];
+    if (providers.length > 0) {
+      filteredItems = filteredItems.filter(item => providers.includes(item.sourceId));
+    }
+    
+    // Filter by search query  
+    if (query.trim()) {
+      const queryLower = query.toLowerCase();
+      filteredItems = filteredItems.filter(item => 
+        item.title.toLowerCase().includes(queryLower)
+      );
+    }
+    
+    // Filter by period
+    filteredItems = filterByPeriod(filteredItems, period as Period);
+    
+    // Apply pagination
+    const totalCount = filteredItems.length;
+    const paginatedItems = filteredItems.slice(offset, offset + limit);
+    const hasMore = (offset + limit) < totalCount;
+    
+    const response = {
+      items: paginatedItems,
+      total: totalCount,
+      hasMore,
+      nextOffset: hasMore ? offset + limit : null
+    };
+    
+    // Return immediately with no-store cache headers for E2E
+    return NextResponse.json(response, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Content-Type': 'application/json'
+      }
+    });
+  }
   
   try {
     const { searchParams } = new URL(request.url);

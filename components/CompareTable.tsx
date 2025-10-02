@@ -65,6 +65,13 @@ const compareUrlSchema = z.object({
   sort: z.string().optional().default(''),
 });
 
+type CompareUrlState = z.infer<typeof compareUrlSchema>;
+
+interface CompareTableProps {
+  rows: Row[];
+  initialState?: CompareUrlState;
+}
+
 const FILTER_CHIPS = [
   { id: "beginner", label: "初心者向け", tag: "初心者向け" },
   { id: "low-spread", label: "低スプレッド", tag: "低スプレッド" },
@@ -73,14 +80,21 @@ const FILTER_CHIPS = [
   { id: "high-rated", label: "高評価", tag: "高評価" },
 ];
 
-export default function CompareTable({ rows }: { rows: Row[] }) {
+export default function CompareTable({ rows, initialState }: CompareTableProps) {
   const router = useRouter();
   
-  // Use new URL state management system  
+  // Debug logging
+  console.log('CompareTable: initialState received:', initialState);
+  
+  // Use new URL state management system with SSR-compatible initialization
   const [urlState, updateUrlState] = useUrlState({
     schema: compareUrlSchema,
-    defaults: { regulation: '', minDeposit: '', accountType: '', sort: '' }
+    defaults: { regulation: '', minDeposit: '', accountType: '', sort: '' },
+    ...(initialState && { initialState }),
   });
+  
+  // Debug logging for URL state
+  console.log('CompareTable: urlState:', urlState);
   
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);

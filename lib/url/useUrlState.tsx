@@ -4,22 +4,25 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 import { z } from 'zod';
 import { parseParams, mergeParams, buildUrl } from './params';
+import { commitUrl, commitState } from './commitUrl';
 
 interface UseUrlStateOptions<T> {
   schema: z.ZodSchema<T>;
   defaults: T;
+  initialState?: T;
 }
 
 /**
  * Custom hook for managing URL state with type safety
  * Returns [state, setPatch, replaceUrl] tuple
  */
-export function useUrlState<T>({ schema, defaults }: UseUrlStateOptions<T>) {
+export function useUrlState<T>({ schema, defaults, initialState }: UseUrlStateOptions<T>) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   
-  const [state, setState] = useState<T>(defaults);
+  // Initialize state with initialState if provided (for SSR), otherwise use defaults
+  const [state, setState] = useState<T>(initialState ?? defaults);
   
   // Initialize state from URL on mount and when searchParams change
   useEffect(() => {
@@ -27,22 +30,23 @@ export function useUrlState<T>({ schema, defaults }: UseUrlStateOptions<T>) {
       const parsed = parseParams(schema, searchParams);
       setState(parsed);
     } catch {
-      // If parsing fails, use defaults
-      setState(defaults);
+      // If parsing fails, use initialState if available, otherwise defaults
+      setState(initialState ?? defaults);
     }
-  }, [searchParams, schema, defaults]);
+  }, [searchParams, schema, defaults, initialState]);
   
-  // Function to patch state and update URL
+  // Function to patch state and update URL synchronously
   const setPatch = useCallback((patch: Partial<T>) => {
-    setState(current => {
+    // Use commitState for synchronous state updates during testing
+    commitState(setState, (current: T) => {
       const newState = { ...current, ...patch };
       
-      // Update URL with the complete new state
+      // Update URL with the complete new state (not just patch)
       const currentParams = new URLSearchParams(searchParams);
       const mergedParams = mergeParams(currentParams, newState as Record<string, unknown>);
-      const newUrl = buildUrl(pathname, mergedParams);
       
-      router.replace(newUrl, { scroll: false });
+      // Use commitUrl for synchronous URL updates
+      commitUrl(router, pathname, mergedParams);
       
       return newState;
     });
