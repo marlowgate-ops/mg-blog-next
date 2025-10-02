@@ -45,7 +45,6 @@ export default function Header() {
             </svg>
           </Link>
           <Link className="u" href="/about">About</Link>
-          <Link className="u" href="/authors">執筆者</Link>
         </nav>
       </div>
       <div className="menubar">
