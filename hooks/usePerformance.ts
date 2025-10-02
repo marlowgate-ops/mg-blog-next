@@ -150,8 +150,17 @@ export function useMemoizedCallback<T extends (...args: any[]) => any>(
   callback: T,
   deps: React.DependencyList
 ): T {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  return useCallback(callback, deps);
+  // Use useRef to store callback and manually control dependencies
+  const callbackRef = useRef(callback);
+  const depsRef = useRef(deps);
+  
+  // Update callback if deps have changed
+  if (!depsRef.current || deps.some((dep, index) => dep !== depsRef.current![index])) {
+    callbackRef.current = callback;
+    depsRef.current = deps;
+  }
+  
+  return useCallback((...args: any[]) => callbackRef.current(...args), []) as T;
 }
 
 // Hook for measuring async operations
