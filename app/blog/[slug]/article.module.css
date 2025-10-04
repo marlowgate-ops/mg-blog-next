@@ -23,6 +23,19 @@
   margin: 2px 0 10px;
 }
 
+.headerMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.headerMeta time {
+  color: #475569;
+  font-size: 13px;
+}
+
 .meta {
   display: flex;
   gap: 10px;

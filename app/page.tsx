@@ -5,6 +5,7 @@ import NewsItemClient from '@/components/NewsItemClient'
 import Popular from '@/components/Popular'
 import Sidebar from '@/components/Sidebar'
 import MarketTicker from '@/components/MarketTicker'
+import { MarketBarWithErrorBoundary } from '@/components/MarketBar'
 import { site } from '@/lib/site'
 import popularItems from '@/config/popular.json'
 import s from './home.module.css'
@@ -83,6 +84,9 @@ export default async function Page() {
   
   return (
     <div className={s.container}>
+      {/* Market snapshot bar */}
+      <MarketBarWithErrorBoundary />
+      
       <section className={s.hero}>
         <h1 className={s.heroTitle}>Latest articles</h1>
         <p className={s.heroLead}>{SITE.tagline}</p>

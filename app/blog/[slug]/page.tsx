@@ -7,6 +7,8 @@ import styles from './article.module.css'
 import MDXRenderer from '../../../components/MDXRenderer'
 import JsonLd from '../../../components/JsonLd'
 import JsonLdBreadcrumbs from '../../../components/JsonLdBreadcrumbs'
+import { ViewTracker } from '../../../components/ViewTracker'
+import { BookmarkButton } from '../../../components/BookmarkButton'
 import { articleSchema } from '../../../lib/seo/jsonld'
 
 // Restrict dynamic paths strictly to generated params
@@ -59,6 +61,11 @@ export default function Page({ params }: PageProps) {
 
   return (
     <>
+      <ViewTracker 
+        title={post.title}
+        type="article"
+        slug={params.slug}
+      />
       <JsonLd data={articleData} />
       <JsonLdBreadcrumbs />
       
@@ -66,7 +73,19 @@ export default function Page({ params }: PageProps) {
         <section className={styles.article}>
           <header className={styles.header}>
             <h1 className={styles.title}>{post.title}</h1>
-            {post.date ? <time dateTime={post.date}>{post.date}</time> : null}
+            <div className={styles.headerMeta}>
+              {post.date ? <time dateTime={post.date}>{post.date}</time> : null}
+              <BookmarkButton 
+                item={{
+                  url: `${site.url}${post.url || `/blog/${params.slug}`}`,
+                  title: post.title,
+                  type: 'article',
+                  description: post.description,
+                  tags: post.tags || []
+                }}
+                variant="compact"
+              />
+            </div>
           </header>
 
           <article className={styles.content}>
