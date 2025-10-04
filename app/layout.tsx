@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import ClientHeader from '@/components/ClientHeader'
 import JsonLdSitewide from '@/components/JsonLdSitewide'
 import JsonLdSearchBox from '@/components/JsonLdSearchBox'
+import { SkipLinks } from '@/components/SkipLinks'
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="search" type="application/opensearchdescription+xml" title={`${site.title} 検索`} href={`${site.url}/opensearch.xml`} />
       </head>
       <body className={inter.className + " min-h-screen antialiased"}>
+        <SkipLinks />
         <JsonLdSitewide />
         <JsonLdSearchBox 
           domain={site.url} 

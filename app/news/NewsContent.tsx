@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { z } from 'zod';
-import { useDebounce } from '@/hooks/useDebounce';
 import { useUrlState } from '@/lib/url/useUrlState';
 import JsonLdItemList from '@/components/JsonLdItemList';
 import EventBadge from '@/components/EventBadge';
@@ -107,7 +106,8 @@ export default function NewsContent({ initialState }: NewsContentProps = {}) {
   const [searchQuery, setSearchQuery] = useState(urlState.q);
   
   // Debounce search query for auto-updating URL while typing
-  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+  // Debounced search will be implemented when needed
+  // const debouncedSearchQuery = useDebounce(searchQuery, 300);
   
   const sources = newsSources as NewsSource[];
   

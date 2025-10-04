@@ -54,6 +54,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+/*
 async function getTopicContent(topicId: string, page: number = 1) {
   try {
     // This would normally fetch from your content management system
@@ -98,15 +99,16 @@ async function getTopicContent(topicId: string, page: number = 1) {
     };
   }
 }
+*/
 
-export default async function TopicPage({ params, searchParams }: PageProps) {
+export default async function TopicPage({ params }: { params: { slug: string } }) {
   const hub = getTopicHub(params.slug);
   
   if (!hub) {
     notFound();
   }
 
-  const page = parseInt(searchParams.page || '1', 10);
+  // const page = parseInt(searchParams.page || '1', 10);
   const curatedContent = getCuratedContent(hub.id);
   const relatedHubs = getRelatedTopicHubs(hub.id);
   

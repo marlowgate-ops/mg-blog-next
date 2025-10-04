@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import PopularNow from './Sidebar/PopularNow';
+import { PopularWidget } from './PopularWidget';
 import styles from './Sidebar.module.css';
 
 export default function Sidebar() {
   return (
     <aside className={styles.sidebar}>
-      {/* Popular Now Widget */}
-      <PopularNow />
+      {/* Popular Widget */}
+      <PopularWidget className={styles.widget} />
       
       {/* Market Blackout Calendar Widget */}
       <div className={styles.widget}>

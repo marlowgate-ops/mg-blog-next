@@ -33,7 +33,7 @@ export function useUrlState<T>({ schema, defaults, initialState }: UseUrlStateOp
       // If parsing fails, use initialState if available, otherwise defaults
       setState(initialState ?? defaults);
     }
-  }, []); // Only run on mount
+  }, [schema, searchParams, initialState, defaults]); // Include all dependencies
   
   // Function to patch state and update URL synchronously
   const setPatch = useCallback((patch: Partial<T>) => {

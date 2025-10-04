@@ -1,6 +1,6 @@
 import Container from '@/components/Container';
 import Sidebar from '@/components/Sidebar';
-import ViewTracker from '@/components/ViewTracker';
+import { ViewTracker } from '@/components/ViewTracker';
 import styles from './layout.module.css';
 
 export default function WithSidebarLayout({
@@ -10,7 +10,7 @@ export default function WithSidebarLayout({
 }) {
   return (
     <Container>
-      <ViewTracker />
+      <ViewTracker title="Page" enabled={false} />
       <div className={styles.layout}>
         <main className={styles.main}>
           {children}

@@ -4,8 +4,8 @@ import JsonLd from '@/components/JsonLd';
 import JsonLdBreadcrumbs from '@/components/JsonLdBreadcrumbs';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import PrRibbon from '@/components/PRRibbon';
-import Link from 'next/link';
-import { allInsuranceProducts } from 'contentlayer/generated';
+import { InsuranceHub } from '@/components/InsuranceHub';
+import { ViewTracker } from '@/components/ViewTracker';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -22,32 +22,53 @@ export const metadata: Metadata = {
   },
 };
 
-const compareCategories = [
-  {
-    id: 'auto',
-    title: '自動車保険',
-    description: '対人・対物補償やロードサービスを比較',
-    href: '/insurance/compare/auto',
-    icon: '🚗',
-    color: '#3b82f6'
+// Enhanced structured data for insurance comparison service
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: '保険比較・選び方サービス',
+  description: '自動車保険・生命保険・医療保険など各種保険の比較と選び方をサポートするサービス',
+  provider: {
+    '@type': 'Organization',
+    name: 'Marlow Gate',
+    url: 'https://marlowgate.com'
   },
-  {
-    id: 'life',
-    title: '生命保険',
-    description: '死亡保障や医療特約を比較',
-    href: '/insurance/compare/life',
-    icon: '🛡️',
-    color: '#10b981'
+  serviceType: '保険比較',
+  areaServed: {
+    '@type': 'Country',
+    name: 'Japan'
   },
-  {
-    id: 'medical',
-    title: '医療保険',
-    description: '入院・手術給付金を比較',
-    href: '/insurance/compare/medical',
-    icon: '🏥',
-    color: '#f59e0b'
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: '保険比較サービス',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: '自動車保険比較',
+          description: '対人・対物補償やロードサービスを比較'
+        }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: '生命保険比較',
+          description: '死亡保障や医療特約を比較'
+        }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: '医療保険比較',
+          description: '入院・手術給付金を比較'
+        }
+      }
+    ]
   }
-];
+};
 
 const faqData = [
   {
@@ -69,23 +90,6 @@ const faqData = [
 ];
 
 export default async function InsurancePage() {
-  // Get insurance guides from content
-  const guides = allInsuranceProducts.slice(0, 6).map(product => ({
-    title: `${product.title}の選び方ガイド`,
-    description: product.tagline,
-    href: `/best/insurance/${product.category}/${product.slug}`,
-    category: product.category,
-    updatedAt: product.updatedAt
-  }));
-
-  const jsonLdData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "保険比較・選び方ガイド",
-    "description": "自動車保険・生命保険・医療保険の比較から選び方まで、専門家監修のガイド",
-    "url": "https://marlowgate.com/insurance"
-  };
-
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -101,7 +105,12 @@ export default async function InsurancePage() {
 
   return (
     <>
-      <JsonLd data={jsonLdData} />
+      <ViewTracker 
+        title="保険比較・選び方ガイド"
+        type="insurance"
+        slug="insurance-hub"
+      />
+      <JsonLd data={serviceSchema} />
       <JsonLd data={faqJsonLd} />
       <JsonLdBreadcrumbs />
       <PrRibbon />
@@ -112,76 +121,7 @@ export default async function InsurancePage() {
           { name: '保険' }
         ]} />
 
-        {/* Hero Section */}
-        <section className={styles.hero}>
-          <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>
-              あなたに最適な保険を見つけよう
-            </h1>
-            <p className={styles.heroDescription}>
-              専門家監修の比較ガイドで、ライフスタイルに合った保険を簡単に選べます。
-            </p>
-            <Link href="#compare" className={styles.heroCta}>
-              比較を始める
-            </Link>
-          </div>
-        </section>
-
-        {/* Compare Tiles Section */}
-        <section id="compare" className={styles.compareSection}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>保険を比較する</h2>
-            <p className={styles.sectionDescription}>
-              カテゴリ別に保険を比較して、あなたにぴったりの保険を見つけましょう
-            </p>
-          </div>
-          
-          <div className={styles.compareGrid}>
-            {compareCategories.map(category => (
-              <Link
-                key={category.id}
-                href={category.href}
-                className={styles.compareCard}
-                style={{ '--card-color': category.color } as React.CSSProperties}
-              >
-                <div className={styles.compareCardIcon}>{category.icon}</div>
-                <h3 className={styles.compareCardTitle}>{category.title}</h3>
-                <p className={styles.compareCardDescription}>{category.description}</p>
-                <span className={styles.compareCardAction}>比較表を見る →</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {/* Guides Section */}
-        <section className={styles.guidesSection}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>保険選びガイド</h2>
-            <p className={styles.sectionDescription}>
-              各保険の選び方や注意点を詳しく解説
-            </p>
-          </div>
-          
-          <div className={styles.guidesGrid}>
-            {guides.map((guide, index) => (
-              <Link key={index} href={guide.href} className={styles.guideCard}>
-                <div className={styles.guideCategory}>
-                  {guide.category === 'auto' ? '自動車保険' :
-                   guide.category === 'life' ? '生命保険' : '医療保険'}
-                </div>
-                <h3 className={styles.guideTitle}>{guide.title}</h3>
-                <p className={styles.guideDescription}>{guide.description}</p>
-                <time className={styles.guideUpdated}>
-                  {new Date(guide.updatedAt).toLocaleDateString('ja-JP', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                  })}
-                </time>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <InsuranceHub />
 
         {/* FAQ Section */}
         <section className={styles.faqSection}>

@@ -1,0 +1,86 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: white;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.button:hover {
+  border-color: #d1d5db;
+  background: #f9fafb;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button.bookmarked {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.button.bookmarked:hover {
+  background: #fde68a;
+  border-color: #d97706;
+}
+
+.compact {
+  padding: 6px 12px;
+  font-size: 13px;
+  gap: 6px;
+}
+
+.iconOnly {
+  padding: 8px;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+}
+
+.iconOnly svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .button {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: #f3f4f6;
+  }
+
+  .button:hover {
+    background: #374151;
+    border-color: #6b7280;
+  }
+
+  .button.bookmarked {
+    background: #451a03;
+    border-color: #92400e;
+    color: #fbbf24;
+  }
+
+  .button.bookmarked:hover {
+    background: #78350f;
+    border-color: #d97706;
+  }
+}
+
+/* Focus styles for accessibility */
+.button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
