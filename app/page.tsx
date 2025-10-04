@@ -105,7 +105,7 @@ export default async function Page() {
           </section>
 
           {/* Latest Market News Section */}
-          {items.length > 0 ? (
+          {Array.isArray(items) && items.length > 0 ? (
             <section className={s.newsSection}>
               <div className={s.sectionHeader}>
                 <h2 className={s.sectionTitle}>Latest Market News</h2>
@@ -129,14 +129,20 @@ export default async function Page() {
           )}
 
           <section className={s.grid}>
-            {posts.length === 0 ? (
+            {Array.isArray(posts) && posts.length === 0 ? (
               <>
                 <ArticleCardSkeleton />
                 <ArticleCardSkeleton />
                 <ArticleCardSkeleton />
               </>
-            ) : (
+            ) : Array.isArray(posts) ? (
               posts.map((p) => <ArticleCard key={String(p._id || p.slug)} post={p} />)
+            ) : (
+              <>
+                <ArticleCardSkeleton />
+                <ArticleCardSkeleton />
+                <ArticleCardSkeleton />
+              </>
             )}
           </section>
 

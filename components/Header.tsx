@@ -98,7 +98,7 @@ export default function Header() {
           border-radius:0 8px 8px 0;
         }
         @media (max-width:720px){ 
-          .menubar{ display:none; } 
+          .nav { display:none; } 
           .logo { width:24px; height:24px; } 
         }
         @media (max-width:480px){ 
